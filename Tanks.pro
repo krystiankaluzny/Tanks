@@ -24,10 +24,10 @@ CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
 LFLAGS = -mwindows -O
 
-LIBS += -L$$PWD./SDL/i686-w64-mingw32/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+LIBS += -L$$PWD/SDL/i686-w64-mingw32/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
-DEPENDPATH += $$PWD./SDL/i686-w64-mingw32/include
-INCLUDEPATH += $$PWD./SDL/i686-w64-mingw32/include
+DEPENDPATH += $$PWD/SDL/i686-w64-mingw32/include
+INCLUDEPATH += $$PWD/SDL/i686-w64-mingw32/include
 
 HEADERS += \
     src/app.h \
@@ -46,7 +46,7 @@ HEADERS += \
     src/objects/enemy.h \
     src/objects/player.h \
     src/objects/bullet.h \
-    src/objects/brick.h \
+    src/objects/brick.h
 
 
 OTHER_FILES += \
