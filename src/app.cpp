@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 App::App()
 {
@@ -23,17 +24,20 @@ void App::run()
         m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                     AppConfig::windows_width, AppConfig::windows_height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
+        if(m_window == nullptr) return;
+        if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return;
+        if(TTF_Init() == -1) return;
+
         is_running = true;
 
         Engine& engine = Engine::getEngine();
         engine.initModules();
 
         engine.getRenderer()->loadTexture(m_window);
+        engine.getRenderer()->loadFont();
 
         m_app_state = new Game;
 
-        //char buffer [2];
-        //itoa(i%35+1, buffer, 10);
         double FPS;
         Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 15;
         time1 = SDL_GetTicks();
@@ -65,7 +69,10 @@ void App::run()
         engine.destroyModules();
     }
 
-    SDL_DestroyWindow(m_window); m_window = nullptr;
+    SDL_DestroyWindow(m_window);
+    m_window = nullptr;
+    TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
 }
 

@@ -38,11 +38,12 @@ void Game::draw()
     for(auto player : m_players) player->draw();
 
     for(auto r : m_rec)
-        Engine::getEngine().getRenderer()->drawRect(r, 0, 0, 255);
+        renderer->drawRect(r, {0, 0, 255});
 
     for(auto bush : m_bushes)
         if(bush != nullptr) bush->draw();
 
+    renderer->drawText({100, 100}, std::string("dupa"), {200, 255, 0, 255});
     renderer->flush();
 }
 

@@ -9,6 +9,7 @@ class AppConfig
 public:
     static string texture_path;
     static string levels_path;
+    static string font_name;
     static int map_width;
     static int map_height;
     static int windows_width;
