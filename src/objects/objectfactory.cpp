@@ -6,7 +6,6 @@
 
 Object *ObjectFactory::Create(int x, int y, SpriteType sp)
 {
-    Engine& e = Engine::getEngine();
     switch(sp)
     {
     case ST_BRICK_WALL:

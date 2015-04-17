@@ -66,6 +66,10 @@ Object::Object(double x, double y, const SpriteData *sprite)
     collision_rect.w = m_sprite->rect.w;
 }
 
+Object::~Object()
+{
+}
+
 void Object::draw()
 {
     if(m_sprite == nullptr) return;

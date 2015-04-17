@@ -33,6 +33,7 @@ SpriteConfig::SpriteConfig()
     insert(ST_BOAT_P2, 976, 96, 32, 32, 1, 200, false);
 
     insert(ST_EAGLE, 944, 0, 32, 32, 1, 200, false);
+    insert(ST_DESTROY_EAGLE, 1040, 0, 64, 64, 7, 100, false);
     insert(ST_FLAG, 944, 32, 32, 32, 1, 200, false);
 
     insert(ST_BULLET, 944, 128, 8, 8, 1, 200, false);

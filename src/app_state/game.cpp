@@ -11,9 +11,10 @@
 
 Game::Game()
 {
-    m_level_horizontal_size = 0;
-    m_level_vertical_size = 0;
+    m_level_columns_count = 0;
+    m_level_rows_count = 0;
     m_current_level = 0;
+    m_eagle = nullptr;
 
     nextLevel();
 }
@@ -30,20 +31,37 @@ void Game::draw()
     Renderer* renderer = engine.getRenderer();
     renderer->clear();
 
-    for(auto row : m_level)
-        for(auto item : row)
-            if(item != nullptr) item->draw();
+    if(m_level_start_screen)
+    {
+        std::string level_name = "STAGE " + uIntToString(m_current_level);
+        renderer->drawText(nullptr, level_name, {255, 255, 255, 255});
+    }
+    else
+    {
+        for(auto row : m_level)
+            for(auto item : row)
+                if(item != nullptr) item->draw();
 
-    for(auto enemy : m_enemies) enemy->draw();
-    for(auto player : m_players) player->draw();
+        for(auto enemy : m_enemies) enemy->draw();
+        for(auto player : m_players) player->draw();
 
-    for(auto r : m_rec)
-        renderer->drawRect(r, {0, 0, 255});
+        m_eagle->draw();
 
-    for(auto bush : m_bushes)
-        if(bush != nullptr) bush->draw();
+        for(auto r : m_rec)
+            renderer->drawRect(r, {0, 0, 255});
 
-    renderer->drawText({100, 100}, std::string("dupa"), {200, 255, 0, 255});
+        for(auto bush : m_bushes)
+            if(bush != nullptr) bush->draw();
+
+        if(m_game_over)
+        {
+            SDL_Point pos;
+            pos.x = -1;
+            pos.y = m_game_over_position;
+            renderer->drawText(&pos, AppConfig::game_over_text, {255, 10, 10, 255});
+        }
+    }
+
     renderer->flush();
 }
 
@@ -51,59 +69,79 @@ void Game::update(Uint32 dt)
 {
     if(dt > 40) return;
 
-    std::vector<Player*>::iterator pl1, pl2;
-    std::vector<Enemy*>::iterator en1, en2;
+    if(m_level_start_screen)
+    {
+        if(m_level_start_time > AppConfig::level_start_time)
+            m_level_start_screen = false;
 
-    //sprawdzenie kolizji czołgów graczy ze sobą
-    for(pl1 = m_players.begin(); pl1 != m_players.end(); pl1++)
-        for(pl2 = pl1 + 1; pl2 != m_players.end(); pl2++)
-            checkCollisionTwoTanks(*pl1, *pl2, dt);
+        m_level_start_time += dt;
+    }
+    else
+    {
+        std::vector<Player*>::iterator pl1, pl2;
+        std::vector<Enemy*>::iterator en1, en2;
 
-    //sprawdzenie kolizji czołgów przeciwników ze sobą
-    for(en1 = m_enemies.begin(); en1 != m_enemies.end(); en1++)
-         for(en2 = en1 + 1; en2 != m_enemies.end(); en2++)
-            checkCollisionTwoTanks(*en1, *en2, dt);
+        //sprawdzenie kolizji czołgów graczy ze sobą
+        for(pl1 = m_players.begin(); pl1 != m_players.end(); pl1++)
+            for(pl2 = pl1 + 1; pl2 != m_players.end(); pl2++)
+                checkCollisionTwoTanks(*pl1, *pl2, dt);
 
-    //sprawdzenie kolizji kuli z lewelem
-    for(auto enemy : m_enemies) checkCollisionBulletWithLevel(enemy->bullet);
-    for(auto player : m_players) checkCollisionBulletWithLevel(player->bullet);
+        //sprawdzenie kolizji czołgów przeciwników ze sobą
+        for(en1 = m_enemies.begin(); en1 != m_enemies.end(); en1++)
+             for(en2 = en1 + 1; en2 != m_enemies.end(); en2++)
+                checkCollisionTwoTanks(*en1, *en2, dt);
+
+        //sprawdzenie kolizji kuli z lewelem
+        for(auto enemy : m_enemies) checkCollisionBulletWithLevel(enemy->bullet);
+        for(auto player : m_players) checkCollisionBulletWithLevel(player->bullet);
 
 
-    for(auto player : m_players)
-        for(auto enemy : m_enemies)
-        {
-            //sprawdzenie kolizji czołgów przeciwników z graczami
-            checkCollisionTwoTanks(player, enemy, dt);
-            //sprawdzenie kolizji pocisku gracza z przeciwnikiem
-            checkCollisionBulletWithTanks(player->bullet, enemy);
-            //sprawdzenie kolizji pocisku gracza z pociskiem przeciwnika
-            checkCollisionTwoBullets(player->bullet, enemy->bullet);
-        }
-
-    //sprawdzenie kolizji pocisku przeciknika z graczem
-    for(auto enemy : m_enemies)
         for(auto player : m_players)
-            checkCollisionBulletWithTanks(enemy->bullet, player);
+            for(auto enemy : m_enemies)
+            {
+                //sprawdzenie kolizji czołgów przeciwników z graczami
+                checkCollisionTwoTanks(player, enemy, dt);
+                //sprawdzenie kolizji pocisku gracza z przeciwnikiem
+                checkCollisionBulletWithTanks(player->bullet, enemy);
+                //sprawdzenie kolizji pocisku gracza z pociskiem przeciwnika
+                checkCollisionTwoBullets(player->bullet, enemy->bullet);
+            }
 
-    //Sprawdzenie kolizji czołgów z poziomem
-    for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
-    for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
+        //sprawdzenie kolizji pocisku przeciknika z graczem
+        for(auto enemy : m_enemies)
+            for(auto player : m_players)
+                checkCollisionBulletWithTanks(enemy->bullet, player);
+
+        //Sprawdzenie kolizji czołgów z poziomem
+        for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
+        for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
 
 
-    //Update wszystkich obiektów
-    for(auto enemy : m_enemies) enemy->update(dt);
-    for(auto player : m_players) player->update(dt);
+        //Update wszystkich obiektów
+        for(auto enemy : m_enemies) enemy->update(dt);
+        for(auto player : m_players) player->update(dt);
 
-    for(auto row : m_level)
-        for(auto item : row)
-            if(item != nullptr) item->update(dt);
+        m_eagle->update(dt);
 
-    for(auto bush : m_bushes)
-        if(bush != nullptr) bush->update(dt);
+        for(auto row : m_level)
+            for(auto item : row)
+                if(item != nullptr) item->update(dt);
 
-    //usunięcie niepotrzebnych czołgów
-    m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
-    m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [](Player*p){if(p->to_erase) {delete p; return true;} return false;}), m_players.end());
+        for(auto bush : m_bushes)
+            if(bush != nullptr) bush->update(dt);
+
+        //usunięcie niepotrzebnych czołgów
+        m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
+        m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [](Player*p){if(p->to_erase) {delete p; return true;} return false;}), m_players.end());
+
+        if(m_game_over)
+        {
+            if(m_game_over_position < 10)
+                m_finished = true;
+            else
+                m_game_over_position -= AppConfig::game_over_entry_speed * dt;
+        }
+    }
 }
 
 void Game::eventProces(SDL_Event *ev)
@@ -178,7 +216,7 @@ void Game::loadLevel(std::string path)
             std::getline(level, line);
             std::vector<Object*> row;
             j++;
-            for(int i = 0; i < line.size(); i++)
+            for(unsigned i = 0; i < line.size(); i++)
             {
                 Object* obj;
                 switch(line.at(i))
@@ -196,10 +234,37 @@ void Game::loadLevel(std::string path)
         }
     }
 
-    m_level_vertical_size = m_level.size();
-    if(m_level_vertical_size)
-        m_level_horizontal_size = m_level.at(0).size();
-    else m_level_horizontal_size = 0;
+    m_level_rows_count = m_level.size();
+    if(m_level_rows_count)
+        m_level_columns_count = m_level.at(0).size();
+    else m_level_columns_count = 0;
+
+    //tworzymy orzełka
+    m_eagle = new Eagle(12 * AppConfig::tile_width, (m_level_rows_count - 2) * AppConfig::tile_height);
+
+    //wyczyszczenie miejsca orzełeka
+    for(int i = 12; i < 14 && i < m_level_columns_count; i++)
+    {
+        for(int j = m_level_rows_count - 2; j < m_level_rows_count; j++)
+        {
+            if(m_level.at(j).at(i) != nullptr)
+            {
+                delete m_level.at(j).at(i);
+                m_level.at(j).at(i) = nullptr;
+            }
+        }
+    }
+}
+
+bool Game::finished() const
+{
+    return m_finished;
+}
+
+AppState *Game::nextState()
+{
+    Game* new_game = new Game();
+    return new_game;
 }
 
 void Game::clearLevel()
@@ -219,6 +284,9 @@ void Game::clearLevel()
 
     for(auto bush : m_bushes) if(bush != nullptr) delete bush;
     m_bushes.clear();
+
+    if(m_eagle != nullptr) delete m_eagle;
+    m_eagle = nullptr;
 }
 
 void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
@@ -262,8 +330,8 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     }
     if(column_start < 0) column_start = 0;
     if(row_start < 0) row_start = 0;
-    if(column_end >= m_level_horizontal_size) column_end = m_level_horizontal_size - 1;
-    if(row_end >= m_level_vertical_size) row_end = m_level_vertical_size - 1;
+    if(column_end >= m_level_columns_count) column_end = m_level_columns_count - 1;
+    if(row_end >= m_level_rows_count) row_end = m_level_rows_count - 1;
 
     pr = tank->nextCollisionRect(dt);
     SDL_Rect intersect_rect;
@@ -323,6 +391,12 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
+
+
+   //========================kolizja z orzełkiem========================
+    intersect_rect = intersectRect(&m_eagle->collision_rect, &pr);
+    if(intersect_rect.w > 0 && intersect_rect.h > 0)
+        tank->collide(intersect_rect);
 }
 
 void Game::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
@@ -376,8 +450,8 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
     }
     if(column_start < 0) column_start = 0;
     if(row_start < 0) row_start = 0;
-    if(column_end >= m_level_horizontal_size) column_end = m_level_horizontal_size - 1;
-    if(row_end >= m_level_vertical_size) row_end = m_level_vertical_size - 1;
+    if(column_end >= m_level_columns_count) column_end = m_level_columns_count - 1;
+    if(row_end >= m_level_rows_count) row_end = m_level_rows_count - 1;
 
     br = &bullet->collision_rect;
 
@@ -418,6 +492,18 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
     {
         bullet->destroy();
     }
+    //========================kolizja z orzełkiem========================
+    if(m_eagle->type == ST_EAGLE)
+    {
+        intersect_rect = intersectRect(&m_eagle->collision_rect, br);
+        if(intersect_rect.w > 0 && intersect_rect.h > 0)
+        {
+            bullet->destroy();
+            m_eagle->destroy();
+            m_game_over_position = AppConfig::windows_height;
+            m_game_over = true;
+        }
+    }
 }
 
 void Game::checkCollisionBulletWithTanks(Bullet *bullet, Tank *tank)
@@ -448,19 +534,25 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
     }
 }
 
+std::string Game::uIntToString(unsigned num)
+{
+    std::string buf;
+    for(; num; num /= 10) buf = "0123456789abcdef"[num % 10] + buf;
+    return buf;
+}
+
 void Game::nextLevel()
 {
     m_current_level++;
+    m_level_start_screen = true;
+    m_level_start_time = 0;
+    m_game_over = false;
+    m_finished = false;
 
-    auto my_itoa = [] (int value)
-    {
-        std::string buf;
-        for(; value; value /= 10) buf = "0123456789abcdef"[value % 10] + buf;
-        return buf;
-    };
-    std::string level_path = AppConfig::levels_path + my_itoa(m_current_level);
+    std::string level_path = AppConfig::levels_path + uIntToString(m_current_level);
 
     loadLevel(level_path);
+//    loadLevel("levels/1a");
 
     m_players.push_back(new Player(AppConfig::player1_starting_point_x, AppConfig::player1_starting_point_y, ST_PLAYER_2));
 

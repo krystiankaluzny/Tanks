@@ -9,6 +9,7 @@ public:
     Object();
     Object(double x, double y, SpriteType type);
     Object(double x, double y, const SpriteData* sprite);
+    virtual ~Object();
     virtual void draw();
     virtual void update(Uint32 dt);
 

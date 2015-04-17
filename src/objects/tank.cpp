@@ -27,9 +27,6 @@ void Tank::draw()
     if(m_sprite == nullptr) return;
 
     Engine::getEngine().getRenderer()->drawObject(&src_rect, &dest_rect);
-    //Engine::getEngine().getRenderer()->drawRect(&collision_rect, 0, 230, 0);
-    //SDL_Rect r = nextCollisionRect(15);
-    //Engine::getEngine().getRenderer()->drawRect(&r, 0, 0, 255);
     if(bullet != nullptr) bullet->draw();
 }
 
@@ -178,7 +175,7 @@ SDL_Rect Tank::nextCollisionRect(Uint32 dt)
 
 void Tank::setDirection(Direction d)
 {
-    if(!testFlag(TSF_LIFE)) return;
+    if(!(testFlag(TSF_LIFE) || testFlag(TSF_CREATE))) return;
     direction = d;
 
     if(!stop)
@@ -201,7 +198,6 @@ void Tank::setDirection(Direction d)
             break;
         }
     }
-
 }
 
 void Tank::collide(SDL_Rect &intersect_rect)

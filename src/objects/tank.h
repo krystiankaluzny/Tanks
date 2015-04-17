@@ -13,7 +13,7 @@ class Tank : public Object
 public:
     Tank();
     Tank(double x, double y, SpriteType type);
-    ~Tank();
+    virtual ~Tank();
 
     void draw();
     void update(Uint32 dt);

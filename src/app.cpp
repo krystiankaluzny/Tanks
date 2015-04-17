@@ -13,9 +13,16 @@ App::App()
 {
 }
 
+App::~App()
+{
+    if(m_app_state != nullptr)
+        delete m_app_state;
+}
+
 
 void App::run()
 {
+    is_running = true;
     //inicjalizacja SDL i utworzenie okan
     SDL_Window* m_window;
 
@@ -25,14 +32,13 @@ void App::run()
                                     AppConfig::windows_width, AppConfig::windows_height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
         if(m_window == nullptr) return;
+
         if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return;
         if(TTF_Init() == -1) return;
 
-        is_running = true;
 
         Engine& engine = Engine::getEngine();
         engine.initModules();
-
         engine.getRenderer()->loadTexture(m_window);
         engine.getRenderer()->loadFont();
 
@@ -47,10 +53,17 @@ void App::run()
             dt = time2 - time1;
             time1 = time2;
 
+            if(m_app_state->finished())
+            {
+                AppState* new_state = m_app_state->nextState();
+                delete m_app_state;
+                m_app_state = new_state;
+            }
+
             eventProces();
 
-            m_app_state->draw();
             m_app_state->update(dt);
+            m_app_state->draw();
 
             SDL_Delay(delay);
 

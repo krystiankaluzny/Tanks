@@ -14,7 +14,7 @@ struct SpriteData
     SDL_Rect rect;
     int frames_count;
 
-    int frame_duration; //czas wyświetlania jednej klatki ms
+    unsigned frame_duration; //czas wyświetlania jednej klatki ms
     bool loop;
 };
 

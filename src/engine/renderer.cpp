@@ -20,6 +20,8 @@ Renderer::~Renderer()
         SDL_DestroyTexture(m_texture);
     if(m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
+    if(m_font != nullptr)
+        TTF_CloseFont(m_font);
 }
 
 void Renderer::loadTexture(SDL_Window* window)
@@ -73,7 +75,7 @@ void Renderer::setScale(float xs, float ys)
     SDL_RenderSetScale(m_renderer, xs, ys);
 }
 
-void Renderer::drawText(const SDL_Point start, string text, SDL_Color text_color)
+void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color)
 {
     if(m_font == nullptr) return;
     if(m_text_texture != nullptr)
@@ -86,8 +88,19 @@ void Renderer::drawText(const SDL_Point start, string text, SDL_Color text_color
     if(m_text_texture == nullptr) return;
 
     SDL_Rect window_dest;
-    window_dest.x = start.x;
-    window_dest.y = start.y;
+    if(start == nullptr)
+    {
+        window_dest.x = (AppConfig::windows_width - text_surface->w)/2;
+        window_dest.y = (AppConfig::windows_height - text_surface->h)/2;
+    }
+    else
+    {
+        if(start->x < 0) window_dest.x = (AppConfig::windows_width - text_surface->w)/2;
+        else window_dest.x = start->x;
+
+        if(start->y < 0) window_dest.y = (AppConfig::windows_height - text_surface->h)/2;
+        else window_dest.y = start->y;
+    }
     window_dest.w = text_surface->w;
     window_dest.h = text_surface->h;
 
