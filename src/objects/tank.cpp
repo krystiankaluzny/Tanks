@@ -2,7 +2,7 @@
 #include "../appconfig.h"
 
 Tank::Tank()
-    : Object(AppConfig::player1_starting_point_x, AppConfig::player1_starting_point_y, ST_PLAYER_1)
+    : Object(AppConfig::player1_starting_point.x, AppConfig::player1_starting_point.y, ST_PLAYER_1)
 {
     direction = D_UP;
     bullet = nullptr;
@@ -80,10 +80,10 @@ void Tank::update(Uint32 dt)
                     setFlag(TSF_LIFE);
                     m_current_frame = 0;
                 }
-                else if(testFlag(TSF_DESTROYED) && bullet == nullptr)
+                else if(testFlag(TSF_DESTROYED))
                 {
                     //TODO uwzględnić życia
-                 //       to_erase = true;
+//                        to_erase = true;
                     respawn();
                 }
             }
@@ -186,15 +186,15 @@ void Tank::setDirection(Direction d)
         {
         case D_UP:
         case D_DOWN:
-            pos_x_tile = ((int)(pos_x / AppConfig::tile_width)) * AppConfig::tile_width;
+            pos_x_tile = ((int)(pos_x / AppConfig::tile_rect.w)) * AppConfig::tile_rect.w;
             if(pos_x - pos_x_tile < epsilon) pos_x = pos_x_tile;
-            else if(pos_x_tile + AppConfig::tile_width - pos_x < epsilon) pos_x = pos_x_tile + AppConfig::tile_width;
+            else if(pos_x_tile + AppConfig::tile_rect.w - pos_x < epsilon) pos_x = pos_x_tile + AppConfig::tile_rect.w;
             break;
         case D_RIGHT:
         case D_LEFT:
-            pos_y_tile = ((int)(pos_y / AppConfig::tile_height)) * AppConfig::tile_height;
+            pos_y_tile = ((int)(pos_y / AppConfig::tile_rect.h)) * AppConfig::tile_rect.h;
             if(pos_y - pos_y_tile < epsilon) pos_y = pos_y_tile;
-            else if(pos_y_tile + AppConfig::tile_height - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_height;
+            else if(pos_y_tile + AppConfig::tile_rect.h - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_rect.h;
             break;
         }
     }

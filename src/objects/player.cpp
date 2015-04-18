@@ -7,6 +7,7 @@ Player::Player()
     : Tank()
 {
     speed = 0;
+    m_lives_count = 4;
     respawn();
 }
 
@@ -14,6 +15,7 @@ Player::Player(double x, double y, SpriteType type)
     : Tank(x, y, type)
 {
    speed = 0;
+   m_lives_count = 4;
    respawn();
 }
 
@@ -29,8 +31,15 @@ void Player::update(Uint32 dt)
 
 void Player::respawn()
 {
-    pos_x = AppConfig::player1_starting_point_x;
-    pos_y= AppConfig::player1_starting_point_y;
+    m_lives_count--;
+    if(m_lives_count <= 0)
+    {
+        if(bullet == nullptr) to_erase = true;
+        return;
+    }
+
+    pos_x = AppConfig::player1_starting_point.x;
+    pos_y= AppConfig::player1_starting_point.y;
 
     dest_rect.x = pos_x;
     dest_rect.y = pos_y;

@@ -21,7 +21,7 @@ public:
     SDL_Rect nextCollisionRect(Uint32 dt);
     void setDirection(Direction d);
     void collide(SDL_Rect& intersect_rect);
-    void destroy();
+    virtual void destroy();
     void setFlag(TankStateFlag flag);
     void clearFlag(TankStateFlag flag);
     bool testFlag(TankStateFlag flag);

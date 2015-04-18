@@ -11,6 +11,7 @@
 
 App::App()
 {
+    m_window = nullptr;
 }
 
 App::~App()
@@ -24,12 +25,12 @@ void App::run()
 {
     is_running = true;
     //inicjalizacja SDL i utworzenie okan
-    SDL_Window* m_window;
+
 
     if(SDL_Init(SDL_INIT_VIDEO) == 0)
     {
         m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                    AppConfig::windows_width, AppConfig::windows_height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                                    AppConfig::windows_rect.w, AppConfig::windows_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
         if(m_window == nullptr) return;
 
@@ -112,10 +113,10 @@ void App::eventProces()
             switch(event.window.event)
             {
                 case SDL_WINDOWEVENT_RESIZED:
-                    AppConfig::windows_width = event.window.data1;
-                    AppConfig::windows_height = event.window.data2;
-                    Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_width / AppConfig::map_width,
-                                                                (float)AppConfig::windows_height / AppConfig::map_height);
+                    AppConfig::windows_rect.w = event.window.data1;
+                    AppConfig::windows_rect.h = event.window.data2;
+                    Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_rect.w / (AppConfig::map_rect.w + AppConfig::status_rect.w),
+                                                                (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
                 break;
             }
             break;

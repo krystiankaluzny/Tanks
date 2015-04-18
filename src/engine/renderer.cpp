@@ -27,7 +27,7 @@ Renderer::~Renderer()
 void Renderer::loadTexture(SDL_Window* window)
 {
     SDL_Surface* surface = nullptr;
-    m_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    m_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     surface = IMG_Load(AppConfig::texture_path.c_str());
 
@@ -55,7 +55,7 @@ void Renderer::loadFont()
 
 void Renderer::clear()
 {
-    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(m_renderer, 110, 110, 110, 255);
     SDL_RenderClear(m_renderer); //czyścimy tylny bufor
 }
 
@@ -72,7 +72,19 @@ void Renderer::drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_de
 
 void Renderer::setScale(float xs, float ys)
 {
-    SDL_RenderSetScale(m_renderer, xs, ys);
+    float scale = min(xs, ys);
+    float scale2 = (scale < 1.0 ? 1.0 / scale : scale);
+
+    SDL_Rect viewport;
+    viewport.x = ((float)AppConfig::windows_rect.w - scale * (AppConfig::map_rect.w + AppConfig::status_rect.w)) / 2.0 / scale;
+    viewport.y = ((float)AppConfig::windows_rect.h - scale * AppConfig::map_rect.h) / 2.0 / scale;
+    if(viewport.x < 0) viewport.x = 0;
+    if(viewport.y < 0) viewport.y = 0;
+    viewport.w = scale2 * (AppConfig::map_rect.w + AppConfig::status_rect.w);
+    viewport.h = scale2 * AppConfig::map_rect.h;
+
+    SDL_RenderSetViewport(m_renderer, &viewport);
+    SDL_RenderSetScale(m_renderer, scale, scale);
 }
 
 void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color)
@@ -90,15 +102,15 @@ void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_colo
     SDL_Rect window_dest;
     if(start == nullptr)
     {
-        window_dest.x = (AppConfig::windows_width - text_surface->w)/2;
-        window_dest.y = (AppConfig::windows_height - text_surface->h)/2;
+        window_dest.x = (AppConfig::map_rect.w + AppConfig::status_rect.w - text_surface->w)/2;
+        window_dest.y = (AppConfig::map_rect.h - text_surface->h)/2;
     }
     else
     {
-        if(start->x < 0) window_dest.x = (AppConfig::windows_width - text_surface->w)/2;
+        if(start->x < 0) window_dest.x = (AppConfig::map_rect.w + AppConfig::status_rect.w - text_surface->w)/2;
         else window_dest.x = start->x;
 
-        if(start->y < 0) window_dest.y = (AppConfig::windows_height - text_surface->h)/2;
+        if(start->y < 0) window_dest.y = (AppConfig::map_rect.h - text_surface->h)/2;
         else window_dest.y = start->y;
     }
     window_dest.w = text_surface->w;
@@ -107,12 +119,12 @@ void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_colo
     SDL_RenderCopy(m_renderer, m_text_texture, NULL, &window_dest);
 }
 
-void Renderer::drawRect(const SDL_Rect *rect, SDL_Color text_color)
+void Renderer::drawRect(const SDL_Rect *rect, SDL_Color text_color, bool fill)
 {
     SDL_SetRenderDrawColor(m_renderer, text_color.r, text_color.g, text_color.b, text_color.a);
 
-    SDL_RenderDrawLine(m_renderer, rect->x, rect->y, rect->x + rect->w, rect->y); //top
-    SDL_RenderDrawLine(m_renderer, rect->x, rect->y, rect->x, rect->y + rect->h); //left
-    SDL_RenderDrawLine(m_renderer, rect->x + rect->w, rect->y, rect->x + rect->w, rect->y + rect->h); //right
-    SDL_RenderDrawLine(m_renderer, rect->x, rect->y + rect->h, rect->x + rect->w, rect->y + rect->h); //bottom
+    if(fill)
+        SDL_RenderFillRect(m_renderer, rect);
+    else
+        SDL_RenderDrawRects(m_renderer, rect, 1);
 }

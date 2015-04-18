@@ -13,6 +13,7 @@ public:
 private:
     bool is_running;
     AppState* m_app_state;
+    SDL_Window* m_window;
 };
 
 #endif // APP_H
