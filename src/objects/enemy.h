@@ -11,8 +11,14 @@ public:
     void update(Uint32 dt);
 
 private:
-    Uint32 change_direction_time;
-    Uint32 speed_time;
+    Uint32 m_direction_time;
+    Uint32 m_keep_direction_time;
+
+    Uint32 m_speed_time;
+    Uint32 m_try_to_go_time;
+
+    Uint32 m_fire_time;
+    Uint32 m_reload_time;
 };
 
 #endif // ENEMY_H

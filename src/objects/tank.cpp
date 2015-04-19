@@ -66,7 +66,6 @@ void Tank::update(Uint32 dt)
         collision_rect.w = dest_rect.w - 4;
     }
 
-
     if(testFlag(TSF_ON_ICE) && m_slip_time > 0)
     {
         m_slip_time -= dt;
@@ -201,7 +200,6 @@ void Tank::setDirection(Direction d)
     else
         direction = d;
 
-    std::cout << m_slip_time << " " << testFlag(TSF_ON_ICE) << std::endl;
     if(!stop)
     {
         double epsilon = 5;

@@ -7,38 +7,49 @@ Enemy::Enemy()
     : Tank()
 {
     srand(time(NULL));
-    change_direction_time = 0;
+    m_direction_time = 0;
     direction = D_DOWN;
-    speed_time = 0;
+    m_speed_time = 0;
     speed = 0;
+    m_keep_direction_time = 100;
+    m_try_to_go_time = 0;
 }
 
 Enemy::Enemy(double x, double y, SpriteType type)
     : Tank(x, y, type)
 {
     srand(time(NULL));
-    change_direction_time = 0;
+    m_direction_time = 0;
     direction = D_DOWN;
-    speed_time = 0;
+    m_speed_time = 0;
     speed = 0;
+    m_keep_direction_time = 100;
+    m_try_to_go_time = 0;
 }
 
 void Enemy::update(Uint32 dt)
 {
     Tank::update(dt);
 
-    change_direction_time += dt;
-    speed_time += dt;
-    if(change_direction_time > 500)
+    m_direction_time += dt;
+    m_speed_time += dt;
+    m_fire_time += dt;
+    if(m_direction_time > m_keep_direction_time)
     {
-        change_direction_time = 0;
-            std::cout  << "DUAP" << std::endl;
+        m_direction_time = 0;
+        m_keep_direction_time = rand() % 800 + 100;
         setDirection(static_cast<Direction>(rand() % 4));
     }
-    if(speed_time > 150)
+    if(m_speed_time > m_try_to_go_time)
     {
-        speed_time = 0;
+        m_speed_time = 0;
+        m_try_to_go_time = rand() % 300;
         speed = default_speed;
     }
-    fire();
+    if(m_fire_time > m_reload_time)
+    {
+        m_fire_time = 0;
+        m_reload_time = rand() % 1000;
+        fire();
+    }
 }

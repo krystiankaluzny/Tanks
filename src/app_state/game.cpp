@@ -574,7 +574,7 @@ void Game::nextLevel()
     m_players.push_back(new Player(AppConfig::player1_starting_point.x, AppConfig::player1_starting_point.x, ST_PLAYER_2));
 
     m_enemies.push_back(new Enemy(1, 1, ST_TANK_A));
-    m_enemies.push_back(new Enemy(50, 1, ST_TANK_B));
-    m_enemies.push_back(new Enemy(100, 1, ST_TANK_C));
-    m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
+//    m_enemies.push_back(new Enemy(50, 1, ST_TANK_B));
+//    m_enemies.push_back(new Enemy(100, 1, ST_TANK_C));
+//    m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
 }
