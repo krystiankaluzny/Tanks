@@ -6,6 +6,7 @@ Tank::Tank()
 {
     direction = D_UP;
     bullet = nullptr;
+    m_slip_time = 0;
     respawn();
 }
 
@@ -14,6 +15,7 @@ Tank::Tank(double x, double y, SpriteType type)
 {
     direction = D_UP;
     bullet = nullptr;
+    m_slip_time = 0;
     respawn();
 }
 
@@ -52,6 +54,7 @@ void Tank::update(Uint32 dt)
                 break;
             }
         }
+
         dest_rect.x = pos_x;
         dest_rect.y = pos_y;
         dest_rect.h = m_sprite->rect.h;
@@ -63,6 +66,17 @@ void Tank::update(Uint32 dt)
         collision_rect.w = dest_rect.w - 4;
     }
 
+
+    if(testFlag(TSF_ON_ICE) && m_slip_time > 0)
+    {
+        m_slip_time -= dt;
+        if(m_slip_time <= 0)
+        {
+            clearFlag(TSF_ON_ICE);
+            m_slip_time = 0;
+            direction = new_direction;
+        }
+    }
     if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) //brak animacji jeśli czołg nie prógbuje jechać
     {
         m_frame_display_time += dt;
@@ -92,7 +106,7 @@ void Tank::update(Uint32 dt)
 
     stop = false;
     if(testFlag(TSF_LIFE))
-        src_rect = moveRect(m_sprite->rect, direction, m_current_frame);
+        src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame);
     else
         src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
@@ -116,7 +130,8 @@ void Tank::fire()
         //podajemy początkową dowolną pozycję, bo nie znamy wymiarów pocisku
         bullet = dynamic_cast<Bullet*>(ObjectFactory::Create(pos_x, pos_y, ST_BULLET));
 
-        switch(direction)
+        Direction dire = (testFlag(TSF_ON_ICE) ? new_direction : direction);
+        switch(dire)
         {
         case D_UP:
             bullet->pos_x += (dest_rect.w - bullet->dest_rect.w) / 2;
@@ -136,7 +151,7 @@ void Tank::fire()
             break;
         }
 
-        bullet->direction = direction;
+        bullet->direction = dire;
         bullet->speed = 0.3;
         bullet->update(0); //zmiana pozycji dest_rect
     }
@@ -176,8 +191,17 @@ SDL_Rect Tank::nextCollisionRect(Uint32 dt)
 void Tank::setDirection(Direction d)
 {
     if(!(testFlag(TSF_LIFE) || testFlag(TSF_CREATE))) return;
-    direction = d;
+    if(testFlag(TSF_ON_ICE))
+    {
+        new_direction = d;
+        if(speed == 0.0 || m_slip_time == 0.0) direction = d;
+        if((m_slip_time != 0 && direction == new_direction) || m_slip_time == 0)
+            m_slip_time = AppConfig::slip_time;
+    }
+    else
+        direction = d;
 
+    std::cout << m_slip_time << " " << testFlag(TSF_ON_ICE) << std::endl;
     if(!stop)
     {
         double epsilon = 5;
@@ -208,6 +232,7 @@ void Tank::collide(SDL_Rect &intersect_rect)
            (direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
         {
             stop = true;
+            m_slip_time = 0;
         }
     }
     else
@@ -216,6 +241,7 @@ void Tank::collide(SDL_Rect &intersect_rect)
            (direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
         {
             stop = true;
+            m_slip_time = 0;
         }
     }
 }
@@ -230,6 +256,8 @@ void Tank::destroy()
     m_frame_display_time = 0;
     m_current_frame = 0;
     direction = D_UP;
+    speed = 0;
+    m_slip_time = 0;
     m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_DESTROY_TANK);
 
     collision_rect.x = 0;
@@ -245,6 +273,9 @@ void Tank::destroy()
 
 void Tank::setFlag(TankStateFlag flag)
 {
+    if(!testFlag(flag) && flag == TSF_ON_ICE)
+        new_direction = direction;
+
     m_flags |= flag;
 }
 
@@ -264,6 +295,7 @@ void Tank::respawn()
     m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_CREATE);
     speed = 0.0;
     stop = false;
+    m_slip_time = 0;
 
     collision_rect.x = 0;
     collision_rect.y = 0;

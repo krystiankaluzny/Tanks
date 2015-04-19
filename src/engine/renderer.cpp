@@ -73,18 +73,18 @@ void Renderer::drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_de
 void Renderer::setScale(float xs, float ys)
 {
     float scale = min(xs, ys);
-    float scale2 = (scale < 1.0 ? 1.0 / scale : scale);
+    if(scale < 0.1) return;
 
     SDL_Rect viewport;
-    viewport.x = ((float)AppConfig::windows_rect.w - scale * (AppConfig::map_rect.w + AppConfig::status_rect.w)) / 2.0 / scale;
-    viewport.y = ((float)AppConfig::windows_rect.h - scale * AppConfig::map_rect.h) / 2.0 / scale;
+    viewport.x = ((float)AppConfig::windows_rect.w / scale - (AppConfig::map_rect.w + AppConfig::status_rect.w)) / 2.0;
+    viewport.y = ((float)AppConfig::windows_rect.h / scale - AppConfig::map_rect.h) / 2.0;
     if(viewport.x < 0) viewport.x = 0;
     if(viewport.y < 0) viewport.y = 0;
-    viewport.w = scale2 * (AppConfig::map_rect.w + AppConfig::status_rect.w);
-    viewport.h = scale2 * AppConfig::map_rect.h;
+    viewport.w = AppConfig::map_rect.w + AppConfig::status_rect.w;
+    viewport.h = AppConfig::map_rect.h;
 
-    SDL_RenderSetViewport(m_renderer, &viewport);
     SDL_RenderSetScale(m_renderer, scale, scale);
+    SDL_RenderSetViewport(m_renderer, &viewport);
 }
 
 void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color)

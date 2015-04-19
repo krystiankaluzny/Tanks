@@ -37,6 +37,9 @@ public:
 protected:
 
     TankStateFlags m_flags;
+    Sint32 m_slip_time;
+    Direction new_direction;
+
 
     //1 star tank speed v = 0.084
     //bullet

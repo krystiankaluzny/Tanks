@@ -25,7 +25,6 @@ private:
     SDL_Texture* m_texture; //tekstura zawierająca wszystkie postacie
     SDL_Texture* m_text_texture;
     TTF_Font* m_font;
-
 };
 
 #endif // RENDERER_H

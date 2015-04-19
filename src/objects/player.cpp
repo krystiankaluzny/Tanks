@@ -24,7 +24,10 @@ void Player::update(Uint32 dt)
     const Uint8 *key_state = SDL_GetKeyboardState(NULL);
 
     if (!key_state[SDL_SCANCODE_UP] && !key_state[SDL_SCANCODE_LEFT] && !key_state[SDL_SCANCODE_DOWN] && !key_state[SDL_SCANCODE_RIGHT])
-        speed = 0.0;
+    {
+        if(!testFlag(TSF_ON_ICE) || m_slip_time == 0)
+            speed = 0.0;
+    }
 
     Tank::update(dt);
 }

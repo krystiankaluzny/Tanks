@@ -17,7 +17,8 @@ public:
     static SDL_Rect windows_rect;
     static SDL_Rect tile_rect;
     static SDL_Point player1_starting_point;
-    static unsigned level_start_time; //czas wyświetlania "STAGE X"
+    static unsigned level_start_time;
+    static unsigned slip_time;
     static double game_over_entry_speed;
 };
 

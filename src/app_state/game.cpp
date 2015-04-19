@@ -161,20 +161,20 @@ void Game::eventProces(SDL_Event *ev)
         switch(ev->key.keysym.sym)
         {
         case SDLK_UP:
-            m_players.at(0)->speed = Tank::default_speed;
             m_players.at(0)->setDirection(D_UP);
+            m_players.at(0)->speed = Tank::default_speed;
             break;
         case SDLK_DOWN:
-            m_players.at(0)->speed = Tank::default_speed;
             m_players.at(0)->setDirection(D_DOWN);
+            m_players.at(0)->speed = Tank::default_speed;
             break;
         case SDLK_RIGHT:
-            m_players.at(0)->speed = Tank::default_speed;
             m_players.at(0)->setDirection(D_RIGHT);
+            m_players.at(0)->speed = Tank::default_speed;
             break;
         case SDLK_LEFT:
-            m_players.at(0)->speed = Tank::default_speed;
             m_players.at(0)->setDirection(D_LEFT);
+            m_players.at(0)->speed = Tank::default_speed;
             break;
         case SDLK_SPACE:
             m_players.at(0)->fire();
@@ -352,14 +352,20 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
             if(tank->stop) break;
             o = m_level.at(i).at(j);
             if(o == nullptr) continue;
-            if(o->type == ST_ICE) continue;
 
             lr = &o->collision_rect;
 
             intersect_rect = intersectRect(lr, &pr);
             if(intersect_rect.w > 0 && intersect_rect.h > 0)
             {
-                tank->collide(intersect_rect);
+                if(o->type == ST_ICE)
+                {
+                    if(intersect_rect.w > 10 && intersect_rect.h > 10)
+                       tank->setFlag(TSF_ON_ICE);
+                    continue;
+                }
+                else
+                    tank->collide(intersect_rect);
                 break;
             }
         }
@@ -554,6 +560,7 @@ std::string Game::uIntToString(unsigned num)
 void Game::nextLevel()
 {
     m_current_level++;
+    if(m_current_level > 35) m_current_level = 0;
     m_level_start_screen = true;
     m_level_start_time = 0;
     m_game_over = false;

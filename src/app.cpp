@@ -113,6 +113,9 @@ void App::eventProces()
             switch(event.window.event)
             {
                 case SDL_WINDOWEVENT_RESIZED:
+                case SDL_WINDOWEVENT_MAXIMIZED:
+                case SDL_WINDOWEVENT_RESTORED:
+                case SDL_WINDOWEVENT_SHOWN:
                     AppConfig::windows_rect.w = event.window.data1;
                     AppConfig::windows_rect.h = event.window.data2;
                     Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_rect.w / (AppConfig::map_rect.w + AppConfig::status_rect.w),

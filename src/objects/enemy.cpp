@@ -1,6 +1,7 @@
 #include "enemy.h"
 #include <stdlib.h>
 #include <ctime>
+#include <iostream>
 
 Enemy::Enemy()
     : Tank()
@@ -31,6 +32,7 @@ void Enemy::update(Uint32 dt)
     if(change_direction_time > 500)
     {
         change_direction_time = 0;
+            std::cout  << "DUAP" << std::endl;
         setDirection(static_cast<Direction>(rand() % 4));
     }
     if(speed_time > 150)
