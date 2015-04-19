@@ -26,9 +26,7 @@ Tank::~Tank()
 
 void Tank::draw()
 {
-    if(m_sprite == nullptr) return;
-
-    Engine::getEngine().getRenderer()->drawObject(&src_rect, &dest_rect);
+    Object::draw();
     if(bullet != nullptr) bullet->draw();
 }
 

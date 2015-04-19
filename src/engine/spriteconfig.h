@@ -24,7 +24,7 @@ public:
     SpriteConfig();
     const SpriteData* getSpriteData(SpriteType sp) const;
 private:
-    std::map<SpriteType, SpriteData> m_config;
+    std::map<SpriteType, SpriteData> m_configs;
     void insert(SpriteType st , int x, int y, int w, int h, int fc, int fd, bool l);
 };
 

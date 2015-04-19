@@ -6,7 +6,7 @@ Bullet::Bullet()
     speed = 0.0;
     direction = D_UP;
     increased_damage = false;
-    colide = false;
+    collide = false;
 }
 
 Bullet::Bullet(double x, double y)
@@ -15,12 +15,12 @@ Bullet::Bullet(double x, double y)
     speed = 0.0;
     direction = D_UP;
     increased_damage = false;
-    colide = false;
+    collide = false;
 }
 
 void Bullet::update(Uint32 dt)
 {
-    if(!colide)
+    if(!collide)
     {
         switch (direction)
         {
@@ -61,9 +61,9 @@ void Bullet::update(Uint32 dt)
 
 void Bullet::destroy()
 {
-    if(colide) return; //zapogiega wielogrotnmu wywołaniu
+    if(collide) return; //zapogiega wielogrotnmu wywołaniu
 
-    colide = true;
+    collide = true;
     speed = 0;
     m_current_frame = 0;
     m_frame_display_time = 0;

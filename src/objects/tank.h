@@ -21,15 +21,14 @@ public:
     SDL_Rect nextCollisionRect(Uint32 dt);
     void setDirection(Direction d);
     void collide(SDL_Rect& intersect_rect);
+    virtual void respawn();
     virtual void destroy();
     void setFlag(TankStateFlag flag);
     void clearFlag(TankStateFlag flag);
     bool testFlag(TankStateFlag flag);
-    virtual void respawn();
 
     double speed;
     bool stop;
-    bool collide1;
     static constexpr double default_speed = 0.08;
     Direction direction;
     Bullet* bullet;

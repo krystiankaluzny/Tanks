@@ -20,7 +20,7 @@ public:
 
 private:
     Renderer* m_renderer;
-    SpriteConfig* m_sprite_data;
+    SpriteConfig* m_sprite_config;
 };
 
 #endif // ENGINE_H

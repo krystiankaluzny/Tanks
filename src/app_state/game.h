@@ -17,13 +17,15 @@ public:
     ~Game();
     void draw();
     void update(Uint32 dt);
-    void eventProces(SDL_Event* ev);
-    void loadLevel(std::string path);
+    void eventProcess(SDL_Event* ev);
     bool finished() const;
     AppState* nextState();
 
 private:
+    void loadLevel(std::string path);
     void clearLevel();
+    std::string uIntToString(unsigned num);
+    void nextLevel();
 
     void checkCollisionTankWithLevel(Tank* tank, Uint32 dt);
     void checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt);
@@ -31,8 +33,6 @@ private:
     void checkCollisionBulletWithTanks(Bullet* bullet, Tank* tank);
     void checkCollisionTwoBullets(Bullet* bullet1, Bullet* bullet2);
 
-    std::string uIntToString(unsigned num);
-    void nextLevel();
 
     int m_level_columns_count;
     int m_level_rows_count;

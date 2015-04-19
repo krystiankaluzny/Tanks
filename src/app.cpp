@@ -124,6 +124,6 @@ void App::eventProces()
             }
             break;
         }
-        m_app_state->eventProces(&event);
+        m_app_state->eventProcess(&event);
     }
 }

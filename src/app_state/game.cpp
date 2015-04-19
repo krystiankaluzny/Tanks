@@ -152,7 +152,7 @@ void Game::update(Uint32 dt)
     }
 }
 
-void Game::eventProces(SDL_Event *ev)
+void Game::eventProcess(SDL_Event *ev)
 {
     if(m_players.empty()) return;
     switch(ev->type)
@@ -431,7 +431,7 @@ void Game::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
 void Game::checkCollisionBulletWithLevel(Bullet* bullet)
 {
     if(bullet == nullptr) return;
-    if(bullet->colide) return;
+    if(bullet->collide) return;
 
     int row_start, row_end;
     int column_start, column_end;
@@ -525,7 +525,7 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
 void Game::checkCollisionBulletWithTanks(Bullet *bullet, Tank *tank)
 {
     if(bullet == nullptr) return;
-    if(bullet->colide) return;
+    if(bullet->collide) return;
 
     SDL_Rect intersect_rect = intersectRect(&bullet->collision_rect, &tank->collision_rect);
 
@@ -574,7 +574,7 @@ void Game::nextLevel()
     m_players.push_back(new Player(AppConfig::player1_starting_point.x, AppConfig::player1_starting_point.x, ST_PLAYER_2));
 
     m_enemies.push_back(new Enemy(1, 1, ST_TANK_A));
-//    m_enemies.push_back(new Enemy(50, 1, ST_TANK_B));
-//    m_enemies.push_back(new Enemy(100, 1, ST_TANK_C));
-//    m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
+    m_enemies.push_back(new Enemy(50, 1, ST_TANK_B));
+    m_enemies.push_back(new Enemy(100, 1, ST_TANK_C));
+    m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
 }
