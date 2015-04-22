@@ -102,10 +102,6 @@ void Tank::update(Uint32 dt)
     }
 
     stop = false;
-    if(testFlag(TSF_LIFE))
-        src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame);
-    else
-        src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
     // Obsługa pocisku
     if(bullet != nullptr)

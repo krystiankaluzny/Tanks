@@ -10,10 +10,14 @@ Enemy::Enemy()
     srand(time(NULL));
     direction = D_DOWN;
     m_direction_time = 0;
-    m_speed_time = 0;
     m_keep_direction_time = 100;
-    m_try_to_go_time = 0;
-    m_lives_count = 1;
+
+    m_speed_time = 0;
+    m_try_to_go_time = 100;
+
+    m_fire_time = 0;
+    m_reload_time = 100;
+    m_lives_count = 2;
 
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
@@ -29,9 +33,14 @@ Enemy::Enemy(double x, double y, SpriteType type)
     srand(time(NULL));
     direction = D_DOWN;
     m_direction_time = 0;
-    m_speed_time = 0;
     m_keep_direction_time = 100;
-    m_try_to_go_time = 0;
+
+    m_speed_time = 0;
+    m_try_to_go_time = 100;
+
+    m_fire_time = 0;
+    m_reload_time = 100;
+
     m_lives_count = 1;
 
     if(type == ST_TANK_B)
@@ -51,6 +60,12 @@ void Enemy::draw()
 void Enemy::update(Uint32 dt)
 {
     Tank::update(dt);
+
+    if(m_lives_count >= 5) m_lives_count = 4;
+    if(testFlag(TSF_LIFE))
+        src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction) + (m_lives_count -1) * 4, m_current_frame);
+    else
+        src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
     m_direction_time += dt;
     m_speed_time += dt;
