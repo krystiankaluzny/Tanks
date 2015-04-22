@@ -17,7 +17,7 @@ Enemy::Enemy()
 
     m_fire_time = 0;
     m_reload_time = 100;
-    m_lives_count = 2;
+    m_lives_count = 5;
 
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
@@ -41,7 +41,7 @@ Enemy::Enemy(double x, double y, SpriteType type)
     m_fire_time = 0;
     m_reload_time = 100;
 
-    m_lives_count = 1;
+    m_lives_count = 5;
 
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
@@ -53,12 +53,13 @@ Enemy::Enemy(double x, double y, SpriteType type)
 
 void Enemy::draw()
 {
-
+    if(to_erase) return;
     Tank::draw();
 }
 
 void Enemy::update(Uint32 dt)
 {
+    if(to_erase) return;
     Tank::update(dt);
 
     if(m_lives_count >= 5) m_lives_count = 4;
@@ -94,5 +95,8 @@ void Enemy::destroy()
 {
     m_lives_count--;
     if(m_lives_count <= 0)
+    {
+        m_lives_count = 1;
         Tank::destroy();
+    }
 }

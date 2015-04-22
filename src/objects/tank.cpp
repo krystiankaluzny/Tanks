@@ -26,12 +26,14 @@ Tank::~Tank()
 
 void Tank::draw()
 {
+    if(to_erase) return;
     Object::draw();
     if(bullet != nullptr) bullet->draw();
 }
 
 void Tank::update(Uint32 dt)
 {
+    if(to_erase) return;
     if(testFlag(TSF_LIFE))
     {
         if(!stop)

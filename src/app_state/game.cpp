@@ -306,6 +306,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
 {
 //    for(auto r : m_rec) delete r;
 //    m_rec.clear();
+    if(tank->to_erase) return;
 
     int row_start, row_end;
     int column_start, column_end;
@@ -530,6 +531,7 @@ void Game::checkCollisionBulletWithTanks(Bullet *bullet, Tank *tank)
 {
     if(bullet == nullptr) return;
     if(bullet->collide) return;
+    if(tank->to_erase) return;
 
     SDL_Rect intersect_rect = intersectRect(&bullet->collision_rect, &tank->collision_rect);
 
