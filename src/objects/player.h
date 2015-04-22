@@ -13,7 +13,7 @@ public:
     void respawn();
 
 private:
-    unsigned m_lives_count;
+    int m_lives_count;
 };
 
 #endif // PLAYER_H

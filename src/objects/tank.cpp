@@ -150,7 +150,7 @@ void Tank::fire()
 
         bullet->direction = dire;
         if(type == ST_TANK_C)
-            bullet->speed = AppConfig::bullet_default_speed * 1.5;
+            bullet->speed = AppConfig::bullet_default_speed * 1.3;
         else
             bullet->speed = AppConfig::bullet_default_speed;
 

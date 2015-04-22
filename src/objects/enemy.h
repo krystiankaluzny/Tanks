@@ -8,9 +8,13 @@ public:
     Enemy();
     Enemy(double x, double y, SpriteType type);
 
+    void draw();
     void update(Uint32 dt);
+    void destroy();
 
 private:
+    int m_lives_count;
+
     Uint32 m_direction_time;
     Uint32 m_keep_direction_time;
 

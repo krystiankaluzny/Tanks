@@ -13,9 +13,10 @@ Enemy::Enemy()
     m_speed_time = 0;
     m_keep_direction_time = 100;
     m_try_to_go_time = 0;
+    m_lives_count = 1;
 
     if(type == ST_TANK_B)
-        default_speed = AppConfig::tank_default_speed * 1.05;
+        default_speed = AppConfig::tank_default_speed * 1.3;
     else
         default_speed = AppConfig::tank_default_speed;
 
@@ -31,16 +32,20 @@ Enemy::Enemy(double x, double y, SpriteType type)
     m_speed_time = 0;
     m_keep_direction_time = 100;
     m_try_to_go_time = 0;
-
+    m_lives_count = 1;
 
     if(type == ST_TANK_B)
-        default_speed = AppConfig::tank_default_speed * 1.5;
+        default_speed = AppConfig::tank_default_speed * 1.3;
     else
         default_speed = AppConfig::tank_default_speed;
 
-    std::cout << AppConfig::tank_default_speed << " " << default_speed << std::endl;
-
     respawn();
+}
+
+void Enemy::draw()
+{
+
+    Tank::draw();
 }
 
 void Enemy::update(Uint32 dt)
@@ -54,7 +59,7 @@ void Enemy::update(Uint32 dt)
     {
         m_direction_time = 0;
         m_keep_direction_time = rand() % 800 + 100;
-//        setDirection(static_cast<Direction>(rand() % 4));
+        setDirection(static_cast<Direction>(rand() % 4));
     }
     if(m_speed_time > m_try_to_go_time)
     {
@@ -68,4 +73,11 @@ void Enemy::update(Uint32 dt)
         m_reload_time = rand() % 1000;
         fire();
     }
+}
+
+void Enemy::destroy()
+{
+    m_lives_count--;
+    if(m_lives_count <= 0)
+        Tank::destroy();
 }
