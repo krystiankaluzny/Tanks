@@ -41,8 +41,16 @@ void Player::respawn()
         return;
     }
 
-    pos_x = AppConfig::player1_starting_point.x;
-    pos_y= AppConfig::player1_starting_point.y;
+    if(type == ST_PLAYER_1)
+    {
+        pos_x = AppConfig::player_starting_point.at(0).x;
+        pos_y = AppConfig::player_starting_point.at(0).y;
+    }
+    else
+    {
+        pos_x = AppConfig::player_starting_point.at(1).x;
+        pos_y = AppConfig::player_starting_point.at(1).y;
+    }
 
     dest_rect.x = pos_x;
     dest_rect.y = pos_y;

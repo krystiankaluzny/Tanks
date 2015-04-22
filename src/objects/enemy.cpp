@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include "../appconfig.h"
 #include <stdlib.h>
 #include <ctime>
 #include <iostream>
@@ -7,24 +8,39 @@ Enemy::Enemy()
     : Tank()
 {
     srand(time(NULL));
-    m_direction_time = 0;
     direction = D_DOWN;
+    m_direction_time = 0;
     m_speed_time = 0;
-    speed = 0;
     m_keep_direction_time = 100;
     m_try_to_go_time = 0;
+
+    if(type == ST_TANK_B)
+        default_speed = AppConfig::tank_default_speed * 1.05;
+    else
+        default_speed = AppConfig::tank_default_speed;
+
+    respawn();
 }
 
 Enemy::Enemy(double x, double y, SpriteType type)
     : Tank(x, y, type)
 {
     srand(time(NULL));
-    m_direction_time = 0;
     direction = D_DOWN;
+    m_direction_time = 0;
     m_speed_time = 0;
-    speed = 0;
     m_keep_direction_time = 100;
     m_try_to_go_time = 0;
+
+
+    if(type == ST_TANK_B)
+        default_speed = AppConfig::tank_default_speed * 1.5;
+    else
+        default_speed = AppConfig::tank_default_speed;
+
+    std::cout << AppConfig::tank_default_speed << " " << default_speed << std::endl;
+
+    respawn();
 }
 
 void Enemy::update(Uint32 dt)
@@ -38,7 +54,7 @@ void Enemy::update(Uint32 dt)
     {
         m_direction_time = 0;
         m_keep_direction_time = rand() % 800 + 100;
-        setDirection(static_cast<Direction>(rand() % 4));
+//        setDirection(static_cast<Direction>(rand() % 4));
     }
     if(m_speed_time > m_try_to_go_time)
     {

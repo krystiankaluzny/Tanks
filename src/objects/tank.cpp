@@ -2,12 +2,12 @@
 #include "../appconfig.h"
 
 Tank::Tank()
-    : Object(AppConfig::player1_starting_point.x, AppConfig::player1_starting_point.y, ST_PLAYER_1)
+    : Object(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A)
 {
     direction = D_UP;
     bullet = nullptr;
     m_slip_time = 0;
-    respawn();
+    default_speed = AppConfig::tank_default_speed;
 }
 
 Tank::Tank(double x, double y, SpriteType type)
@@ -16,7 +16,7 @@ Tank::Tank(double x, double y, SpriteType type)
     direction = D_UP;
     bullet = nullptr;
     m_slip_time = 0;
-    respawn();
+    default_speed = AppConfig::tank_default_speed;
 }
 
 Tank::~Tank()
@@ -149,7 +149,11 @@ void Tank::fire()
         }
 
         bullet->direction = dire;
-        bullet->speed = 0.3;
+        if(type == ST_TANK_C)
+            bullet->speed = AppConfig::bullet_default_speed * 1.5;
+        else
+            bullet->speed = AppConfig::bullet_default_speed;
+
         bullet->update(0); //zmiana pozycji dest_rect
     }
 }
@@ -287,7 +291,6 @@ bool Tank::testFlag(TankStateFlag flag)
 
 void Tank::respawn()
 {
-
     m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_CREATE);
     speed = 0.0;
     stop = false;

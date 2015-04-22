@@ -45,7 +45,7 @@ private:
 
     std::vector<SDL_Rect*> m_rec;
 
-    unsigned m_current_level;
+    int m_current_level;
 
     bool m_level_start_screen;
     Uint32 m_level_start_time;

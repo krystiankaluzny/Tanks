@@ -27,9 +27,9 @@ public:
     void clearFlag(TankStateFlag flag);
     bool testFlag(TankStateFlag flag);
 
+    double default_speed;
     double speed;
     bool stop;
-    static constexpr double default_speed = 0.08;
     Direction direction;
     Bullet* bullet;
 

@@ -162,19 +162,19 @@ void Game::eventProcess(SDL_Event *ev)
         {
         case SDLK_UP:
             m_players.at(0)->setDirection(D_UP);
-            m_players.at(0)->speed = Tank::default_speed;
+            m_players.at(0)->speed = m_players.at(0)->default_speed;
             break;
         case SDLK_DOWN:
             m_players.at(0)->setDirection(D_DOWN);
-            m_players.at(0)->speed = Tank::default_speed;
+            m_players.at(0)->speed = m_players.at(0)->default_speed;
             break;
         case SDLK_RIGHT:
             m_players.at(0)->setDirection(D_RIGHT);
-            m_players.at(0)->speed = Tank::default_speed;
+            m_players.at(0)->speed = m_players.at(0)->default_speed;
             break;
         case SDLK_LEFT:
             m_players.at(0)->setDirection(D_LEFT);
-            m_players.at(0)->speed = Tank::default_speed;
+            m_players.at(0)->speed = m_players.at(0)->default_speed;
             break;
         case SDLK_SPACE:
             m_players.at(0)->fire();
@@ -183,6 +183,10 @@ void Game::eventProcess(SDL_Event *ev)
             m_players.at(0)->respawn();
             break;
         case SDLK_n:
+            nextLevel();
+            break;
+        case SDLK_b:
+            m_current_level -= 2;
             nextLevel();
             break;
         case SDLK_1:
@@ -560,7 +564,9 @@ std::string Game::uIntToString(unsigned num)
 void Game::nextLevel()
 {
     m_current_level++;
-    if(m_current_level > 35) m_current_level = 0;
+    if(m_current_level > 35) m_current_level = 1;
+    if(m_current_level < 1) m_current_level = 35;
+
     m_level_start_screen = true;
     m_level_start_time = 0;
     m_game_over = false;
@@ -571,10 +577,10 @@ void Game::nextLevel()
     loadLevel(level_path);
 //    loadLevel("levels/1a");
 
-    m_players.push_back(new Player(AppConfig::player1_starting_point.x, AppConfig::player1_starting_point.x, ST_PLAYER_2));
+    m_players.push_back(new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1));
+    m_players.push_back(new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2));
 
-    m_enemies.push_back(new Enemy(1, 1, ST_TANK_A));
-    m_enemies.push_back(new Enemy(50, 1, ST_TANK_B));
-    m_enemies.push_back(new Enemy(100, 1, ST_TANK_C));
-    m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
+    m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A));
+    m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(1).x, AppConfig::enemy_starting_point.at(1).y, ST_TANK_C));
+    m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(2).x, AppConfig::enemy_starting_point.at(2).y, ST_TANK_B));
 }
