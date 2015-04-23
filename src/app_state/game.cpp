@@ -158,27 +158,35 @@ void Game::eventProcess(SDL_Event *ev)
     switch(ev->type)
     {
     case SDL_KEYDOWN:
+        for(auto player : m_players)
+        {
+            if(player->player_keys.up == ev->key.keysym.scancode)
+            {
+                player->setDirection(D_UP);
+                player->speed = player->default_speed;
+            }
+            else if(player->player_keys.down == ev->key.keysym.scancode)
+            {
+                player->setDirection(D_DOWN);
+                player->speed = player->default_speed;
+            }
+            else if(player->player_keys.left == ev->key.keysym.scancode)
+            {
+                player->setDirection(D_LEFT);
+                player->speed = player->default_speed;
+            }
+            else if(player->player_keys.right == ev->key.keysym.scancode)
+            {
+                player->setDirection(D_RIGHT);
+                player->speed = player->default_speed;
+            }
+            else if(player->player_keys.fire == ev->key.keysym.scancode)
+            {
+                player->fire();
+            }
+        }
         switch(ev->key.keysym.sym)
         {
-        case SDLK_UP:
-            m_players.at(0)->setDirection(D_UP);
-            m_players.at(0)->speed = m_players.at(0)->default_speed;
-            break;
-        case SDLK_DOWN:
-            m_players.at(0)->setDirection(D_DOWN);
-            m_players.at(0)->speed = m_players.at(0)->default_speed;
-            break;
-        case SDLK_RIGHT:
-            m_players.at(0)->setDirection(D_RIGHT);
-            m_players.at(0)->speed = m_players.at(0)->default_speed;
-            break;
-        case SDLK_LEFT:
-            m_players.at(0)->setDirection(D_LEFT);
-            m_players.at(0)->speed = m_players.at(0)->default_speed;
-            break;
-        case SDLK_SPACE:
-            m_players.at(0)->fire();
-            break;
         case SDLK_r:
             m_players.at(0)->respawn();
             break;
@@ -580,7 +588,13 @@ void Game::nextLevel()
 //    loadLevel("levels/1a");
 
     m_players.push_back(new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1));
-    m_players.push_back(new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2));
+    Player* p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2);
+//    p2->player_keys.up = SDLK_w;
+//    p2->player_keys.down = SDLK_s;
+//    p2->player_keys.left = SDLK_a;
+//    p2->player_keys.right = SDLK_d;
+//    p2->player_keys.fire = SDLK_c;
+    m_players.push_back(p2);
 
     m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A));
     m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(1).x, AppConfig::enemy_starting_point.at(1).y, ST_TANK_C));

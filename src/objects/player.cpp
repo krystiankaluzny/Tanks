@@ -23,7 +23,7 @@ void Player::update(Uint32 dt)
 {
     const Uint8 *key_state = SDL_GetKeyboardState(NULL);
 
-    if (!key_state[SDL_SCANCODE_UP] && !key_state[SDL_SCANCODE_LEFT] && !key_state[SDL_SCANCODE_DOWN] && !key_state[SDL_SCANCODE_RIGHT])
+    if (!key_state[player_keys.up] && !key_state[player_keys.down] && !key_state[player_keys.left] && !key_state[player_keys.right])
     {
         if(!testFlag(TSF_ON_ICE) || m_slip_time == 0)
             speed = 0.0;
