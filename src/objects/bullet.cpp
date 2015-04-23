@@ -1,5 +1,6 @@
 #include "bullet.h"
 #include "../appconfig.h"
+
 Bullet::Bullet()
     : Object(0, 0, ST_BULLET)
 {

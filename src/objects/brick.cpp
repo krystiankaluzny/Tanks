@@ -1,5 +1,6 @@
 #include "brick.h"
 #include <iostream>
+
 Brick::Brick()
     : Object(0, 0, ST_BRICK_WALL)
 {

@@ -1,8 +1,8 @@
 #ifndef SPRITECONFIG_H
 #define SPRITECONFIG_H
 
-#include <map>
 #include "../type.h"
+#include <map>
 #include <SDL2/SDL.h>
 
 struct SpriteData

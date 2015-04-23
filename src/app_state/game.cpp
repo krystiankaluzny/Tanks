@@ -587,13 +587,11 @@ void Game::nextLevel()
     loadLevel(level_path);
 //    loadLevel("levels/1a");
 
-    m_players.push_back(new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1));
+    Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
     Player* p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2);
-//    p2->player_keys.up = SDLK_w;
-//    p2->player_keys.down = SDLK_s;
-//    p2->player_keys.left = SDLK_a;
-//    p2->player_keys.right = SDLK_d;
-//    p2->player_keys.fire = SDLK_c;
+    p1->player_keys = AppConfig::player_keys.at(0);
+    p2->player_keys = AppConfig::player_keys.at(1);
+    m_players.push_back(p1);
     m_players.push_back(p2);
 
     m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A));

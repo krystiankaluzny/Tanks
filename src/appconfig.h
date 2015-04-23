@@ -1,6 +1,7 @@
 #ifndef APPCONFIG_H
 #define APPCONFIG_H
 
+#include "objects/player.h"
 #include <iostream>
 #include <SDL2/SDL_rect.h>
 #include <vector>
@@ -20,6 +21,7 @@ public:
     static SDL_Rect tile_rect;
     static vector<SDL_Point> player_starting_point;
     static vector<SDL_Point> enemy_starting_point;
+    static vector <Player::PlayerKeys> player_keys;
     static unsigned level_start_time;
     static unsigned slip_time;
     static double game_over_entry_speed;
