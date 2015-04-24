@@ -1,8 +1,8 @@
 #ifndef SPRITECONFIG_H
 #define SPRITECONFIG_H
 
-#include <map>
 #include "../type.h"
+#include <map>
 #include <SDL2/SDL.h>
 
 struct SpriteData
@@ -14,7 +14,7 @@ struct SpriteData
     SDL_Rect rect;
     int frames_count;
 
-    int frame_duration; //czas wyświetlania jednej klatki ms
+    unsigned frame_duration; //czas wyświetlania jednej klatki ms
     bool loop;
 };
 
@@ -24,7 +24,7 @@ public:
     SpriteConfig();
     const SpriteData* getSpriteData(SpriteType sp) const;
 private:
-    std::map<SpriteType, SpriteData> m_config;
+    std::map<SpriteType, SpriteData> m_configs;
     void insert(SpriteType st , int x, int y, int w, int h, int fc, int fd, bool l);
 };
 

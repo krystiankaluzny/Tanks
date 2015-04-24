@@ -2,11 +2,12 @@
 #include "../appconfig.h"
 
 Tank::Tank()
-    : Object(AppConfig::player1_starting_point_x, AppConfig::player1_starting_point_y, ST_PLAYER_1)
+    : Object(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A)
 {
     direction = D_UP;
     bullet = nullptr;
-    respawn();
+    m_slip_time = 0;
+    default_speed = AppConfig::tank_default_speed;
 }
 
 Tank::Tank(double x, double y, SpriteType type)
@@ -14,7 +15,8 @@ Tank::Tank(double x, double y, SpriteType type)
 {
     direction = D_UP;
     bullet = nullptr;
-    respawn();
+    m_slip_time = 0;
+    default_speed = AppConfig::tank_default_speed;
 }
 
 Tank::~Tank()
@@ -24,17 +26,14 @@ Tank::~Tank()
 
 void Tank::draw()
 {
-    if(m_sprite == nullptr) return;
-
-    Engine::getEngine().getRenderer()->drawObject(&src_rect, &dest_rect);
-    //Engine::getEngine().getRenderer()->drawRect(&collision_rect, 0, 230, 0);
-    //SDL_Rect r = nextCollisionRect(15);
-    //Engine::getEngine().getRenderer()->drawRect(&r, 0, 0, 255);
+    if(to_erase) return;
+    Object::draw();
     if(bullet != nullptr) bullet->draw();
 }
 
 void Tank::update(Uint32 dt)
 {
+    if(to_erase) return;
     if(testFlag(TSF_LIFE))
     {
         if(!stop)
@@ -55,6 +54,7 @@ void Tank::update(Uint32 dt)
                 break;
             }
         }
+
         dest_rect.x = pos_x;
         dest_rect.y = pos_y;
         dest_rect.h = m_sprite->rect.h;
@@ -66,6 +66,16 @@ void Tank::update(Uint32 dt)
         collision_rect.w = dest_rect.w - 4;
     }
 
+    if(testFlag(TSF_ON_ICE) && m_slip_time > 0)
+    {
+        m_slip_time -= dt;
+        if(m_slip_time <= 0)
+        {
+            clearFlag(TSF_ON_ICE);
+            m_slip_time = 0;
+            direction = new_direction;
+        }
+    }
     if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) //brak animacji jeśli czołg nie prógbuje jechać
     {
         m_frame_display_time += dt;
@@ -83,10 +93,10 @@ void Tank::update(Uint32 dt)
                     setFlag(TSF_LIFE);
                     m_current_frame = 0;
                 }
-                else if(testFlag(TSF_DESTROYED) && bullet == nullptr)
+                else if(testFlag(TSF_DESTROYED))
                 {
                     //TODO uwzględnić życia
-                 //       to_erase = true;
+//                        to_erase = true;
                     respawn();
                 }
             }
@@ -94,10 +104,6 @@ void Tank::update(Uint32 dt)
     }
 
     stop = false;
-    if(testFlag(TSF_LIFE))
-        src_rect = moveRect(m_sprite->rect, direction, m_current_frame);
-    else
-        src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
     // Obsługa pocisku
     if(bullet != nullptr)
@@ -119,7 +125,8 @@ void Tank::fire()
         //podajemy początkową dowolną pozycję, bo nie znamy wymiarów pocisku
         bullet = dynamic_cast<Bullet*>(ObjectFactory::Create(pos_x, pos_y, ST_BULLET));
 
-        switch(direction)
+        Direction dire = (testFlag(TSF_ON_ICE) ? new_direction : direction);
+        switch(dire)
         {
         case D_UP:
             bullet->pos_x += (dest_rect.w - bullet->dest_rect.w) / 2;
@@ -139,8 +146,12 @@ void Tank::fire()
             break;
         }
 
-        bullet->direction = direction;
-        bullet->speed = 0.3;
+        bullet->direction = dire;
+        if(type == ST_TANK_C)
+            bullet->speed = AppConfig::bullet_default_speed * 1.3;
+        else
+            bullet->speed = AppConfig::bullet_default_speed;
+
         bullet->update(0); //zmiana pozycji dest_rect
     }
 }
@@ -178,8 +189,16 @@ SDL_Rect Tank::nextCollisionRect(Uint32 dt)
 
 void Tank::setDirection(Direction d)
 {
-    if(!testFlag(TSF_LIFE)) return;
-    direction = d;
+    if(!(testFlag(TSF_LIFE) || testFlag(TSF_CREATE))) return;
+    if(testFlag(TSF_ON_ICE))
+    {
+        new_direction = d;
+        if(speed == 0.0 || m_slip_time == 0.0) direction = d;
+        if((m_slip_time != 0 && direction == new_direction) || m_slip_time == 0)
+            m_slip_time = AppConfig::slip_time;
+    }
+    else
+        direction = d;
 
     if(!stop)
     {
@@ -189,19 +208,18 @@ void Tank::setDirection(Direction d)
         {
         case D_UP:
         case D_DOWN:
-            pos_x_tile = ((int)(pos_x / AppConfig::tile_width)) * AppConfig::tile_width;
+            pos_x_tile = ((int)(pos_x / AppConfig::tile_rect.w)) * AppConfig::tile_rect.w;
             if(pos_x - pos_x_tile < epsilon) pos_x = pos_x_tile;
-            else if(pos_x_tile + AppConfig::tile_width - pos_x < epsilon) pos_x = pos_x_tile + AppConfig::tile_width;
+            else if(pos_x_tile + AppConfig::tile_rect.w - pos_x < epsilon) pos_x = pos_x_tile + AppConfig::tile_rect.w;
             break;
         case D_RIGHT:
         case D_LEFT:
-            pos_y_tile = ((int)(pos_y / AppConfig::tile_height)) * AppConfig::tile_height;
+            pos_y_tile = ((int)(pos_y / AppConfig::tile_rect.h)) * AppConfig::tile_rect.h;
             if(pos_y - pos_y_tile < epsilon) pos_y = pos_y_tile;
-            else if(pos_y_tile + AppConfig::tile_height - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_height;
+            else if(pos_y_tile + AppConfig::tile_rect.h - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_rect.h;
             break;
         }
     }
-
 }
 
 void Tank::collide(SDL_Rect &intersect_rect)
@@ -212,6 +230,7 @@ void Tank::collide(SDL_Rect &intersect_rect)
            (direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
         {
             stop = true;
+            m_slip_time = 0;
         }
     }
     else
@@ -220,6 +239,7 @@ void Tank::collide(SDL_Rect &intersect_rect)
            (direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
         {
             stop = true;
+            m_slip_time = 0;
         }
     }
 }
@@ -234,6 +254,8 @@ void Tank::destroy()
     m_frame_display_time = 0;
     m_current_frame = 0;
     direction = D_UP;
+    speed = 0;
+    m_slip_time = 0;
     m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_DESTROY_TANK);
 
     collision_rect.x = 0;
@@ -249,6 +271,9 @@ void Tank::destroy()
 
 void Tank::setFlag(TankStateFlag flag)
 {
+    if(!testFlag(flag) && flag == TSF_ON_ICE)
+        new_direction = direction;
+
     m_flags |= flag;
 }
 
@@ -264,10 +289,10 @@ bool Tank::testFlag(TankStateFlag flag)
 
 void Tank::respawn()
 {
-
     m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_CREATE);
     speed = 0.0;
     stop = false;
+    m_slip_time = 0;
 
     collision_rect.x = 0;
     collision_rect.y = 0;

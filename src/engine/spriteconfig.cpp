@@ -33,6 +33,7 @@ SpriteConfig::SpriteConfig()
     insert(ST_BOAT_P2, 976, 96, 32, 32, 1, 200, false);
 
     insert(ST_EAGLE, 944, 0, 32, 32, 1, 200, false);
+    insert(ST_DESTROY_EAGLE, 1040, 0, 64, 64, 7, 100, false);
     insert(ST_FLAG, 944, 32, 32, 32, 1, 200, false);
 
     insert(ST_BULLET, 944, 128, 8, 8, 1, 200, false);
@@ -40,10 +41,10 @@ SpriteConfig::SpriteConfig()
 
 const SpriteData* SpriteConfig::getSpriteData(SpriteType st) const
 {
-    return &m_config.at(st);
+    return &m_configs.at(st);
 }
 
 void SpriteConfig::insert(SpriteType st, int x, int y, int w, int h, int fc, int fd, bool l)
 {
-    m_config[st] = SpriteData(x, y, w, h, fc, fd, l);
+    m_configs[st] = SpriteData(x, y, w, h, fc, fd, l);
 }

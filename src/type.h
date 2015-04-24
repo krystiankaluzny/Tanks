@@ -38,6 +38,7 @@ enum SpriteType
     ST_BOAT_P2,
 
     ST_EAGLE,
+    ST_DESTROY_EAGLE,
     ST_FLAG,
 
     ST_BULLET,

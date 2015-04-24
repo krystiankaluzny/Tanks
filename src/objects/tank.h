@@ -13,7 +13,7 @@ class Tank : public Object
 public:
     Tank();
     Tank(double x, double y, SpriteType type);
-    ~Tank();
+    virtual ~Tank();
 
     void draw();
     void update(Uint32 dt);
@@ -21,22 +21,24 @@ public:
     SDL_Rect nextCollisionRect(Uint32 dt);
     void setDirection(Direction d);
     void collide(SDL_Rect& intersect_rect);
-    void destroy();
+    virtual void respawn();
+    virtual void destroy();
     void setFlag(TankStateFlag flag);
     void clearFlag(TankStateFlag flag);
     bool testFlag(TankStateFlag flag);
-    virtual void respawn();
 
+    double default_speed;
     double speed;
     bool stop;
-    bool collide1;
-    static constexpr double default_speed = 0.08;
     Direction direction;
     Bullet* bullet;
 
 protected:
 
     TankStateFlags m_flags;
+    Sint32 m_slip_time;
+    Direction new_direction;
+
 
     //1 star tank speed v = 0.084
     //bullet

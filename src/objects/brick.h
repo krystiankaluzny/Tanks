@@ -1,5 +1,6 @@
 #ifndef BRICK_H
 #define BRICK_H
+
 #include "object.h"
 
 class Brick : public Object
@@ -11,7 +12,7 @@ public:
     void update(Uint32 dt);
     void bulletHit(Direction bullet_direction);
 private:
-    int m_colision_count;
+    int m_collision_count;
     int m_state_code;
 };
 

@@ -7,33 +7,44 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 App::App()
 {
+    m_window = nullptr;
+}
+
+App::~App()
+{
+    if(m_app_state != nullptr)
+        delete m_app_state;
 }
 
 
 void App::run()
 {
+    is_running = true;
     //inicjalizacja SDL i utworzenie okan
-    SDL_Window* m_window;
+
 
     if(SDL_Init(SDL_INIT_VIDEO) == 0)
     {
         m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                    AppConfig::windows_width, AppConfig::windows_height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                                    AppConfig::windows_rect.w, AppConfig::windows_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
-        is_running = true;
+        if(m_window == nullptr) return;
+
+        if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return;
+        if(TTF_Init() == -1) return;
+
 
         Engine& engine = Engine::getEngine();
         engine.initModules();
-
         engine.getRenderer()->loadTexture(m_window);
+        engine.getRenderer()->loadFont();
 
         m_app_state = new Game;
 
-        //char buffer [2];
-        //itoa(i%35+1, buffer, 10);
         double FPS;
         Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 15;
         time1 = SDL_GetTicks();
@@ -43,10 +54,17 @@ void App::run()
             dt = time2 - time1;
             time1 = time2;
 
+            if(m_app_state->finished())
+            {
+                AppState* new_state = m_app_state->nextState();
+                delete m_app_state;
+                m_app_state = new_state;
+            }
+
             eventProces();
 
-            m_app_state->draw();
             m_app_state->update(dt);
+            m_app_state->draw();
 
             SDL_Delay(delay);
 
@@ -65,7 +83,10 @@ void App::run()
         engine.destroyModules();
     }
 
-    SDL_DestroyWindow(m_window); m_window = nullptr;
+    SDL_DestroyWindow(m_window);
+    m_window = nullptr;
+    TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
 }
 
@@ -92,14 +113,17 @@ void App::eventProces()
             switch(event.window.event)
             {
                 case SDL_WINDOWEVENT_RESIZED:
-                    AppConfig::windows_width = event.window.data1;
-                    AppConfig::windows_height = event.window.data2;
-                    Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_width / AppConfig::map_width,
-                                                                (float)AppConfig::windows_height / AppConfig::map_height);
+                case SDL_WINDOWEVENT_MAXIMIZED:
+                case SDL_WINDOWEVENT_RESTORED:
+                case SDL_WINDOWEVENT_SHOWN:
+                    AppConfig::windows_rect.w = event.window.data1;
+                    AppConfig::windows_rect.h = event.window.data2;
+                    Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_rect.w / (AppConfig::map_rect.w + AppConfig::status_rect.w),
+                                                                (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
                 break;
             }
             break;
         }
-        m_app_state->eventProces(&event);
+        m_app_state->eventProcess(&event);
     }
 }

@@ -13,7 +13,7 @@ public:
     void destroy();
     
     double speed;
-    bool colide;
+    bool collide;
     bool increased_damage;
     Direction direction;
 };
