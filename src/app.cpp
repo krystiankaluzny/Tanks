@@ -2,6 +2,7 @@
 #include "appconfig.h"
 #include "engine/engine.h"
 #include "app_state/game.h"
+#include "app_state/menu.h"
 
 #include <iostream>
 #include <stdlib.h>
@@ -43,7 +44,7 @@ void App::run()
         engine.getRenderer()->loadTexture(m_window);
         engine.getRenderer()->loadFont();
 
-        m_app_state = new Game;
+        m_app_state = new Menu;
 
         double FPS;
         Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 15;
@@ -60,6 +61,7 @@ void App::run()
                 delete m_app_state;
                 m_app_state = new_state;
             }
+            if(m_app_state == nullptr) break;
 
             eventProces();
 
@@ -76,7 +78,6 @@ void App::run()
                 if(FPS > 60) delay++;
                 else if(delay > 0) delay--;
                 fps_time = 0; fps_count = 0;
-                 //std::cout << dt << " " << FPS << " "  <<delay<< std::endl;
             }
         }
 
@@ -95,35 +96,30 @@ void App::eventProces()
     SDL_Event event;
     while(SDL_PollEvent(&event))
     {
-        switch(event.type)
+        if(event.type == SDL_QUIT)
         {
-        case SDL_QUIT:
             is_running = false;
-         break;
-
-       case SDL_KEYDOWN:
-            switch(event.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
-                is_running = false;
-                break;
-            }
-            break;
-        case SDL_WINDOWEVENT:
-            switch(event.window.event)
-            {
-                case SDL_WINDOWEVENT_RESIZED:
-                case SDL_WINDOWEVENT_MAXIMIZED:
-                case SDL_WINDOWEVENT_RESTORED:
-                case SDL_WINDOWEVENT_SHOWN:
-                    AppConfig::windows_rect.w = event.window.data1;
-                    AppConfig::windows_rect.h = event.window.data2;
-                    Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_rect.w / (AppConfig::map_rect.w + AppConfig::status_rect.w),
-                                                                (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
-                break;
-            }
-            break;
         }
+        else if(event.type == SDL_KEYDOWN)
+        {
+            if(event.key.keysym.sym == SDLK_ESCAPE)
+                is_running = false;
+        }
+        else if(event.type == SDL_WINDOWEVENT)
+        {
+            if(event.window.event == SDL_WINDOWEVENT_RESIZED ||
+               event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
+               event.window.event == SDL_WINDOWEVENT_RESTORED ||
+               event.window.event == SDL_WINDOWEVENT_SHOWN)
+            {
+
+                AppConfig::windows_rect.w = event.window.data1;
+                AppConfig::windows_rect.h = event.window.data2;
+                Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_rect.w / (AppConfig::map_rect.w + AppConfig::status_rect.w),
+                                                            (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
+            }
+        }
+
         m_app_state->eventProcess(&event);
     }
 }

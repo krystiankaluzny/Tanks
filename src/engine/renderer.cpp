@@ -9,7 +9,8 @@ Renderer::Renderer()
     m_texture = nullptr;
     m_renderer = nullptr;
     m_text_texture = nullptr;
-    m_font = nullptr;
+    m_font1 = nullptr;
+    m_font2 = nullptr;
 }
 
 Renderer::~Renderer()
@@ -20,8 +21,10 @@ Renderer::~Renderer()
         SDL_DestroyTexture(m_texture);
     if(m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
-    if(m_font != nullptr)
-        TTF_CloseFont(m_font);
+    if(m_font1 != nullptr)
+        TTF_CloseFont(m_font1);
+    if(m_font2 != nullptr)
+        TTF_CloseFont(m_font2);
 }
 
 void Renderer::loadTexture(SDL_Window* window)
@@ -33,24 +36,15 @@ void Renderer::loadTexture(SDL_Window* window)
 
     //load surface
     if(surface != nullptr && m_renderer != nullptr)
-    {
         m_texture = SDL_CreateTextureFromSurface(m_renderer, surface);
-        if(m_texture == nullptr)
-        {
-            //zgłoszenie błędu
-        }
-    }
-    else
-    {
-        //zgłoszenie błądu
-    }
 
     SDL_FreeSurface(surface);
 }
 
 void Renderer::loadFont()
 {
-    m_font = TTF_OpenFont(AppConfig::font_name.c_str(), 28);
+    m_font1 = TTF_OpenFont(AppConfig::font_name.c_str(), 28);
+    m_font2 = TTF_OpenFont(AppConfig::font_name.c_str(), 14);
 }
 
 void Renderer::clear()
@@ -87,13 +81,16 @@ void Renderer::setScale(float xs, float ys)
     SDL_RenderSetViewport(m_renderer, &viewport);
 }
 
-void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color)
+void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color, bool small_font)
 {
-    if(m_font == nullptr) return;
+    if(m_font1 == nullptr || m_font2 == nullptr ) return;
     if(m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
 
-    SDL_Surface* text_surface = TTF_RenderText_Solid(m_font, text.c_str(), text_color);
+    SDL_Surface* text_surface = nullptr;
+    if(small_font) text_surface = TTF_RenderText_Solid(m_font2, text.c_str(), text_color);
+    else text_surface = TTF_RenderText_Solid(m_font1, text.c_str(), text_color);
+
     if(text_surface == nullptr) return;
 
     m_text_texture = SDL_CreateTextureFromSurface(m_renderer, text_surface);

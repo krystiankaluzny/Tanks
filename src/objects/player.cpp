@@ -4,7 +4,7 @@
 #include <iostream>
 
 Player::Player()
-    : Tank()
+    : Tank(0, 0, ST_PLAYER_1)
 {
     speed = 0;
     m_lives_count = 4;

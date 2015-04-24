@@ -8,6 +8,7 @@ Tank::Tank()
     bullet = nullptr;
     m_slip_time = 0;
     default_speed = AppConfig::tank_default_speed;
+    speed = 0.0;
 }
 
 Tank::Tank(double x, double y, SpriteType type)
@@ -17,6 +18,7 @@ Tank::Tank(double x, double y, SpriteType type)
     bullet = nullptr;
     m_slip_time = 0;
     default_speed = AppConfig::tank_default_speed;
+    speed = 0.0;
 }
 
 Tank::~Tank()

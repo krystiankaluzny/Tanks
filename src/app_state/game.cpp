@@ -26,9 +26,7 @@ Game::~Game()
 
 void Game::draw()
 {
-    Engine& engine = Engine::getEngine();
-    //SpriteConfig* sprite_config = engine.getSpriteConfig();
-    Renderer* renderer = engine.getRenderer();
+    Renderer* renderer = Engine::getEngine().getRenderer();
     renderer->clear();
 
     if(m_level_start_screen)
