@@ -14,6 +14,7 @@ class Game : public AppState
 {
 public:
     Game();
+    Game(int players_count);
     ~Game();
     void draw();
     void update(Uint32 dt);
@@ -46,6 +47,7 @@ private:
     std::vector<SDL_Rect*> m_rec;
 
     int m_current_level;
+    int m_player_count;
 
     bool m_level_start_screen;
     Uint32 m_level_start_time;

@@ -22,6 +22,7 @@ private:
     std::vector<std::string> m_menu_texts;
     int m_menu_index;
     Player* m_tank_pointer;
+    bool m_finished;
 };
 
 #endif // MENU_H

@@ -60,6 +60,7 @@ void App::run()
                 AppState* new_state = m_app_state->nextState();
                 delete m_app_state;
                 m_app_state = new_state;
+//                std::cout << new_state << std::endl;
             }
             if(m_app_state == nullptr) break;
 

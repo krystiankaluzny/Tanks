@@ -3,6 +3,7 @@
 #include "../engine/renderer.h"
 #include "../appconfig.h"
 #include "../type.h"
+#include "../app_state/game.h"
 
 #include <iostream>
 
@@ -19,6 +20,7 @@ Menu::Menu()
     m_tank_pointer->setFlag(TSF_LIFE);
     m_tank_pointer->update(0);
     m_tank_pointer->clearFlag(TSF_LIFE);
+    m_finished = false;
 }
 
 Menu::~Menu()
@@ -55,29 +57,49 @@ void Menu::update(Uint32 dt)
 
 void Menu::eventProcess(SDL_Event *ev)
 {
-//    switch(ev->type)
-//    {
-//    case SDL_KEYDOWN:
-//        switch(ev->key.keysym.sym)
-//        {
-//        case SDLK_UP:
-//            m_players.at(0)->respawn();
-//            break;
-//        case SDLK_DOWN:
-//            nextLevel();
-//            break;
+    if(ev->type == SDL_KEYDOWN)
+    {
+        if(ev->key.keysym.sym == SDLK_UP)
+        {
+            m_menu_index--;
+            if(m_menu_index < 0)
+                m_menu_index = m_menu_texts.size() - 1;
 
-//        }
-//        break;
-//    }
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 110;
+        }
+        else if(ev->key.keysym.sym == SDLK_DOWN)
+        {
+            m_menu_index++;
+            if(m_menu_index >= m_menu_texts.size())
+                m_menu_index = 0;
+
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 110;
+        }
+        else if(ev->key.keysym.sym == SDLK_SPACE)
+        {
+            m_finished = true;
+        }
+    }
 }
 
 bool Menu::finished() const
 {
-    return false;
+    return m_finished;
 }
 
 AppState* Menu::nextState()
 {
-
+    if(m_menu_index == m_menu_texts.size() - 1)
+        return nullptr;
+    else if(m_menu_index == 0)
+    {
+        Game* g = new Game(1);
+        return g;
+    }
+    else if(m_menu_index == 1)
+    {
+        Game* g = new Game(2);
+        return g;
+    }
+    else nullptr;
 }

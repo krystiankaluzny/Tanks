@@ -2,6 +2,7 @@
 #include "../engine/engine.h"
 #include "../objects/objectfactory.h"
 #include "../appconfig.h"
+#include "menu.h"
 
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -15,7 +16,17 @@ Game::Game()
     m_level_rows_count = 0;
     m_current_level = 0;
     m_eagle = nullptr;
+    m_player_count = 1;
+    nextLevel();
+}
 
+Game::Game(int players_count)
+{
+    m_level_columns_count = 0;
+    m_level_rows_count = 0;
+    m_current_level = 0;
+    m_eagle = nullptr;
+    m_player_count = players_count;
     nextLevel();
 }
 
@@ -282,8 +293,8 @@ bool Game::finished() const
 
 AppState *Game::nextState()
 {
-    Game* new_game = new Game();
-    return new_game;
+    Menu* menu = new Menu();
+    return menu;
 }
 
 void Game::clearLevel()
@@ -584,13 +595,22 @@ void Game::nextLevel()
 
     loadLevel(level_path);
 //    loadLevel("levels/1a");
+    if(m_player_count == 2)
+    {
+        Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
+        Player* p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2);
+        p1->player_keys = AppConfig::player_keys.at(0);
+        p2->player_keys = AppConfig::player_keys.at(1);
+        m_players.push_back(p1);
+        m_players.push_back(p2);
 
-    Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
-    Player* p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2);
-    p1->player_keys = AppConfig::player_keys.at(0);
-    p2->player_keys = AppConfig::player_keys.at(1);
-    m_players.push_back(p1);
-    m_players.push_back(p2);
+    }
+    else
+    {
+        Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
+        p1->player_keys = AppConfig::player_keys.at(0);
+        m_players.push_back(p1);
+    }
 
     m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A));
     m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(1).x, AppConfig::enemy_starting_point.at(1).y, ST_TANK_C));
