@@ -100,7 +100,7 @@ void Tank::update(Uint32 dt)
                 else if(testFlag(TSF_DESTROYED))
                 {
 //                    TODO uwzględnić życia
-                    if(m_lives_count > 0) respawn();
+                    if(lives_count > 0) respawn();
                     else to_erase = true;
                 }
             }

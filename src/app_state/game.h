@@ -27,6 +27,7 @@ private:
     void clearLevel();
     std::string uIntToString(unsigned num);
     void nextLevel();
+    void generateEnemy();
 
     void checkCollisionTankWithLevel(Tank* tank, Uint32 dt);
     void checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt);
@@ -48,9 +49,11 @@ private:
 
     int m_current_level;
     int m_player_count;
+    int m_enemy_to_kill;
 
     bool m_level_start_screen;
     Uint32 m_level_start_time;
+    Uint32 m_enemy_redy_time;
 
     bool m_game_over;
     double m_game_over_position;

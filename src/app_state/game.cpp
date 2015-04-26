@@ -5,23 +5,27 @@
 #include "menu.h"
 
 #include <SDL2/SDL.h>
-#include <iostream>
+#include <stdlib.h>
+#include <ctime>
 #include <fstream>
 #include <algorithm>
-
+#include <iostream>
 
 Game::Game()
 {
+    srand(time(NULL));
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
     m_eagle = nullptr;
     m_player_count = 1;
+    m_enemy_redy_time = 0;
     nextLevel();
 }
 
 Game::Game(int players_count)
 {
+    srand(time(NULL));
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
@@ -170,6 +174,14 @@ void Game::update(Uint32 dt)
         //usunięcie niepotrzebnych czołgów
         m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [](Player*p){if(p->to_erase) {delete p; return true;} return false;}), m_players.end());
+
+        //dodanie nowego przeciwnika
+        m_enemy_redy_time += dt;
+        if(m_enemies.size() < AppConfig::enemy_max_count_on_map && m_enemy_to_kill > 0 && m_enemy_redy_time > 1000)
+        {
+            m_enemy_redy_time = 0;
+            generateEnemy();
+        }
 
         if(m_players.empty() && !m_game_over)
         {
@@ -350,8 +362,6 @@ void Game::clearLevel()
 
 void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
 {
-//    for(auto r : m_rec) delete r;
-//    m_rec.clear();
     if(tank->to_erase) return;
 
     int row_start, row_end;
@@ -585,6 +595,8 @@ void Game::checkCollisionBulletWithTanks(Bullet *bullet, Tank *tank)
     {
         bullet->destroy();
         tank->destroy();
+        if(tank->type == ST_TANK_A || tank->type == ST_TANK_B || tank->type == ST_TANK_C || tank->type == ST_TANK_D)
+            m_enemy_to_kill--;
     }
 }
 
@@ -621,12 +633,11 @@ void Game::nextLevel()
     m_level_start_time = 0;
     m_game_over = false;
     m_finished = false;
+    m_enemy_to_kill = AppConfig::enemy_start_count;
 
     std::string level_path = AppConfig::levels_path + uIntToString(m_current_level);
-    std::cout << level_path << std::endl;
-
     loadLevel(level_path);
-//    loadLevel("levels/1a");
+
     if(m_player_count == 2)
     {
         Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
@@ -643,21 +654,34 @@ void Game::nextLevel()
         p1->player_keys = AppConfig::player_keys.at(0);
         m_players.push_back(p1);
     }
+}
 
-    Enemy* e;
-    e = new Enemy(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A);
-    e->target_position = {208, 416};
-    m_enemies.push_back(e);
+void Game::generateEnemy()
+{
+    unsigned pos = rand() % 3;
+//    std::cout << pos << std::endl;
+    SpriteType type = static_cast<SpriteType>(rand() % (ST_TANK_D - ST_TANK_A + 1) + ST_TANK_A);
+    Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(pos).x, AppConfig::enemy_starting_point.at(pos).y, type);
 
-    e = new Enemy(AppConfig::enemy_starting_point.at(1).x, AppConfig::enemy_starting_point.at(1).y, ST_TANK_C);
-    e->target_position = {208, 416};
-    m_enemies.push_back(e);
+    double a, b, c;
+    if(m_current_level <= 17)
+    {
+        a = -0.040625 * m_current_level + 0.940625;
+        b = -0.028125 * m_current_level + 0.978125;
+        c = -0.014375 * m_current_level + 0.994375;
+    }
+    else
+    {
+        a = -0.012778 * m_current_level + 0.467222;
+        b = -0.025000 * m_current_level + 0.925000;
+        c = -0.036111 * m_current_level + 1.363889;
+    }
+    float p = static_cast<float>(rand()) / RAND_MAX;
+    std::cout << p << std::endl;
+    if(p < a) e->lives_count = 1;
+    else if(p < b) e->lives_count = 2;
+    else if(p < c) e->lives_count = 3;
+    else e->lives_count = 4;
 
-    e = new Enemy(AppConfig::enemy_starting_point.at(2).x, AppConfig::enemy_starting_point.at(2).y, ST_TANK_B);
-    e->target_position = {208, 416};
-    m_enemies.push_back(e);
-
-    e = new Enemy(AppConfig::enemy_starting_point.at(2).x, AppConfig::enemy_starting_point.at(2).y+40, ST_TANK_D);
-    e->target_position = {208, 416};
     m_enemies.push_back(e);
 }

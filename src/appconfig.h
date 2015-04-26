@@ -24,6 +24,8 @@ public:
     static vector <Player::PlayerKeys> player_keys;
     static unsigned level_start_time;
     static unsigned slip_time;
+    static unsigned enemy_start_count;
+    static unsigned enemy_max_count_on_map;
     static double game_over_entry_speed;
     static double tank_default_speed;
     static double bullet_default_speed;

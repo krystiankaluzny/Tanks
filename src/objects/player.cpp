@@ -7,7 +7,7 @@ Player::Player()
     : Tank(0, 0, ST_PLAYER_1)
 {
     speed = 0;
-    m_lives_count = 999;//4;
+    lives_count = 999;//4;
     respawn();
 }
 
@@ -15,7 +15,7 @@ Player::Player(double x, double y, SpriteType type)
     : Tank(x, y, type)
 {
    speed = 0;
-   m_lives_count = 999;//4;
+   lives_count = 999;//4;
    respawn();
 }
 
@@ -41,8 +41,8 @@ void Player::update(Uint32 dt)
 
 void Player::respawn()
 {
-    m_lives_count--;
-    if(m_lives_count <= 0)
+    lives_count--;
+    if(lives_count <= 0)
     {
         if(bullet == nullptr) to_erase = true;
         return;

@@ -32,9 +32,9 @@ public:
     bool stop;
     Direction direction;
     Bullet* bullet;
+    int lives_count;
 
 protected:
-    int m_lives_count;
     TankStateFlags m_flags;
     Sint32 m_slip_time;
     Direction new_direction;
