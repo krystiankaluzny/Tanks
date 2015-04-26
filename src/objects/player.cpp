@@ -7,7 +7,7 @@ Player::Player()
     : Tank(0, 0, ST_PLAYER_1)
 {
     speed = 0;
-    m_lives_count = 4;
+    m_lives_count = 999;//4;
     respawn();
 }
 
@@ -15,7 +15,7 @@ Player::Player(double x, double y, SpriteType type)
     : Tank(x, y, type)
 {
    speed = 0;
-   m_lives_count = 4;
+   m_lives_count = 999;//4;
    respawn();
 }
 
@@ -36,6 +36,7 @@ void Player::update(Uint32 dt)
     else
         src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
+    stop = false;
 }
 
 void Player::respawn()

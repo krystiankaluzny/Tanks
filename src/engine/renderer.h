@@ -19,7 +19,7 @@ public:
     void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest);
     void setScale(float xs, float ys);
     void drawText(const SDL_Point* start, std::string text, SDL_Color text_color, bool small_font = false);
-    void drawRect(const SDL_Rect* rect, SDL_Color text_color, bool fill = false);
+    void drawRect(const SDL_Rect* rect, SDL_Color rect_color, bool fill = false);
 
 private:
     SDL_Renderer* m_renderer;

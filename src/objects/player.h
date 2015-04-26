@@ -24,7 +24,7 @@ public:
     void respawn();
     PlayerKeys player_keys;
 private:
-    int m_lives_count;
+//    int m_lives_count;
 };
 
 #endif // PLAYER_H

@@ -27,6 +27,7 @@ public:
     static double game_over_entry_speed;
     static double tank_default_speed;
     static double bullet_default_speed;
+    static bool show_enemy_target;
 };
 
 #endif // APPCONFIG_H

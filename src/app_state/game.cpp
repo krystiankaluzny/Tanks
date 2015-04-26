@@ -52,9 +52,8 @@ void Game::draw()
             for(auto item : row)
                 if(item != nullptr) item->draw();
 
-        for(auto enemy : m_enemies) enemy->draw();
         for(auto player : m_players) player->draw();
-
+        for(auto enemy : m_enemies) enemy->draw();
         m_eagle->draw();
 
         for(auto r : m_rec)
@@ -128,6 +127,32 @@ void Game::update(Uint32 dt)
         for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
         for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
 
+        //nadanie celów przeciwników
+        int min_metric; // 2 * 26 * 16
+        int metric;
+        SDL_Point target;
+        for(auto enemy : m_enemies)
+        {
+            min_metric = 832;
+            if(enemy->type == ST_TANK_A || enemy->type == ST_TANK_D)
+                for(auto player : m_players)
+                {
+                    metric = fabs(player->dest_rect.x - enemy->dest_rect.x) + fabs(player->dest_rect.y - enemy->dest_rect.y);
+                    if(metric < min_metric)
+                    {
+                        min_metric = metric;
+                        target = {player->dest_rect.x + player->dest_rect.w / 2, player->dest_rect.y + player->dest_rect.h / 2};
+                    }
+                }
+            metric = fabs(m_eagle->dest_rect.x - enemy->dest_rect.x) + fabs(m_eagle->dest_rect.y - enemy->dest_rect.y);
+            if(metric < min_metric)
+            {
+                min_metric = metric;
+                target = {m_eagle->dest_rect.x + m_eagle->dest_rect.w / 2, m_eagle->dest_rect.y + m_eagle->dest_rect.h / 2};
+            }
+
+            enemy->target_position = target;
+        }
 
         //Update wszystkich obiektów
         for(auto enemy : m_enemies) enemy->update(dt);
@@ -164,9 +189,9 @@ void Game::update(Uint32 dt)
 void Game::eventProcess(SDL_Event *ev)
 {
     if(m_players.empty()) return;
-    switch(ev->type)
+
+    if(ev->type == SDL_KEYDOWN)
     {
-    case SDL_KEYDOWN:
         for(auto player : m_players)
         {
             if(player->player_keys.up == ev->key.keysym.scancode)
@@ -188,12 +213,14 @@ void Game::eventProcess(SDL_Event *ev)
             {
                 player->setDirection(D_RIGHT);
                 player->speed = player->default_speed;
+
             }
             else if(player->player_keys.fire == ev->key.keysym.scancode)
             {
                 player->fire();
             }
         }
+
         switch(ev->key.keysym.sym)
         {
         case SDLK_r:
@@ -205,6 +232,9 @@ void Game::eventProcess(SDL_Event *ev)
         case SDLK_b:
             m_current_level -= 2;
             nextLevel();
+            break;
+        case SDLK_t:
+            AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
             break;
         case SDLK_1:
             m_enemies.push_back(new Enemy(1, 1, ST_TANK_A));
@@ -219,7 +249,6 @@ void Game::eventProcess(SDL_Event *ev)
             m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
             break;
         }
-        break;
     }
 }
 
@@ -575,6 +604,8 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
 
 std::string Game::uIntToString(unsigned num)
 {
+    if(num == 0) return "0";
+
     std::string buf;
     for(; num; num /= 10) buf = "0123456789abcdef"[num % 10] + buf;
     return buf;
@@ -584,7 +615,7 @@ void Game::nextLevel()
 {
     m_current_level++;
     if(m_current_level > 35) m_current_level = 1;
-    if(m_current_level < 1) m_current_level = 35;
+    if(m_current_level < 0) m_current_level = 35;
 
     m_level_start_screen = true;
     m_level_start_time = 0;
@@ -592,6 +623,7 @@ void Game::nextLevel()
     m_finished = false;
 
     std::string level_path = AppConfig::levels_path + uIntToString(m_current_level);
+    std::cout << level_path << std::endl;
 
     loadLevel(level_path);
 //    loadLevel("levels/1a");
@@ -612,7 +644,20 @@ void Game::nextLevel()
         m_players.push_back(p1);
     }
 
-    m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A));
-    m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(1).x, AppConfig::enemy_starting_point.at(1).y, ST_TANK_C));
-    m_enemies.push_back(new Enemy(AppConfig::enemy_starting_point.at(2).x, AppConfig::enemy_starting_point.at(2).y, ST_TANK_B));
+    Enemy* e;
+    e = new Enemy(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A);
+    e->target_position = {208, 416};
+    m_enemies.push_back(e);
+
+    e = new Enemy(AppConfig::enemy_starting_point.at(1).x, AppConfig::enemy_starting_point.at(1).y, ST_TANK_C);
+    e->target_position = {208, 416};
+    m_enemies.push_back(e);
+
+    e = new Enemy(AppConfig::enemy_starting_point.at(2).x, AppConfig::enemy_starting_point.at(2).y, ST_TANK_B);
+    e->target_position = {208, 416};
+    m_enemies.push_back(e);
+
+    e = new Enemy(AppConfig::enemy_starting_point.at(2).x, AppConfig::enemy_starting_point.at(2).y+40, ST_TANK_D);
+    e->target_position = {208, 416};
+    m_enemies.push_back(e);
 }

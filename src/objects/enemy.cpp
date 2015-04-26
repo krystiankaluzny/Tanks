@@ -17,12 +17,14 @@ Enemy::Enemy()
 
     m_fire_time = 0;
     m_reload_time = 100;
-    m_lives_count = 5;
+    m_lives_count = 1;
 
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
     else
         default_speed = AppConfig::tank_default_speed;
+
+    target_position = {-1, -1};
 
     respawn();
 }
@@ -41,12 +43,14 @@ Enemy::Enemy(double x, double y, SpriteType type)
     m_fire_time = 0;
     m_reload_time = 100;
 
-    m_lives_count = 5;
+    m_lives_count = 1;
 
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
     else
         default_speed = AppConfig::tank_default_speed;
+
+    target_position = {-1, -1};
 
     respawn();
 }
@@ -54,6 +58,18 @@ Enemy::Enemy(double x, double y, SpriteType type)
 void Enemy::draw()
 {
     if(to_erase) return;
+    if(AppConfig::show_enemy_target)
+    {
+        SDL_Color c;
+        if(type == ST_TANK_A) c = {250, 0, 0, 250};
+        if(type == ST_TANK_B) c = {0, 0, 250, 255};
+        if(type == ST_TANK_C) c = {0, 255, 0, 250};
+        if(type == ST_TANK_D) c = {250, 0, 255, 250};
+        SDL_Rect r = {min(target_position.x, dest_rect.x + dest_rect.w / 2), dest_rect.y + dest_rect.h / 2, abs(target_position.x - (dest_rect.x + dest_rect.w / 2)), 1};
+        Engine::getEngine().getRenderer()->drawRect(&r, c,  true);
+        r = {target_position.x, min(target_position.y, dest_rect.y + dest_rect.h / 2), 1, abs(target_position.y - (dest_rect.y + dest_rect.h / 2))};
+        Engine::getEngine().getRenderer()->drawRect(&r, c, true);
+    }
     Tank::draw();
 }
 
@@ -68,6 +84,7 @@ void Enemy::update(Uint32 dt)
     else
         src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
+
     m_direction_time += dt;
     m_speed_time += dt;
     m_fire_time += dt;
@@ -75,7 +92,23 @@ void Enemy::update(Uint32 dt)
     {
         m_direction_time = 0;
         m_keep_direction_time = rand() % 800 + 100;
-        setDirection(static_cast<Direction>(rand() % 4));
+
+        float p = static_cast<float>(rand()) / RAND_MAX;
+
+        if(p < (type == ST_TANK_D ? 0.8 : 0.5) && target_position.x > 0 && target_position.y > 0)
+        {
+            int dx = target_position.x - (dest_rect.x + dest_rect.w / 2);
+            int dy = target_position.y - (dest_rect.y + dest_rect.h / 2);
+
+            p = static_cast<float>(rand()) / RAND_MAX;
+
+            if(abs(dx) > abs(dy))
+                setDirection(p < 0.7 ? (dx < 0 ? D_LEFT : D_RIGHT) : (dy < 0 ? D_UP : D_DOWN));
+            else
+                setDirection(p < 0.7 ? (dy < 0 ? D_UP : D_DOWN) : (dx < 0 ? D_LEFT : D_RIGHT));
+        }
+        else
+            setDirection(static_cast<Direction>(rand() % 4));
     }
     if(m_speed_time > m_try_to_go_time)
     {
@@ -86,9 +119,43 @@ void Enemy::update(Uint32 dt)
     if(m_fire_time > m_reload_time)
     {
         m_fire_time = 0;
-        m_reload_time = rand() % 1000;
-        fire();
+        if(type == ST_TANK_A)
+        {
+            m_reload_time = rand() % 400;
+            int dx = target_position.x - (dest_rect.x + dest_rect.w / 2);
+            int dy = target_position.y - (dest_rect.y + dest_rect.h / 2);
+
+            if(stop) fire();
+            else
+                switch (direction)
+                {
+                case D_UP:
+                    if(dy < 0 && abs(dx) < dest_rect.w) fire();
+                    break;
+                case D_RIGHT:
+                    if(dx > 0 && abs(dy) < dest_rect.h) fire();
+                    break;
+                case D_DOWN:
+                    if(dy > 0 && abs(dx) < dest_rect.w) fire();
+                    break;
+                case D_LEFT:
+                    if(dx < 0 && abs(dy) < dest_rect.h) fire();
+                    break;
+                }
+        }
+        else if(type == ST_TANK_D)
+        {
+            m_reload_time = rand() % 800;
+            fire();
+        }
+        else
+        {
+            m_reload_time = rand() % 1000;
+            fire();
+        }
     }
+
+    stop = false;
 }
 
 void Enemy::destroy()
@@ -96,7 +163,7 @@ void Enemy::destroy()
     m_lives_count--;
     if(m_lives_count <= 0)
     {
-        m_lives_count = 1;
+        m_lives_count = 0;
         Tank::destroy();
     }
 }

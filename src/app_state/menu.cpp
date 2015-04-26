@@ -75,7 +75,7 @@ void Menu::eventProcess(SDL_Event *ev)
 
             m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 110;
         }
-        else if(ev->key.keysym.sym == SDLK_SPACE)
+        else if(ev->key.keysym.sym == SDLK_SPACE || ev->key.keysym.sym == SDLK_RETURN)
         {
             m_finished = true;
         }
@@ -101,5 +101,5 @@ AppState* Menu::nextState()
         Game* g = new Game(2);
         return g;
     }
-    else nullptr;
+    return nullptr;
 }

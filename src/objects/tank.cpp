@@ -78,6 +78,8 @@ void Tank::update(Uint32 dt)
             direction = new_direction;
         }
     }
+
+
     if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) //brak animacji jeśli czołg nie prógbuje jechać
     {
         m_frame_display_time += dt;
@@ -97,15 +99,14 @@ void Tank::update(Uint32 dt)
                 }
                 else if(testFlag(TSF_DESTROYED))
                 {
-                    //TODO uwzględnić życia
-//                        to_erase = true;
-                    respawn();
+//                    TODO uwzględnić życia
+                    if(m_lives_count > 0) respawn();
+                    else to_erase = true;
                 }
             }
         }
     }
 
-    stop = false;
 
     // Obsługa pocisku
     if(bullet != nullptr)

@@ -116,9 +116,9 @@ void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_colo
     SDL_RenderCopy(m_renderer, m_text_texture, NULL, &window_dest);
 }
 
-void Renderer::drawRect(const SDL_Rect *rect, SDL_Color text_color, bool fill)
+void Renderer::drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill)
 {
-    SDL_SetRenderDrawColor(m_renderer, text_color.r, text_color.g, text_color.b, text_color.a);
+    SDL_SetRenderDrawColor(m_renderer, rect_color.r, rect_color.g, rect_color.b, rect_color.a);
 
     if(fill)
         SDL_RenderFillRect(m_renderer, rect);

@@ -13,8 +13,10 @@ public:
     void update(Uint32 dt);
     void destroy();
 
+    SDL_Point target_position;
+
 private:
-    int m_lives_count;
+
 
     Uint32 m_direction_time;
     Uint32 m_keep_direction_time;
@@ -24,6 +26,7 @@ private:
 
     Uint32 m_fire_time;
     Uint32 m_reload_time;
+
 };
 
 #endif // ENEMY_H
