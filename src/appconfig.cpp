@@ -35,6 +35,7 @@ unsigned AppConfig::level_start_time = 200; // 2000;
 unsigned AppConfig::slip_time = 380;
 unsigned AppConfig::enemy_start_count = 20; //liczba wrogów do zabicia
 unsigned AppConfig::enemy_max_count_on_map = 4; //maksymalna liczba czołgów na mapie w jednej chwili
+unsigned AppConfig::enemy_redy_time = 501; //czas po jakim na mapie może pojawić się nowy przeciwnik
 double AppConfig::game_over_entry_speed = 0.13;
 double AppConfig::tank_default_speed = 0.08;
 double AppConfig::bullet_default_speed = 0.23;

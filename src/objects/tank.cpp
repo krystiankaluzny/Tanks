@@ -99,9 +99,9 @@ void Tank::update(Uint32 dt)
                 }
                 else if(testFlag(TSF_DESTROYED))
                 {
-//                    TODO uwzględnić życia
+                    m_current_frame = m_sprite->frames_count;
                     if(lives_count > 0) respawn();
-                    else to_erase = true;
+                    else if(bullet == nullptr) to_erase = true;
                 }
             }
         }
@@ -297,13 +297,14 @@ void Tank::respawn()
     stop = false;
     m_slip_time = 0;
 
+    m_flags = TSF_LIFE;
+    update(0);
+    m_flags = TSF_CREATE; //resetujemy wszystkie inne flagi
+
+    //ustawienie porostokąta kolizji po wywołaniu update
     collision_rect.x = 0;
     collision_rect.y = 0;
     collision_rect.h = 0;
     collision_rect.w = 0;
-
-    m_flags = TSF_LIFE;
-    update(0);
-    m_flags = TSF_CREATE; //resetujemy wszystkie inne flagi
 }
 

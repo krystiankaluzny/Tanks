@@ -7,7 +7,6 @@
 Enemy::Enemy()
     : Tank()
 {
-    srand(time(NULL));
     direction = D_DOWN;
     m_direction_time = 0;
     m_keep_direction_time = 100;
@@ -32,7 +31,6 @@ Enemy::Enemy()
 Enemy::Enemy(double x, double y, SpriteType type)
     : Tank(x, y, type)
 {
-    srand(time(NULL));
     direction = D_DOWN;
     m_direction_time = 0;
     m_keep_direction_time = 100;

@@ -177,11 +177,14 @@ void Game::update(Uint32 dt)
 
         //dodanie nowego przeciwnika
         m_enemy_redy_time += dt;
-        if(m_enemies.size() < AppConfig::enemy_max_count_on_map && m_enemy_to_kill > 0 && m_enemy_redy_time > 1000)
+        if(m_enemies.size() < AppConfig::enemy_max_count_on_map && m_enemy_to_kill > 0 && m_enemy_redy_time > AppConfig::enemy_redy_time)
         {
             m_enemy_redy_time = 0;
             generateEnemy();
         }
+
+        if(m_enemies.empty() && m_enemy_to_kill <= 0)
+            nextLevel();
 
         if(m_players.empty() && !m_game_over)
         {
@@ -677,7 +680,8 @@ void Game::generateEnemy()
         c = -0.036111 * m_current_level + 1.363889;
     }
     float p = static_cast<float>(rand()) / RAND_MAX;
-    std::cout << p << std::endl;
+//    std::cout.precision( 15 );
+//    std::cout << p << " " << time(NULL) << std::endl;
     if(p < a) e->lives_count = 1;
     else if(p < b) e->lives_count = 2;
     else if(p < c) e->lives_count = 3;

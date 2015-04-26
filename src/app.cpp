@@ -4,6 +4,7 @@
 #include "app_state/game.h"
 #include "app_state/menu.h"
 
+#include <ctime>
 #include <iostream>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
@@ -38,6 +39,7 @@ void App::run()
         if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return;
         if(TTF_Init() == -1) return;
 
+        srand(time(NULL)); //inicjowanie generatora pseudolosowego
 
         Engine& engine = Engine::getEngine();
         engine.initModules();
