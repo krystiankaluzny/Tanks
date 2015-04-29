@@ -13,7 +13,6 @@
 
 Game::Game()
 {
-    srand(time(NULL));
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
@@ -25,7 +24,6 @@ Game::Game()
 
 Game::Game(int players_count)
 {
-    srand(time(NULL));
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
@@ -662,7 +660,6 @@ void Game::nextLevel()
 void Game::generateEnemy()
 {
     unsigned pos = rand() % 3;
-//    std::cout << pos << std::endl;
     SpriteType type = static_cast<SpriteType>(rand() % (ST_TANK_D - ST_TANK_A + 1) + ST_TANK_A);
     Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(pos).x, AppConfig::enemy_starting_point.at(pos).y, type);
 
