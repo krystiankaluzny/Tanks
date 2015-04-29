@@ -27,6 +27,7 @@ public:
     static unsigned enemy_start_count;
     static unsigned enemy_max_count_on_map;
     static unsigned enemy_redy_time;
+    static unsigned player_bullet_max_size;
     static double game_over_entry_speed;
     static double tank_default_speed;
     static double bullet_default_speed;

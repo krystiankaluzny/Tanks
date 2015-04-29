@@ -1,11 +1,11 @@
 #include "tank.h"
 #include "../appconfig.h"
+#include <algorithm>
 
 Tank::Tank()
     : Object(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A)
 {
     direction = D_UP;
-    bullet = nullptr;
     m_slip_time = 0;
     default_speed = AppConfig::tank_default_speed;
     speed = 0.0;
@@ -15,7 +15,6 @@ Tank::Tank(double x, double y, SpriteType type)
     : Object(x, y, type)
 {
     direction = D_UP;
-    bullet = nullptr;
     m_slip_time = 0;
     default_speed = AppConfig::tank_default_speed;
     speed = 0.0;
@@ -23,14 +22,17 @@ Tank::Tank(double x, double y, SpriteType type)
 
 Tank::~Tank()
 {
-    delete bullet;
+    for(auto bullet : bullets) delete bullet;
+    bullets.clear();
 }
 
 void Tank::draw()
 {
     if(to_erase) return;
     Object::draw();
-    if(bullet != nullptr) bullet->draw();
+
+    for(auto bullet : bullets)
+        if(bullet != nullptr) bullet->draw();
 }
 
 void Tank::update(Uint32 dt)
@@ -101,7 +103,7 @@ void Tank::update(Uint32 dt)
                 {
                     m_current_frame = m_sprite->frames_count;
                     if(lives_count > 0) respawn();
-                    else if(bullet == nullptr) to_erase = true;
+                    else if(bullets.size() == 0) to_erase = true;
                 }
             }
         }
@@ -109,24 +111,18 @@ void Tank::update(Uint32 dt)
 
 
     // Obsługa pocisku
-    if(bullet != nullptr)
-    {
-        if(bullet->to_erase)
-        {
-            delete bullet;
-            bullet = nullptr;
-        }
-        else bullet->update(dt);
-    }
+    for(auto bullet : bullets) bullet->update(dt);
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet*b){if(b->to_erase) {delete b; return true;} return false;}), bullets.end());
 }
 
 void Tank::fire()
 {
     if(!testFlag(TSF_LIFE)) return;
-    if(bullet == nullptr)
+    if(bullets.size() < m_bullet_max_size)
     {
         //podajemy początkową dowolną pozycję, bo nie znamy wymiarów pocisku
-        bullet = dynamic_cast<Bullet*>(ObjectFactory::Create(pos_x, pos_y, ST_BULLET));
+        Bullet* bullet = dynamic_cast<Bullet*>(ObjectFactory::Create(pos_x, pos_y, ST_BULLET));
+        bullets.push_back(bullet);
 
         Direction dire = (testFlag(TSF_ON_ICE) ? new_direction : direction);
         switch(dire)

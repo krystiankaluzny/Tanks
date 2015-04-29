@@ -18,6 +18,8 @@ Enemy::Enemy()
     m_reload_time = 100;
     lives_count = 1;
 
+    m_bullet_max_size = 1;
+
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
     else
@@ -40,8 +42,9 @@ Enemy::Enemy(double x, double y, SpriteType type)
 
     m_fire_time = 0;
     m_reload_time = 100;
-
     lives_count = 1;
+
+    m_bullet_max_size = 1;
 
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;

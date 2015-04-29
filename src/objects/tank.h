@@ -6,6 +6,8 @@
 #include "../type.h"
 #include "objectfactory.h"
 
+#include <vector>
+
 typedef unsigned TankStateFlags;
 
 class Tank : public Object
@@ -31,20 +33,14 @@ public:
     double speed;
     bool stop;
     Direction direction;
-    Bullet* bullet;
+    std::vector<Bullet*> bullets;
     int lives_count;
 
 protected:
     TankStateFlags m_flags;
     Sint32 m_slip_time;
     Direction new_direction;
-
-
-    //1 star tank speed v = 0.084
-    //bullet
-    //normaln bullet speed v = 0.23;
-    //1 star bullet speed v = 0.42;
-
+    unsigned m_bullet_max_size;
 };
 
 #endif // TANK_H

@@ -11,6 +11,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#define VERSION "1.0.0"
+
 App::App()
 {
     m_window = nullptr;

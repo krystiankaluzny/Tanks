@@ -8,6 +8,7 @@ Player::Player()
 {
     speed = 0;
     lives_count = 999;//4;
+    m_bullet_max_size = AppConfig::player_bullet_max_size;
     respawn();
 }
 
@@ -16,6 +17,7 @@ Player::Player(double x, double y, SpriteType type)
 {
    speed = 0;
    lives_count = 999;//4;
+   m_bullet_max_size = AppConfig::player_bullet_max_size;
    respawn();
 }
 
@@ -44,7 +46,7 @@ void Player::respawn()
     lives_count--;
     if(lives_count <= 0)
     {
-        if(bullet == nullptr) to_erase = true;
+        if(bullets.size() == 0) to_erase = true;
         return;
     }
 

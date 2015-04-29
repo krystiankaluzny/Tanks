@@ -19,7 +19,8 @@ SOURCES += src/main.cpp \
     src/objects/player.cpp \
     src/objects/bullet.cpp \
     src/objects/brick.cpp \
-    src/objects/eagle.cpp
+    src/objects/eagle.cpp \
+    src/app_state/menu.cpp
 
 CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
@@ -48,4 +49,5 @@ HEADERS += \
     src/objects/player.h \
     src/objects/bullet.h \
     src/objects/brick.h \
-    src/objects/eagle.h
+    src/objects/eagle.h \
+    src/app_state/menu.h

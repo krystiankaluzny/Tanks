@@ -105,8 +105,12 @@ void Game::update(Uint32 dt)
                 checkCollisionTwoTanks(*en1, *en2, dt);
 
         //sprawdzenie kolizji kuli z lewelem
-        for(auto enemy : m_enemies) checkCollisionBulletWithLevel(enemy->bullet);
-        for(auto player : m_players) checkCollisionBulletWithLevel(player->bullet);
+        for(auto enemy : m_enemies)
+            for(auto bullet : enemy->bullets)
+                checkCollisionBulletWithLevel(bullet);
+        for(auto player : m_players)
+            for(auto bullet : player->bullets)
+                checkCollisionBulletWithLevel(bullet);
 
 
         for(auto player : m_players)
@@ -114,16 +118,20 @@ void Game::update(Uint32 dt)
             {
                 //sprawdzenie kolizji czołgów przeciwników z graczami
                 checkCollisionTwoTanks(player, enemy, dt);
-                //sprawdzenie kolizji pocisku gracza z przeciwnikiem
-                checkCollisionBulletWithTanks(player->bullet, enemy);
+                //sprawdzenie kolizji pocisków gracza z przeciwnikiem
+                for(auto bullet : player->bullets)
+                    checkCollisionBulletWithTanks(bullet, enemy);
                 //sprawdzenie kolizji pocisku gracza z pociskiem przeciwnika
-                checkCollisionTwoBullets(player->bullet, enemy->bullet);
+                for(auto bullet1 : player->bullets)
+                     for(auto bullet2 : enemy->bullets)
+                            checkCollisionTwoBullets(bullet1, bullet2);
             }
 
         //sprawdzenie kolizji pocisku przeciknika z graczem
         for(auto enemy : m_enemies)
             for(auto player : m_players)
-                checkCollisionBulletWithTanks(enemy->bullet, player);
+                for(auto bullet : enemy->bullets)
+                    checkCollisionBulletWithTanks(bullet, player);
 
         //Sprawdzenie kolizji czołgów z poziomem
         for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
