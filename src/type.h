@@ -40,11 +40,9 @@ enum SpriteType
     ST_BULLET,
 
     ST_LEFT_ENEMY,
+    ST_STAGE_STATUS,
+
     ST_NONE
-    //TODO
-    //pozostali przeciwnicy
-    //pozostałe życia
-    //numer rundy
 };
 
 enum TankStateFlag

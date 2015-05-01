@@ -55,6 +55,7 @@ void Game::draw()
             for(auto item : row)
                 if(item != nullptr) item->draw();
 
+        for(auto player : m_players) player->draw();
         for(auto enemy : m_enemies) enemy->draw();
         m_eagle->draw();
 
@@ -73,22 +74,28 @@ void Game::draw()
         }
 
         //===========Status gry===========
-        SDL_Point p;
+        SDL_Rect src = engine.getSpriteConfig()->getSpriteData(ST_LEFT_ENEMY)->rect;
+        SDL_Rect dst;
+        SDL_Point p_dst;
+        for(int i = 0; i < m_enemy_to_kill; i++)
+        {
+            dst = {AppConfig::status_rect.x + 8 + src.w * (i % 2), 5 + src.h * (i / 2), src.w, src.h};
+            renderer->drawObject(&src, &dst);
+        }
         int i = 0;
         for(auto player : m_players)
         {
-            player->draw();
-            p = {AppConfig::status_rect.x + 5, i * 20 + 200};
+            dst = {AppConfig::status_rect.x + 5, i * 18 + 180, 16, 16};
+            p_dst = {dst.x + dst.w + 2, dst.y};
             i++;
-            renderer->drawText(&p, intToString(m_enemy_to_kill), {255, 255, 0, 255}, 3);
+            renderer->drawObject(&player->src_rect, &dst);
+            renderer->drawText(&p_dst, intToString(player->lives_count), {0, 0, 0, 255}, 3);
         }
-        SDL_Rect src = engine.getSpriteConfig()->getSpriteData(ST_LEFT_ENEMY)->rect;
-        SDL_Rect dst;
-        for(int i = 0; i < m_enemy_to_kill; i++)
-        {
-            dst = {AppConfig::status_rect.x + 5 + src.w * (i % 2), 10 + src.h * (i / 2), src.w, src.h};
-            renderer->drawObject(&src, &dst);
-        }
+        src = engine.getSpriteConfig()->getSpriteData(ST_STAGE_STATUS)->rect;
+        dst = {AppConfig::status_rect.x + 8, 185 + i * 18, src.w, src.h};
+        p_dst = {dst.x + 10, dst.y + 26};
+        renderer->drawObject(&src, &dst);
+        renderer->drawText(&p_dst, intToString(m_current_level), {0, 0, 0, 255}, 2);
     }
 
     renderer->flush();
@@ -195,7 +202,7 @@ void Game::update(Uint32 dt)
             if(bush != nullptr) bush->update(dt);
 
         //usunięcie niepotrzebnych czołgów
-        m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [this](Enemy*e){if(e->to_erase) {delete e; m_enemy_to_kill--; return true;} return false;}), m_enemies.end());
+        m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
 
         //dodanie nowego przeciwnika
@@ -621,6 +628,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
         {
             bullet->destroy();
             enemy->destroy();
+            if(enemy->lives_count <= 0) m_enemy_to_kill--;
             player->score += enemy->scoreForKill();
         }
     }
