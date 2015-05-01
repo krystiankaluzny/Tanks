@@ -25,7 +25,7 @@ public:
 private:
     void loadLevel(std::string path);
     void clearLevel();
-    std::string uIntToString(unsigned num);
+    std::string intToString(int num);
     void nextLevel();
     void generateEnemy();
 

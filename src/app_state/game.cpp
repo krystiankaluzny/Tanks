@@ -39,12 +39,13 @@ Game::~Game()
 
 void Game::draw()
 {
-    Renderer* renderer = Engine::getEngine().getRenderer();
+    Engine& engine = Engine::getEngine();
+    Renderer* renderer = engine.getRenderer();
     renderer->clear();
 
     if(m_level_start_screen)
     {
-        std::string level_name = "STAGE " + uIntToString(m_current_level);
+        std::string level_name = "STAGE " + intToString(m_current_level);
         renderer->drawText(nullptr, level_name, {255, 255, 255, 255}, 1);
     }
     else
@@ -54,15 +55,6 @@ void Game::draw()
             for(auto item : row)
                 if(item != nullptr) item->draw();
 
-        SDL_Point p;
-        int i = 0;
-        for(auto player : m_players)
-        {
-            player->draw();
-            p = {AppConfig::status_rect.x + 5, i * 20 + 10};
-            i++;
-            renderer->drawText(&p, uIntToString(player->score), {255, 255, 0, 255}, 3);
-        }
         for(auto enemy : m_enemies) enemy->draw();
         m_eagle->draw();
 
@@ -78,6 +70,24 @@ void Game::draw()
             pos.x = -1;
             pos.y = m_game_over_position;
             renderer->drawText(&pos, AppConfig::game_over_text, {255, 10, 10, 255});
+        }
+
+        //===========Status gry===========
+        SDL_Point p;
+        int i = 0;
+        for(auto player : m_players)
+        {
+            player->draw();
+            p = {AppConfig::status_rect.x + 5, i * 20 + 200};
+            i++;
+            renderer->drawText(&p, intToString(m_enemy_to_kill), {255, 255, 0, 255}, 3);
+        }
+        SDL_Rect src = engine.getSpriteConfig()->getSpriteData(ST_LEFT_ENEMY)->rect;
+        SDL_Rect dst;
+        for(int i = 0; i < m_enemy_to_kill; i++)
+        {
+            dst = {AppConfig::status_rect.x + 5 + src.w * (i % 2), 10 + src.h * (i / 2), src.w, src.h};
+            renderer->drawObject(&src, &dst);
         }
     }
 
@@ -185,7 +195,7 @@ void Game::update(Uint32 dt)
             if(bush != nullptr) bush->update(dt);
 
         //usunięcie niepotrzebnych czołgów
-        m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
+        m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [this](Enemy*e){if(e->to_erase) {delete e; m_enemy_to_kill--; return true;} return false;}), m_enemies.end());
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
 
         //dodanie nowego przeciwnika
@@ -247,7 +257,7 @@ void Game::eventProcess(SDL_Event *ev)
                 player->fire();
             }
         }
-//DUPA
+
         switch(ev->key.keysym.sym)
         {
         case SDLK_r:
@@ -605,12 +615,12 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 
     for(auto bullet : player->bullets)
     {
+        if(bullet->collide) continue;
         intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
         if(intersect_rect.w > 0 && intersect_rect.h > 0)
         {
             bullet->destroy();
             enemy->destroy();
-            if(enemy->to_erase) m_enemy_to_kill--;
             player->score += enemy->scoreForKill();
         }
     }
@@ -646,12 +656,19 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
     }
 }
 
-std::string Game::uIntToString(unsigned num)
+std::string Game::intToString(int num)
 {
     if(num == 0) return "0";
 
     std::string buf;
+    bool negative = false;
+    if(num < 0)
+    {
+        negative = true;
+        num = -num;
+    }
     for(; num; num /= 10) buf = "0123456789abcdef"[num % 10] + buf;
+    if(negative) buf = "-" + buf;
     return buf;
 }
 
@@ -667,7 +684,7 @@ void Game::nextLevel()
     m_finished = false;
     m_enemy_to_kill = AppConfig::enemy_start_count;
 
-    std::string level_path = AppConfig::levels_path + uIntToString(m_current_level);
+    std::string level_path = AppConfig::levels_path + intToString(m_current_level);
     loadLevel(level_path);
 
     if(m_player_count == 2)

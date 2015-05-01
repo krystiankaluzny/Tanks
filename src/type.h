@@ -3,10 +3,6 @@
 
 enum SpriteType
 {
-    //A - czołgi podstawowe
-    //B - szybko jężdzące
-    //C - szybko strzelające
-    //D -  ? opancerzone ?
     ST_TANK_A,
     ST_TANK_B,
     ST_TANK_C,
@@ -43,6 +39,7 @@ enum SpriteType
 
     ST_BULLET,
 
+    ST_LEFT_ENEMY,
     ST_NONE
     //TODO
     //pozostali przeciwnicy
