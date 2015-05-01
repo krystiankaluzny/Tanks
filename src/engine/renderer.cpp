@@ -25,6 +25,8 @@ Renderer::~Renderer()
         TTF_CloseFont(m_font1);
     if(m_font2 != nullptr)
         TTF_CloseFont(m_font2);
+    if(m_font3 != nullptr)
+        TTF_CloseFont(m_font3);
 }
 
 void Renderer::loadTexture(SDL_Window* window)
@@ -45,6 +47,7 @@ void Renderer::loadFont()
 {
     m_font1 = TTF_OpenFont(AppConfig::font_name.c_str(), 28);
     m_font2 = TTF_OpenFont(AppConfig::font_name.c_str(), 14);
+    m_font3 = TTF_OpenFont(AppConfig::font_name.c_str(), 10);
 }
 
 void Renderer::clear()
@@ -81,14 +84,15 @@ void Renderer::setScale(float xs, float ys)
     SDL_RenderSetViewport(m_renderer, &viewport);
 }
 
-void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color, bool small_font)
+void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color, int font_size)
 {
-    if(m_font1 == nullptr || m_font2 == nullptr ) return;
+    if(m_font1 == nullptr || m_font2 == nullptr || m_font3 == nullptr) return;
     if(m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
 
     SDL_Surface* text_surface = nullptr;
-    if(small_font) text_surface = TTF_RenderText_Solid(m_font2, text.c_str(), text_color);
+    if(font_size == 2) text_surface = TTF_RenderText_Solid(m_font2, text.c_str(), text_color);
+    else if(font_size == 3) text_surface = TTF_RenderText_Solid(m_font3, text.c_str(), text_color);
     else text_surface = TTF_RenderText_Solid(m_font1, text.c_str(), text_color);
 
     if(text_surface == nullptr) return;

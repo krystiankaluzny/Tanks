@@ -9,6 +9,7 @@ Player::Player()
     speed = 0;
     lives_count = 999;//4;
     m_bullet_max_size = AppConfig::player_bullet_max_size;
+    score = 0;
     respawn();
 }
 
@@ -18,6 +19,7 @@ Player::Player(double x, double y, SpriteType type)
    speed = 0;
    lives_count = 999;//4;
    m_bullet_max_size = AppConfig::player_bullet_max_size;
+   score = 0;
    respawn();
 }
 

@@ -45,7 +45,7 @@ void Game::draw()
     if(m_level_start_screen)
     {
         std::string level_name = "STAGE " + uIntToString(m_current_level);
-        renderer->drawText(nullptr, level_name, {255, 255, 255, 255});
+        renderer->drawText(nullptr, level_name, {255, 255, 255, 255}, 1);
     }
     else
     {
@@ -54,7 +54,15 @@ void Game::draw()
             for(auto item : row)
                 if(item != nullptr) item->draw();
 
-        for(auto player : m_players) player->draw();
+        SDL_Point p;
+        int i = 0;
+        for(auto player : m_players)
+        {
+            player->draw();
+            p = {AppConfig::status_rect.x + 5, i * 20 + 10};
+            i++;
+            renderer->drawText(&p, uIntToString(player->score), {255, 255, 0, 255}, 3);
+        }
         for(auto enemy : m_enemies) enemy->draw();
         m_eagle->draw();
 
@@ -119,8 +127,8 @@ void Game::update(Uint32 dt)
                 //sprawdzenie kolizji czołgów przeciwników z graczami
                 checkCollisionTwoTanks(player, enemy, dt);
                 //sprawdzenie kolizji pocisków gracza z przeciwnikiem
-                for(auto bullet : player->bullets)
-                    checkCollisionBulletWithTanks(bullet, enemy);
+                checkCollisionPlayerBulletsWithEnemy(player, enemy);
+
                 //sprawdzenie kolizji pocisku gracza z pociskiem przeciwnika
                 for(auto bullet1 : player->bullets)
                      for(auto bullet2 : enemy->bullets)
@@ -130,8 +138,7 @@ void Game::update(Uint32 dt)
         //sprawdzenie kolizji pocisku przeciknika z graczem
         for(auto enemy : m_enemies)
             for(auto player : m_players)
-                for(auto bullet : enemy->bullets)
-                    checkCollisionBulletWithTanks(bullet, player);
+                    checkCollisionEnemyBulletsWithPlayer(enemy, player);
 
         //Sprawdzenie kolizji czołgów z poziomem
         for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
@@ -179,7 +186,7 @@ void Game::update(Uint32 dt)
 
         //usunięcie niepotrzebnych czołgów
         m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
-        m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [](Player*p){if(p->to_erase) {delete p; return true;} return false;}), m_players.end());
+        m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
 
         //dodanie nowego przeciwnika
         m_enemy_redy_time += dt;
@@ -234,14 +241,13 @@ void Game::eventProcess(SDL_Event *ev)
             {
                 player->setDirection(D_RIGHT);
                 player->speed = player->default_speed;
-
             }
             else if(player->player_keys.fire == ev->key.keysym.scancode)
             {
                 player->fire();
             }
         }
-
+//DUPA
         switch(ev->key.keysym.sym)
         {
         case SDLK_r:
@@ -592,20 +598,37 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
     }
 }
 
-void Game::checkCollisionBulletWithTanks(Bullet *bullet, Tank *tank)
+void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 {
-    if(bullet == nullptr) return;
-    if(bullet->collide) return;
-    if(tank->to_erase) return;
+    if(player->to_erase || player->to_erase) return;
+    SDL_Rect intersect_rect;
 
-    SDL_Rect intersect_rect = intersectRect(&bullet->collision_rect, &tank->collision_rect);
-
-    if(intersect_rect.w > 0 && intersect_rect.h > 0)
+    for(auto bullet : player->bullets)
     {
-        bullet->destroy();
-        tank->destroy();
-        if(tank->type == ST_TANK_A || tank->type == ST_TANK_B || tank->type == ST_TANK_C || tank->type == ST_TANK_D)
-            m_enemy_to_kill--;
+        intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
+        if(intersect_rect.w > 0 && intersect_rect.h > 0)
+        {
+            bullet->destroy();
+            enemy->destroy();
+            if(enemy->to_erase) m_enemy_to_kill--;
+            player->score += enemy->scoreForKill();
+        }
+    }
+}
+
+void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
+{
+    if(enemy->to_erase || player->to_erase) return;
+    SDL_Rect intersect_rect;
+
+    for(auto bullet : enemy->bullets)
+    {
+        intersect_rect = intersectRect(&bullet->collision_rect, &player->collision_rect);
+        if(intersect_rect.w > 0 && intersect_rect.h > 0)
+        {
+            bullet->destroy();
+            player->destroy();
+        }
     }
 }
 
@@ -685,8 +708,6 @@ void Game::generateEnemy()
         c = -0.036111 * m_current_level + 1.363889;
     }
     float p = static_cast<float>(rand()) / RAND_MAX;
-//    std::cout.precision( 15 );
-//    std::cout << p << " " << time(NULL) << std::endl;
     if(p < a) e->lives_count = 1;
     else if(p < b) e->lives_count = 2;
     else if(p < c) e->lives_count = 3;

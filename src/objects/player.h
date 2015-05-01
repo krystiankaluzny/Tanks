@@ -23,8 +23,8 @@ public:
     void update(Uint32 dt);
     void respawn();
     PlayerKeys player_keys;
+    unsigned score;
 private:
-//    int m_lives_count;
 };
 
 #endif // PLAYER_H

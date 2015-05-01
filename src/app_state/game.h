@@ -32,7 +32,8 @@ private:
     void checkCollisionTankWithLevel(Tank* tank, Uint32 dt);
     void checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt);
     void checkCollisionBulletWithLevel(Bullet* bullet);
-    void checkCollisionBulletWithTanks(Bullet* bullet, Tank* tank);
+    void checkCollisionPlayerBulletsWithEnemy(Player* player, Enemy* enemy);
+    void checkCollisionEnemyBulletsWithPlayer(Enemy* enemy, Player* player);
     void checkCollisionTwoBullets(Bullet* bullet1, Bullet* bullet2);
 
 
@@ -43,6 +44,7 @@ private:
 
     std::vector<Enemy*> m_enemies;
     std::vector<Player*> m_players;
+    std::vector<Player*> m_killed_players;
     Eagle* m_eagle;
 
     std::vector<SDL_Rect*> m_rec;

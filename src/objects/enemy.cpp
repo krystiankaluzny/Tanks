@@ -168,3 +168,10 @@ void Enemy::destroy()
         Tank::destroy();
     }
 }
+
+unsigned Enemy::scoreForKill()
+{
+    //TODO dobrać jakieś sensowne liczby
+    if(lives_count > 0) return 50;
+    return 100;
+}

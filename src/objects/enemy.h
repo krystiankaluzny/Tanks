@@ -12,9 +12,9 @@ public:
     void draw();
     void update(Uint32 dt);
     void destroy();
+    unsigned scoreForKill();
 
     SDL_Point target_position;
-
 private:
 
 

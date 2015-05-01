@@ -18,15 +18,16 @@ public:
 
     void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest);
     void setScale(float xs, float ys);
-    void drawText(const SDL_Point* start, std::string text, SDL_Color text_color, bool small_font = false);
+    void drawText(const SDL_Point* start, std::string text, SDL_Color text_color, int font_size = 1);
     void drawRect(const SDL_Rect* rect, SDL_Color rect_color, bool fill = false);
 
 private:
     SDL_Renderer* m_renderer;
     SDL_Texture* m_texture; //tekstura zawierająca wszystkie postacie
     SDL_Texture* m_text_texture;
-    TTF_Font* m_font1;
-    TTF_Font* m_font2;
+    TTF_Font* m_font1; //28
+    TTF_Font* m_font2; //14
+    TTF_Font* m_font3; //
 };
 
 #endif // RENDERER_H

@@ -42,7 +42,7 @@ void Menu::draw()
     {
         text_start = { 180, (i + 1) * 32 + 120};
         i++;
-        renderer->drawText(&text_start, text, {255, 255, 255, 255}, true);
+        renderer->drawText(&text_start, text, {255, 255, 255, 255}, 2);
     }
 
     m_tank_pointer->draw();
