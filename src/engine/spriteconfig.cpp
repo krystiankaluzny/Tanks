@@ -19,7 +19,7 @@ SpriteConfig::SpriteConfig()
     insert(ST_BONUS_GRANATE, 896, 0, 32, 32, 1, 200, false);
     insert(ST_BONUS_HELMET, 896, 32, 32, 32, 1, 200, false);
     insert(ST_BONUS_CLOCK, 896, 64, 32, 32, 1, 200, false);
-    insert(ST_BONUS_SHOVEL, 896, 92, 32, 32, 1, 200, false);
+    insert(ST_BONUS_SHOVEL, 896, 96, 32, 32, 1, 200, false);
     insert(ST_BONUS_TANK, 896, 128, 32, 32, 1, 200, false);
     insert(ST_BONUS_STAR, 896, 160, 32, 32, 1, 200, false);
     insert(ST_BONUS_GUN, 896, 192, 32, 32, 1, 200, false);

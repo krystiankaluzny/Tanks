@@ -1,6 +1,5 @@
 #include "game.h"
 #include "../engine/engine.h"
-#include "../objects/objectfactory.h"
 #include "../appconfig.h"
 #include "menu.h"
 #include "scores.h"
@@ -78,10 +77,10 @@ void Game::draw()
 
         for(auto player : m_players) player->draw();
         for(auto enemy : m_enemies) enemy->draw();
+        for(auto bush : m_bushes) bush->draw();
+        for(auto bonus : m_bonuses) bonus->draw();
         m_eagle->draw();
 
-        for(auto bush : m_bushes)
-            if(bush != nullptr) bush->draw();
 
         if(m_game_over)
         {
@@ -182,6 +181,11 @@ void Game::update(Uint32 dt)
             for(auto player : m_players)
                     checkCollisionEnemyBulletsWithPlayer(enemy, player);
 
+        //sprawdzanie kolizji gracza z bunusem
+        for(auto player : m_players)
+            for(auto bonus : m_bonuses)
+                checkCollisionPlayerWithBonus(player, bonus);
+
         //Sprawdzenie kolizji czołgów z poziomem
         for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
         for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
@@ -216,7 +220,7 @@ void Game::update(Uint32 dt)
         //Update wszystkich obiektów
         for(auto enemy : m_enemies) enemy->update(dt);
         for(auto player : m_players) player->update(dt);
-
+        for(auto bonus : m_bonuses) bonus->update(dt);
         m_eagle->update(dt);
 
         for(auto row : m_level)
@@ -229,10 +233,11 @@ void Game::update(Uint32 dt)
         //usunięcie niepotrzebnych czołgów
         m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
+        m_bonuses.erase(std::remove_if(m_bonuses.begin(), m_bonuses.end(), [](Bonus*b){if(b->to_erase) {delete b; return true;} return false;}), m_bonuses.end());
 
         //dodanie nowego przeciwnika
         m_enemy_redy_time += dt;
-        if(m_enemies.size() < AppConfig::enemy_max_count_on_map && (m_enemy_to_kill - AppConfig::enemy_max_count_on_map + 1) > 0 && m_enemy_redy_time > AppConfig::enemy_redy_time)
+        if(m_enemies.size() < (AppConfig::enemy_max_count_on_map < m_enemy_to_kill ? AppConfig::enemy_max_count_on_map : m_enemy_to_kill) && m_enemy_redy_time > AppConfig::enemy_redy_time)
         {
             m_enemy_redy_time = 0;
             generateEnemy();
@@ -300,13 +305,11 @@ void Game::eventProcess(SDL_Event *ev)
         case SDLK_n:
             m_enemy_to_kill = 0;
             m_finished = true;
-//            nextLevel();
             break;
         case SDLK_b:
             m_enemy_to_kill = 0;
             m_current_level -= 2;
             m_finished = true;
-//            nextLevel();
             break;
         case SDLK_t:
             AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
@@ -360,11 +363,11 @@ void Game::loadLevel(std::string path)
                 Object* obj;
                 switch(line.at(i))
                 {
-                case '#' : obj = ObjectFactory::Create(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_BRICK_WALL); break;
-                case '@' : obj = ObjectFactory::Create(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_STONE_WALL); break;
-                case '%' : m_bushes.push_back(ObjectFactory::Create(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_BUSH)); obj =  nullptr; break;
-                case '~' : obj = ObjectFactory::Create(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_WATER); break;
-                case '-' : obj = ObjectFactory::Create(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_ICE); break;
+                case '#' : obj = new Brick(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h); break;
+                case '@' : obj = new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_STONE_WALL); break;
+                case '%' : m_bushes.push_back(new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_BUSH)); obj =  nullptr; break;
+                case '~' : obj = new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_WATER); break;
+                case '-' : obj = new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_ICE); break;
                 default: obj = nullptr;
                 }
                 row.push_back(obj);
@@ -419,6 +422,9 @@ void Game::clearLevel()
 
     for(auto player : m_players) delete player;
     m_players.clear();
+
+    for(auto bonus : m_bonuses) delete bonus;
+    m_bonuses.clear();
 
     for(auto row : m_level)
     {
@@ -668,6 +674,8 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
         intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
         if(intersect_rect.w > 0 && intersect_rect.h > 0)
         {
+            if(enemy->testFlag(TSF_BONUS)) generateBonus();
+
             bullet->destroy();
             enemy->destroy();
             if(enemy->lives_count <= 0) m_enemy_to_kill--;
@@ -704,6 +712,11 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
         bullet1->destroy();
         bullet2->destroy();
     }
+}
+
+void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
+{
+
 }
 
 void Game::nextLevel()
@@ -772,4 +785,12 @@ void Game::generateEnemy()
     if(p < 0.08) e->setFlag(TSF_BONUS);
 
     m_enemies.push_back(e);
+}
+
+void Game::generateBonus()
+{
+    Bonus* b = new Bonus(rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - AppConfig::tile_rect.w - 1),
+                                     rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - AppConfig::tile_rect.h - 1),
+                                     static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
+    m_bonuses.push_back(b);
 }

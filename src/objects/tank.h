@@ -4,7 +4,6 @@
 #include "object.h"
 #include "bullet.h"
 #include "../type.h"
-#include "objectfactory.h"
 
 #include <vector>
 

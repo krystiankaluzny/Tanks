@@ -7,6 +7,7 @@
 #include "../objects/bullet.h"
 #include "../objects/brick.h"
 #include "../objects/eagle.h"
+#include "../objects/bonus.h"
 #include <vector>
 #include <string>
 
@@ -29,6 +30,7 @@ private:
     void clearLevel();
     void nextLevel();
     void generateEnemy();
+    void generateBonus();
 
     void checkCollisionTankWithLevel(Tank* tank, Uint32 dt);
     void checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt);
@@ -46,6 +48,7 @@ private:
     std::vector<Enemy*> m_enemies; //wrogowie
     std::vector<Player*> m_players; //gracze
     std::vector<Player*> m_killed_players; //zabici gracze
+    std::vector<Bonus*> m_bonuses;
     Eagle* m_eagle;
 
 //    std::vector<SDL_Rect*> m_rec;

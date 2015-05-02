@@ -120,7 +120,7 @@ void Tank::fire()
     if(bullets.size() < m_bullet_max_size)
     {
         //podajemy początkową dowolną pozycję, bo nie znamy wymiarów pocisku
-        Bullet* bullet = dynamic_cast<Bullet*>(ObjectFactory::Create(pos_x, pos_y, ST_BULLET));
+        Bullet* bullet = new Bullet(pos_x, pos_y);
         bullets.push_back(bullet);
 
         Direction dire = (testFlag(TSF_ON_ICE) ? new_direction : direction);
