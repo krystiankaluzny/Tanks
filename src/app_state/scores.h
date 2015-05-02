@@ -19,6 +19,9 @@ public:
 
 private:
     std::vector<Player*> m_players;
+    int m_score_counter;
+    bool m_score_counter_run;
+    int m_max_score;
     Uint32 m_show_time;
     int m_level;
 };
