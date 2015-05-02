@@ -105,11 +105,6 @@ void App::eventProces()
         {
             is_running = false;
         }
-        else if(event.type == SDL_KEYDOWN)
-        {
-            if(event.key.keysym.sym == SDLK_ESCAPE)
-                is_running = false;
-        }
         else if(event.type == SDL_WINDOWEVENT)
         {
             if(event.window.event == SDL_WINDOWEVENT_RESIZED ||

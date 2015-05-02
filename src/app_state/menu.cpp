@@ -79,6 +79,11 @@ void Menu::eventProcess(SDL_Event *ev)
         {
             m_finished = true;
         }
+        else if(ev->key.keysym.sym == SDLK_ESCAPE)
+        {
+            m_menu_index = -1;
+            m_finished = true;
+        }
     }
 }
 

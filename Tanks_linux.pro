@@ -20,7 +20,8 @@ SOURCES += src/main.cpp \
     src/objects/bullet.cpp \
     src/objects/brick.cpp \
     src/objects/eagle.cpp \
-    src/app_state/menu.cpp
+    src/app_state/menu.cpp \
+    src/app_state/scores.cpp
 
 CC = g++
 CFLAGS = -c -Wall -std=c++11
@@ -48,4 +49,5 @@ HEADERS += \
     src/objects/bullet.h \
     src/objects/brick.h \
     src/objects/eagle.h \
-    src/app_state/menu.h
+    src/app_state/menu.h \
+    src/app_state/scores.h

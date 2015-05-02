@@ -81,7 +81,6 @@ void Tank::update(Uint32 dt)
         }
     }
 
-
     if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) //brak animacji jeśli czołg nie prógbuje jechać
     {
         m_frame_display_time += dt;

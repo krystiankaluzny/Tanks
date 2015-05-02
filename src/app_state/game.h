@@ -15,6 +15,8 @@ class Game : public AppState
 public:
     Game();
     Game(int players_count);
+    Game(std::vector<Player*> players, int previous_level);
+
     ~Game();
     void draw();
     void update(Uint32 dt);
@@ -25,7 +27,6 @@ public:
 private:
     void loadLevel(std::string path);
     void clearLevel();
-    std::string intToString(int num);
     void nextLevel();
     void generateEnemy();
 
@@ -37,29 +38,30 @@ private:
     void checkCollisionTwoBullets(Bullet* bullet1, Bullet* bullet2);
 
 
-    int m_level_columns_count;
+    int m_level_columns_count; // wymiary mapy
     int m_level_rows_count;
     std::vector< std::vector <Object*> > m_level; //level bez krzaków
-    std::vector<Object*> m_bushes;
+    std::vector<Object*> m_bushes; //krzaki
 
-    std::vector<Enemy*> m_enemies;
-    std::vector<Player*> m_players;
-    std::vector<Player*> m_killed_players;
+    std::vector<Enemy*> m_enemies; //wrogowie
+    std::vector<Player*> m_players; //gracze
+    std::vector<Player*> m_killed_players; //zabici gracze
     Eagle* m_eagle;
 
-    std::vector<SDL_Rect*> m_rec;
+//    std::vector<SDL_Rect*> m_rec;
 
-    int m_current_level;
-    int m_player_count;
-    int m_enemy_to_kill;
+    int m_current_level; //numer poziomu
+    int m_player_count;  //gra na 1 gracza lub 2
+    int m_enemy_to_kill; //wrogowie do zabicia
 
-    bool m_level_start_screen;
+    bool m_level_start_screen; //
     Uint32 m_level_start_time;
-    Uint32 m_enemy_redy_time;
+    Uint32 m_enemy_redy_time; //czas od ostatniego stworzenia przeciwnika
 
-    bool m_game_over;
-    double m_game_over_position;
-    bool m_finished;
+    bool m_game_over;   //czy przegrana
+    double m_game_over_position; //pozycja napisu "GAME OVER"
+    bool m_finished; //czy koniec levelu (przegrana lub przejście)
+    bool m_pause;
 };
 
 #endif // GAME_H

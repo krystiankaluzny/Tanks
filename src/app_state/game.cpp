@@ -3,6 +3,7 @@
 #include "../objects/objectfactory.h"
 #include "../appconfig.h"
 #include "menu.h"
+#include "scores.h"
 
 #include <SDL2/SDL.h>
 #include <stdlib.h>
@@ -19,6 +20,7 @@ Game::Game()
     m_eagle = nullptr;
     m_player_count = 1;
     m_enemy_redy_time = 0;
+    m_pause = false;
     nextLevel();
 }
 
@@ -29,6 +31,24 @@ Game::Game(int players_count)
     m_current_level = 0;
     m_eagle = nullptr;
     m_player_count = players_count;
+    m_pause = false;
+    nextLevel();
+}
+
+Game::Game(std::vector<Player *> players, int previous_level)
+{
+    m_level_columns_count = 0;
+    m_level_rows_count = 0;
+    m_current_level = previous_level;
+    m_eagle = nullptr;
+    m_players = players;
+    m_player_count = m_players.size();
+    for(auto player : m_players)
+    {
+        player->lives_count++;
+        player->respawn();
+    }
+    m_pause = false;
     nextLevel();
 }
 
@@ -45,7 +65,7 @@ void Game::draw()
 
     if(m_level_start_screen)
     {
-        std::string level_name = "STAGE " + intToString(m_current_level);
+        std::string level_name = "STAGE " + AppState::intToString(m_current_level);
         renderer->drawText(nullptr, level_name, {255, 255, 255, 255}, 1);
     }
     else
@@ -58,9 +78,6 @@ void Game::draw()
         for(auto player : m_players) player->draw();
         for(auto enemy : m_enemies) enemy->draw();
         m_eagle->draw();
-
-        for(auto r : m_rec)
-            renderer->drawRect(r, {0, 0, 255});
 
         for(auto bush : m_bushes)
             if(bush != nullptr) bush->draw();
@@ -77,25 +94,31 @@ void Game::draw()
         SDL_Rect src = engine.getSpriteConfig()->getSpriteData(ST_LEFT_ENEMY)->rect;
         SDL_Rect dst;
         SDL_Point p_dst;
+        //wrogowie do zabicia
         for(int i = 0; i < m_enemy_to_kill; i++)
         {
             dst = {AppConfig::status_rect.x + 8 + src.w * (i % 2), 5 + src.h * (i / 2), src.w, src.h};
             renderer->drawObject(&src, &dst);
         }
+        //życia graczy
         int i = 0;
         for(auto player : m_players)
         {
             dst = {AppConfig::status_rect.x + 5, i * 18 + 180, 16, 16};
-            p_dst = {dst.x + dst.w + 2, dst.y};
+            p_dst = {dst.x + dst.w + 2, dst.y + 3};
             i++;
             renderer->drawObject(&player->src_rect, &dst);
-            renderer->drawText(&p_dst, intToString(player->lives_count), {0, 0, 0, 255}, 3);
+            renderer->drawText(&p_dst, AppState::intToString(player->lives_count), {0, 0, 0, 255}, 3);
         }
+        //numer mapy
         src = engine.getSpriteConfig()->getSpriteData(ST_STAGE_STATUS)->rect;
         dst = {AppConfig::status_rect.x + 8, 185 + i * 18, src.w, src.h};
         p_dst = {dst.x + 10, dst.y + 26};
         renderer->drawObject(&src, &dst);
-        renderer->drawText(&p_dst, intToString(m_current_level), {0, 0, 0, 255}, 2);
+        renderer->drawText(&p_dst, AppState::intToString(m_current_level), {0, 0, 0, 255}, 2);
+
+        if(m_pause)
+            renderer->drawText(nullptr, std::string("PAUSE"), {200, 0, 0, 255}, 1);
     }
 
     renderer->flush();
@@ -114,6 +137,7 @@ void Game::update(Uint32 dt)
     }
     else
     {
+        if(m_pause) return;
 
         std::vector<Player*>::iterator pl1, pl2;
         std::vector<Enemy*>::iterator en1, en2;
@@ -207,14 +231,18 @@ void Game::update(Uint32 dt)
 
         //dodanie nowego przeciwnika
         m_enemy_redy_time += dt;
-        if(m_enemies.size() < AppConfig::enemy_max_count_on_map && m_enemy_to_kill > 0 && m_enemy_redy_time > AppConfig::enemy_redy_time)
+        if(m_enemies.size() < AppConfig::enemy_max_count_on_map && (m_enemy_to_kill - AppConfig::enemy_max_count_on_map + 1) > 0 && m_enemy_redy_time > AppConfig::enemy_redy_time)
         {
             m_enemy_redy_time = 0;
             generateEnemy();
         }
 
         if(m_enemies.empty() && m_enemy_to_kill <= 0)
-            nextLevel();
+        {
+            m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){m_killed_players.push_back(p); return true;}), m_players.end());
+//            nextLevel();
+            m_finished = true;
+        }
 
         if(m_players.empty() && !m_game_over)
         {
@@ -292,6 +320,12 @@ void Game::eventProcess(SDL_Event *ev)
         case SDLK_4:
             m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
             break;
+        case SDLK_RETURN:
+            m_pause = !m_pause;
+            break;
+        case SDLK_ESCAPE:
+            m_finished = true;
+            break;
         }
     }
 }
@@ -307,7 +341,6 @@ void Game::eventProcess(SDL_Event *ev)
 
 void Game::loadLevel(std::string path)
 {
-    clearLevel();
     std::fstream level(path, std::ios::in);
     std::string line;
     int j = -1;
@@ -364,8 +397,13 @@ bool Game::finished() const
     return m_finished;
 }
 
-AppState *Game::nextState()
+AppState* Game::nextState()
 {
+    if(m_enemy_to_kill <= 0)
+    {
+        Scores* scores = new Scores(m_killed_players, m_current_level);
+        return scores;
+    }
     Menu* menu = new Menu();
     return menu;
 }
@@ -664,22 +702,6 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
     }
 }
 
-std::string Game::intToString(int num)
-{
-    if(num == 0) return "0";
-
-    std::string buf;
-    bool negative = false;
-    if(num < 0)
-    {
-        negative = true;
-        num = -num;
-    }
-    for(; num; num /= 10) buf = "0123456789abcdef"[num % 10] + buf;
-    if(negative) buf = "-" + buf;
-    return buf;
-}
-
 void Game::nextLevel()
 {
     m_current_level++;
@@ -692,24 +714,27 @@ void Game::nextLevel()
     m_finished = false;
     m_enemy_to_kill = AppConfig::enemy_start_count;
 
-    std::string level_path = AppConfig::levels_path + intToString(m_current_level);
+    std::string level_path = AppConfig::levels_path + AppState::intToString(m_current_level);
     loadLevel(level_path);
 
-    if(m_player_count == 2)
+    if(m_players.empty())
     {
-        Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
-        Player* p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2);
-        p1->player_keys = AppConfig::player_keys.at(0);
-        p2->player_keys = AppConfig::player_keys.at(1);
-        m_players.push_back(p1);
-        m_players.push_back(p2);
+        if(m_player_count == 2)
+        {
+            Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
+            Player* p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2);
+            p1->player_keys = AppConfig::player_keys.at(0);
+            p2->player_keys = AppConfig::player_keys.at(1);
+            m_players.push_back(p1);
+            m_players.push_back(p2);
 
-    }
-    else
-    {
-        Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
-        p1->player_keys = AppConfig::player_keys.at(0);
-        m_players.push_back(p1);
+        }
+        else
+        {
+            Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
+            p1->player_keys = AppConfig::player_keys.at(0);
+            m_players.push_back(p1);
+        }
     }
 }
 

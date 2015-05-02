@@ -68,5 +68,6 @@ void Player::respawn()
     dest_rect.h = m_sprite->rect.h;
     dest_rect.w = m_sprite->rect.w;
 
+    setDirection(D_UP);
     Tank::respawn();
 }
