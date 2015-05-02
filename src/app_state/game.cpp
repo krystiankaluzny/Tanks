@@ -45,6 +45,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_player_count = m_players.size();
     for(auto player : m_players)
     {
+        player->clearFlag(TSF_FAST_ANIMATE);
         player->lives_count++;
         player->respawn();
     }
@@ -112,7 +113,7 @@ void Game::draw()
         }
         //numer mapy
         src = engine.getSpriteConfig()->getSpriteData(ST_STAGE_STATUS)->rect;
-        dst = {AppConfig::status_rect.x + 8, 185 + i * 18, src.w, src.h};
+        dst = {AppConfig::status_rect.x + 8, 185 + (m_players.size() + m_killed_players.size()) * 18, src.w, src.h};
         p_dst = {dst.x + 10, dst.y + 26};
         renderer->drawObject(&src, &dst);
         renderer->drawText(&p_dst, AppState::intToString(m_current_level), {0, 0, 0, 255}, 2);
@@ -239,8 +240,6 @@ void Game::update(Uint32 dt)
 
         if(m_enemies.empty() && m_enemy_to_kill <= 0)
         {
-            m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){m_killed_players.push_back(p); return true;}), m_players.end());
-//            nextLevel();
             m_finished = true;
         }
 
@@ -299,11 +298,15 @@ void Game::eventProcess(SDL_Event *ev)
             m_players.at(0)->respawn();
             break;
         case SDLK_n:
-            nextLevel();
+            m_enemy_to_kill = 0;
+            m_finished = true;
+//            nextLevel();
             break;
         case SDLK_b:
+            m_enemy_to_kill = 0;
             m_current_level -= 2;
-            nextLevel();
+            m_finished = true;
+//            nextLevel();
             break;
         case SDLK_t:
             AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
@@ -399,13 +402,14 @@ bool Game::finished() const
 
 AppState* Game::nextState()
 {
-    if(m_enemy_to_kill <= 0)
+    if(m_game_over || (m_enemies.empty() && m_enemy_to_kill <= 0))
     {
-        Scores* scores = new Scores(m_killed_players, m_current_level);
+        m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){m_killed_players.push_back(p); return true;}), m_players.end());
+        Scores* scores = new Scores(m_killed_players, m_current_level, m_game_over);
         return scores;
     }
-    Menu* menu = new Menu();
-    return menu;
+    Menu* m = new Menu;
+    return m;
 }
 
 void Game::clearLevel()
@@ -762,6 +766,10 @@ void Game::generateEnemy()
     else if(p < b) e->lives_count = 2;
     else if(p < c) e->lives_count = 3;
     else e->lives_count = 4;
+
+
+    p = static_cast<float>(rand()) / RAND_MAX;
+    if(p < 0.08) e->setFlag(TSF_BONUS);
 
     m_enemies.push_back(e);
 }

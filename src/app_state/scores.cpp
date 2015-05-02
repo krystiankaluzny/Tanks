@@ -2,29 +2,35 @@
 #include "../engine/engine.h"
 #include "../appconfig.h"
 #include "game.h"
+#include "menu.h"
 
 Scores::Scores()
 {
     m_show_time = 0;
     m_level = 0;
+    m_game_over = true;
     m_score_counter_run = true;
     m_score_counter = 0;
     m_max_score = 0;
 }
 
-Scores::Scores(std::vector<Player *> players, int level)
+Scores::Scores(std::vector<Player *> players, int level, bool game_over)
 {
     m_players = players;
-    m_show_time = 0;
     m_level = level;
+    m_game_over = game_over;
+    m_show_time = 0;
     m_score_counter_run = true;
     m_score_counter = 0;
     m_max_score = 0;
     for(auto player : m_players)
     {
-        player->setDirection(D_RIGHT);
-        player->setFlag(TSF_LIFE);
-        player->update(0);
+        player->to_erase = false;
+        if(player->lives_count == 0 && !game_over) player->lives_count = 2;
+        else player->lives_count++;
+        player->respawn();
+        player->setFlag(TSF_FAST_ANIMATE);
+
         if(player->score > m_max_score) m_max_score = player->score;
     }
 }
@@ -42,19 +48,20 @@ void Scores::draw()
 
     p_dst = {-1, 10};
     renderer->drawText(&p_dst, std::string("STAGE ") + AppState::intToString(m_level), {255, 255, 220, 255}, 1);
-    p_dst = {100, 45};
+    p_dst = {100, 50};
     renderer->drawText(&p_dst, std::string("PLAYER"), {255, 255, 255, 255}, 2);
-    p_dst = {270, 45};
+    p_dst = {270, 50};
     renderer->drawText(&p_dst, std::string("SCORE"), {255, 255, 255, 255}, 2);
-    dst = {75, 65, 300, 2};
+    dst = {75, 75, 300, 2};
     renderer->drawRect(&dst, {250, 250, 200, 255}, true);
     int i = 0;
     for(auto player : m_players)
     {
-        dst = {100, 70 + i * (player->src_rect.h), player->src_rect.w, player->src_rect.h};
+        dst = {100, 90 + i * (player->src_rect.h), player->src_rect.w, player->src_rect.h};
         renderer->drawObject(&player->src_rect, &dst);
-
-        p_dst = {270, 80 + i * (player->src_rect.h)};
+        p_dst = {140, 98 + i * (player->src_rect.h)};
+        renderer->drawText(&p_dst, std::string("x") + AppState::intToString(player->lives_count), {255, 255, 255, 255}, 2);
+        p_dst = {270, 98 + i * (player->src_rect.h)};
         renderer->drawText(&p_dst, (m_score_counter < player->score ? AppState::intToString(m_score_counter) : AppState::intToString(player->score)), {255, 255, 255, 255}, 2);
         i++;
     }
@@ -78,6 +85,11 @@ void Scores::update(Uint32 dt)
         else if(m_score_counter < 200000) m_score_counter += 10000;
         else m_score_counter += 100000;
     }
+    for(auto player : m_players)
+    {
+        player->setDirection(D_RIGHT);
+        player->update(dt);
+    }
 }
 
 void Scores::eventProcess(SDL_Event *ev)
@@ -99,6 +111,11 @@ bool Scores::finished() const
 
 AppState *Scores::nextState()
 {
+    if(m_game_over)
+    {
+        Menu* m = new Menu;
+        return m;
+    }
     Game* g = new Game(m_players, m_level);
     return g;
 }

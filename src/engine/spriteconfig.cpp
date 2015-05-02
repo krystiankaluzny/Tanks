@@ -40,6 +40,8 @@ SpriteConfig::SpriteConfig()
 
     insert(ST_LEFT_ENEMY, 944, 144, 16, 16, 1, 200, false);
     insert(ST_STAGE_STATUS, 976, 64, 32, 32, 1, 200, false);
+
+    insert(ST_TANKS_LOGO, 0, 260, 406, 72, 1, 200, false);
 }
 
 const SpriteData* SpriteConfig::getSpriteData(SpriteType st) const

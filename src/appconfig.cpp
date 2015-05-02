@@ -31,13 +31,13 @@ vector<Player::PlayerKeys> AppConfig::player_keys =
     v.push_back({SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D, SDL_SCANCODE_LCTRL});
     return v;
 }();
-unsigned AppConfig::level_start_time = 200; // 2000;
+unsigned AppConfig::level_start_time = 2000;
 unsigned AppConfig::slip_time = 380;
-unsigned AppConfig::enemy_start_count = 2; //liczba wrogów do zabicia
+unsigned AppConfig::enemy_start_count = 20; //liczba wrogów do zabicia
 unsigned AppConfig::enemy_redy_time = 500; //czas po jakim na mapie może pojawić się nowy przeciwnik
 unsigned AppConfig::player_bullet_max_size = 2; //czas po jakim na mapie może pojawić się nowy przeciwnik
-unsigned AppConfig::score_show_time = 2000; //czas pokazywania wyników
-int AppConfig::enemy_max_count_on_map = 1; //maksymalna liczba czołgów na mapie w jednej chwili
+unsigned AppConfig::score_show_time = 3000; //czas pokazywania wyników
+int AppConfig::enemy_max_count_on_map = 4; //maksymalna liczba czołgów na mapie w jednej chwili
 double AppConfig::game_over_entry_speed = 0.13; //prędkość poruszania się napsu "GAME OVER"
 double AppConfig::tank_default_speed = 0.08;    //nominalna prędkość czołgu
 double AppConfig::bullet_default_speed = 0.23;  //nominalna prędkość pocisku

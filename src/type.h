@@ -42,6 +42,8 @@ enum SpriteType
     ST_LEFT_ENEMY,
     ST_STAGE_STATUS,
 
+    ST_TANKS_LOGO,
+
     ST_NONE
 };
 
@@ -54,7 +56,8 @@ enum TankStateFlag
     TSF_BONUS = 16, //po trafieniu tego czołgu na mapie pojawi się bonus
     TSF_ON_ICE = 32,  //jeżeli czołg jest na lodzie to się ślizga
     TSF_CREATE = 64, //tworzenie czołgu
-    TSF_LIFE = 128
+    TSF_LIFE = 128,
+    TSF_FAST_ANIMATE = 256 //dwukrotne przyspieszenie animacji
 };
 
 enum Direction

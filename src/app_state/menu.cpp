@@ -20,6 +20,7 @@ Menu::Menu()
     m_tank_pointer->setFlag(TSF_LIFE);
     m_tank_pointer->update(0);
     m_tank_pointer->clearFlag(TSF_LIFE);
+    m_tank_pointer->setFlag(TSF_FAST_ANIMATE);
     m_finished = false;
 }
 
@@ -35,6 +36,11 @@ void Menu::draw()
 
     renderer->drawRect(&AppConfig::map_rect, {0, 0, 0, 255}, true);
     renderer->drawRect(&AppConfig::status_rect, {0, 0, 0, 255}, true);
+
+    //LOGO
+    const SpriteData* logo = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_TANKS_LOGO);
+    SDL_Rect dst = {(AppConfig::map_rect.w + AppConfig::status_rect.w - logo->rect.w)/2, 50, logo->rect.w, logo->rect.h};
+    renderer->drawObject(&logo->rect, &dst);
 
     int i = 0;
     SDL_Point text_start;
