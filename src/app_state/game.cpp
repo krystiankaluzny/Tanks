@@ -405,7 +405,7 @@ bool Game::finished() const
 
 AppState* Game::nextState()
 {
-    if(m_game_over || (m_enemies.empty() && m_enemy_to_kill <= 0))
+    if(m_game_over || m_enemy_to_kill <= 0)
     {
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){m_killed_players.push_back(p); return true;}), m_players.end());
         Scores* scores = new Scores(m_killed_players, m_current_level, m_game_over);

@@ -38,7 +38,7 @@ private:
     void checkCollisionPlayerBulletsWithEnemy(Player* player, Enemy* enemy);
     void checkCollisionEnemyBulletsWithPlayer(Enemy* enemy, Player* player);
     void checkCollisionTwoBullets(Bullet* bullet1, Bullet* bullet2);
-
+    void checkCollisionPlayerWithBonus(Player* player, Bonus* bonus);
 
     int m_level_columns_count; // wymiary mapy
     int m_level_rows_count;
