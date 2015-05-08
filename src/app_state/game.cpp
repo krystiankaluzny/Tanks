@@ -716,7 +716,64 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
 
 void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
 {
+    if(player->to_erase || bonus->to_erase) return;
 
+    SDL_Rect intersect_rect = intersectRect(&player->collision_rect, &bonus->collision_rect);
+    if(intersect_rect.w > 0 && intersect_rect.h > 0)
+    {
+        player->score += 300;
+
+        if(bonus->type == ST_BONUS_GRANATE)
+        {
+            for(auto enemy : m_enemies)
+            {
+                if(!enemy->to_erase)
+                {
+                    player->score += 200;
+                    while(enemy->lives_count > 0) enemy->destroy();
+                }
+            }
+        }
+        else if(bonus->type == ST_BONUS_HELMET)
+        {
+            player->setFlag(TSF_SHIELD);
+        }
+        else if(bonus->type == ST_BONUS_CLOCK)
+        {
+            for(auto enemy : m_enemies) if(!enemy->to_erase) enemy->setFlag(TSF_FROZEN);
+        }
+        else if(bonus->type == ST_BONUS_SHOVEL)
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                delete m_level.at(11).at(m_level_rows_count - i - 1);
+                m_level.at(11).at(m_level_rows_count - i - 1) = new Object(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                delete m_level.at(14).at(m_level_rows_count - i - 1);
+                m_level.at(14).at(m_level_rows_count - i - 1) = new Object(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h, ST_STONE_WALL);
+            }
+            for(int i = 12; i < 14; i++)
+            {
+                delete m_level.at(i).at(m_level_rows_count - 3);
+                m_level.at(i).at(m_level_rows_count - 3) = new Object(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h, ST_STONE_WALL);
+            }
+        }
+        else if(bonus->type == ST_BONUS_TANK)
+        {
+            player->lives_count++;
+        }
+        else if(bonus->type == ST_BONUS_STAR)
+        {
+            player->star_count++;
+        }
+        else if(bonus->type == ST_BONUS_GUN)
+        {
+            player->star_count = 3;
+        }
+        else if(bonus->type == ST_BONUS_BOAT)
+        {
+            player->setFlag(TSF_BRIDGE);
+        }
+    }
 }
 
 void Game::nextLevel()
@@ -757,8 +814,9 @@ void Game::nextLevel()
 
 void Game::generateEnemy()
 {
+    float p = static_cast<float>(rand()) / RAND_MAX;
     unsigned pos = rand() % 3;
-    SpriteType type = static_cast<SpriteType>(rand() % (ST_TANK_D - ST_TANK_A + 1) + ST_TANK_A);
+    SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_level + 0.09265) ? ST_TANK_D : rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A);
     Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(pos).x, AppConfig::enemy_starting_point.at(pos).y, type);
 
     double a, b, c;
@@ -774,7 +832,8 @@ void Game::generateEnemy()
         b = -0.025000 * m_current_level + 0.925000;
         c = -0.036111 * m_current_level + 1.363889;
     }
-    float p = static_cast<float>(rand()) / RAND_MAX;
+
+    p = static_cast<float>(rand()) / RAND_MAX;
     if(p < a) e->lives_count = 1;
     else if(p < b) e->lives_count = 2;
     else if(p < c) e->lives_count = 3;
@@ -789,8 +848,8 @@ void Game::generateEnemy()
 
 void Game::generateBonus()
 {
-    Bonus* b = new Bonus(rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - AppConfig::tile_rect.w - 1),
-                                     rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - AppConfig::tile_rect.h - 1),
-                                     static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
+    Bonus* b = new Bonus(rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 2 *  AppConfig::tile_rect.w),
+                         rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 2 * AppConfig::tile_rect.h),
+                         static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
     m_bonuses.push_back(b);
 }

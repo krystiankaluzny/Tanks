@@ -100,7 +100,7 @@ void Enemy::update(Uint32 dt)
 
         float p = static_cast<float>(rand()) / RAND_MAX;
 
-        if(p < (type == ST_TANK_D ? 0.8 : 0.5) && target_position.x > 0 && target_position.y > 0)
+        if(p < (type == ST_TANK_A ? 0.8 : 0.5) && target_position.x > 0 && target_position.y > 0)
         {
             int dx = target_position.x - (dest_rect.x + dest_rect.w / 2);
             int dy = target_position.y - (dest_rect.y + dest_rect.h / 2);
@@ -124,7 +124,7 @@ void Enemy::update(Uint32 dt)
     if(m_fire_time > m_reload_time)
     {
         m_fire_time = 0;
-        if(type == ST_TANK_A)
+        if(type == ST_TANK_D)
         {
             m_reload_time = rand() % 400;
             int dx = target_position.x - (dest_rect.x + dest_rect.w / 2);

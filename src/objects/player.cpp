@@ -10,6 +10,9 @@ Player::Player()
     lives_count = 999;//4;
     m_bullet_max_size = AppConfig::player_bullet_max_size;
     score = 0;
+    star_count = 0;
+    m_shield = new Object(0, 0, ST_SHIELD);
+    m_shield_time = 0;
     respawn();
 }
 
@@ -20,7 +23,22 @@ Player::Player(double x, double y, SpriteType type)
    lives_count = 999;//4;
    m_bullet_max_size = AppConfig::player_bullet_max_size;
    score = 0;
+   star_count = 0;
+   m_shield = new Object(x, y, ST_SHIELD);
+   m_shield_time = 0;
    respawn();
+}
+
+Player::~Player()
+{
+    delete m_shield;
+}
+
+void Player::draw()
+{
+    Tank::draw();
+    if(!testFlag(TSF_SHIELD))
+        m_shield->draw();
 }
 
 void Player::update(Uint32 dt)
@@ -40,6 +58,19 @@ void Player::update(Uint32 dt)
     else
         src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
+    if(testFlag(TSF_SHIELD))
+    {
+        m_shield_time += dt;
+        m_shield->pos_x = pos_x;
+        m_shield->pos_y = pos_y;
+        m_shield->update(dt);
+    }
+
+    if(m_shield_time > AppConfig::tank_shield_time)
+    {
+        m_shield_time = 0;
+        clearFlag(TSF_SHIELD);
+    }
     stop = false;
 }
 
@@ -70,4 +101,10 @@ void Player::respawn()
 
     setDirection(D_UP);
     Tank::respawn();
+}
+
+void Player::destroy()
+{
+    if(!testFlag(TSF_SHIELD))
+        Tank::destroy();
 }
