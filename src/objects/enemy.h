@@ -26,7 +26,6 @@ private:
 
     Uint32 m_fire_time;
     Uint32 m_reload_time;
-
 };
 
 #endif // ENEMY_H

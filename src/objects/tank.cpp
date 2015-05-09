@@ -9,6 +9,11 @@ Tank::Tank()
     m_slip_time = 0;
     default_speed = AppConfig::tank_default_speed;
     speed = 0.0;
+    m_shield = nullptr;
+    m_boat = nullptr;
+    m_shield_time = 0;
+    m_frozen_time = 0;
+    m_boat_time = 0;
 }
 
 Tank::Tank(double x, double y, SpriteType type)
@@ -18,18 +23,37 @@ Tank::Tank(double x, double y, SpriteType type)
     m_slip_time = 0;
     default_speed = AppConfig::tank_default_speed;
     speed = 0.0;
+    m_shield = nullptr;
+    m_boat = nullptr;
+    m_shield_time = 0;
+    m_frozen_time = 0;
+    m_boat_time = 0;
 }
 
 Tank::~Tank()
 {
     for(auto bullet : bullets) delete bullet;
     bullets.clear();
+
+    if(m_shield != nullptr)
+    {
+        delete m_shield;
+        m_shield = nullptr;
+    }
+    if(m_boat != nullptr)
+    {
+        delete m_boat;
+        m_boat = nullptr;
+    }
 }
 
 void Tank::draw()
 {
     if(to_erase) return;
     Object::draw();
+
+    if(testFlag(TSF_SHIELD) && m_shield != nullptr) m_shield->draw();
+    if(testFlag(TSF_BOAT) && m_boat != nullptr) m_boat->draw();
 
     for(auto bullet : bullets)
         if(bullet != nullptr) bullet->draw();
@@ -40,7 +64,7 @@ void Tank::update(Uint32 dt)
     if(to_erase) return;
     if(testFlag(TSF_LIFE))
     {
-        if(!stop)
+        if(!stop && !testFlag(TSF_FROZEN))
         {
             switch (direction)
             {
@@ -79,6 +103,28 @@ void Tank::update(Uint32 dt)
             m_slip_time = 0;
             direction = new_direction;
         }
+    }
+
+    if(testFlag(TSF_SHIELD) && m_shield != nullptr)
+    {
+        m_shield_time += dt;
+        m_shield->pos_x = pos_x;
+        m_shield->pos_y = pos_y;
+        m_shield->update(dt);
+        if(m_shield_time > AppConfig::tank_shield_time) clearFlag(TSF_SHIELD);
+    }
+    if(testFlag(TSF_BOAT) && m_boat != nullptr)
+    {
+        m_boat_time += dt;
+        m_boat->pos_x = pos_x;
+        m_boat->pos_y = pos_y;
+        m_boat->update(dt);
+        if(m_boat_time > AppConfig::tank_boat_time) clearFlag(TSF_BOAT);
+    }
+    if(testFlag(TSF_FROZEN))
+    {
+        m_frozen_time += dt;
+        if(m_frozen_time > AppConfig::tank_frozen_time) clearFlag(TSF_FROZEN);
     }
 
     if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) //brak animacji jeśli czołg nie prógbuje jechać
@@ -245,7 +291,12 @@ void Tank::collide(SDL_Rect &intersect_rect)
 void Tank::destroy()
 {
     if(!testFlag(TSF_LIFE)) return;
-
+    if(testFlag(TSF_SHIELD)) return;
+    if(testFlag(TSF_BOAT))
+    {
+        clearFlag(TSF_BOAT);
+        return;
+    }
     stop = true;
     m_flags = TSF_DESTROYED;
 
@@ -272,11 +323,41 @@ void Tank::setFlag(TankStateFlag flag)
     if(!testFlag(flag) && flag == TSF_ON_ICE)
         new_direction = direction;
 
+    if(flag == TSF_SHIELD)
+    {
+         if(m_shield == nullptr) m_shield = new Object(pos_x, pos_y, ST_SHIELD);
+         m_shield_time = 0;
+    }
+    if(flag == TSF_BOAT)
+    {
+         if(m_boat == nullptr) m_boat = new Object(pos_x, pos_y, type == ST_PLAYER_1 ? ST_BOAT_P1 : ST_BOAT_P2);
+         m_boat_time = 0;
+    }
+    if(flag == TSF_FROZEN)
+    {
+        m_frozen_time = 0;
+    }
     m_flags |= flag;
 }
 
 void Tank::clearFlag(TankStateFlag flag)
 {
+    if(flag == TSF_SHIELD)
+    {
+         if(m_shield != nullptr) delete m_shield;
+         m_shield = nullptr;
+         m_shield_time = 0;
+    }
+    if(flag == TSF_BOAT)
+    {
+         if(m_boat != nullptr) delete m_boat;
+         m_boat = nullptr;
+         m_boat_time = 0;
+    }
+    if(flag == TSF_FROZEN)
+    {
+        m_frozen_time = 0;
+    }
     m_flags &= ~flag;
 }
 
@@ -292,6 +373,8 @@ void Tank::respawn()
     stop = false;
     m_slip_time = 0;
 
+    clearFlag(TSF_SHIELD);
+    clearFlag(TSF_BOAT);
     m_flags = TSF_LIFE;
     update(0);
     m_flags = TSF_CREATE; //resetujemy wszystkie inne flagi
@@ -302,4 +385,3 @@ void Tank::respawn()
     collision_rect.h = 0;
     collision_rect.w = 0;
 }
-

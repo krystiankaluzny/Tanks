@@ -57,9 +57,12 @@ private:
     int m_player_count;  //gra na 1 gracza lub 2
     int m_enemy_to_kill; //wrogowie do zabicia
 
-    bool m_level_start_screen; //
+    bool m_level_start_screen;
+    bool m_protect_eagle;
     Uint32 m_level_start_time;
     Uint32 m_enemy_redy_time; //czas od ostatniego stworzenia przeciwnika
+    Uint32 m_level_end_time;
+    Uint32 m_protect_eagle_time;
 
     bool m_game_over;   //czy przegrana
     double m_game_over_position; //pozycja napisu "GAME OVER"

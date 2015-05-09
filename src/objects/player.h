@@ -19,22 +19,14 @@ public:
 
     Player();
     Player(double x, double y, SpriteType type);
-    ~Player();
 
-    void draw();
     void update(Uint32 dt);
     void respawn();
-    void destroy();
 
     PlayerKeys player_keys;
     unsigned score;
     unsigned star_count;
 private:
-    Object* m_shield;
-    SpriteData* m_shield_sprite;
-    Uint32 m_shield_time;
-    Uint32 m_shield_frame_time;
-    int m_shield_frame;
 };
 
 #endif // PLAYER_H

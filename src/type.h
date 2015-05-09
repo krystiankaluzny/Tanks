@@ -52,7 +52,7 @@ enum TankStateFlag
     TSF_SHIELD = 1, //po wzięciu hełmu
     TSF_FROZEN = 2, //po wzięciu zegara przez przeciwnika
     TSF_DESTROYED = 4, //po wzięciu bomby prez przeciwnika lub trafieniu kulą
-    TSF_BRIDGE = 8, //po wzięciu łódki, pozwala przechodzić przez wodę
+    TSF_BOAT = 8, //po wzięciu łódki, pozwala przechodzić przez wodę
     TSF_BONUS = 16, //po trafieniu tego czołgu na mapie pojawi się bonus
     TSF_ON_ICE = 32,  //jeżeli czołg jest na lodzie to się ślizga
     TSF_CREATE = 64, //tworzenie czołgu

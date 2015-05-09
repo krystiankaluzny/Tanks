@@ -25,7 +25,7 @@ SpriteConfig::SpriteConfig()
     insert(ST_BONUS_GUN, 896, 192, 32, 32, 1, 200, false);
     insert(ST_BONUS_BOAT, 896, 224, 32, 32, 1, 200, false);
 
-    insert(ST_SHIELD, 976, 0, 32, 32, 2, 200, true);
+    insert(ST_SHIELD, 976, 0, 32, 32, 2, 45, true);
     insert(ST_CREATE, 1008, 0, 32, 32, 10, 100, false);
     insert(ST_DESTROY_TANK, 1040, 0, 64, 64, 7, 70, false);
     insert(ST_DESTROY_BULLET, 1108, 0, 32, 32, 5, 40, false);

@@ -40,6 +40,12 @@ protected:
     Sint32 m_slip_time;
     Direction new_direction;
     unsigned m_bullet_max_size;
+
+    Object* m_shield;
+    Object* m_boat;
+    Uint32 m_shield_time;
+    Uint32 m_frozen_time;
+    Uint32 m_boat_time;
 };
 
 #endif // TANK_H

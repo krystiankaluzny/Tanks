@@ -20,6 +20,8 @@ Enemy::Enemy()
 
     m_bullet_max_size = 1;
 
+    m_frozen_time = 0;
+
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
     else
@@ -45,6 +47,8 @@ Enemy::Enemy(double x, double y, SpriteType type)
     lives_count = 1;
 
     m_bullet_max_size = 1;
+
+    m_frozen_time = 0;
 
     if(type == ST_TANK_B)
         default_speed = AppConfig::tank_default_speed * 1.3;
@@ -89,6 +93,7 @@ void Enemy::update(Uint32 dt)
     else
         src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
+    if(testFlag(TSF_FROZEN)) return;
 
     m_direction_time += dt;
     m_speed_time += dt;
