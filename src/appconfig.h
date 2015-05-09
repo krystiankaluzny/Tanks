@@ -31,9 +31,9 @@ public:
     static unsigned bonus_show_time;
     static unsigned tank_shield_time;
     static unsigned tank_frozen_time;
-    static unsigned tank_boat_time;
     static unsigned level_end_time;
     static unsigned protect_eagle_time;
+    static unsigned bonus_blink_time;
     static int enemy_max_count_on_map;
     static double game_over_entry_speed;
     static double tank_default_speed;

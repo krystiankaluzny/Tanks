@@ -42,9 +42,9 @@ void Player::update(Uint32 dt)
     Tank::update(dt);
 
     if(testFlag(TSF_LIFE))
-        src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame);
+        src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame + 2 * star_count);
     else
-        src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
+        src_rect = moveRect(m_sprite->rect, 0, m_current_frame + 2 * star_count);
 
     stop = false;
 }
@@ -79,3 +79,45 @@ void Player::respawn()
     setFlag(TSF_SHIELD);
 }
 
+void Player::destroy()
+{
+    if(testFlag(TSF_SHIELD)) return;
+    if(testFlag(TSF_BOAT))
+    {
+        clearFlag(TSF_BOAT);
+        return;
+    }
+
+    if(star_count == 3)
+        changeStarCountBy(-1);
+    else
+    {
+        changeStarCountBy(-3);
+        Tank::destroy();
+    }
+}
+
+Bullet* Player::fire()
+{
+    Bullet* b = Tank::fire();
+    if(b != nullptr)
+    {
+        if(star_count > 0) b->speed = AppConfig::bullet_default_speed * 1.3;
+        if(star_count == 3) b->increased_damage = true;
+    }
+    return b;
+}
+
+void Player::changeStarCountBy(int c)
+{
+    star_count += c;
+    if(star_count > 3) star_count = 3;
+    else if(star_count < 0) star_count = 0;
+
+    if(star_count == 3 && c > 0) m_bullet_max_size++;
+    else if(star_count == 2) m_bullet_max_size = 3;
+    else m_bullet_max_size = 2;
+
+    if(star_count > 1) default_speed = AppConfig::tank_default_speed * 1.3;
+    else default_speed = AppConfig::tank_default_speed;
+}

@@ -22,6 +22,7 @@ Game::Game()
     m_pause = false;
     m_level_end_time = 0;
     m_protect_eagle = false;
+    m_show_protect_eagle = false;
     m_protect_eagle_time = 0;
     nextLevel();
 }
@@ -36,6 +37,7 @@ Game::Game(int players_count)
     m_pause = false;
     m_level_end_time = 0;
     m_protect_eagle = false;
+    m_show_protect_eagle = false;
     m_protect_eagle_time = 0;
     nextLevel();
 }
@@ -57,6 +59,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_pause = false;
     m_level_end_time = 0;
     m_protect_eagle = false;
+    m_show_protect_eagle = false;
     m_protect_eagle_time = 0;
     nextLevel();
 }
@@ -297,6 +300,45 @@ void Game::update(Uint32 dt)
                     m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
                 }
             }
+
+            if(m_protect_eagle && m_protect_eagle_time > AppConfig::protect_eagle_time / 4 * 3 && m_protect_eagle_time / AppConfig::bonus_blink_time % 2)
+            {
+                for(int i = 0; i < 3; i++)
+                {
+                    if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
+                        delete m_level.at(m_level_rows_count - i - 1).at(11);
+                    m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
+
+                    if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
+                        delete m_level.at(m_level_rows_count - i - 1).at(14);
+                    m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h);
+                }
+                for(int i = 12; i < 14; i++)
+                {
+                    if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
+                        delete m_level.at(m_level_rows_count - 3).at(i);
+                    m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
+                }
+            }
+            else if(m_protect_eagle)
+            {
+                for(int i = 0; i < 3; i++)
+                {
+                    if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
+                        delete m_level.at(m_level_rows_count - i - 1).at(11);
+                    m_level.at(m_level_rows_count - i - 1).at(11) = new Object(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
+
+                    if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
+                        delete m_level.at(m_level_rows_count - i - 1).at(14);
+                    m_level.at(m_level_rows_count - i - 1).at(14) = new Object(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h, ST_STONE_WALL);
+                }
+                for(int i = 12; i < 14; i++)
+                {
+                    if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
+                        delete m_level.at(m_level_rows_count - 3).at(i);
+                    m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                }
+            }
         }
     }
 }
@@ -531,6 +573,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
             if(tank->stop) break;
             o = m_level.at(i).at(j);
             if(o == nullptr) continue;
+            if(tank->testFlag(TSF_BOAT) && o->type == ST_WATER) continue;
 
             lr = &o->collision_rect;
 
@@ -677,7 +720,6 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
                         m_level.at(i).at(j) = nullptr;
                     }
                 }
-
                 bullet->destroy();
             }
         }
@@ -703,21 +745,24 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
 
 void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 {
-    if(player->to_erase || player->to_erase) return;
+    if(player->to_erase || enemy->to_erase) return;
+    if(enemy->testFlag(TSF_DESTROYED)) return;
     SDL_Rect intersect_rect;
 
     for(auto bullet : player->bullets)
     {
-        if(bullet->collide) continue;
-        intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
-        if(intersect_rect.w > 0 && intersect_rect.h > 0)
+        if(!bullet->to_erase && !bullet->collide)
         {
-            if(enemy->testFlag(TSF_BONUS)) generateBonus();
+            intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
+            if(intersect_rect.w > 0 && intersect_rect.h > 0)
+            {
+                if(enemy->testFlag(TSF_BONUS)) generateBonus();
 
-            bullet->destroy();
-            enemy->destroy();
-            if(enemy->lives_count <= 0) m_enemy_to_kill--;
-            player->score += enemy->scoreForKill();
+                bullet->destroy();
+                enemy->destroy();
+                if(enemy->lives_count <= 0) m_enemy_to_kill--;
+                player->score += enemy->scoreForKill();
+            }
         }
     }
 }
@@ -725,15 +770,19 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
 {
     if(enemy->to_erase || player->to_erase) return;
+    if(player->testFlag(TSF_DESTROYED)) return;
     SDL_Rect intersect_rect;
 
     for(auto bullet : enemy->bullets)
     {
-        intersect_rect = intersectRect(&bullet->collision_rect, &player->collision_rect);
-        if(intersect_rect.w > 0 && intersect_rect.h > 0)
+        if(!bullet->to_erase && !bullet->collide)
         {
-            bullet->destroy();
-            player->destroy();
+            intersect_rect = intersectRect(&bullet->collision_rect, &player->collision_rect);
+            if(intersect_rect.w > 0 && intersect_rect.h > 0)
+            {
+                bullet->destroy();
+                player->destroy();
+            }
         }
     }
 }
@@ -806,15 +855,15 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         {
             player->lives_count++;
         }
-        else if(bonus->type == ST_BONUS_STAR)
+        else if(bonus->type == ST_BONUS_STAR) //ok
         {
-            player->star_count++;
+            player->changeStarCountBy(1);
         }
-        else if(bonus->type == ST_BONUS_GUN)
+        else if(bonus->type == ST_BONUS_GUN) //ok
         {
-            player->star_count = 3;
+            player->changeStarCountBy(3);
         }
-        else if(bonus->type == ST_BONUS_BOAT) // kula trafia kilka razy?
+        else if(bonus->type == ST_BONUS_BOAT) //ok
         {
             player->setFlag(TSF_BOAT);
         }
@@ -887,7 +936,7 @@ void Game::generateEnemy()
 
 
     p = static_cast<float>(rand()) / RAND_MAX;
-    if(p < 0.8) e->setFlag(TSF_BONUS);
+    if(p < 0.08) e->setFlag(TSF_BONUS);
 
     m_enemies.push_back(e);
 }
@@ -896,6 +945,6 @@ void Game::generateBonus()
 {
     Bonus* b = new Bonus(rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 2 *  AppConfig::tile_rect.w),
                          rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 2 * AppConfig::tile_rect.h),
-                         ST_BONUS_BOAT/*static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE)*/);
+                         static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
     m_bonuses.push_back(b);
 }

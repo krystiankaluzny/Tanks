@@ -63,6 +63,7 @@ private:
     Uint32 m_enemy_redy_time; //czas od ostatniego stworzenia przeciwnika
     Uint32 m_level_end_time;
     Uint32 m_protect_eagle_time;
+    bool m_show_protect_eagle;
 
     bool m_game_over;   //czy przegrana
     double m_game_over_position; //pozycja napisu "GAME OVER"

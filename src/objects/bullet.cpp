@@ -97,4 +97,5 @@ void Bullet::destroy()
     src_rect.y = m_sprite->rect.y;
     src_rect.h = m_sprite->rect.h;
     src_rect.w = m_sprite->rect.w;
+
 }

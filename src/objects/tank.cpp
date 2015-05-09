@@ -13,7 +13,6 @@ Tank::Tank()
     m_boat = nullptr;
     m_shield_time = 0;
     m_frozen_time = 0;
-    m_boat_time = 0;
 }
 
 Tank::Tank(double x, double y, SpriteType type)
@@ -27,7 +26,6 @@ Tank::Tank(double x, double y, SpriteType type)
     m_boat = nullptr;
     m_shield_time = 0;
     m_frozen_time = 0;
-    m_boat_time = 0;
 }
 
 Tank::~Tank()
@@ -115,11 +113,9 @@ void Tank::update(Uint32 dt)
     }
     if(testFlag(TSF_BOAT) && m_boat != nullptr)
     {
-        m_boat_time += dt;
         m_boat->pos_x = pos_x;
         m_boat->pos_y = pos_y;
         m_boat->update(dt);
-        if(m_boat_time > AppConfig::tank_boat_time) clearFlag(TSF_BOAT);
     }
     if(testFlag(TSF_FROZEN))
     {
@@ -160,17 +156,17 @@ void Tank::update(Uint32 dt)
     bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet*b){if(b->to_erase) {delete b; return true;} return false;}), bullets.end());
 }
 
-void Tank::fire()
+Bullet* Tank::fire()
 {
-    if(!testFlag(TSF_LIFE)) return;
+    if(!testFlag(TSF_LIFE)) return nullptr;
     if(bullets.size() < m_bullet_max_size)
     {
         //podajemy początkową dowolną pozycję, bo nie znamy wymiarów pocisku
         Bullet* bullet = new Bullet(pos_x, pos_y);
         bullets.push_back(bullet);
 
-        Direction dire = (testFlag(TSF_ON_ICE) ? new_direction : direction);
-        switch(dire)
+        Direction tmp_d = (testFlag(TSF_ON_ICE) ? new_direction : direction);
+        switch(tmp_d)
         {
         case D_UP:
             bullet->pos_x += (dest_rect.w - bullet->dest_rect.w) / 2;
@@ -190,14 +186,16 @@ void Tank::fire()
             break;
         }
 
-        bullet->direction = dire;
+        bullet->direction = tmp_d;
         if(type == ST_TANK_C)
             bullet->speed = AppConfig::bullet_default_speed * 1.3;
         else
             bullet->speed = AppConfig::bullet_default_speed;
 
         bullet->update(0); //zmiana pozycji dest_rect
+        return bullet;
     }
+    return nullptr;
 }
 
 SDL_Rect Tank::nextCollisionRect(Uint32 dt)
@@ -331,7 +329,6 @@ void Tank::setFlag(TankStateFlag flag)
     if(flag == TSF_BOAT)
     {
          if(m_boat == nullptr) m_boat = new Object(pos_x, pos_y, type == ST_PLAYER_1 ? ST_BOAT_P1 : ST_BOAT_P2);
-         m_boat_time = 0;
     }
     if(flag == TSF_FROZEN)
     {
@@ -352,7 +349,6 @@ void Tank::clearFlag(TankStateFlag flag)
     {
          if(m_boat != nullptr) delete m_boat;
          m_boat = nullptr;
-         m_boat_time = 0;
     }
     if(flag == TSF_FROZEN)
     {

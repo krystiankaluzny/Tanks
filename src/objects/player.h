@@ -22,10 +22,13 @@ public:
 
     void update(Uint32 dt);
     void respawn();
+    void destroy();
+    Bullet* fire();
+    void changeStarCountBy(int c);
 
     PlayerKeys player_keys;
     unsigned score;
-    unsigned star_count;
+    int star_count;
 private:
 };
 

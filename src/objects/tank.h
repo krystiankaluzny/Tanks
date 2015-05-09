@@ -18,7 +18,7 @@ public:
 
     void draw();
     void update(Uint32 dt);
-    void fire();
+    virtual Bullet* fire();
     SDL_Rect nextCollisionRect(Uint32 dt);
     void setDirection(Direction d);
     void collide(SDL_Rect& intersect_rect);
@@ -45,7 +45,6 @@ protected:
     Object* m_boat;
     Uint32 m_shield_time;
     Uint32 m_frozen_time;
-    Uint32 m_boat_time;
 };
 
 #endif // TANK_H
