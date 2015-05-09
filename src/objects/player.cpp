@@ -77,6 +77,7 @@ void Player::respawn()
     setDirection(D_UP);
     Tank::respawn();
     setFlag(TSF_SHIELD);
+    m_shield_time = AppConfig::tank_shield_time / 2;
 }
 
 void Player::destroy()
@@ -118,6 +119,6 @@ void Player::changeStarCountBy(int c)
     else if(star_count == 2) m_bullet_max_size = 3;
     else m_bullet_max_size = 2;
 
-    if(star_count > 1) default_speed = AppConfig::tank_default_speed * 1.3;
+    if(star_count > 0) default_speed = AppConfig::tank_default_speed * 1.3;
     else default_speed = AppConfig::tank_default_speed;
 }

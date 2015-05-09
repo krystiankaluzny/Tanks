@@ -171,7 +171,7 @@ void Enemy::update(Uint32 dt)
 void Enemy::destroy()
 {
     lives_count--;
-    clearFlag(TSF_BONUS);
+//    clearFlag(TSF_BONUS); //możliwe jednokrotne wypadnięcie bonusu
     if(lives_count <= 0)
     {
         lives_count = 0;
@@ -181,7 +181,6 @@ void Enemy::destroy()
 
 unsigned Enemy::scoreForKill()
 {
-    //TODO dobrać jakieś sensowne liczby
     if(lives_count > 0) return 50;
     return 100;
 }

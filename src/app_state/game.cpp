@@ -22,8 +22,8 @@ Game::Game()
     m_pause = false;
     m_level_end_time = 0;
     m_protect_eagle = false;
-    m_show_protect_eagle = false;
     m_protect_eagle_time = 0;
+    m_enemy_respown_position = 0;
     nextLevel();
 }
 
@@ -37,8 +37,8 @@ Game::Game(int players_count)
     m_pause = false;
     m_level_end_time = 0;
     m_protect_eagle = false;
-    m_show_protect_eagle = false;
     m_protect_eagle_time = 0;
+    m_enemy_respown_position = 0;
     nextLevel();
 }
 
@@ -59,8 +59,8 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_pause = false;
     m_level_end_time = 0;
     m_protect_eagle = false;
-    m_show_protect_eagle = false;
     m_protect_eagle_time = 0;
+    m_enemy_respown_position = 0;
     nextLevel();
 }
 
@@ -171,7 +171,10 @@ void Game::update(Uint32 dt)
                 checkCollisionBulletWithLevel(bullet);
         for(auto player : m_players)
             for(auto bullet : player->bullets)
+            {
                 checkCollisionBulletWithLevel(bullet);
+                checkCollisionBulletWithBush(bullet);
+            }
 
 
         for(auto player : m_players)
@@ -240,13 +243,13 @@ void Game::update(Uint32 dt)
                 if(item != nullptr) item->update(dt);
 
 
-        for(auto bush : m_bushes)
-            if(bush != nullptr) bush->update(dt);
+        for(auto bush : m_bushes) bush->update(dt);
 
-        //usunięcie niepotrzebnych czołgów
+        //usunięcie niepotrzebnych elementów
         m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
         m_bonuses.erase(std::remove_if(m_bonuses.begin(), m_bonuses.end(), [](Bonus*b){if(b->to_erase) {delete b; return true;} return false;}), m_bonuses.end());
+        m_bushes.erase(std::remove_if(m_bushes.begin(), m_bushes.end(), [](Object*b){if(b->to_erase) {delete b; return true;} return false;}), m_bushes.end());
 
         //dodanie nowego przeciwnika
         m_enemy_redy_time += dt;
@@ -513,7 +516,7 @@ void Game::clearLevel()
     }
     m_level.clear();
 
-    for(auto bush : m_bushes) if(bush != nullptr) delete bush;
+    for(auto bush : m_bushes)  delete bush;
     m_bushes.clear();
 
     if(m_eagle != nullptr) delete m_eagle;
@@ -743,6 +746,30 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
     }
 }
 
+void Game::checkCollisionBulletWithBush(Bullet *bullet)
+{
+    if(bullet == nullptr) return;
+    if(bullet->collide) return;
+    if(!bullet->increased_damage) return;
+
+    SDL_Rect* br, *lr;
+    SDL_Rect intersect_rect;
+    br = &bullet->collision_rect;
+
+    for(auto bush : m_bushes)
+    {
+        if(bush->to_erase) continue;
+        lr = &bush->collision_rect;
+        intersect_rect = intersectRect(lr, br);
+
+        if(intersect_rect.w > 0 && intersect_rect.h > 0)
+        {
+            bullet->destroy();
+            bush->to_erase = true;
+        }
+    }
+}
+
 void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 {
     if(player->to_erase || enemy->to_erase) return;
@@ -910,9 +937,10 @@ void Game::nextLevel()
 void Game::generateEnemy()
 {
     float p = static_cast<float>(rand()) / RAND_MAX;
-    unsigned pos = rand() % 3;
     SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_level + 0.09265) ? ST_TANK_D : rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A);
-    Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(pos).x, AppConfig::enemy_starting_point.at(pos).y, type);
+    Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(m_enemy_respown_position).x, AppConfig::enemy_starting_point.at(m_enemy_respown_position).y, type);
+    m_enemy_respown_position++;
+    if(m_enemy_respown_position >= AppConfig::enemy_starting_point.size()) m_enemy_respown_position = 0;
 
     double a, b, c;
     if(m_current_level <= 17)
@@ -936,7 +964,7 @@ void Game::generateEnemy()
 
 
     p = static_cast<float>(rand()) / RAND_MAX;
-    if(p < 0.08) e->setFlag(TSF_BONUS);
+    if(p < 0.15) e->setFlag(TSF_BONUS);
 
     m_enemies.push_back(e);
 }

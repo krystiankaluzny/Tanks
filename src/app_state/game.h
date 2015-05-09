@@ -35,6 +35,7 @@ private:
     void checkCollisionTankWithLevel(Tank* tank, Uint32 dt);
     void checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt);
     void checkCollisionBulletWithLevel(Bullet* bullet);
+    void checkCollisionBulletWithBush(Bullet* bullet);
     void checkCollisionPlayerBulletsWithEnemy(Player* player, Enemy* enemy);
     void checkCollisionEnemyBulletsWithPlayer(Enemy* enemy, Player* player);
     void checkCollisionTwoBullets(Bullet* bullet1, Bullet* bullet2);
@@ -63,12 +64,13 @@ private:
     Uint32 m_enemy_redy_time; //czas od ostatniego stworzenia przeciwnika
     Uint32 m_level_end_time;
     Uint32 m_protect_eagle_time;
-    bool m_show_protect_eagle;
 
     bool m_game_over;   //czy przegrana
     double m_game_over_position; //pozycja napisu "GAME OVER"
     bool m_finished; //czy koniec levelu (przegrana lub przejście)
     bool m_pause;
+
+    int m_enemy_respown_position;
 };
 
 #endif // GAME_H
