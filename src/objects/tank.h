@@ -21,7 +21,7 @@ public:
     virtual Bullet* fire();
     SDL_Rect nextCollisionRect(Uint32 dt);
     void setDirection(Direction d);
-    void collide(SDL_Rect& intersect_rect);
+    void collide();
     virtual void respawn();
     virtual void destroy();
     void setFlag(TankStateFlag flag);

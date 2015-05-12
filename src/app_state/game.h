@@ -19,10 +19,10 @@ public:
     Game(std::vector<Player*> players, int previous_level);
 
     ~Game();
+    bool finished() const;
     void draw();
     void update(Uint32 dt);
     void eventProcess(SDL_Event* ev);
-    bool finished() const;
     AppState* nextState();
 
 private:
@@ -41,7 +41,7 @@ private:
     void checkCollisionTwoBullets(Bullet* bullet1, Bullet* bullet2);
     void checkCollisionPlayerWithBonus(Player* player, Bonus* bonus);
 
-    int m_level_columns_count; // wymiary mapy
+    int m_level_columns_count; // wymiary mapy pomocnicze zamiast używać rozmiarów wektora m_level
     int m_level_rows_count;
     std::vector< std::vector <Object*> > m_level; //level bez krzaków
     std::vector<Object*> m_bushes; //krzaki
@@ -51,8 +51,6 @@ private:
     std::vector<Player*> m_killed_players; //zabici gracze
     std::vector<Bonus*> m_bonuses;
     Eagle* m_eagle;
-
-//    std::vector<SDL_Rect*> m_rec;
 
     int m_current_level; //numer poziomu
     int m_player_count;  //gra na 1 gracza lub 2

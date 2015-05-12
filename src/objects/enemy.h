@@ -12,12 +12,11 @@ public:
     void draw();
     void update(Uint32 dt);
     void destroy();
-    unsigned scoreForKill();
+    unsigned scoreForHit();
 
     SDL_Point target_position;
+
 private:
-
-
     Uint32 m_direction_time;
     Uint32 m_keep_direction_time;
 

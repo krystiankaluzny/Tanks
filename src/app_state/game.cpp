@@ -550,7 +550,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
                     continue;
                 }
                 else
-                    tank->collide(intersect_rect);
+                    tank->collide();
                 break;
             }
         }
@@ -564,7 +564,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide(intersect_rect);
+        tank->collide();
 
     //prostokąt po prawej stronie mapy
     outside_map_rect.x = AppConfig::map_rect.w;
@@ -573,7 +573,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide(intersect_rect);
+        tank->collide();
 
     //prostokąt po górnej stronie mapy
     outside_map_rect.x = 0;
@@ -582,7 +582,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide(intersect_rect);
+        tank->collide();
 
     //prostokąt po dolnej stronie mapy
     outside_map_rect.x = 0;
@@ -591,13 +591,13 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide(intersect_rect);
+        tank->collide();
 
 
    //========================kolizja z orzełkiem========================
     intersect_rect = intersectRect(&m_eagle->collision_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide(intersect_rect);
+        tank->collide();
 }
 
 void Game::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
@@ -608,8 +608,8 @@ void Game::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
 
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
     {
-        tank1->collide(intersect_rect);
-        tank2->collide(intersect_rect);
+        tank1->collide();
+        tank2->collide();
     }
 }
 
@@ -748,7 +748,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
                 bullet->destroy();
                 enemy->destroy();
                 if(enemy->lives_count <= 0) m_enemy_to_kill--;
-                player->score += enemy->scoreForKill();
+                player->score += enemy->scoreForHit();
             }
         }
     }
@@ -931,8 +931,15 @@ void Game::generateEnemy()
 
 void Game::generateBonus()
 {
-    Bonus* b = new Bonus(rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 2 *  AppConfig::tile_rect.w),
-                         rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 2 * AppConfig::tile_rect.h),
-                         static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
+    Bonus* b = new Bonus(0, 0, static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
+    SDL_Rect intersect_rect;
+    do
+    {
+        b->pos_x = rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 1 *  AppConfig::tile_rect.w);
+        b->pos_y = rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 1 * AppConfig::tile_rect.h);
+        b->update(0);
+        intersect_rect = intersectRect(&b->collision_rect, &m_eagle->collision_rect);
+    }while(intersect_rect.w > 0 && intersect_rect.h > 0);
+
     m_bonuses.push_back(b);
 }

@@ -11,10 +11,10 @@ class Scores : public AppState
 public:
     Scores();
     Scores(std::vector<Player*> players, int level, bool game_over);
+    bool finished() const;
     void draw();
     void update(Uint32 dt);
     void eventProcess(SDL_Event* ev);
-    bool finished() const;
     AppState* nextState();
 
 private:

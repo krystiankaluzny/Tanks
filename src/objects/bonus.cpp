@@ -22,6 +22,7 @@ void Bonus::draw()
 
 void Bonus::update(Uint32 dt)
 {
+    Object::update(dt);
     m_bonus_show_time += dt;
     if(m_bonus_show_time > AppConfig::bonus_show_time)
         to_erase = true;

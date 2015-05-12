@@ -264,26 +264,10 @@ void Tank::setDirection(Direction d)
     }
 }
 
-void Tank::collide(SDL_Rect &intersect_rect)
+void Tank::collide()
 {
-    if(intersect_rect.w > intersect_rect.h) // kolizja od góry lub dołu
-    {
-        if((direction == D_UP && intersect_rect.y <= collision_rect.y) ||
-           (direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
-        {
-            stop = true;
-            m_slip_time = 0;
-        }
-    }
-    else
-    {
-        if((direction == D_LEFT && intersect_rect.x <= collision_rect.x) ||
-           (direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
-        {
-            stop = true;
-            m_slip_time = 0;
-        }
-    }
+    stop = true;
+    m_slip_time = 0;
 }
 
 void Tank::destroy()

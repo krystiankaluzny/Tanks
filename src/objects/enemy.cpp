@@ -179,7 +179,7 @@ void Enemy::destroy()
     }
 }
 
-unsigned Enemy::scoreForKill()
+unsigned Enemy::scoreForHit()
 {
     if(lives_count > 0) return 50;
     return 100;

@@ -8,7 +8,6 @@ SOURCES += src/main.cpp \
     src/app.cpp \
     src/engine/engine.cpp \
     src/engine/renderer.cpp \
-    src/engine/sound.cpp \
     src/app_state/game.cpp \
     src/appconfig.cpp \
     src/objects/object.cpp \
@@ -36,7 +35,6 @@ HEADERS += \
     src/app.h \
     src/engine/engine.h \
     src/engine/renderer.h \
-    src/engine/sound.h \
     src/app_state/appstate.h \
     src/app_state/game.h \
     src/appconfig.h \

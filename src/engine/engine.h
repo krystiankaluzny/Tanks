@@ -17,7 +17,6 @@ public:
     //pobieranie elementu składowych silnika
     Renderer* getRenderer() const;
     SpriteConfig* getSpriteConfig() const;
-
 private:
     Renderer* m_renderer;
     SpriteConfig* m_sprite_config;
