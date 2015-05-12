@@ -14,13 +14,13 @@ enum SpriteType
     ST_BRICK_WALL,
     ST_STONE_WALL,
     ST_WATER,
-    ST_BUSH, //krzaki
+    ST_BUSH,
     ST_ICE,
 
     ST_BONUS_GRANATE,
     ST_BONUS_HELMET,
     ST_BONUS_CLOCK,
-    ST_BONUS_SHOVEL, //łopata
+    ST_BONUS_SHOVEL,
     ST_BONUS_TANK,
     ST_BONUS_STAR,
     ST_BONUS_GUN,
@@ -49,15 +49,15 @@ enum SpriteType
 
 enum TankStateFlag
 {
-    TSF_SHIELD = 1, //po wzięciu hełmu
-    TSF_FROZEN = 2, //po wzięciu zegara przez przeciwnika
-    TSF_DESTROYED = 4, //po wzięciu bomby prez przeciwnika lub trafieniu kulą
-    TSF_BOAT = 8, //po wzięciu łódki, pozwala przechodzić przez wodę
-    TSF_BONUS = 16, //po trafieniu tego czołgu na mapie pojawi się bonus
-    TSF_ON_ICE = 32,  //jeżeli czołg jest na lodzie to się ślizga
-    TSF_CREATE = 64, //tworzenie czołgu
-    TSF_LIFE = 128,
-    TSF_FAST_ANIMATE = 256 //dwukrotne przyspieszenie animacji
+    TSF_SHIELD = 1 << 1, //po wzięciu hełmu
+    TSF_FROZEN = 1 << 2, //po wzięciu zegara przez przeciwnika
+    TSF_DESTROYED = 1 << 3, //po wzięciu bomby prez przeciwnika lub trafieniu kulą
+    TSF_BOAT = 1 << 4, //po wzięciu łódki, pozwala przechodzić przez wodę
+    TSF_BONUS = 1 << 5, //po trafieniu tego czołgu na mapie pojawi się bonus
+    TSF_ON_ICE = 1 << 6,  //jeżeli czołg jest na lodzie to się ślizga
+    TSF_CREATE = 1 << 7, //tworzenie czołgu
+    TSF_LIFE = 1 << 8,
+    TSF_MENU = 1 << 9 //dwukrotne przyspieszenie animacji
 };
 
 enum Direction
@@ -68,15 +68,4 @@ enum Direction
     D_LEFT = 3
 };
 
-/*
-enum LevelTile
-{
-    LT_EMPTY,
-    LT_BRICK,
-    LT_STONE,
-    LT_WATER,
-    LT_BUSH,
-    LT_ROAD
-};
-*/
 #endif // TYPE_H

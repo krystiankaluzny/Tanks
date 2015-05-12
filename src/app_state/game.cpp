@@ -52,7 +52,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_player_count = m_players.size();
     for(auto player : m_players)
     {
-        player->clearFlag(TSF_FAST_ANIMATE);
+        player->clearFlag(TSF_MENU);
         player->lives_count++;
         player->respawn();
     }
@@ -352,34 +352,6 @@ void Game::eventProcess(SDL_Event *ev)
 
     if(ev->type == SDL_KEYDOWN)
     {
-        for(auto player : m_players)
-        {
-            if(player->player_keys.up == ev->key.keysym.scancode)
-            {
-                player->setDirection(D_UP);
-                player->speed = player->default_speed;
-            }
-            else if(player->player_keys.down == ev->key.keysym.scancode)
-            {
-                player->setDirection(D_DOWN);
-                player->speed = player->default_speed;
-            }
-            else if(player->player_keys.left == ev->key.keysym.scancode)
-            {
-                player->setDirection(D_LEFT);
-                player->speed = player->default_speed;
-            }
-            else if(player->player_keys.right == ev->key.keysym.scancode)
-            {
-                player->setDirection(D_RIGHT);
-                player->speed = player->default_speed;
-            }
-            else if(player->player_keys.fire == ev->key.keysym.scancode)
-            {
-                player->fire();
-            }
-        }
-
         switch(ev->key.keysym.sym)
         {
         case SDLK_r:
@@ -396,18 +368,6 @@ void Game::eventProcess(SDL_Event *ev)
             break;
         case SDLK_t:
             AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
-            break;
-        case SDLK_1:
-            m_enemies.push_back(new Enemy(1, 1, ST_TANK_A));
-            break;
-        case SDLK_2:
-            m_enemies.push_back(new Enemy(50, 1, ST_TANK_B));
-            break;
-        case SDLK_3:
-            m_enemies.push_back(new Enemy(100, 1, ST_TANK_C));
-            break;
-        case SDLK_4:
-            m_enemies.push_back(new Enemy(150, 1, ST_TANK_D));
             break;
         case SDLK_RETURN:
             m_pause = !m_pause;

@@ -29,7 +29,7 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over)
         if(player->lives_count == 0 && !game_over) player->lives_count = 2;
         else player->lives_count++;
         player->respawn();
-        player->setFlag(TSF_FAST_ANIMATE);
+        player->setFlag(TSF_MENU);
 
         if(player->score > m_max_score) m_max_score = player->score;
     }
@@ -87,6 +87,7 @@ void Scores::update(Uint32 dt)
     }
     for(auto player : m_players)
     {
+        player->speed = 0.0;
         player->setDirection(D_RIGHT);
         player->update(dt);
     }

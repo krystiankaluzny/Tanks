@@ -43,6 +43,7 @@ unsigned AppConfig::tank_frozen_time = 8000; //czas zatrzymania czołgów
 unsigned AppConfig::level_end_time = 5000; //czas oczekania po zabiciu wszystkich wrogów
 unsigned AppConfig::protect_eagle_time = 15000; //czas kamiennej osłony na orzełku
 unsigned AppConfig::bonus_blink_time = 350; //czas kamiennej osłony na orzełku
+unsigned AppConfig::player_reload_time = 120; //minimalny czas między wystrzeleniem pocisków przez gracza
 int AppConfig::enemy_max_count_on_map = 4; //maksymalna liczba czołgów na mapie w jednej chwili
 double AppConfig::game_over_entry_speed = 0.13; //prędkość poruszania się napsu "GAME OVER"
 double AppConfig::tank_default_speed = 0.08;    //nominalna prędkość czołgu

@@ -8,7 +8,7 @@ class Player : public Tank
 public:
     struct PlayerKeys
     {
-        PlayerKeys(): up(SDL_SCANCODE_UP), down(SDL_SCANCODE_DOWN), left(SDL_SCANCODE_LEFT), right(SDL_SCANCODE_RIGHT), fire(SDL_SCANCODE_SPACE) {}
+        PlayerKeys(): up(SDL_SCANCODE_UNKNOWN), down(SDL_SCANCODE_UNKNOWN), left(SDL_SCANCODE_UNKNOWN), right(SDL_SCANCODE_UNKNOWN), fire(SDL_SCANCODE_UNKNOWN) {}
         PlayerKeys(SDL_Scancode u, SDL_Scancode d, SDL_Scancode l, SDL_Scancode r, SDL_Scancode f): up(u), down(d), left(l), right(r), fire(f) {}
         SDL_Scancode up;
         SDL_Scancode down;
@@ -29,7 +29,9 @@ public:
     PlayerKeys player_keys;
     unsigned score;
     int star_count;
+
 private:
+    Uint32 m_fire_time;
 };
 
 #endif // PLAYER_H
