@@ -10,7 +10,7 @@ class Engine
 public:
     Engine();
     static Engine& getEngine(); //silnik może być dostępny w każdym module korzystając jedynie z przestrzeni nazw a nie wskaźnika
-
+    static std::string intToString(int num);
     void initModules(); //tworzenie obiektów składowych silnika
     void destroyModules(); //niszczenie obiektów składowych silnika
 

@@ -77,7 +77,7 @@ void Game::draw()
 
     if(m_level_start_screen)
     {
-        std::string level_name = "STAGE " + AppState::intToString(m_current_level);
+        std::string level_name = "STAGE " + Engine::intToString(m_current_level);
         renderer->drawText(nullptr, level_name, {255, 255, 255, 255}, 1);
     }
     else
@@ -120,14 +120,14 @@ void Game::draw()
             p_dst = {dst.x + dst.w + 2, dst.y + 3};
             i++;
             renderer->drawObject(&player->src_rect, &dst);
-            renderer->drawText(&p_dst, AppState::intToString(player->lives_count), {0, 0, 0, 255}, 3);
+            renderer->drawText(&p_dst, Engine::intToString(player->lives_count), {0, 0, 0, 255}, 3);
         }
         //numer mapy
         src = engine.getSpriteConfig()->getSpriteData(ST_STAGE_STATUS)->rect;
         dst = {AppConfig::status_rect.x + 8, 185 + (m_players.size() + m_killed_players.size()) * 18, src.w, src.h};
         p_dst = {dst.x + 10, dst.y + 26};
         renderer->drawObject(&src, &dst);
-        renderer->drawText(&p_dst, AppState::intToString(m_current_level), {0, 0, 0, 255}, 2);
+        renderer->drawText(&p_dst, Engine::intToString(m_current_level), {0, 0, 0, 255}, 2);
 
         if(m_pause)
             renderer->drawText(nullptr, std::string("PAUSE"), {200, 0, 0, 255}, 1);
@@ -870,7 +870,7 @@ void Game::nextLevel()
     m_finished = false;
     m_enemy_to_kill = AppConfig::enemy_start_count;
 
-    std::string level_path = AppConfig::levels_path + AppState::intToString(m_current_level);
+    std::string level_path = AppConfig::levels_path + Engine::intToString(m_current_level);
     loadLevel(level_path);
 
     if(m_players.empty())
