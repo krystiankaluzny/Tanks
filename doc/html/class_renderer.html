@@ -92,6 +92,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa odpowiada za rysowanie obiektów na ekranie.  
+ <a href="class_renderer.html#details">Więcej...</a></p>
+
 <p><code>#include &lt;<a class="el" href="renderer_8h_source.html">renderer.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -132,7 +135,9 @@ Atrybuty prywatne</h2></td></tr>
 <tr class="memitem:a7bd293c0b251a3b7d6026b7708f84c3f"><td class="memItemLeft" align="right" valign="top">TTF_Font *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_renderer.html#a7bd293c0b251a3b7d6026b7708f84c3f">m_font3</a></td></tr>
 <tr class="separator:a7bd293c0b251a3b7d6026b7708f84c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa odpowiada za rysowanie obiektów na ekranie. </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
 <a class="anchor" id="a7ebf46f54dab9905f79b80f7fddb76a6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -176,6 +181,7 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Czyszczenie bufora ekranu. </p>
 
 </div>
 </div>
@@ -202,6 +208,13 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Przerysowanie fragmentu tekstury na fragment bufora ekranu. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture_src</td><td>- źródłowy prostokąt z tekstury </td></tr>
+    <tr><td class="paramname">window_dest</td><td>- docelowy prostokąt na buforze ekranu </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -234,6 +247,14 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funkcja rysująca prostokątk w buforze okna. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>- położneie prostokątku na planszy </td></tr>
+    <tr><td class="paramname">rect_color</td><td>- kolor prostokątku </td></tr>
+    <tr><td class="paramname">fill</td><td>- zmienna mówiącza czy prostokąt ma być zamalowany </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -272,6 +293,15 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Rysowanie tekstu w buforze okna w wybranej pozycji początkowej. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start</td><td>- położenie punktu początkowego rysowanego tekstu; ujemna wartości którejś ze wspołrzędnych skutkuje wyśrodkowaniem napisu w tej osi </td></tr>
+    <tr><td class="paramname">text</td><td>- rysowany tekst </td></tr>
+    <tr><td class="paramname">text_color</td><td>- kolory rysowanego tekst </td></tr>
+    <tr><td class="paramname">font_size</td><td>- numer czcionki za pomocą, której będzi rysoweny tekst; dostępne trzy wartośc: 1, 2, 3 </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -287,6 +317,7 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Prezentacja bufora ekranu. </p>
 
 </div>
 </div>
@@ -302,6 +333,7 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Wczytwanie czcionki w trzech różnych rozmiarach. </p>
 
 </div>
 </div>
@@ -318,6 +350,12 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Wczytanie tekstury z pliku oraz stworzenie renderera związanego z oknem aplikacji. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>- wskaźnik na obiekt zawartości okna aplikacji </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -344,6 +382,14 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Ustawienie skali wyświetlanego bufora, tak aby miał zachowane proporcje planszy oraz aby był umiejscowiony w środku okna aplikacji. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xs</td><td>- skala pozioma jako stosunek szerokości okna do szerokości mapy </td></tr>
+    <tr><td class="paramname">ys</td><td>- skala pionowa jako stosunek wysokości okna do wysokości mapy </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>Zobacz również</dt><dd><a class="el" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a> </dd></dl>
 
 </div>
 </div>
@@ -365,6 +411,7 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czcionka o rozmiarze 28. </p>
 
 </div>
 </div>
@@ -385,6 +432,7 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czcionka o rozmiarze 14. </p>
 
 </div>
 </div>
@@ -405,6 +453,7 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czcionka o rozmiarze 10. </p>
 
 </div>
 </div>
@@ -425,6 +474,7 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Wskaźnik na obiekt związany z buforem okna. </p>
 
 </div>
 </div>
@@ -445,6 +495,7 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Wskaźnik na teksturę pomocniczą przy rysowaniu tekstu na ekranie. </p>
 
 </div>
 </div>
@@ -465,6 +516,7 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Wskaźnik na teksturę zawierającą wszystkie widoczne elementy gry. </p>
 
 </div>
 </div>
@@ -475,7 +527,7 @@ Atrybuty prywatne</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano Śr, 13 maj 2015 18:36:23 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano Śr, 13 maj 2015 19:26:37 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

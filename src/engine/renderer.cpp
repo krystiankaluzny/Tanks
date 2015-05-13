@@ -63,7 +63,6 @@ void Renderer::flush()
 
 void Renderer::drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)
 {
-
     SDL_RenderCopy(m_renderer, m_texture, texture_src, window_dest); //rysujemy na tylnim buforze
 }
 
