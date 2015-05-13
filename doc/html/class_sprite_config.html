@@ -93,6 +93,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa przechowuje informacjie o wszystkich typach animacji w grze.  
+ <a href="class_sprite_config.html#details">Więcej...</a></p>
+
 <p><code>#include &lt;<a class="el" href="spriteconfig_8h_source.html">spriteconfig.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -112,7 +115,9 @@ Atrybuty prywatne</h2></td></tr>
 <tr class="memitem:a861dc7696c5e12d3686baa7736c63a85"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a>, <a class="el" href="struct_sprite_data.html">SpriteData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sprite_config.html#a861dc7696c5e12d3686baa7736c63a85">m_configs</a></td></tr>
 <tr class="separator:a861dc7696c5e12d3686baa7736c63a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa przechowuje informacjie o wszystkich typach animacji w grze. </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
 <a class="anchor" id="ae050a6bd2853271b140031e483f9a18d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -142,6 +147,13 @@ Atrybuty prywatne</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pobranie wybranego typu animacji. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sp</td><td>- szukany typ animacji </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Zwraca</dt><dd>animację danego typu </dd></dl>
 
 </div>
 </div>
@@ -212,6 +224,19 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Funkcja używana przy dodawaniu nowego typu animacji. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">st</td><td>- typ animacji </td></tr>
+    <tr><td class="paramname">x</td><td>- połoźenie poziome pierwszej klatki animacji w teksturze </td></tr>
+    <tr><td class="paramname">y</td><td>- połoźenie pionowe pierwszej klatki animacji w teksturze </td></tr>
+    <tr><td class="paramname">w</td><td>- szerokości klatek animacji </td></tr>
+    <tr><td class="paramname">h</td><td>- wysokości klatek animacji </td></tr>
+    <tr><td class="paramname">fc</td><td>- liczba klatek w animacji </td></tr>
+    <tr><td class="paramname">fd</td><td>- czas wyświetlania jednej klatki </td></tr>
+    <tr><td class="paramname">l</td><td>- zapętlenie animacji </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -233,6 +258,7 @@ Atrybuty prywatne</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Kontener przechowujący wszystkie typy animacji. </p>
 
 </div>
 </div>
@@ -243,7 +269,7 @@ Atrybuty prywatne</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano Śr, 13 maj 2015 19:26:37 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano Śr, 13 maj 2015 19:48:45 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
