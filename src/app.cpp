@@ -30,7 +30,6 @@ void App::run()
     is_running = true;
     //inicjalizacja SDL i utworzenie okan
 
-
     if(SDL_Init(SDL_INIT_VIDEO) == 0)
     {
         m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
