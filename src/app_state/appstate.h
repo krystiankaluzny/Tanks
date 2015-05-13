@@ -6,7 +6,7 @@
 #include <string>
 
 /**
- * @brief Klasa AppState
+ * @brief
  * Klasa jest interfejsem, po którym dziedziczą klasy @a Game, @a Menu, @a Scores
  */
 class AppState
@@ -16,7 +16,7 @@ public:
 
     /**
      * Funkcja sprawdza czy aktualny stan gry się skończył.
-     * @return 1 jeżeli obecny stan gry się skończył, w przeciwnym wypadku 0.
+     * @return @a true jeżeli obecny stan gry się skończył, w przeciwnym wypadku @a false.
      */
     virtual bool finished() const = 0;
     /**

@@ -93,7 +93,6 @@ void Game::draw()
         for(auto bonus : m_bonuses) bonus->draw();
         m_eagle->draw();
 
-
         if(m_game_over)
         {
             SDL_Point pos;
@@ -348,15 +347,10 @@ void Game::update(Uint32 dt)
 
 void Game::eventProcess(SDL_Event *ev)
 {
-    if(m_players.empty()) return;
-
     if(ev->type == SDL_KEYDOWN)
     {
         switch(ev->key.keysym.sym)
         {
-        case SDLK_r:
-            m_players.at(0)->respawn();
-            break;
         case SDLK_n:
             m_enemy_to_kill = 0;
             m_finished = true;
@@ -797,7 +791,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
     {
         player->score += 300;
 
-        if(bonus->type == ST_BONUS_GRANATE) //OK
+        if(bonus->type == ST_BONUS_GRANATE)
         {
             for(auto enemy : m_enemies)
             {
@@ -809,15 +803,15 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
                 }
             }
         }
-        else if(bonus->type == ST_BONUS_HELMET) //ok
+        else if(bonus->type == ST_BONUS_HELMET)
         {
             player->setFlag(TSF_SHIELD);
         }
-        else if(bonus->type == ST_BONUS_CLOCK) //ok
+        else if(bonus->type == ST_BONUS_CLOCK)
         {
             for(auto enemy : m_enemies) if(!enemy->to_erase) enemy->setFlag(TSF_FROZEN);
         }
-        else if(bonus->type == ST_BONUS_SHOVEL) //ok
+        else if(bonus->type == ST_BONUS_SHOVEL)
         {
             m_protect_eagle = true;
             m_protect_eagle_time = 0;
@@ -838,19 +832,19 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
                 m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h, ST_STONE_WALL);
             }
         }
-        else if(bonus->type == ST_BONUS_TANK) //ok
+        else if(bonus->type == ST_BONUS_TANK)
         {
             player->lives_count++;
         }
-        else if(bonus->type == ST_BONUS_STAR) //ok
+        else if(bonus->type == ST_BONUS_STAR)
         {
             player->changeStarCountBy(1);
         }
-        else if(bonus->type == ST_BONUS_GUN) //ok
+        else if(bonus->type == ST_BONUS_GUN)
         {
             player->changeStarCountBy(3);
         }
-        else if(bonus->type == ST_BONUS_BOAT) //ok
+        else if(bonus->type == ST_BONUS_BOAT)
         {
             player->setFlag(TSF_BOAT);
         }
@@ -922,9 +916,8 @@ void Game::generateEnemy()
     else if(p < c) e->lives_count = 3;
     else e->lives_count = 4;
 
-
     p = static_cast<float>(rand()) / RAND_MAX;
-    if(p < 0.15) e->setFlag(TSF_BONUS);
+    if(p < 0.12) e->setFlag(TSF_BONUS);
 
     m_enemies.push_back(e);
 }
