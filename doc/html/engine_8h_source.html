@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Tanks: Plik źródłowy src/engine/engine.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Tanks
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2052808828190f934b76e979ee65af8a.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">engine.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="engine_8h.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef ENGINE_H</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define ENGINE_H</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="renderer_8h.html">renderer.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="spriteconfig_8h.html">spriteconfig.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="class_engine.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_engine.html">Engine</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="class_engine.html#a8c98683b0a3aa28d8ab72a8bcd0d52f2">Engine</a>();</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_engine.html">Engine</a>&amp; <a class="code" href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">getEngine</a>(); <span class="comment">//silnik może być dostępny w każdym module korzystając jedynie z przestrzeni nazw a nie wskaźnika</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"></span>    <span class="keyword">static</span> std::string <a class="code" href="class_engine.html#a7aeb45fda14d92d4310eb7ec0f5af432">intToString</a>(<span class="keywordtype">int</span> num);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_engine.html#a36373d0a55fdf222623660c6c7b60d2f">initModules</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_engine.html#a463522f735aa34310b38ef66a7ba766f">destroyModules</a>();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_renderer.html">Renderer</a>* <a class="code" href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">getRenderer</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="class_sprite_config.html">SpriteConfig</a>* <a class="code" href="class_engine.html#add1c56f65b2ae1cee44d31a4e60559f3">getSpriteConfig</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_engine.html#a9c1027ff3e1d9bebee8e4ab189901d8a">   43</a></span>&#160;    <a class="code" href="class_renderer.html">Renderer</a>* <a class="code" href="class_engine.html#a9c1027ff3e1d9bebee8e4ab189901d8a">m_renderer</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_engine.html#ae01ce029c2bd33f0e84eb52918306818">   44</a></span>&#160;    <a class="code" href="class_sprite_config.html">SpriteConfig</a>* <a class="code" href="class_engine.html#ae01ce029c2bd33f0e84eb52918306818">m_sprite_config</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#endif // ENGINE_H</span></div>
+<div class="ttc" id="class_engine_html_a4ae702a17d6ca093ea6d2bbe37494805"><div class="ttname"><a href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">Engine::getRenderer</a></div><div class="ttdeci">Renderer * getRenderer() const </div><div class="ttdef"><b>Definition:</b> engine.cpp:46</div></div>
+<div class="ttc" id="class_engine_html_a2fdd20971d12ee816899854c05d8ed9b"><div class="ttname"><a href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a></div><div class="ttdeci">static Engine &amp; getEngine()</div><div class="ttdef"><b>Definition:</b> engine.cpp:10</div></div>
+<div class="ttc" id="class_engine_html_a7aeb45fda14d92d4310eb7ec0f5af432"><div class="ttname"><a href="class_engine.html#a7aeb45fda14d92d4310eb7ec0f5af432">Engine::intToString</a></div><div class="ttdeci">static std::string intToString(int num)</div><div class="ttdef"><b>Definition:</b> engine.cpp:16</div></div>
+<div class="ttc" id="class_renderer_html"><div class="ttname"><a href="class_renderer.html">Renderer</a></div><div class="ttdef"><b>Definition:</b> renderer.h:8</div></div>
+<div class="ttc" id="class_engine_html_ae01ce029c2bd33f0e84eb52918306818"><div class="ttname"><a href="class_engine.html#ae01ce029c2bd33f0e84eb52918306818">Engine::m_sprite_config</a></div><div class="ttdeci">SpriteConfig * m_sprite_config</div><div class="ttdef"><b>Definition:</b> engine.h:44</div></div>
+<div class="ttc" id="spriteconfig_8h_html"><div class="ttname"><a href="spriteconfig_8h.html">spriteconfig.h</a></div></div>
+<div class="ttc" id="class_engine_html_a9c1027ff3e1d9bebee8e4ab189901d8a"><div class="ttname"><a href="class_engine.html#a9c1027ff3e1d9bebee8e4ab189901d8a">Engine::m_renderer</a></div><div class="ttdeci">Renderer * m_renderer</div><div class="ttdef"><b>Definition:</b> engine.h:43</div></div>
+<div class="ttc" id="class_sprite_config_html"><div class="ttname"><a href="class_sprite_config.html">SpriteConfig</a></div><div class="ttdef"><b>Definition:</b> spriteconfig.h:21</div></div>
+<div class="ttc" id="class_engine_html_a463522f735aa34310b38ef66a7ba766f"><div class="ttname"><a href="class_engine.html#a463522f735aa34310b38ef66a7ba766f">Engine::destroyModules</a></div><div class="ttdeci">void destroyModules()</div><div class="ttdef"><b>Definition:</b> engine.cpp:38</div></div>
+<div class="ttc" id="class_engine_html_add1c56f65b2ae1cee44d31a4e60559f3"><div class="ttname"><a href="class_engine.html#add1c56f65b2ae1cee44d31a4e60559f3">Engine::getSpriteConfig</a></div><div class="ttdeci">SpriteConfig * getSpriteConfig() const </div><div class="ttdef"><b>Definition:</b> engine.cpp:51</div></div>
+<div class="ttc" id="class_engine_html_a8c98683b0a3aa28d8ab72a8bcd0d52f2"><div class="ttname"><a href="class_engine.html#a8c98683b0a3aa28d8ab72a8bcd0d52f2">Engine::Engine</a></div><div class="ttdeci">Engine()</div><div class="ttdef"><b>Definition:</b> engine.cpp:4</div></div>
+<div class="ttc" id="class_engine_html_a36373d0a55fdf222623660c6c7b60d2f"><div class="ttname"><a href="class_engine.html#a36373d0a55fdf222623660c6c7b60d2f">Engine::initModules</a></div><div class="ttdeci">void initModules()</div><div class="ttdef"><b>Definition:</b> engine.cpp:32</div></div>
+<div class="ttc" id="class_engine_html"><div class="ttname"><a href="class_engine.html">Engine</a></div><div class="ttdoc">Klasa łączy elementy związane z działaniem programu. </div><div class="ttdef"><b>Definition:</b> engine.h:10</div></div>
+<div class="ttc" id="renderer_8h_html"><div class="ttname"><a href="renderer_8h.html">renderer.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano Śr, 13 maj 2015 18:36:23 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>

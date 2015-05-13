@@ -1,0 +1,128 @@
+\hypertarget{class_scores}{}\section{Dokumentacja klasy Scores}
+\label{class_scores}\index{Scores@{Scores}}
+
+
+{\ttfamily \#include $<$scores.\+h$>$}
+
+Diagram dziedziczenia dla Scores\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_scores}
+\end{center}
+\end{figure}
+\subsection*{Metody publiczne}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_scores_a2fa6bcad8977919743d5af197f178c84}{Scores} ()
+\item 
+\hyperlink{class_scores_a911d7590e2708759f26c585ecdbf6a89}{Scores} (std\+::vector$<$ \hyperlink{class_player}{Player} $\ast$ $>$ players, int level, bool game\+\_\+over)
+\item 
+bool \hyperlink{class_scores_ace5dca138217e9bc5b18871b9ea9764b}{finished} () const 
+\item 
+void \hyperlink{class_scores_a9fb6838fe10b06aa9f439e3aae90a803}{draw} ()
+\item 
+void \hyperlink{class_scores_ae1eda4aec4cfc65c8bacb648ea28212e}{update} (Uint32 dt)
+\item 
+void \hyperlink{class_scores_ad6600e877a2b1c794cd1e849a7092d5e}{event\+Process} (S\+D\+L\+\_\+\+Event $\ast$ev)
+\item 
+\hyperlink{class_app_state}{App\+State} $\ast$ \hyperlink{class_scores_abd664c78d44381251db40ebba0e5b773}{next\+State} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Dokumentacja konstruktora i destruktora}
+\hypertarget{class_scores_a2fa6bcad8977919743d5af197f178c84}{}\index{Scores@{Scores}!Scores@{Scores}}
+\index{Scores@{Scores}!Scores@{Scores}}
+\subsubsection[{Scores}]{\setlength{\rightskip}{0pt plus 5cm}Scores\+::\+Scores (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_scores_a2fa6bcad8977919743d5af197f178c84}
+\hypertarget{class_scores_a911d7590e2708759f26c585ecdbf6a89}{}\index{Scores@{Scores}!Scores@{Scores}}
+\index{Scores@{Scores}!Scores@{Scores}}
+\subsubsection[{Scores}]{\setlength{\rightskip}{0pt plus 5cm}Scores\+::\+Scores (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Player} $\ast$ $>$}]{players, }
+\item[{int}]{level, }
+\item[{bool}]{game\+\_\+over}
+\end{DoxyParamCaption}
+)}\label{class_scores_a911d7590e2708759f26c585ecdbf6a89}
+
+
+\subsection{Dokumentacja funkcji składowych}
+\hypertarget{class_scores_a9fb6838fe10b06aa9f439e3aae90a803}{}\index{Scores@{Scores}!draw@{draw}}
+\index{draw@{draw}!Scores@{Scores}}
+\subsubsection[{draw}]{\setlength{\rightskip}{0pt plus 5cm}void Scores\+::draw (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_scores_a9fb6838fe10b06aa9f439e3aae90a803}
+Funkcja rysująca elementy gry należące do danego stanu 
+
+Implementuje \hyperlink{class_app_state_ad2a668dc35b06c330a788e82d9eebee2}{App\+State}.
+
+\hypertarget{class_scores_ad6600e877a2b1c794cd1e849a7092d5e}{}\index{Scores@{Scores}!event\+Process@{event\+Process}}
+\index{event\+Process@{event\+Process}!Scores@{Scores}}
+\subsubsection[{event\+Process}]{\setlength{\rightskip}{0pt plus 5cm}void Scores\+::event\+Process (
+\begin{DoxyParamCaption}
+\item[{S\+D\+L\+\_\+\+Event $\ast$}]{ev}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_scores_ad6600e877a2b1c794cd1e849a7092d5e}
+Funkcja umożliwiająca obsługę zdarzeń wykrywanych przez bibliotekę S\+D\+L2. 
+\begin{DoxyParams}{Parametry}
+{\em ev} & -\/ wskaźnik na unię S\+D\+L\+\_\+\+Event przechowującą typ i parametry różnych zdarzeń \\
+\hline
+\end{DoxyParams}
+
+
+Implementuje \hyperlink{class_app_state_a9cd9175e5cd251bea2e7eeb4ee9f6137}{App\+State}.
+
+\hypertarget{class_scores_ace5dca138217e9bc5b18871b9ea9764b}{}\index{Scores@{Scores}!finished@{finished}}
+\index{finished@{finished}!Scores@{Scores}}
+\subsubsection[{finished}]{\setlength{\rightskip}{0pt plus 5cm}bool Scores\+::finished (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_scores_ace5dca138217e9bc5b18871b9ea9764b}
+Funkcja sprawdza czy aktualny stan gry się skończył. \begin{DoxyReturn}{Zwraca}
+{\itshape true} jeżeli obecny stan gry się skończył, w przeciwnym wypadku {\itshape false}. 
+\end{DoxyReturn}
+
+
+Implementuje \hyperlink{class_app_state_ad377464581817ae4000b9cd6c47dc4e8}{App\+State}.
+
+\hypertarget{class_scores_abd664c78d44381251db40ebba0e5b773}{}\index{Scores@{Scores}!next\+State@{next\+State}}
+\index{next\+State@{next\+State}!Scores@{Scores}}
+\subsubsection[{next\+State}]{\setlength{\rightskip}{0pt plus 5cm}{\bf App\+State} $\ast$ Scores\+::next\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_scores_abd664c78d44381251db40ebba0e5b773}
+Funkcja zwracającya następny stan po zakończeniu obecnego. Funkcję należy wywołać tylko wtedy, gdy funkcja {\itshape finished} zwróci wartość 1. \begin{DoxyReturn}{Zwraca}
+następny stan gry 
+\end{DoxyReturn}
+
+
+Implementuje \hyperlink{class_app_state_afafba64bbaaf7552f6e0632821c2338f}{App\+State}.
+
+\hypertarget{class_scores_ae1eda4aec4cfc65c8bacb648ea28212e}{}\index{Scores@{Scores}!update@{update}}
+\index{update@{update}!Scores@{Scores}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}void Scores\+::update (
+\begin{DoxyParamCaption}
+\item[{Uint32}]{dt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_scores_ae1eda4aec4cfc65c8bacb648ea28212e}
+Funkcja aktualizująca stan obiektów i liczników w grze 
+\begin{DoxyParams}{Parametry}
+{\em dt} & -\/ czas od ostatniego wywołania funkcji w milisekundach \\
+\hline
+\end{DoxyParams}
+
+
+Implementuje \hyperlink{class_app_state_a28660de31b5a7a36691b67866f82e5f2}{App\+State}.
+
+
+
+Dokumentacja dla tej klasy została wygenerowana z plików\+:\begin{DoxyCompactItemize}
+\item 
+src/app\+\_\+state/\hyperlink{scores_8h}{scores.\+h}\item 
+src/app\+\_\+state/\hyperlink{scores_8cpp}{scores.\+cpp}\end{DoxyCompactItemize}

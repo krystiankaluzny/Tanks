@@ -31,11 +31,13 @@ public:
      */
     void destroyModules();
 
-    //pobieranie elementu składowych silnika
     /**
-     * @return obiekt
+     * @return wskaźnik na obiekt Renderer pozwalający rysować na ekranie
      */
     Renderer* getRenderer() const;
+    /**
+     * @return wsaźnik na obiekt SpriteConfig przechowujący informacjie o teksturach
+     */
     SpriteConfig* getSpriteConfig() const;
 private:
     Renderer* m_renderer;

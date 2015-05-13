@@ -1,0 +1,126 @@
+\hypertarget{class_menu}{}\section{Dokumentacja klasy Menu}
+\label{class_menu}\index{Menu@{Menu}}
+
+
+{\ttfamily \#include $<$menu.\+h$>$}
+
+Diagram dziedziczenia dla Menu\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_menu}
+\end{center}
+\end{figure}
+\subsection*{Metody publiczne}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_menu_ad466dd83355124a6ed958430450bfe94}{Menu} ()
+\item 
+\hyperlink{class_menu_a831387f51358cfb88cd018e1777bc980}{$\sim$\+Menu} ()
+\item 
+bool \hyperlink{class_menu_ac72d49b5565464340c2c25bd335c9424}{finished} () const 
+\item 
+void \hyperlink{class_menu_a2cd7ab9901a8f42a3ae977d0774398a6}{draw} ()
+\item 
+void \hyperlink{class_menu_a02ff964c4a203ca08b11655c36252fc8}{update} (Uint32 dt)
+\item 
+void \hyperlink{class_menu_a0b84052947f8687e10afe15ec88c90a9}{event\+Process} (S\+D\+L\+\_\+\+Event $\ast$ev)
+\item 
+\hyperlink{class_app_state}{App\+State} $\ast$ \hyperlink{class_menu_a52b14eefa8e7e9bee6624f759daa5028}{next\+State} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Dokumentacja konstruktora i destruktora}
+\hypertarget{class_menu_ad466dd83355124a6ed958430450bfe94}{}\index{Menu@{Menu}!Menu@{Menu}}
+\index{Menu@{Menu}!Menu@{Menu}}
+\subsubsection[{Menu}]{\setlength{\rightskip}{0pt plus 5cm}Menu\+::\+Menu (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_menu_ad466dd83355124a6ed958430450bfe94}
+\hypertarget{class_menu_a831387f51358cfb88cd018e1777bc980}{}\index{Menu@{Menu}!````~Menu@{$\sim$\+Menu}}
+\index{````~Menu@{$\sim$\+Menu}!Menu@{Menu}}
+\subsubsection[{$\sim$\+Menu}]{\setlength{\rightskip}{0pt plus 5cm}Menu\+::$\sim$\+Menu (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_menu_a831387f51358cfb88cd018e1777bc980}
+
+
+\subsection{Dokumentacja funkcji składowych}
+\hypertarget{class_menu_a2cd7ab9901a8f42a3ae977d0774398a6}{}\index{Menu@{Menu}!draw@{draw}}
+\index{draw@{draw}!Menu@{Menu}}
+\subsubsection[{draw}]{\setlength{\rightskip}{0pt plus 5cm}void Menu\+::draw (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_menu_a2cd7ab9901a8f42a3ae977d0774398a6}
+Funkcja rysująca elementy gry należące do danego stanu 
+
+Implementuje \hyperlink{class_app_state_ad2a668dc35b06c330a788e82d9eebee2}{App\+State}.
+
+\hypertarget{class_menu_a0b84052947f8687e10afe15ec88c90a9}{}\index{Menu@{Menu}!event\+Process@{event\+Process}}
+\index{event\+Process@{event\+Process}!Menu@{Menu}}
+\subsubsection[{event\+Process}]{\setlength{\rightskip}{0pt plus 5cm}void Menu\+::event\+Process (
+\begin{DoxyParamCaption}
+\item[{S\+D\+L\+\_\+\+Event $\ast$}]{ev}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_menu_a0b84052947f8687e10afe15ec88c90a9}
+Funkcja umożliwiająca obsługę zdarzeń wykrywanych przez bibliotekę S\+D\+L2. 
+\begin{DoxyParams}{Parametry}
+{\em ev} & -\/ wskaźnik na unię S\+D\+L\+\_\+\+Event przechowującą typ i parametry różnych zdarzeń \\
+\hline
+\end{DoxyParams}
+
+
+Implementuje \hyperlink{class_app_state_a9cd9175e5cd251bea2e7eeb4ee9f6137}{App\+State}.
+
+\hypertarget{class_menu_ac72d49b5565464340c2c25bd335c9424}{}\index{Menu@{Menu}!finished@{finished}}
+\index{finished@{finished}!Menu@{Menu}}
+\subsubsection[{finished}]{\setlength{\rightskip}{0pt plus 5cm}bool Menu\+::finished (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_menu_ac72d49b5565464340c2c25bd335c9424}
+Funkcja sprawdza czy aktualny stan gry się skończył. \begin{DoxyReturn}{Zwraca}
+{\itshape true} jeżeli obecny stan gry się skończył, w przeciwnym wypadku {\itshape false}. 
+\end{DoxyReturn}
+
+
+Implementuje \hyperlink{class_app_state_ad377464581817ae4000b9cd6c47dc4e8}{App\+State}.
+
+\hypertarget{class_menu_a52b14eefa8e7e9bee6624f759daa5028}{}\index{Menu@{Menu}!next\+State@{next\+State}}
+\index{next\+State@{next\+State}!Menu@{Menu}}
+\subsubsection[{next\+State}]{\setlength{\rightskip}{0pt plus 5cm}{\bf App\+State} $\ast$ Menu\+::next\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_menu_a52b14eefa8e7e9bee6624f759daa5028}
+Funkcja zwracającya następny stan po zakończeniu obecnego. Funkcję należy wywołać tylko wtedy, gdy funkcja {\itshape finished} zwróci wartość 1. \begin{DoxyReturn}{Zwraca}
+następny stan gry 
+\end{DoxyReturn}
+
+
+Implementuje \hyperlink{class_app_state_afafba64bbaaf7552f6e0632821c2338f}{App\+State}.
+
+\hypertarget{class_menu_a02ff964c4a203ca08b11655c36252fc8}{}\index{Menu@{Menu}!update@{update}}
+\index{update@{update}!Menu@{Menu}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}void Menu\+::update (
+\begin{DoxyParamCaption}
+\item[{Uint32}]{dt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_menu_a02ff964c4a203ca08b11655c36252fc8}
+Funkcja aktualizująca stan obiektów i liczników w grze 
+\begin{DoxyParams}{Parametry}
+{\em dt} & -\/ czas od ostatniego wywołania funkcji w milisekundach \\
+\hline
+\end{DoxyParams}
+
+
+Implementuje \hyperlink{class_app_state_a28660de31b5a7a36691b67866f82e5f2}{App\+State}.
+
+
+
+Dokumentacja dla tej klasy została wygenerowana z plików\+:\begin{DoxyCompactItemize}
+\item 
+src/app\+\_\+state/\hyperlink{menu_8h}{menu.\+h}\item 
+src/app\+\_\+state/\hyperlink{menu_8cpp}{menu.\+cpp}\end{DoxyCompactItemize}

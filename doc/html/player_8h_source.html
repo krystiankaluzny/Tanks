@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Tanks: Plik źródłowy src/objects/player.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Tanks
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a7fa5847c07dc92c5227f8a150238560.html">objects</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">player.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="player_8h.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef PLAYER_H</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define PLAYER_H</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tank_8h.html">tank.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="class_player.html">    6</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_player.html">Player</a> : <span class="keyword">public</span> <a class="code" href="class_tank.html">Tank</a></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html">    9</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_player_1_1_player_keys.html">PlayerKeys</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html#a56a56f4201c50a48bb847971c94ca4b1">   11</a></span>&#160;        <a class="code" href="struct_player_1_1_player_keys.html#a56a56f4201c50a48bb847971c94ca4b1">PlayerKeys</a>(): <a class="code" href="struct_player_1_1_player_keys.html#a943bcfbd15d886d3d2a397343717dd4f">up</a>(SDL_SCANCODE_UNKNOWN), <a class="code" href="struct_player_1_1_player_keys.html#a57aab79d509ab35da6ee806f92299679">down</a>(SDL_SCANCODE_UNKNOWN), <a class="code" href="struct_player_1_1_player_keys.html#a963bc2b65a3e864cb863a0ed5d77a233">left</a>(SDL_SCANCODE_UNKNOWN), <a class="code" href="struct_player_1_1_player_keys.html#a0ed2777f9a657033b9ceb04302fea7c5">right</a>(SDL_SCANCODE_UNKNOWN), <a class="code" href="struct_player_1_1_player_keys.html#ae9a752c12df2b347234bb7acefe93ed0">fire</a>(SDL_SCANCODE_UNKNOWN) {}</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html#abfa5fbc24fae22b69a060b7ce5812aab">   12</a></span>&#160;        <a class="code" href="struct_player_1_1_player_keys.html#abfa5fbc24fae22b69a060b7ce5812aab">PlayerKeys</a>(SDL_Scancode u, SDL_Scancode d, SDL_Scancode l, SDL_Scancode r, SDL_Scancode f): <a class="code" href="struct_player_1_1_player_keys.html#a943bcfbd15d886d3d2a397343717dd4f">up</a>(u), <a class="code" href="struct_player_1_1_player_keys.html#a57aab79d509ab35da6ee806f92299679">down</a>(d), <a class="code" href="struct_player_1_1_player_keys.html#a963bc2b65a3e864cb863a0ed5d77a233">left</a>(l), <a class="code" href="struct_player_1_1_player_keys.html#a0ed2777f9a657033b9ceb04302fea7c5">right</a>(r), <a class="code" href="struct_player_1_1_player_keys.html#ae9a752c12df2b347234bb7acefe93ed0">fire</a>(f) {}</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html#a943bcfbd15d886d3d2a397343717dd4f">   13</a></span>&#160;        SDL_Scancode <a class="code" href="struct_player_1_1_player_keys.html#a943bcfbd15d886d3d2a397343717dd4f">up</a>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html#a57aab79d509ab35da6ee806f92299679">   14</a></span>&#160;        SDL_Scancode <a class="code" href="struct_player_1_1_player_keys.html#a57aab79d509ab35da6ee806f92299679">down</a>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html#a963bc2b65a3e864cb863a0ed5d77a233">   15</a></span>&#160;        SDL_Scancode <a class="code" href="struct_player_1_1_player_keys.html#a963bc2b65a3e864cb863a0ed5d77a233">left</a>;</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html#a0ed2777f9a657033b9ceb04302fea7c5">   16</a></span>&#160;        SDL_Scancode <a class="code" href="struct_player_1_1_player_keys.html#a0ed2777f9a657033b9ceb04302fea7c5">right</a>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="struct_player_1_1_player_keys.html#ae9a752c12df2b347234bb7acefe93ed0">   17</a></span>&#160;        SDL_Scancode <a class="code" href="struct_player_1_1_player_keys.html#ae9a752c12df2b347234bb7acefe93ed0">fire</a>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    };</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8">Player</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8">Player</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <a class="code" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a> <a class="code" href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">type</a>);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player.html#af5cac4f8c62903d39c7dc7bdf8f05ddb">update</a>(Uint32 dt);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player.html#a038a74bd768b6eec8fbe57cb2bacf811">respawn</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player.html#acb40d0a5d388029d48156fb06fdd288c">destroy</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="class_bullet.html">Bullet</a>* <a class="code" href="class_player.html#a5f0f389fdf5d685f088a997ed5af925d">fire</a>();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player.html#aa7495c2cb4ba4f197f0d6228970de75b">changeStarCountBy</a>(<span class="keywordtype">int</span> c);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="class_player.html#a9822b1b86085cc46c773c76570cfaa4d">   29</a></span>&#160;    <a class="code" href="struct_player_1_1_player_keys.html">PlayerKeys</a> <a class="code" href="class_player.html#a9822b1b86085cc46c773c76570cfaa4d">player_keys</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_player.html#a18afa2dfc1f6dfba7bbe08889f443da5">   30</a></span>&#160;    <span class="keywordtype">unsigned</span> <a class="code" href="class_player.html#a18afa2dfc1f6dfba7bbe08889f443da5">score</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_player.html#a331b0f5de5a558249b8a14441249279b">   31</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_player.html#a331b0f5de5a558249b8a14441249279b">star_count</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_player.html#ae6a37d018b76094b9ca7746fe0b268ba">   34</a></span>&#160;    Uint32 <a class="code" href="class_player.html#ae6a37d018b76094b9ca7746fe0b268ba">m_fire_time</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif // PLAYER_H</span></div>
+<div class="ttc" id="class_object_html_a1b89f32cd9e0040f8a2455f3cef7d0d2"><div class="ttname"><a href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">Object::type</a></div><div class="ttdeci">SpriteType type</div><div class="ttdef"><b>Definition:</b> object.h:21</div></div>
+<div class="ttc" id="class_player_html_affe0cc3cb714f6deb4e62f0c0d3f1fd8"><div class="ttname"><a href="class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8">Player::Player</a></div><div class="ttdeci">Player()</div><div class="ttdef"><b>Definition:</b> player.cpp:6</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html_abfa5fbc24fae22b69a060b7ce5812aab"><div class="ttname"><a href="struct_player_1_1_player_keys.html#abfa5fbc24fae22b69a060b7ce5812aab">Player::PlayerKeys::PlayerKeys</a></div><div class="ttdeci">PlayerKeys(SDL_Scancode u, SDL_Scancode d, SDL_Scancode l, SDL_Scancode r, SDL_Scancode f)</div><div class="ttdef"><b>Definition:</b> player.h:12</div></div>
+<div class="ttc" id="class_player_html_a9822b1b86085cc46c773c76570cfaa4d"><div class="ttname"><a href="class_player.html#a9822b1b86085cc46c773c76570cfaa4d">Player::player_keys</a></div><div class="ttdeci">PlayerKeys player_keys</div><div class="ttdef"><b>Definition:</b> player.h:29</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html_a963bc2b65a3e864cb863a0ed5d77a233"><div class="ttname"><a href="struct_player_1_1_player_keys.html#a963bc2b65a3e864cb863a0ed5d77a233">Player::PlayerKeys::left</a></div><div class="ttdeci">SDL_Scancode left</div><div class="ttdef"><b>Definition:</b> player.h:15</div></div>
+<div class="ttc" id="class_player_html_aa7495c2cb4ba4f197f0d6228970de75b"><div class="ttname"><a href="class_player.html#aa7495c2cb4ba4f197f0d6228970de75b">Player::changeStarCountBy</a></div><div class="ttdeci">void changeStarCountBy(int c)</div><div class="ttdef"><b>Definition:</b> player.cpp:143</div></div>
+<div class="ttc" id="class_player_html_a038a74bd768b6eec8fbe57cb2bacf811"><div class="ttname"><a href="class_player.html#a038a74bd768b6eec8fbe57cb2bacf811">Player::respawn</a></div><div class="ttdeci">void respawn()</div><div class="ttdef"><b>Definition:</b> player.cpp:83</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html_a943bcfbd15d886d3d2a397343717dd4f"><div class="ttname"><a href="struct_player_1_1_player_keys.html#a943bcfbd15d886d3d2a397343717dd4f">Player::PlayerKeys::up</a></div><div class="ttdeci">SDL_Scancode up</div><div class="ttdef"><b>Definition:</b> player.h:13</div></div>
+<div class="ttc" id="class_player_html_af5cac4f8c62903d39c7dc7bdf8f05ddb"><div class="ttname"><a href="class_player.html#af5cac4f8c62903d39c7dc7bdf8f05ddb">Player::update</a></div><div class="ttdeci">void update(Uint32 dt)</div><div class="ttdef"><b>Definition:</b> player.cpp:32</div></div>
+<div class="ttc" id="class_player_html_a18afa2dfc1f6dfba7bbe08889f443da5"><div class="ttname"><a href="class_player.html#a18afa2dfc1f6dfba7bbe08889f443da5">Player::score</a></div><div class="ttdeci">unsigned score</div><div class="ttdef"><b>Definition:</b> player.h:30</div></div>
+<div class="ttc" id="type_8h_html_ac6fa10729dffeb6a192492f13c25e31a"><div class="ttname"><a href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a></div><div class="ttdeci">SpriteType</div><div class="ttdef"><b>Definition:</b> type.h:4</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html_ae9a752c12df2b347234bb7acefe93ed0"><div class="ttname"><a href="struct_player_1_1_player_keys.html#ae9a752c12df2b347234bb7acefe93ed0">Player::PlayerKeys::fire</a></div><div class="ttdeci">SDL_Scancode fire</div><div class="ttdef"><b>Definition:</b> player.h:17</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html_a57aab79d509ab35da6ee806f92299679"><div class="ttname"><a href="struct_player_1_1_player_keys.html#a57aab79d509ab35da6ee806f92299679">Player::PlayerKeys::down</a></div><div class="ttdeci">SDL_Scancode down</div><div class="ttdef"><b>Definition:</b> player.h:14</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html_a56a56f4201c50a48bb847971c94ca4b1"><div class="ttname"><a href="struct_player_1_1_player_keys.html#a56a56f4201c50a48bb847971c94ca4b1">Player::PlayerKeys::PlayerKeys</a></div><div class="ttdeci">PlayerKeys()</div><div class="ttdef"><b>Definition:</b> player.h:11</div></div>
+<div class="ttc" id="class_player_html_acb40d0a5d388029d48156fb06fdd288c"><div class="ttname"><a href="class_player.html#acb40d0a5d388029d48156fb06fdd288c">Player::destroy</a></div><div class="ttdeci">void destroy()</div><div class="ttdef"><b>Definition:</b> player.cpp:114</div></div>
+<div class="ttc" id="class_player_html_ae6a37d018b76094b9ca7746fe0b268ba"><div class="ttname"><a href="class_player.html#ae6a37d018b76094b9ca7746fe0b268ba">Player::m_fire_time</a></div><div class="ttdeci">Uint32 m_fire_time</div><div class="ttdef"><b>Definition:</b> player.h:34</div></div>
+<div class="ttc" id="tank_8h_html"><div class="ttname"><a href="tank_8h.html">tank.h</a></div></div>
+<div class="ttc" id="class_tank_html"><div class="ttname"><a href="class_tank.html">Tank</a></div><div class="ttdef"><b>Definition:</b> tank.h:12</div></div>
+<div class="ttc" id="class_bullet_html"><div class="ttname"><a href="class_bullet.html">Bullet</a></div><div class="ttdef"><b>Definition:</b> bullet.h:6</div></div>
+<div class="ttc" id="class_player_html"><div class="ttname"><a href="class_player.html">Player</a></div><div class="ttdef"><b>Definition:</b> player.h:6</div></div>
+<div class="ttc" id="class_player_html_a331b0f5de5a558249b8a14441249279b"><div class="ttname"><a href="class_player.html#a331b0f5de5a558249b8a14441249279b">Player::star_count</a></div><div class="ttdeci">int star_count</div><div class="ttdef"><b>Definition:</b> player.h:31</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html"><div class="ttname"><a href="struct_player_1_1_player_keys.html">Player::PlayerKeys</a></div><div class="ttdef"><b>Definition:</b> player.h:9</div></div>
+<div class="ttc" id="struct_player_1_1_player_keys_html_a0ed2777f9a657033b9ceb04302fea7c5"><div class="ttname"><a href="struct_player_1_1_player_keys.html#a0ed2777f9a657033b9ceb04302fea7c5">Player::PlayerKeys::right</a></div><div class="ttdeci">SDL_Scancode right</div><div class="ttdef"><b>Definition:</b> player.h:16</div></div>
+<div class="ttc" id="class_player_html_a5f0f389fdf5d685f088a997ed5af925d"><div class="ttname"><a href="class_player.html#a5f0f389fdf5d685f088a997ed5af925d">Player::fire</a></div><div class="ttdeci">Bullet * fire()</div><div class="ttdef"><b>Definition:</b> player.cpp:132</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano Śr, 13 maj 2015 18:36:23 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>

@@ -1,0 +1,118 @@
+\hypertarget{class_renderer}{}\section{Dokumentacja klasy Renderer}
+\label{class_renderer}\index{Renderer@{Renderer}}
+
+
+{\ttfamily \#include $<$renderer.\+h$>$}
+
+\subsection*{Metody publiczne}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_renderer_a7ebf46f54dab9905f79b80f7fddb76a6}{Renderer} ()
+\item 
+\hyperlink{class_renderer_afeee408862d5bd6255a6882d47e6d5cd}{$\sim$\+Renderer} ()
+\item 
+void \hyperlink{class_renderer_a08b774e4621e4c4ab96783dcdc8c17d7}{load\+Texture} (S\+D\+L\+\_\+\+Window $\ast$window)
+\item 
+void \hyperlink{class_renderer_a3f2e2461fbefbe1760f28e2894079095}{load\+Font} ()
+\item 
+void \hyperlink{class_renderer_ac46720b3fc0dbb2fc37674766490a8c4}{clear} ()
+\item 
+void \hyperlink{class_renderer_a35401aa28259d4560aba5cebd2bac4e3}{flush} ()
+\item 
+void \hyperlink{class_renderer_a1b5467dd2cfb2cb146c29c200b9bb251}{draw\+Object} (const S\+D\+L\+\_\+\+Rect $\ast$texture\+\_\+src, const S\+D\+L\+\_\+\+Rect $\ast$window\+\_\+dest)
+\item 
+void \hyperlink{class_renderer_a32ff9710cfe1208b4d9c5d9b6b3cc34d}{set\+Scale} (float xs, float ys)
+\item 
+void \hyperlink{class_renderer_ac92b4e807b90c910e1bac003754a5ea6}{draw\+Text} (const S\+D\+L\+\_\+\+Point $\ast$start, std\+::string text, S\+D\+L\+\_\+\+Color text\+\_\+color, int font\+\_\+size=1)
+\item 
+void \hyperlink{class_renderer_a60b7766e3951432d333f90e55fcebd6a}{draw\+Rect} (const S\+D\+L\+\_\+\+Rect $\ast$rect, S\+D\+L\+\_\+\+Color rect\+\_\+color, bool fill=false)
+\end{DoxyCompactItemize}
+
+
+\subsection{Dokumentacja konstruktora i destruktora}
+\hypertarget{class_renderer_a7ebf46f54dab9905f79b80f7fddb76a6}{}\index{Renderer@{Renderer}!Renderer@{Renderer}}
+\index{Renderer@{Renderer}!Renderer@{Renderer}}
+\subsubsection[{Renderer}]{\setlength{\rightskip}{0pt plus 5cm}Renderer\+::\+Renderer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_renderer_a7ebf46f54dab9905f79b80f7fddb76a6}
+\hypertarget{class_renderer_afeee408862d5bd6255a6882d47e6d5cd}{}\index{Renderer@{Renderer}!````~Renderer@{$\sim$\+Renderer}}
+\index{````~Renderer@{$\sim$\+Renderer}!Renderer@{Renderer}}
+\subsubsection[{$\sim$\+Renderer}]{\setlength{\rightskip}{0pt plus 5cm}Renderer\+::$\sim$\+Renderer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_renderer_afeee408862d5bd6255a6882d47e6d5cd}
+
+
+\subsection{Dokumentacja funkcji składowych}
+\hypertarget{class_renderer_ac46720b3fc0dbb2fc37674766490a8c4}{}\index{Renderer@{Renderer}!clear@{clear}}
+\index{clear@{clear}!Renderer@{Renderer}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_renderer_ac46720b3fc0dbb2fc37674766490a8c4}
+\hypertarget{class_renderer_a1b5467dd2cfb2cb146c29c200b9bb251}{}\index{Renderer@{Renderer}!draw\+Object@{draw\+Object}}
+\index{draw\+Object@{draw\+Object}!Renderer@{Renderer}}
+\subsubsection[{draw\+Object}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::draw\+Object (
+\begin{DoxyParamCaption}
+\item[{const S\+D\+L\+\_\+\+Rect $\ast$}]{texture\+\_\+src, }
+\item[{const S\+D\+L\+\_\+\+Rect $\ast$}]{window\+\_\+dest}
+\end{DoxyParamCaption}
+)}\label{class_renderer_a1b5467dd2cfb2cb146c29c200b9bb251}
+\hypertarget{class_renderer_a60b7766e3951432d333f90e55fcebd6a}{}\index{Renderer@{Renderer}!draw\+Rect@{draw\+Rect}}
+\index{draw\+Rect@{draw\+Rect}!Renderer@{Renderer}}
+\subsubsection[{draw\+Rect}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::draw\+Rect (
+\begin{DoxyParamCaption}
+\item[{const S\+D\+L\+\_\+\+Rect $\ast$}]{rect, }
+\item[{S\+D\+L\+\_\+\+Color}]{rect\+\_\+color, }
+\item[{bool}]{fill = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}\label{class_renderer_a60b7766e3951432d333f90e55fcebd6a}
+\hypertarget{class_renderer_ac92b4e807b90c910e1bac003754a5ea6}{}\index{Renderer@{Renderer}!draw\+Text@{draw\+Text}}
+\index{draw\+Text@{draw\+Text}!Renderer@{Renderer}}
+\subsubsection[{draw\+Text}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::draw\+Text (
+\begin{DoxyParamCaption}
+\item[{const S\+D\+L\+\_\+\+Point $\ast$}]{start, }
+\item[{std\+::string}]{text, }
+\item[{S\+D\+L\+\_\+\+Color}]{text\+\_\+color, }
+\item[{int}]{font\+\_\+size = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)}\label{class_renderer_ac92b4e807b90c910e1bac003754a5ea6}
+\hypertarget{class_renderer_a35401aa28259d4560aba5cebd2bac4e3}{}\index{Renderer@{Renderer}!flush@{flush}}
+\index{flush@{flush}!Renderer@{Renderer}}
+\subsubsection[{flush}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::flush (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_renderer_a35401aa28259d4560aba5cebd2bac4e3}
+\hypertarget{class_renderer_a3f2e2461fbefbe1760f28e2894079095}{}\index{Renderer@{Renderer}!load\+Font@{load\+Font}}
+\index{load\+Font@{load\+Font}!Renderer@{Renderer}}
+\subsubsection[{load\+Font}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::load\+Font (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_renderer_a3f2e2461fbefbe1760f28e2894079095}
+\hypertarget{class_renderer_a08b774e4621e4c4ab96783dcdc8c17d7}{}\index{Renderer@{Renderer}!load\+Texture@{load\+Texture}}
+\index{load\+Texture@{load\+Texture}!Renderer@{Renderer}}
+\subsubsection[{load\+Texture}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::load\+Texture (
+\begin{DoxyParamCaption}
+\item[{S\+D\+L\+\_\+\+Window $\ast$}]{window}
+\end{DoxyParamCaption}
+)}\label{class_renderer_a08b774e4621e4c4ab96783dcdc8c17d7}
+\hypertarget{class_renderer_a32ff9710cfe1208b4d9c5d9b6b3cc34d}{}\index{Renderer@{Renderer}!set\+Scale@{set\+Scale}}
+\index{set\+Scale@{set\+Scale}!Renderer@{Renderer}}
+\subsubsection[{set\+Scale}]{\setlength{\rightskip}{0pt plus 5cm}void Renderer\+::set\+Scale (
+\begin{DoxyParamCaption}
+\item[{float}]{xs, }
+\item[{float}]{ys}
+\end{DoxyParamCaption}
+)}\label{class_renderer_a32ff9710cfe1208b4d9c5d9b6b3cc34d}
+
+
+Dokumentacja dla tej klasy została wygenerowana z plików\+:\begin{DoxyCompactItemize}
+\item 
+src/engine/\hyperlink{renderer_8h}{renderer.\+h}\item 
+src/engine/\hyperlink{renderer_8cpp}{renderer.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['tanks',['Tanks',['../md_src__r_e_a_d_m_e.html',1,'']]],
+  ['tank',['Tank',['../class_tank.html',1,'Tank'],['../class_tank.html#ae8be1e2c9376c3a4590b4bf689eaed76',1,'Tank::Tank()'],['../class_tank.html#ab6b6a6d0ec3994fa12f4933602dd4325',1,'Tank::Tank(double x, double y, SpriteType type)']]],
+  ['tank_2ecpp',['tank.cpp',['../tank_8cpp.html',1,'']]],
+  ['tank_2eh',['tank.h',['../tank_8h.html',1,'']]],
+  ['tank_5fdefault_5fspeed',['tank_default_speed',['../class_app_config.html#a7f52e49c897ef576443e8e0f177aa0a7',1,'AppConfig']]],
+  ['tank_5ffrozen_5ftime',['tank_frozen_time',['../class_app_config.html#a1a81d61ebe8ff5538a824fcf685c0e10',1,'AppConfig']]],
+  ['tank_5fshield_5ftime',['tank_shield_time',['../class_app_config.html#a65eb52c4705dd9f24ac32c80526b0726',1,'AppConfig']]],
+  ['tankstateflag',['TankStateFlag',['../type_8h.html#a4cfefb8efe4714111e829031e2df4faf',1,'type.h']]],
+  ['tankstateflags',['TankStateFlags',['../tank_8h.html#a7109342eb8cc7d8bbf8b6309ebcb4669',1,'tank.h']]],
+  ['target_5fposition',['target_position',['../class_enemy.html#abb410f03f34e4a1ce889ef8441382eb0',1,'Enemy']]],
+  ['testflag',['testFlag',['../class_tank.html#ab9d5c0e134f6be71b7bc245268e90a01',1,'Tank']]],
+  ['texture_5fpath',['texture_path',['../class_app_config.html#a65465439dccccead6f012308c44a4c69',1,'AppConfig']]],
+  ['tile_5frect',['tile_rect',['../class_app_config.html#a0b948189431fbfb94ae6de07099b8c27',1,'AppConfig']]],
+  ['to_5ferase',['to_erase',['../class_object.html#a77c2ada7189758c530ab24a7b366d3fb',1,'Object']]],
+  ['tsf_5fboat',['TSF_BOAT',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafa9796ef542c810fbf130489912922bb1a',1,'type.h']]],
+  ['tsf_5fbonus',['TSF_BONUS',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafa66681f78f41d6aedca77cb1675b70c2e',1,'type.h']]],
+  ['tsf_5fcreate',['TSF_CREATE',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafa9197674d8593d6e5b9d64b37ff9439fa',1,'type.h']]],
+  ['tsf_5fdestroyed',['TSF_DESTROYED',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafad6d37dc081e9df99a77b0a3928cb55ec',1,'type.h']]],
+  ['tsf_5ffrozen',['TSF_FROZEN',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafaf6188658480bfdb82e6d6ae9f2780803',1,'type.h']]],
+  ['tsf_5flife',['TSF_LIFE',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafaff222d57ba0fe2d436a66e86b44d844d',1,'type.h']]],
+  ['tsf_5fmenu',['TSF_MENU',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafa805e65dee37f4ccfc90042703abf96f0',1,'type.h']]],
+  ['tsf_5fon_5fice',['TSF_ON_ICE',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafa19af3b5ec89e848a9d5ffcbdb467adfe',1,'type.h']]],
+  ['tsf_5fshield',['TSF_SHIELD',['../type_8h.html#a4cfefb8efe4714111e829031e2df4fafae6fe388a49bad40787ecf20350194070',1,'type.h']]],
+  ['type',['type',['../class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2',1,'Object']]],
+  ['type_2eh',['type.h',['../type_8h.html',1,'']]]
+];
