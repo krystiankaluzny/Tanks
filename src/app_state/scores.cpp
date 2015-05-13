@@ -87,7 +87,8 @@ void Scores::update(Uint32 dt)
     }
     for(auto player : m_players)
     {
-        player->speed = 0.0;
+        player->speed = player->default_speed;
+        player->stop = true;
         player->setDirection(D_RIGHT);
         player->update(dt);
     }
