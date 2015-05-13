@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 /**
- * @brief Klasa Menu
+ * @brief
  * Klasa wyboru trybu gry: 1 gracz czy 2 graczy lub wyjścia. Klasa jest pierwszym stanem aplikacji, pojawia się zaraz po uruchomieniu programu i pozwala na przejście do stanu gry (klasa Game).
  */
 class Menu : public AppState

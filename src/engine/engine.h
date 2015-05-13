@@ -4,17 +4,37 @@
 #include "renderer.h"
 #include "spriteconfig.h"
 
-//klasa zawiera wymagane alementy do poprawnego działania mechaniki gry
+/**
+ * @brief Klasa łączy elementy związane z działaniem programu.
+ */
 class Engine
 {
 public:
     Engine();
+
+    /**
+     * @return statyczną instancję obiektu @a Engine
+     */
     static Engine& getEngine(); //silnik może być dostępny w każdym module korzystając jedynie z przestrzeni nazw a nie wskaźnika
+    /**
+     * Funkcja zamienia podaną wartość liczbową na tekst.
+     * @param num - liczba całkowita
+     * @return liczbę całkowitą jako tekst
+     */
     static std::string intToString(int num);
-    void initModules(); //tworzenie obiektów składowych silnika
-    void destroyModules(); //niszczenie obiektów składowych silnika
+    /**
+     * Funkcja tworzy obiekty składowe silnika.
+     */
+    void initModules();
+    /**
+     * Funkcja niszczy obiekty składowe silnika.
+     */
+    void destroyModules();
 
     //pobieranie elementu składowych silnika
+    /**
+     * @return obiekt
+     */
     Renderer* getRenderer() const;
     SpriteConfig* getSpriteConfig() const;
 private:

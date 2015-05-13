@@ -7,13 +7,19 @@
 #include <string>
 
 /**
- * @brief Klasa Scores
+ * @brief
  * Klasa odpowada za wyświetlanie wyników graczy z poprzedniej rundy.
  */
 class Scores : public AppState
 {
 public:
     Scores();
+    /**
+     * Konstruktor wywoływany przez Game po zakończeniu rozgrywki.
+     * @param players - kontener z wszystkimi graczami, którzy brali udział w rozgrywce
+     * @param level - numer ostatniego poziomu
+     * @param game_over - zmianan mówiąca czy ostatni poziom został przegrany
+     */
     Scores(std::vector<Player*> players, int level, bool game_over);
     /**
      * Funkcja zwraca @a true po określonym czasie wyświetlania ekranu punktów.
