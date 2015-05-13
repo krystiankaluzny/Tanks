@@ -34,7 +34,7 @@ public:
      */
     virtual void eventProcess(SDL_Event* ev) = 0;
     /**
-     * Funkcja zwracającya następny stan po zakończeniu obecnego. Funkcję należy wywołać tylko wtedy, gdy funkcja @a finished zwróci wartość 1.
+     * Funkcja zwracającya następny stan po zakończeniu obecnego. Funkcję należy wywołać tylko wtedy, gdy funkcja @a finished zwróci wartość @a true.
      * @return następny stan gry
      */
     virtual AppState* nextState() = 0;

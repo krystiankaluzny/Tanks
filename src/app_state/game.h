@@ -212,7 +212,7 @@ private:
      */
     bool m_level_start_screen;
     /**
-     * Zmienna przechowuje informacje, czy orzełek jest chroniony kamiennym murem
+     * Zmienna przechowuje informacje, czy orzełek jest chroniony kamiennym murem.
      */
     bool m_protect_eagle;
     /**

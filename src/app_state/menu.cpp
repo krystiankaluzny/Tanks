@@ -59,7 +59,8 @@ void Menu::draw()
 
 void Menu::update(Uint32 dt)
 {
-    m_tank_pointer->speed = 0.0;
+    m_tank_pointer->speed = m_tank_pointer->default_speed;
+    m_tank_pointer->stop = true;
     m_tank_pointer->update(dt);
 }
 
