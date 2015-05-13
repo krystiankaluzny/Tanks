@@ -66,7 +66,6 @@ void Brick::bulletHit(Direction bullet_direction)
         collision_rect.y = pos_y +  m_sprite->rect.h / 2;
         collision_rect.h = m_sprite->rect.h / 2;
         collision_rect.w = m_sprite->rect.w;
-
         break;
     case 4:
         collision_rect.x = pos_x;

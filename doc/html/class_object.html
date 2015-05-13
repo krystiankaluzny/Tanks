@@ -94,6 +94,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa bazowa dla obiektów w grze.  
+ <a href="class_object.html#details">Więcej...</a></p>
+
 <p><code>#include &lt;<a class="el" href="object_8h_source.html">object.h</a>&gt;</code></p>
 <div class="dynheader">
 Diagram dziedziczenia dla Object</div>
@@ -157,7 +160,9 @@ Atrybuty chronione</h2></td></tr>
 <tr class="memitem:a4e03c944bc9142a5c34b7049c20c4301"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a></td></tr>
 <tr class="separator:a4e03c944bc9142a5c34b7049c20c4301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa bazowa dla obiektów w grze. </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
 <a class="anchor" id="a40860402e64d8008fb42329df7097cdb"></a>
 <div class="memitem">
 <div class="memproto">
@@ -281,6 +286,7 @@ Atrybuty chronione</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Rysowanie za pomocą metody <em>drawObject</em> z klasy <em><a class="el" href="class_renderer.html" title="Klasa odpowiada za rysowanie obiektów na ekranie. ">Renderer</a></em>, obiektu z tekstury o współrzędnych src_rect w obszar mapy o wpółrzędnych dest_rect. </p>
 
 <p>Reimplementowana w <a class="el" href="class_tank.html#ab30c54bb7378b522fa965d4e8ab7ed4f">Tank</a>, <a class="el" href="class_bonus.html#a00a6ad75da471b6a577029be0b80e259">Bonus</a> i <a class="el" href="class_enemy.html#a7dcf45915f6288ef9264ec60af621b6c">Enemy</a>.</p>
 
@@ -323,6 +329,15 @@ Atrybuty chronione</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Funkcja zwraca prostokąt przesunięty o wielokrotności rozmiaru prostokąta rect. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rect</td><td>- prostokąt bazowy </td></tr>
+    <tr><td class="paramname">x</td><td>- przesunięcie poziome </td></tr>
+    <tr><td class="paramname">y</td><td>- przesunięcie pionowe </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Zwraca</dt><dd>przesunięty prostokąt </dd></dl>
 
 </div>
 </div>
@@ -347,6 +362,12 @@ Atrybuty chronione</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplementowana w <a class="el" href="class_player.html#af5cac4f8c62903d39c7dc7bdf8f05ddb">Player</a>, <a class="el" href="class_tank.html#a1278dfec0f2d1d3bb1f4ce0a19957c0f">Tank</a>, <a class="el" href="class_bonus.html#a53c7235c0dae0deddfc95a2b7c5a594b">Bonus</a>, <a class="el" href="class_enemy.html#a03c09cab6c4950e4cae880c15b2fd739">Enemy</a>, <a class="el" href="class_brick.html#a31098851b4f1224cfd6b51c4ef47094f">Brick</a>, <a class="el" href="class_bullet.html#a28c27c103a23f73d18125791c973cccd">Bullet</a> i <a class="el" href="class_eagle.html#a609e173a641783b14973d5e1055f192a">Eagle</a>.</p>
 
@@ -362,6 +383,7 @@ Atrybuty chronione</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Prostokąt kolizji; może być mniejszy niż wymiary dest_rect. </p>
 
 </div>
 </div>
@@ -374,6 +396,7 @@ Atrybuty chronione</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pozycja docelowa obiektu na ekranie. </p>
 
 </div>
 </div>
@@ -394,6 +417,7 @@ Atrybuty chronione</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Numer obecnej klatki animacji. </p>
 
 </div>
 </div>
@@ -414,6 +438,7 @@ Atrybuty chronione</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas wyświetlania obecnej klatki animacji. </p>
 
 </div>
 </div>
@@ -434,6 +459,7 @@ Atrybuty chronione</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Animacja odpowiadająca danemu typowi obiektu. </p>
 
 </div>
 </div>
@@ -446,6 +472,7 @@ Atrybuty chronione</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Dokładna pozycja pozioma obiektu. </p>
 
 </div>
 </div>
@@ -458,6 +485,7 @@ Atrybuty chronione</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Dokładna pozycja pionowa obiektu. </p>
 
 </div>
 </div>
@@ -470,6 +498,7 @@ Atrybuty chronione</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pozycja na teksturze aktualnie wyświetlanej klatki. </p>
 
 </div>
 </div>
@@ -482,6 +511,7 @@ Atrybuty chronione</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Zmienna mowi czy obiekt ma być usunięty. Jeżeli zmianan jest równa <em>true</em> to nie aktualizacja i rysowanie obiektu jest pomijane. </p>
 
 </div>
 </div>
@@ -494,6 +524,7 @@ Atrybuty chronione</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Typ obiektu. </p>
 
 </div>
 </div>
@@ -504,7 +535,7 @@ Atrybuty chronione</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano Śr, 13 maj 2015 21:56:51 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano Śr, 13 maj 2015 22:27:24 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

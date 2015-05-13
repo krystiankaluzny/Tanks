@@ -9,6 +9,10 @@
 
 typedef unsigned TankStateFlags;
 
+/**
+ * @brief
+ * Klasa zajmująca się podstawową mechaniką czołgów: jazda, strał.
+ */
 class Tank : public Object
 {
 public:
@@ -16,6 +20,9 @@ public:
     Tank(double x, double y, SpriteType type);
     virtual ~Tank();
 
+    /**
+     * @brief draw
+     */
     void draw();
     void update(Uint32 dt);
     virtual Bullet* fire();

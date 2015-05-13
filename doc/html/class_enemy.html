@@ -101,7 +101,7 @@ Diagram dziedziczenia dla Enemy</div>
   <img src="class_enemy.png" usemap="#Enemy_map" alt=""/>
   <map id="Enemy_map" name="Enemy_map">
 <area href="class_tank.html" alt="Tank" shape="rect" coords="0,56,50,80"/>
-<area href="class_object.html" alt="Object" shape="rect" coords="0,0,50,24"/>
+<area href="class_object.html" title="Klasa bazowa dla obiektów w grze. " alt="Object" shape="rect" coords="0,0,50,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -328,6 +328,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Rysowanie za pomocą metody <em>drawObject</em> z klasy <em><a class="el" href="class_renderer.html" title="Klasa odpowiada za rysowanie obiektów na ekranie. ">Renderer</a></em>, obiektu z tekstury o współrzędnych src_rect w obszar mapy o wpółrzędnych dest_rect. </p>
 
 <p>Reimplementowana z <a class="el" href="class_object.html#a821f5b25b450fa1acdb3f9c0b5962592">Object</a>.</p>
 
@@ -369,6 +370,12 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplementowana z <a class="el" href="class_object.html#a02c1621329cb9ec5268072a2402d2ac5">Object</a>.</p>
 
@@ -514,7 +521,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano Śr, 13 maj 2015 21:56:51 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano Śr, 13 maj 2015 22:27:24 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

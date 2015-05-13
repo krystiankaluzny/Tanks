@@ -72,12 +72,14 @@ Object::~Object()
 
 void Object::draw()
 {
-    if(m_sprite == nullptr) return;
+    if(m_sprite == nullptr || to_erase) return;
     Engine::getEngine().getRenderer()->drawObject(&src_rect, &dest_rect);
 }
 
 void Object::update(Uint32 dt)
 {
+    if(to_erase) return;
+
     dest_rect.x = pos_x;
     dest_rect.y = pos_y;
     dest_rect.h = m_sprite->rect.h;
