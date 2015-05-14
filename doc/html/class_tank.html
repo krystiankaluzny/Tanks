@@ -93,6 +93,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa zajmująca się podstawową mechaniką czołgów: jazda, strzał.  
+ <a href="class_tank.html#details">Więcej...</a></p>
+
 <p><code>#include &lt;<a class="el" href="tank_8h_source.html">tank.h</a>&gt;</code></p>
 <div class="dynheader">
 Diagram dziedziczenia dla Tank</div>
@@ -208,7 +211,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 <tr class="memitem:a98ac32f03f7ec5f9bf082cd697a9b4fc inherit pro_methods_class_object"><td class="memItemLeft" align="right" valign="top">SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a98ac32f03f7ec5f9bf082cd697a9b4fc">moveRect</a> (const SDL_Rect &amp;rect, int x, int y)</td></tr>
 <tr class="separator:a98ac32f03f7ec5f9bf082cd697a9b4fc inherit pro_methods_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa zajmująca się podstawową mechaniką czołgów: jazda, strzał. </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
 <a class="anchor" id="ae8be1e2c9376c3a4590b4bf689eaed76"></a>
 <div class="memitem">
 <div class="memproto">
@@ -293,6 +298,12 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Wyczyszczenie wybranej flagi. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flag</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -308,6 +319,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funkcja zatrzymuje czołg. </p>
 
 </div>
 </div>
@@ -331,6 +343,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Funkcja odpowiada za włączenie animacji wybuchu czołgu jeżeli czołgu nie miał osłonki lub łódki. </p>
 
 <p>Reimplementowana w <a class="el" href="class_player.html#acb40d0a5d388029d48156fb06fdd288c">Player</a> i <a class="el" href="class_enemy.html#a296a5757097f271eb01284eabb064715">Enemy</a>.</p>
 
@@ -356,7 +369,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Rysowanie za pomocą metody <em>drawObject</em> z klasy <em><a class="el" href="class_renderer.html" title="Klasa odpowiada za rysowanie obiektów na ekranie. ">Renderer</a></em>, obiektu z tekstury o współrzędnych src_rect w obszar mapy o wpółrzędnych dest_rect. </p>
+<p>Funkcja rysuje obrazek czołgu, w razie potrzeby rysuje osłonkę i łódkę. Wywołuje rysowanie pocisków. </p>
 
 <p>Reimplementowana z <a class="el" href="class_object.html#a821f5b25b450fa1acdb3f9c0b5962592">Object</a>.</p>
 
@@ -382,6 +395,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Funkcja odpowiada za stworzenie pocisku jeżeli jeszcze nie stworzono maksymalnej ich ilości. </p><dl class="section return"><dt>Zwraca</dt><dd>wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca <em>nullptr</em> </dd></dl>
 
 <p>Reimplementowana w <a class="el" href="class_player.html#a5f0f389fdf5d685f088a997ed5af925d">Player</a>.</p>
 
@@ -400,6 +414,13 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funkcja zwraca prostokąt kolizji jaki byłby w następnej klatce przy założeniu prędkości i kierunku takiej jaka jest obecnie. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>- przewidywany czas wyliczania następnej klatki </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Zwraca</dt><dd>następny prostokąt kolizji </dd></dl>
 
 </div>
 </div>
@@ -423,6 +444,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Funkcja odpowiada za wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu. </p>
 
 <p>Reimplementowana w <a class="el" href="class_player.html#a038a74bd768b6eec8fbe57cb2bacf811">Player</a>.</p>
 
@@ -441,6 +463,12 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funkcja ustawia następny kierunek ruchu z uwzględnieniem poślizgu na lodzie. Podczas zmiany kierunku następuje dopasowanie czołgu do wielokrotności wymiarów komórki planszy <em><a class="el" href="class_app_config.html#a0b948189431fbfb94ae6de07099b8c27">AppConfig::tile_rect</a></em>. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>- nowy kierunek </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -457,6 +485,12 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Ustawienie wybranej flagi. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flag</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -473,6 +507,13 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Sprawdzenie czy wybrana flaga jest ustawiona. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flag</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Zwraca</dt><dd><em>true</em> jeżeli flaga jest ustawiona w przeciwnym wypadku <em>false</em> </dd></dl>
 
 </div>
 </div>
@@ -497,9 +538,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu. </p><dl class="params"><dt>Parametry</dt><dd>
+<p>Funkcja odpowiada za zmianę położenia czołgu, uaktualnienie położenia prostokątów dest_rect i collision_rect, położenia osłonek i łodzi, animację czołgu, wywołanie aktualizacji pocisku oraz usuwanie zniszczonych pocisków. Funkcja odlicza czas posiadania osłonki i zamrożenia i wyłącza te flagi. </p><dl class="params"><dt>Parametry</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki </td></tr>
+    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji, wykorzystywany przy zmianie animacji </td></tr>
   </table>
   </dd>
 </dl>
@@ -518,6 +559,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Kontener z wystrzelonymi pociskami czołgu. </p>
 
 </div>
 </div>
@@ -530,6 +572,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Domyślna prędkość danego czołgu. Może być różna dla różnych typów czołgów lub może być zmieniona po wzięcu bonusu przez gracza. </p>
 
 </div>
 </div>
@@ -542,6 +585,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Zmeinna przechowuje aktualny kierunek jazdy czołgu. </p>
 
 </div>
 </div>
@@ -554,6 +598,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Liczba żyć gracza lub numer poziomu pancerza wrogiego czołgu. </p>
 
 </div>
 </div>
@@ -574,6 +619,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Wskaźnik na łódkę, którą może mieć czołg. Jeśli czołg nie ma łódki zmienna ma wartośc nullptr; </p>
 
 </div>
 </div>
@@ -594,6 +640,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Maksymalna liczba pocisków jakie może wystrzelić czołg. </p>
 
 </div>
 </div>
@@ -614,6 +661,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Flagi jakie ma aktualnie czołg. </p>
 
 </div>
 </div>
@@ -634,6 +682,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas od zamrożenia czoałgu. </p>
 
 </div>
 </div>
@@ -654,6 +703,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Wskaźnik na osłonkę czołgu. Jeśli czołg nie ma osłonki zmienna ma wartośc nullptr; </p>
 
 </div>
 </div>
@@ -674,6 +724,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas od zdobycia osłonki. </p>
 
 </div>
 </div>
@@ -694,6 +745,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas od wystąpienia poślizgu. </p>
 
 </div>
 </div>
@@ -714,6 +766,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Odpowiada zwrotowi czołgu w poślizgu i może być różna od kierunku przemieszczania się czołgu na lodzie. </p>
 
 </div>
 </div>
@@ -726,6 +779,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Aktualna prędkość czołgu. </p>
 
 </div>
 </div>
@@ -738,6 +792,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Zmienna przechowuję informację czy czołg jest obecnie zatrzymany. </p>
 
 </div>
 </div>
@@ -748,7 +803,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano Śr, 13 maj 2015 22:27:24 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano Cz, 14 maj 2015 12:32:51 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
