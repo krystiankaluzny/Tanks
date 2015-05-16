@@ -93,6 +93,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa zajmująca się ruchami wrogich czołgów.  
+ <a href="class_enemy.html#details">Więcej...</a></p>
+
 <p><code>#include &lt;<a class="el" href="enemy_8h_source.html">enemy.h</a>&gt;</code></p>
 <div class="dynheader">
 Diagram dziedziczenia dla Enemy</div>
@@ -234,7 +237,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 <tr class="memitem:a4e03c944bc9142a5c34b7049c20c4301 inherit pro_attribs_class_object"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a></td></tr>
 <tr class="separator:a4e03c944bc9142a5c34b7049c20c4301 inherit pro_attribs_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa zajmująca się ruchami wrogich czołgów. </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
 <a class="anchor" id="a94f30d348b6d2840fd71675472ba38dd"></a>
 <div class="memitem">
 <div class="memproto">
@@ -247,6 +252,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Tworzenie przeciwnika w pierwszym z położeń wrogów. </p><dl class="section see"><dt>Zobacz również</dt><dd><a class="el" href="class_app_config.html#a3ff8c966e47fe083d3c05efe171f35f7">AppConfig::enemy_starting_point</a> </dd></dl>
 
 </div>
 </div>
@@ -279,6 +285,14 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Tworzenie przeciwnika </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>- pozycja początkowa pozioma </td></tr>
+    <tr><td class="paramname">y</td><td>- pozycja początkowa pionowa </td></tr>
+    <tr><td class="paramname">type</td><td>- typ czołgu przeciwnika </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -303,7 +317,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Funkcja odpowiada za włączenie animacji wybuchu czołgu. </p>
+<p>Zmniejszczenie poziomu pancerza o 1. Jeżeli poziom pancerza dojdze do zera następuje wybuch (zniszczenie) czołgu. </p>
 
 <p>Reimplementowana z <a class="el" href="class_tank.html#a5d2e3302417166ccdc42b8bc2e5d5dc4">Tank</a>.</p>
 
@@ -329,7 +343,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Rysowanie za pomocą metody <em>drawObject</em> z klasy <em><a class="el" href="class_renderer.html" title="Klasa odpowiada za rysowanie obiektów na ekranie. ">Renderer</a></em>, obiektu z tekstury o współrzędnych src_rect w obszar mapy o wpółrzędnych dest_rect. </p>
+<p>Funkcja rysuje czołg przeciwnika i jeżeli jest ustawiona flaga <em><a class="el" href="class_app_config.html#a9ebca92d71f6aa8b351f675db12d2c80">AppConfig::show_enemy_target</a></em> to rysuję linią łączącą czołg z jego celem. </p>
 
 <p>Reimplementowana z <a class="el" href="class_object.html#a821f5b25b450fa1acdb3f9c0b5962592">Object</a>.</p>
 
@@ -347,6 +361,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funkcja zwraca liczbę punktów jakie dostanie gracz za trafienie danego czołgu wroga. </p><dl class="section return"><dt>Zwraca</dt><dd>punkty </dd></dl>
 
 </div>
 </div>
@@ -371,9 +386,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu. </p><dl class="params"><dt>Parametry</dt><dd>
+<p>Funkcja uaktualnia położenie czołgu oraz decyduje o kirunku i czasie kolejnego wystrzału w zależności od typy wroga. </p><dl class="params"><dt>Parametry</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki </td></tr>
+    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji </td></tr>
   </table>
   </dd>
 </dl>
@@ -400,6 +415,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas od ostatniej zmiany kierunku. </p>
 
 </div>
 </div>
@@ -420,6 +436,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas od ostatniej próby wystrzału pocisku. </p>
 
 </div>
 </div>
@@ -440,6 +457,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas jazdy w danym kirunku. Czas po jakim nastąpi zmiana kierunku. </p>
 
 </div>
 </div>
@@ -460,6 +478,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas po jakim nastąpi próba kolejnego wystrzału. </p>
 
 </div>
 </div>
@@ -480,6 +499,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas od ostatniej próby wznowienia jazdy </p>
 
 </div>
 </div>
@@ -500,6 +520,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas po jakim nastąpi kolejne wznowienie jazdy; ustawienie niezerowej prędkości. </p>
 
 </div>
 </div>
@@ -512,6 +533,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Pozycja do jakiej kieruje się czołg przeciwnika. </p>
 
 </div>
 </div>
@@ -522,7 +544,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano So, 16 maj 2015 22:38:32 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano So, 16 maj 2015 23:46:45 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

@@ -2,7 +2,7 @@
 #include "../appconfig.h"
 
 Bonus::Bonus()
-    : Object(0, 0, ST_BRICK_WALL)
+    : Object(0, 0, ST_BONUS_STAR)
 {
     m_bonus_show_time = 0;
     m_show = true;

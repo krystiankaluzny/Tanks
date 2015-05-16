@@ -6,7 +6,15 @@
 class Bullet : public Object
 {
 public:
+    /**
+     * Tworzenie pocisku w położeniu (0, 0).
+     */
     Bullet();
+    /**
+     * Tworzenie pocisku
+     * @param x - pozycja początkowa pozioma
+     * @param y - pozycja początkowa pionowa
+     */
     Bullet(double x, double y);
 
     void update(Uint32 dt);

@@ -6,7 +6,16 @@
 class Bonus : public Object
 {
 public:
+    /**
+     * Tworzenie domyślnego bonusu - gwiazdki w położeniu (0, 0).
+     */
     Bonus();
+    /**
+     * Tworzenie bonusu.
+     * @param x - pozycja początkowa pozioma
+     * @param y - pozycja początkowa pionowa
+     * @param type - typ bonusu
+     */
     Bonus(double x, double y, SpriteType type);
 
     void draw();

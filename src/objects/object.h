@@ -10,8 +10,23 @@
 class Object
 {
 public:
+    /**
+     * Tworzenie obiektu w położeniu (0, 0).
+     */
     Object();
+    /**
+     * Tworzenie obiektu.
+     * @param x - pozycja początkowa pozioma
+     * @param y - pozycja początkowa pionowa
+     * @param type - typ obiektu
+     */
     Object(double x, double y, SpriteType type);
+    /**
+     * Tworzenie obiektu.
+     * @param x - pozycja początkowa pozioma
+     * @param y - pozycja początkowa pionowa
+     * @param sprite - animacja obiektu danego typu
+     */
     Object(double x, double y, const SpriteData* sprite);
     virtual ~Object();
 

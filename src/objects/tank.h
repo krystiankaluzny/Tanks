@@ -16,7 +16,17 @@ typedef unsigned TankStateFlags;
 class Tank : public Object
 {
 public:
+    /**
+     * Tworzenie czołgu w pierwszym z położeń wrogów.
+     * @see AppConfig::enemy_starting_point
+     */
     Tank();
+    /**
+     * Tworzenie czołgu
+     * @param x - pozycja początkowa pozioma
+     * @param y - pozycja początkowa pionowa
+     * @param type - typ czołgu
+     */
     Tank(double x, double y, SpriteType type);
     virtual ~Tank();
 

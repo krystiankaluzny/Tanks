@@ -39,7 +39,17 @@ public:
         SDL_Scancode fire;
     };
 
+    /**
+     * Tworzenie gracza w pierwszym z położeń graczy.
+     * @see AppConfig::player_starting_point
+     */
     Player();
+    /**
+     * Tworzenie czołgu gracza
+     * @param x - pozycja początkowa pozioma
+     * @param y - pozycja początkowa pionowa
+     * @param type - typ gracza
+     */
     Player(double x, double y, SpriteType type);
 
 

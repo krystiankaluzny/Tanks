@@ -5,7 +5,7 @@
 #include <iostream>
 
 Enemy::Enemy()
-    : Tank()
+    : Tank(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A)
 {
     direction = D_DOWN;
     m_direction_time = 0;

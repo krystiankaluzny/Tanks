@@ -94,52 +94,52 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tank_8h.html">tank.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="class_enemy.html">    6</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_enemy.html">Enemy</a> : <span class="keyword">public</span> <a class="code" href="class_tank.html">Tank</a></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>();</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <a class="code" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a> <a class="code" href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">type</a>);</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_enemy.html#a7dcf45915f6288ef9264ec60af621b6c">draw</a>();</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_enemy.html#a03c09cab6c4950e4cae880c15b2fd739">update</a>(Uint32 dt);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_enemy.html#a296a5757097f271eb01284eabb064715">destroy</a>();</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">unsigned</span> <a class="code" href="class_enemy.html#a024794c12555ca3b948aebb576e8915e">scoreForHit</a>();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_enemy.html#abb410f03f34e4a1ce889ef8441382eb0">   17</a></span>&#160;    SDL_Point <a class="code" href="class_enemy.html#abb410f03f34e4a1ce889ef8441382eb0">target_position</a>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_enemy.html#a13d90340543cb7d14f5fd0879870cd5d">   20</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a13d90340543cb7d14f5fd0879870cd5d">m_direction_time</a>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="class_enemy.html#ae32d7479e324e5a06a5a9636362c7a7d">   21</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#ae32d7479e324e5a06a5a9636362c7a7d">m_keep_direction_time</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_enemy.html#a144cc1cca1181016a98f75c24e795ad6">   23</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a144cc1cca1181016a98f75c24e795ad6">m_speed_time</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_enemy.html#a16b0bb49c09d006187d4b0826f717783">   24</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a16b0bb49c09d006187d4b0826f717783">m_try_to_go_time</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_enemy.html#a50eb3c781089210bba29eacb405d9d2d">   26</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a50eb3c781089210bba29eacb405d9d2d">m_fire_time</a>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="class_enemy.html#a59789b41259bfec092de1f2d6f9552f7">   27</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a59789b41259bfec092de1f2d6f9552f7">m_reload_time</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif // ENEMY_H</span></div>
-<div class="ttc" id="class_enemy_html_a59789b41259bfec092de1f2d6f9552f7"><div class="ttname"><a href="class_enemy.html#a59789b41259bfec092de1f2d6f9552f7">Enemy::m_reload_time</a></div><div class="ttdeci">Uint32 m_reload_time</div><div class="ttdef"><b>Definition:</b> enemy.h:27</div></div>
-<div class="ttc" id="class_enemy_html_abb410f03f34e4a1ce889ef8441382eb0"><div class="ttname"><a href="class_enemy.html#abb410f03f34e4a1ce889ef8441382eb0">Enemy::target_position</a></div><div class="ttdeci">SDL_Point target_position</div><div class="ttdef"><b>Definition:</b> enemy.h:17</div></div>
-<div class="ttc" id="class_object_html_a1b89f32cd9e0040f8a2455f3cef7d0d2"><div class="ttname"><a href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">Object::type</a></div><div class="ttdeci">SpriteType type</div><div class="ttdef"><b>Definition:</b> object.h:47</div></div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="class_enemy.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_enemy.html">Enemy</a> : <span class="keyword">public</span> <a class="code" href="class_tank.html">Tank</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <a class="code" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a> <a class="code" href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">type</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_enemy.html#a7dcf45915f6288ef9264ec60af621b6c">draw</a>();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_enemy.html#a03c09cab6c4950e4cae880c15b2fd739">update</a>(Uint32 dt);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_enemy.html#a296a5757097f271eb01284eabb064715">destroy</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">unsigned</span> <a class="code" href="class_enemy.html#a024794c12555ca3b948aebb576e8915e">scoreForHit</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="class_enemy.html#abb410f03f34e4a1ce889ef8441382eb0">   47</a></span>&#160;    SDL_Point <a class="code" href="class_enemy.html#abb410f03f34e4a1ce889ef8441382eb0">target_position</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_enemy.html#a13d90340543cb7d14f5fd0879870cd5d">   53</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a13d90340543cb7d14f5fd0879870cd5d">m_direction_time</a>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_enemy.html#ae32d7479e324e5a06a5a9636362c7a7d">   57</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#ae32d7479e324e5a06a5a9636362c7a7d">m_keep_direction_time</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_enemy.html#a144cc1cca1181016a98f75c24e795ad6">   62</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a144cc1cca1181016a98f75c24e795ad6">m_speed_time</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_enemy.html#a16b0bb49c09d006187d4b0826f717783">   66</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a16b0bb49c09d006187d4b0826f717783">m_try_to_go_time</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_enemy.html#a50eb3c781089210bba29eacb405d9d2d">   71</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a50eb3c781089210bba29eacb405d9d2d">m_fire_time</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="class_enemy.html#a59789b41259bfec092de1f2d6f9552f7">   75</a></span>&#160;    Uint32 <a class="code" href="class_enemy.html#a59789b41259bfec092de1f2d6f9552f7">m_reload_time</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif // ENEMY_H</span></div>
+<div class="ttc" id="class_enemy_html_a59789b41259bfec092de1f2d6f9552f7"><div class="ttname"><a href="class_enemy.html#a59789b41259bfec092de1f2d6f9552f7">Enemy::m_reload_time</a></div><div class="ttdeci">Uint32 m_reload_time</div><div class="ttdef"><b>Definition:</b> enemy.h:75</div></div>
+<div class="ttc" id="class_enemy_html_abb410f03f34e4a1ce889ef8441382eb0"><div class="ttname"><a href="class_enemy.html#abb410f03f34e4a1ce889ef8441382eb0">Enemy::target_position</a></div><div class="ttdeci">SDL_Point target_position</div><div class="ttdef"><b>Definition:</b> enemy.h:47</div></div>
+<div class="ttc" id="class_object_html_a1b89f32cd9e0040f8a2455f3cef7d0d2"><div class="ttname"><a href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">Object::type</a></div><div class="ttdeci">SpriteType type</div><div class="ttdef"><b>Definition:</b> object.h:62</div></div>
 <div class="ttc" id="class_enemy_html_a7dcf45915f6288ef9264ec60af621b6c"><div class="ttname"><a href="class_enemy.html#a7dcf45915f6288ef9264ec60af621b6c">Enemy::draw</a></div><div class="ttdeci">void draw()</div><div class="ttdef"><b>Definition:</b> enemy.cpp:63</div></div>
-<div class="ttc" id="class_enemy_html_a13d90340543cb7d14f5fd0879870cd5d"><div class="ttname"><a href="class_enemy.html#a13d90340543cb7d14f5fd0879870cd5d">Enemy::m_direction_time</a></div><div class="ttdeci">Uint32 m_direction_time</div><div class="ttdef"><b>Definition:</b> enemy.h:20</div></div>
+<div class="ttc" id="class_enemy_html_a13d90340543cb7d14f5fd0879870cd5d"><div class="ttname"><a href="class_enemy.html#a13d90340543cb7d14f5fd0879870cd5d">Enemy::m_direction_time</a></div><div class="ttdeci">Uint32 m_direction_time</div><div class="ttdef"><b>Definition:</b> enemy.h:53</div></div>
 <div class="ttc" id="class_enemy_html_a296a5757097f271eb01284eabb064715"><div class="ttname"><a href="class_enemy.html#a296a5757097f271eb01284eabb064715">Enemy::destroy</a></div><div class="ttdeci">void destroy()</div><div class="ttdef"><b>Definition:</b> enemy.cpp:171</div></div>
-<div class="ttc" id="class_enemy_html_a16b0bb49c09d006187d4b0826f717783"><div class="ttname"><a href="class_enemy.html#a16b0bb49c09d006187d4b0826f717783">Enemy::m_try_to_go_time</a></div><div class="ttdeci">Uint32 m_try_to_go_time</div><div class="ttdef"><b>Definition:</b> enemy.h:24</div></div>
-<div class="ttc" id="class_enemy_html_ae32d7479e324e5a06a5a9636362c7a7d"><div class="ttname"><a href="class_enemy.html#ae32d7479e324e5a06a5a9636362c7a7d">Enemy::m_keep_direction_time</a></div><div class="ttdeci">Uint32 m_keep_direction_time</div><div class="ttdef"><b>Definition:</b> enemy.h:21</div></div>
+<div class="ttc" id="class_enemy_html_a16b0bb49c09d006187d4b0826f717783"><div class="ttname"><a href="class_enemy.html#a16b0bb49c09d006187d4b0826f717783">Enemy::m_try_to_go_time</a></div><div class="ttdeci">Uint32 m_try_to_go_time</div><div class="ttdef"><b>Definition:</b> enemy.h:66</div></div>
+<div class="ttc" id="class_enemy_html_ae32d7479e324e5a06a5a9636362c7a7d"><div class="ttname"><a href="class_enemy.html#ae32d7479e324e5a06a5a9636362c7a7d">Enemy::m_keep_direction_time</a></div><div class="ttdeci">Uint32 m_keep_direction_time</div><div class="ttdef"><b>Definition:</b> enemy.h:57</div></div>
 <div class="ttc" id="class_enemy_html_a94f30d348b6d2840fd71675472ba38dd"><div class="ttname"><a href="class_enemy.html#a94f30d348b6d2840fd71675472ba38dd">Enemy::Enemy</a></div><div class="ttdeci">Enemy()</div><div class="ttdef"><b>Definition:</b> enemy.cpp:7</div></div>
 <div class="ttc" id="type_8h_html_ac6fa10729dffeb6a192492f13c25e31a"><div class="ttname"><a href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a></div><div class="ttdeci">SpriteType</div><div class="ttdef"><b>Definition:</b> type.h:4</div></div>
 <div class="ttc" id="class_enemy_html_a03c09cab6c4950e4cae880c15b2fd739"><div class="ttname"><a href="class_enemy.html#a03c09cab6c4950e4cae880c15b2fd739">Enemy::update</a></div><div class="ttdeci">void update(Uint32 dt)</div><div class="ttdef"><b>Definition:</b> enemy.cpp:81</div></div>
-<div class="ttc" id="class_enemy_html_a144cc1cca1181016a98f75c24e795ad6"><div class="ttname"><a href="class_enemy.html#a144cc1cca1181016a98f75c24e795ad6">Enemy::m_speed_time</a></div><div class="ttdeci">Uint32 m_speed_time</div><div class="ttdef"><b>Definition:</b> enemy.h:23</div></div>
+<div class="ttc" id="class_enemy_html_a144cc1cca1181016a98f75c24e795ad6"><div class="ttname"><a href="class_enemy.html#a144cc1cca1181016a98f75c24e795ad6">Enemy::m_speed_time</a></div><div class="ttdeci">Uint32 m_speed_time</div><div class="ttdef"><b>Definition:</b> enemy.h:62</div></div>
 <div class="ttc" id="tank_8h_html"><div class="ttname"><a href="tank_8h.html">tank.h</a></div></div>
 <div class="ttc" id="class_enemy_html_a024794c12555ca3b948aebb576e8915e"><div class="ttname"><a href="class_enemy.html#a024794c12555ca3b948aebb576e8915e">Enemy::scoreForHit</a></div><div class="ttdeci">unsigned scoreForHit()</div><div class="ttdef"><b>Definition:</b> enemy.cpp:182</div></div>
 <div class="ttc" id="class_tank_html"><div class="ttname"><a href="class_tank.html">Tank</a></div><div class="ttdoc">Klasa zajmująca się podstawową mechaniką czołgów: jazda, strzał. </div><div class="ttdef"><b>Definition:</b> tank.h:16</div></div>
-<div class="ttc" id="class_enemy_html_a50eb3c781089210bba29eacb405d9d2d"><div class="ttname"><a href="class_enemy.html#a50eb3c781089210bba29eacb405d9d2d">Enemy::m_fire_time</a></div><div class="ttdeci">Uint32 m_fire_time</div><div class="ttdef"><b>Definition:</b> enemy.h:26</div></div>
-<div class="ttc" id="class_enemy_html"><div class="ttname"><a href="class_enemy.html">Enemy</a></div><div class="ttdef"><b>Definition:</b> enemy.h:6</div></div>
+<div class="ttc" id="class_enemy_html_a50eb3c781089210bba29eacb405d9d2d"><div class="ttname"><a href="class_enemy.html#a50eb3c781089210bba29eacb405d9d2d">Enemy::m_fire_time</a></div><div class="ttdeci">Uint32 m_fire_time</div><div class="ttdef"><b>Definition:</b> enemy.h:71</div></div>
+<div class="ttc" id="class_enemy_html"><div class="ttname"><a href="class_enemy.html">Enemy</a></div><div class="ttdoc">Klasa zajmująca się ruchami wrogich czołgów. </div><div class="ttdef"><b>Definition:</b> enemy.h:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano So, 16 maj 2015 22:38:32 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano So, 16 maj 2015 23:46:45 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
