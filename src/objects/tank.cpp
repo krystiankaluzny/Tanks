@@ -273,12 +273,7 @@ void Tank::collide()
 void Tank::destroy()
 {
     if(!testFlag(TSF_LIFE)) return;
-    if(testFlag(TSF_SHIELD)) return;
-    if(testFlag(TSF_BOAT))
-    {
-        clearFlag(TSF_BOAT);
-        return;
-    }
+
     stop = true;
     m_flags = TSF_DESTROYED;
 

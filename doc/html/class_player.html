@@ -94,6 +94,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa odpowiadająca czołgom graczy.  
+ <a href="class_player.html#details">Więcej...</a></p>
+
 <p><code>#include &lt;<a class="el" href="player_8h_source.html">player.h</a>&gt;</code></p>
 <div class="dynheader">
 Diagram dziedziczenia dla Player</div>
@@ -109,6 +112,7 @@ Diagram dziedziczenia dla Player</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Komponenty</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_1_1_player_keys.html">PlayerKeys</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struktura przechowująca klawiszę odpowiadające sterowaniem czołgiem gracza.  <a href="struct_player_1_1_player_keys.html#details">Więcej...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -166,8 +170,6 @@ Atrybuty publiczne</h2></td></tr>
 <tr class="separator:a9822b1b86085cc46c773c76570cfaa4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18afa2dfc1f6dfba7bbe08889f443da5"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a18afa2dfc1f6dfba7bbe08889f443da5">score</a></td></tr>
 <tr class="separator:a18afa2dfc1f6dfba7bbe08889f443da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a331b0f5de5a558249b8a14441249279b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a331b0f5de5a558249b8a14441249279b">star_count</a></td></tr>
-<tr class="separator:a331b0f5de5a558249b8a14441249279b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_tank"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_tank')"><img src="closed.png" alt="-"/>&#160;Atrybuty publiczne dziedziczone z <a class="el" href="class_tank.html">Tank</a></td></tr>
 <tr class="memitem:acd370abc3ccd4c67c8285e42884c7b1c inherit pub_attribs_class_tank"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tank.html#acd370abc3ccd4c67c8285e42884c7b1c">default_speed</a></td></tr>
 <tr class="separator:acd370abc3ccd4c67c8285e42884c7b1c inherit pub_attribs_class_tank"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,6 +201,8 @@ Atrybuty publiczne</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Atrybuty prywatne</h2></td></tr>
+<tr class="memitem:a331b0f5de5a558249b8a14441249279b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a331b0f5de5a558249b8a14441249279b">star_count</a></td></tr>
+<tr class="separator:a331b0f5de5a558249b8a14441249279b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6a37d018b76094b9ca7746fe0b268ba"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ae6a37d018b76094b9ca7746fe0b268ba">m_fire_time</a></td></tr>
 <tr class="separator:ae6a37d018b76094b9ca7746fe0b268ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -232,7 +236,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 <tr class="memitem:a4e03c944bc9142a5c34b7049c20c4301 inherit pro_attribs_class_object"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a></td></tr>
 <tr class="separator:a4e03c944bc9142a5c34b7049c20c4301 inherit pro_attribs_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa odpowiadająca czołgom graczy. </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
 <a class="anchor" id="affe0cc3cb714f6deb4e62f0c0d3f1fd8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -294,6 +300,12 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funkcja zmienia liczbę aktualnie posiadanych gwiazdek. Przy niezerowej liczbie gwiazdek zwiększana jest domyślna prędkość czołgu, a dla liczby gwiazdek większej od 1 oraz dla każdego dodatniego <em>c</em> zwiększana jest maksymalna liczba pocisków. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>- zmiana liczby gwiazdek, może być ujemna </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -317,7 +329,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Funkcja odpowiada za włączenie animacji wybuchu czołgu jeżeli czołgu nie miał osłonki lub łódki. </p>
+<p>Funkcja odpowiada za włączenie animacji wybuchu czołgu jeżeli czołgu nie miał osłonki, łódki lub trzech gwiazdek. </p>
 
 <p>Reimplementowana z <a class="el" href="class_tank.html#a5d2e3302417166ccdc42b8bc2e5d5dc4">Tank</a>.</p>
 
@@ -343,7 +355,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Funkcja odpowiada za stworzenie pocisku jeżeli jeszcze nie stworzono maksymalnej ich ilości. </p><dl class="section return"><dt>Zwraca</dt><dd>wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca <em>nullptr</em> </dd></dl>
+<p>Funkcja odpowiada za stworzenie pocisku jeżeli jeszcze nie stworzono maksymalnej ich ilości, nadaniu mu większej szybkości jeżeli gracz ma przynajmniej jedną gwiazdkę oraz dodaniu zwiększonych obrażeni jeżeli gracz ma trzy gwiazdki. </p><dl class="section return"><dt>Zwraca</dt><dd>wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca <em>nullptr</em> </dd></dl>
 
 <p>Reimplementowana z <a class="el" href="class_tank.html#ae5c683a77507d638b2e2d7526e5205de">Tank</a>.</p>
 
@@ -369,7 +381,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Funkcja odpowiada za wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu. </p>
+<p>Funkcja odpowiada za odjęcie życia, wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu. </p>
 
 <p>Reimplementowana z <a class="el" href="class_tank.html#a61501e1b99fd235500b79f39c6b2fc8f">Tank</a>.</p>
 
@@ -396,9 +408,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu. </p><dl class="params"><dt>Parametry</dt><dd>
+<p>Funkcaj odpowiada za zmianę animacji czołgu gracza oraz za sprawdzeni stanu wciśniętych klawiszy i reakcja na te klawisze, które sterują czołgiem gracza. </p><dl class="params"><dt>Parametry</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki </td></tr>
+    <tr><td class="paramname">dt</td><td>- czas od ostatwniego wywołania funkcji, wykorzystywany przy zmianie animacji </td></tr>
   </table>
   </dd>
 </dl>
@@ -425,6 +437,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas jaki minął od ostatnego wystrzału pocisku. </p>
 
 </div>
 </div>
@@ -437,6 +450,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Klawiszcze sterujące ruchami aktualngo gracza. </p>
 
 </div>
 </div>
@@ -449,18 +463,28 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Aktualnie posiadane punkty przez gracza. </p>
 
 </div>
 </div>
 <a class="anchor" id="a331b0f5de5a558249b8a14441249279b"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int Player::star_count</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+<p>Aktualnie posiadana liczba gwiazdek; może się zawierać w przedziale [0, 3]. </p>
 
 </div>
 </div>
@@ -471,7 +495,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano Cz, 14 maj 2015 12:32:51 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano So, 16 maj 2015 22:38:32 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

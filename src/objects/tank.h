@@ -56,7 +56,7 @@ public:
      */
     virtual void respawn();
     /**
-     * Funkcja odpowiada za włączenie animacji wybuchu czołgu jeżeli czołgu nie miał osłonki lub łódki.
+     * Funkcja odpowiada za włączenie animacji wybuchu czołgu.
      */
     virtual void destroy();
     /**

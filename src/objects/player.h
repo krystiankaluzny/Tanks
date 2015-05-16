@@ -3,11 +3,15 @@
 
 #include "tank.h"
 
+/**
+ * @brief Klasa odpowiadająca czołgom graczy.
+ */
 class Player : public Tank
 {
 public:
+
     /**
-     * Struktura przechowująca klawiszę odpowiadające sterowaniem czołgiem gracza.
+     * @brief Struktura przechowująca klawiszę odpowiadające sterowaniem czołgiem gracza.
      */
     struct PlayerKeys
     {
@@ -45,18 +49,44 @@ public:
      */
     void update(Uint32 dt);
     /**
-     * @brief respawn
+     * Funkcja odpowiada za odjęcie życia, wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu.
      */
     void respawn();
+    /**
+     * Funkcja odpowiada za włączenie animacji wybuchu czołgu jeżeli czołgu nie miał osłonki, łódki lub trzech gwiazdek.
+     */
     void destroy();
+    /**
+     * Funkcja odpowiada za stworzenie pocisku jeżeli jeszcze nie stworzono maksymalnej ich ilości,
+     * nadaniu mu większej szybkości jeżeli gracz ma przynajmniej jedną gwiazdkę oraz dodaniu zwiększonych obrażeni jeżeli gracz ma trzy gwiazdki.
+     * @return wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca @a nullptr
+     */
     Bullet* fire();
+
+    /**
+     * Funkcja zmienia liczbę aktualnie posiadanych gwiazdek. Przy niezerowej liczbie gwiazdek zwiększana jest domyślna prędkość czołgu,
+     * a dla liczby gwiazdek większej od 1 oraz dla każdego dodatniego @a c zwiększana jest maksymalna liczba pocisków.
+     * @param c - zmiana liczby gwiazdek, może być ujemna
+     */
     void changeStarCountBy(int c);
 
+    /**
+     * Klawiszcze sterujące ruchami aktualngo gracza.
+     */
     PlayerKeys player_keys;
+    /**
+     * Aktualnie posiadane punkty przez gracza.
+     */
     unsigned score;
-    int star_count;
 
 private:
+    /**
+     * Aktualnie posiadana liczba gwiazdek; może się zawierać w przedziale [0, 3].
+     */
+    int star_count;
+    /**
+     * Czas jaki minął od ostatnego wystrzału pocisku.
+     */
     Uint32 m_fire_time;
 };
 
