@@ -8,6 +8,9 @@
 
 using namespace std;
 
+/**
+ * @brief Klasa zawierająca zbór parametrów aplikacji.
+ */
 class AppConfig
 {
 public:

@@ -94,33 +94,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="object_8h.html">object.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="class_brick.html">    6</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_brick.html">Brick</a> : <span class="keyword">public</span> <a class="code" href="class_object.html">Object</a></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="class_brick.html#aa29d678c3d901c7b18cbc3a27a51be17">Brick</a>();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="class_brick.html#aa29d678c3d901c7b18cbc3a27a51be17">Brick</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_brick.html#a31098851b4f1224cfd6b51c4ef47094f">update</a>(Uint32 dt);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_brick.html#a9cc85dce3b78ecd20737e3eda8731b31">bulletHit</a>(<a class="code" href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a> bullet_direction);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_brick.html#ae6b924b99a1b1b58a1854364fd0b66ba">   23</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_brick.html#ae6b924b99a1b1b58a1854364fd0b66ba">m_collision_count</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_brick.html#a643edd0cb0af48b89edab1ffcfb95352">   24</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_brick.html#a643edd0cb0af48b89edab1ffcfb95352">m_state_code</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;};</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif // BRICK_H</span></div>
-<div class="ttc" id="class_brick_html"><div class="ttname"><a href="class_brick.html">Brick</a></div><div class="ttdef"><b>Definition:</b> brick.h:6</div></div>
-<div class="ttc" id="class_brick_html_ae6b924b99a1b1b58a1854364fd0b66ba"><div class="ttname"><a href="class_brick.html#ae6b924b99a1b1b58a1854364fd0b66ba">Brick::m_collision_count</a></div><div class="ttdeci">int m_collision_count</div><div class="ttdef"><b>Definition:</b> brick.h:23</div></div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="class_brick.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_brick.html">Brick</a> : <span class="keyword">public</span> <a class="code" href="class_object.html">Object</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_brick.html#aa29d678c3d901c7b18cbc3a27a51be17">Brick</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="class_brick.html#aa29d678c3d901c7b18cbc3a27a51be17">Brick</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_brick.html#a31098851b4f1224cfd6b51c4ef47094f">update</a>(Uint32 dt);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_brick.html#a9cc85dce3b78ecd20737e3eda8731b31">bulletHit</a>(<a class="code" href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a> bullet_direction);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_brick.html#ae6b924b99a1b1b58a1854364fd0b66ba">   37</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_brick.html#ae6b924b99a1b1b58a1854364fd0b66ba">m_collision_count</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_brick.html#a643edd0cb0af48b89edab1ffcfb95352">   41</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_brick.html#a643edd0cb0af48b89edab1ffcfb95352">m_state_code</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;};</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif // BRICK_H</span></div>
+<div class="ttc" id="class_brick_html"><div class="ttname"><a href="class_brick.html">Brick</a></div><div class="ttdoc">Klasa odpowiedzialna za pojedyńczy kawałek murku. </div><div class="ttdef"><b>Definition:</b> brick.h:9</div></div>
+<div class="ttc" id="class_brick_html_ae6b924b99a1b1b58a1854364fd0b66ba"><div class="ttname"><a href="class_brick.html#ae6b924b99a1b1b58a1854364fd0b66ba">Brick::m_collision_count</a></div><div class="ttdeci">int m_collision_count</div><div class="ttdef"><b>Definition:</b> brick.h:37</div></div>
 <div class="ttc" id="class_brick_html_a9cc85dce3b78ecd20737e3eda8731b31"><div class="ttname"><a href="class_brick.html#a9cc85dce3b78ecd20737e3eda8731b31">Brick::bulletHit</a></div><div class="ttdeci">void bulletHit(Direction bullet_direction)</div><div class="ttdef"><b>Definition:</b> brick.cpp:23</div></div>
 <div class="ttc" id="class_brick_html_aa29d678c3d901c7b18cbc3a27a51be17"><div class="ttname"><a href="class_brick.html#aa29d678c3d901c7b18cbc3a27a51be17">Brick::Brick</a></div><div class="ttdeci">Brick()</div><div class="ttdef"><b>Definition:</b> brick.cpp:4</div></div>
 <div class="ttc" id="object_8h_html"><div class="ttname"><a href="object_8h.html">object.h</a></div></div>
 <div class="ttc" id="type_8h_html_a224b9163917ac32fc95a60d8c1eec3aa"><div class="ttname"><a href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a></div><div class="ttdeci">Direction</div><div class="ttdef"><b>Definition:</b> type.h:63</div></div>
 <div class="ttc" id="class_object_html"><div class="ttname"><a href="class_object.html">Object</a></div><div class="ttdoc">Klasa bazowa dla obiektów w grze. </div><div class="ttdef"><b>Definition:</b> object.h:10</div></div>
 <div class="ttc" id="class_brick_html_a31098851b4f1224cfd6b51c4ef47094f"><div class="ttname"><a href="class_brick.html#a31098851b4f1224cfd6b51c4ef47094f">Brick::update</a></div><div class="ttdeci">void update(Uint32 dt)</div><div class="ttdef"><b>Definition:</b> brick.cpp:18</div></div>
-<div class="ttc" id="class_brick_html_a643edd0cb0af48b89edab1ffcfb95352"><div class="ttname"><a href="class_brick.html#a643edd0cb0af48b89edab1ffcfb95352">Brick::m_state_code</a></div><div class="ttdeci">int m_state_code</div><div class="ttdef"><b>Definition:</b> brick.h:24</div></div>
+<div class="ttc" id="class_brick_html_a643edd0cb0af48b89edab1ffcfb95352"><div class="ttname"><a href="class_brick.html#a643edd0cb0af48b89edab1ffcfb95352">Brick::m_state_code</a></div><div class="ttdeci">int m_state_code</div><div class="ttdef"><b>Definition:</b> brick.h:41</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano So, 16 maj 2015 23:46:45 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano N, 17 maj 2015 01:21:08 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

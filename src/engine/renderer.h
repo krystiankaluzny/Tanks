@@ -14,7 +14,6 @@ class Renderer
 public:
     Renderer();
     ~Renderer();
-
     /**
      * Wczytanie tekstury z pliku oraz stworzenie renderera związanego z oknem aplikacji.
      * @param window - wskaźnik na obiekt zawartości okna aplikacji

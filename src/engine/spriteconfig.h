@@ -40,6 +40,9 @@ struct SpriteData
 class SpriteConfig
 {
 public:
+    /**
+     * W konstruktorze wykonywane są dodawania kolejnych animacji funkcją @a SpriteConfig::insert.
+     */
     SpriteConfig();
     /**
      * Pobranie wybranego typu animacji.

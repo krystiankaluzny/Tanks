@@ -89,36 +89,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 <div class="title">appstate.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="appstate_8h.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#ifndef APPSTATE_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#define APPSTATE_H</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;SDL2/SDL_events.h&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="class_app_state.html">   12</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_app_state.html">AppState</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="class_app_state.html#adef088013ce73c6c667f20a019b02d69">   15</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_app_state.html#adef088013ce73c6c667f20a019b02d69">~AppState</a>() {}</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_app_state.html#ad377464581817ae4000b9cd6c47dc4e8">finished</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_app_state.html#ad2a668dc35b06c330a788e82d9eebee2">draw</a>() = 0;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_app_state.html#a28660de31b5a7a36691b67866f82e5f2">update</a>(Uint32 dt) = 0;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_app_state.html#a9cd9175e5cd251bea2e7eeb4ee9f6137">eventProcess</a>(SDL_Event* ev) = 0;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_app_state.html">AppState</a>* <a class="code" href="class_app_state.html#afafba64bbaaf7552f6e0632821c2338f">nextState</a>() = 0;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;};</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif // APPSTATE_H</span></div>
+<a href="appstate_8h.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef APPSTATE_H</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define APPSTATE_H</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;SDL2/SDL_events.h&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="class_app_state.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_app_state.html">AppState</a></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="class_app_state.html#adef088013ce73c6c667f20a019b02d69">   14</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_app_state.html#adef088013ce73c6c667f20a019b02d69">~AppState</a>() {}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_app_state.html#ad377464581817ae4000b9cd6c47dc4e8">finished</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_app_state.html#ad2a668dc35b06c330a788e82d9eebee2">draw</a>() = 0;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_app_state.html#a28660de31b5a7a36691b67866f82e5f2">update</a>(Uint32 dt) = 0;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_app_state.html#a9cd9175e5cd251bea2e7eeb4ee9f6137">eventProcess</a>(SDL_Event* ev) = 0;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_app_state.html">AppState</a>* <a class="code" href="class_app_state.html#afafba64bbaaf7552f6e0632821c2338f">nextState</a>() = 0;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif // APPSTATE_H</span></div>
 <div class="ttc" id="class_app_state_html_afafba64bbaaf7552f6e0632821c2338f"><div class="ttname"><a href="class_app_state.html#afafba64bbaaf7552f6e0632821c2338f">AppState::nextState</a></div><div class="ttdeci">virtual AppState * nextState()=0</div></div>
-<div class="ttc" id="class_app_state_html"><div class="ttname"><a href="class_app_state.html">AppState</a></div><div class="ttdoc">Klasa jest interfejsem, po którym dziedziczą klasy Game, Menu, Scores. </div><div class="ttdef"><b>Definition:</b> appstate.h:12</div></div>
+<div class="ttc" id="class_app_state_html"><div class="ttname"><a href="class_app_state.html">AppState</a></div><div class="ttdoc">Klasa jest interfejsem, po którym dziedziczą klasy Game, Menu, Scores. </div><div class="ttdef"><b>Definition:</b> appstate.h:11</div></div>
 <div class="ttc" id="class_app_state_html_a28660de31b5a7a36691b67866f82e5f2"><div class="ttname"><a href="class_app_state.html#a28660de31b5a7a36691b67866f82e5f2">AppState::update</a></div><div class="ttdeci">virtual void update(Uint32 dt)=0</div></div>
 <div class="ttc" id="class_app_state_html_ad2a668dc35b06c330a788e82d9eebee2"><div class="ttname"><a href="class_app_state.html#ad2a668dc35b06c330a788e82d9eebee2">AppState::draw</a></div><div class="ttdeci">virtual void draw()=0</div></div>
-<div class="ttc" id="class_app_state_html_adef088013ce73c6c667f20a019b02d69"><div class="ttname"><a href="class_app_state.html#adef088013ce73c6c667f20a019b02d69">AppState::~AppState</a></div><div class="ttdeci">virtual ~AppState()</div><div class="ttdef"><b>Definition:</b> appstate.h:15</div></div>
+<div class="ttc" id="class_app_state_html_adef088013ce73c6c667f20a019b02d69"><div class="ttname"><a href="class_app_state.html#adef088013ce73c6c667f20a019b02d69">AppState::~AppState</a></div><div class="ttdeci">virtual ~AppState()</div><div class="ttdef"><b>Definition:</b> appstate.h:14</div></div>
 <div class="ttc" id="class_app_state_html_ad377464581817ae4000b9cd6c47dc4e8"><div class="ttname"><a href="class_app_state.html#ad377464581817ae4000b9cd6c47dc4e8">AppState::finished</a></div><div class="ttdeci">virtual bool finished() const =0</div></div>
 <div class="ttc" id="class_app_state_html_a9cd9175e5cd251bea2e7eeb4ee9f6137"><div class="ttname"><a href="class_app_state.html#a9cd9175e5cd251bea2e7eeb4ee9f6137">AppState::eventProcess</a></div><div class="ttdeci">virtual void eventProcess(SDL_Event *ev)=0</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano So, 16 maj 2015 23:46:45 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano N, 17 maj 2015 01:21:08 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

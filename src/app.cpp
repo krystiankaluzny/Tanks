@@ -24,7 +24,6 @@ App::~App()
         delete m_app_state;
 }
 
-
 void App::run()
 {
     is_running = true;

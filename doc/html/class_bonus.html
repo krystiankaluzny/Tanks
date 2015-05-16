@@ -92,6 +92,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa zajumująca wyświetlaniem bonusu.  
+ <a href="class_bonus.html#details">Więcej...</a></p>
+
 <p><code>#include &lt;<a class="el" href="bonus_8h_source.html">bonus.h</a>&gt;</code></p>
 <div class="dynheader">
 Diagram dziedziczenia dla Bonus</div>
@@ -158,7 +161,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 <tr class="memitem:a4e03c944bc9142a5c34b7049c20c4301 inherit pro_attribs_class_object"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a></td></tr>
 <tr class="separator:a4e03c944bc9142a5c34b7049c20c4301 inherit pro_attribs_class_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa zajumująca wyświetlaniem bonusu. </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
 <a class="anchor" id="a005571f0961a2e0f1af2befc35d804cf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -236,7 +241,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Rysowanie za pomocą metody <em>drawObject</em> z klasy <em><a class="el" href="class_renderer.html" title="Klasa odpowiada za rysowanie obiektów na ekranie. ">Renderer</a></em>, obiektu z tekstury o współrzędnych src_rect w obszar mapy o wpółrzędnych dest_rect. </p>
+<p>Funkcja rysująca bonus. </p>
 
 <p>Reimplementowana z <a class="el" href="class_object.html#a821f5b25b450fa1acdb3f9c0b5962592">Object</a>.</p>
 
@@ -263,9 +268,9 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu. </p><dl class="params"><dt>Parametry</dt><dd>
+<p>Funkcja uaktualniająca animacje bonusu. Pozwolenie na usunięcie po odpowiednim czasie. Zwiększenie częstotliwości migania jeżeli bonus ma niedługo zostać usunięty. </p><dl class="params"><dt>Parametry</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki </td></tr>
+    <tr><td class="paramname">dt</td><td>- czas od ostatniego wywołania funkcji </td></tr>
   </table>
   </dd>
 </dl>
@@ -292,6 +297,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Czas od stworzenie bonusu. </p>
 
 </div>
 </div>
@@ -312,6 +318,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Zmienna przechowująca informacje o tym czy bonus jest aktualnie wyświetlany; wykorzystywana do migania. </p>
 
 </div>
 </div>
@@ -322,7 +329,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano So, 16 maj 2015 23:46:45 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano N, 17 maj 2015 01:21:09 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
