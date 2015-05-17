@@ -12,6 +12,6 @@ var searchData=
   ['clear',['clear',['../class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4',1,'Renderer']]],
   ['clearflag',['clearFlag',['../class_tank.html#ac8525d73bc6bd199ca51bb447f342925',1,'Tank']]],
   ['clearlevel',['clearLevel',['../class_game.html#ad17f444685bc573e4c8eaed502244a19',1,'Game']]],
-  ['collide',['collide',['../class_bullet.html#a13bf4d55e52ef924643268607bb0db4f',1,'Bullet::collide()'],['../class_tank.html#a4d254f913ab43a6bc62494a8ab1444cd',1,'Tank::collide()']]],
+  ['collide',['collide',['../class_bullet.html#a13bf4d55e52ef924643268607bb0db4f',1,'Bullet::collide()'],['../class_tank.html#a89b9d0e1e81f593d3966c32ab84be727',1,'Tank::collide()']]],
   ['collision_5frect',['collision_rect',['../class_object.html#a308c5fde145e854d4a2808283f18e14b',1,'Object']]]
 ];

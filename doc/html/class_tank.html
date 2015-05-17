@@ -127,8 +127,8 @@ Metody publiczne</h2></td></tr>
 <tr class="separator:a2373592e898ce038e22ed59f4486ba6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a649b24d19a48a3e93f4ba14821338f46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tank.html#a649b24d19a48a3e93f4ba14821338f46">setDirection</a> (<a class="el" href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a> d)</td></tr>
 <tr class="separator:a649b24d19a48a3e93f4ba14821338f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d254f913ab43a6bc62494a8ab1444cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tank.html#a4d254f913ab43a6bc62494a8ab1444cd">collide</a> ()</td></tr>
-<tr class="separator:a4d254f913ab43a6bc62494a8ab1444cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89b9d0e1e81f593d3966c32ab84be727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tank.html#a89b9d0e1e81f593d3966c32ab84be727">collide</a> (SDL_Rect &amp;intersect_rect)</td></tr>
+<tr class="separator:a89b9d0e1e81f593d3966c32ab84be727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61501e1b99fd235500b79f39c6b2fc8f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tank.html#a61501e1b99fd235500b79f39c6b2fc8f">respawn</a> ()</td></tr>
 <tr class="separator:a61501e1b99fd235500b79f39c6b2fc8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d2e3302417166ccdc42b8bc2e5d5dc4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tank.html#a5d2e3302417166ccdc42b8bc2e5d5dc4">destroy</a> ()</td></tr>
@@ -316,19 +316,25 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4d254f913ab43a6bc62494a8ab1444cd"></a>
+<a class="anchor" id="a89b9d0e1e81f593d3966c32ab84be727"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void Tank::collide </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">SDL_Rect &amp;&#160;</td>
+          <td class="paramname"><em>intersect_rect</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Funkcja zatrzymuje czołg. </p>
+<p>Funkcja zatrzymuje czołg. </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intersect_rect</td><td>- obszar kolizji </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -812,7 +818,7 @@ Dodatkowe Dziedziczone Składowe</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Wygenerowano N, 17 maj 2015 01:21:09 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+Wygenerowano Pn, 18 maj 2015 00:39:08 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
