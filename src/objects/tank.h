@@ -59,8 +59,9 @@ public:
     void setDirection(Direction d);
     /**
      * Funkcja zatrzymuje czołg.
+     * @param intersect_rect - obszar kolizji
      */
-    void collide();
+    void collide(SDL_Rect &intersect_rect);
     /**
      * Funkcja odpowiada za wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu.
      */

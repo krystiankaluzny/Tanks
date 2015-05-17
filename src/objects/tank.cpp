@@ -264,10 +264,26 @@ void Tank::setDirection(Direction d)
     }
 }
 
-void Tank::collide()
+void Tank::collide(SDL_Rect &intersect_rect)
 {
-    stop = true;
-    m_slip_time = 0;
+    if(intersect_rect.w > intersect_rect.h) // kolizja od góry lub dołu
+    {
+        if((direction == D_UP && intersect_rect.y <= collision_rect.y) ||
+                (direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
+        {
+            stop = true;
+            m_slip_time = 0;
+        }
+    }
+    else
+    {
+        if((direction == D_LEFT && intersect_rect.x <= collision_rect.x) ||
+                (direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
+        {
+            stop = true;
+            m_slip_time = 0;
+        }
+    }
 }
 
 void Tank::destroy()
@@ -302,7 +318,7 @@ void Tank::setFlag(TankStateFlag flag)
 
     if(flag == TSF_SHIELD)
     {
-         if(m_shield == nullptr) m_shield = new Object(pos_x, pos_y, ST_SHIELD);
+        if(m_shield == nullptr) m_shield = new Object(pos_x, pos_y, ST_SHIELD);
          m_shield_time = 0;
     }
     if(flag == TSF_BOAT)

@@ -544,7 +544,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
                     continue;
                 }
                 else
-                    tank->collide();
+                    tank->collide(intersect_rect);
                 break;
             }
         }
@@ -558,7 +558,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide();
+        tank->collide(intersect_rect);
 
     //prostokąt po prawej stronie mapy
     outside_map_rect.x = AppConfig::map_rect.w;
@@ -567,7 +567,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide();
+        tank->collide(intersect_rect);
 
     //prostokąt po górnej stronie mapy
     outside_map_rect.x = 0;
@@ -576,7 +576,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide();
+        tank->collide(intersect_rect);
 
     //prostokąt po dolnej stronie mapy
     outside_map_rect.x = 0;
@@ -585,13 +585,13 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     outside_map_rect.h = AppConfig::tile_rect.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide();
+        tank->collide(intersect_rect);
 
 
    //========================kolizja z orzełkiem========================
     intersect_rect = intersectRect(&m_eagle->collision_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
-        tank->collide();
+        tank->collide(intersect_rect);
 }
 
 void Game::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
@@ -602,8 +602,8 @@ void Game::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
 
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
     {
-        tank1->collide();
-        tank2->collide();
+        tank1->collide(intersect_rect);
+        tank2->collide(intersect_rect);
     }
 }
 
