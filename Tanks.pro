@@ -38,7 +38,6 @@ HEADERS += \
     src/app_state/appstate.h \
     src/app_state/game.h \
     src/appconfig.h \
-    src/tank.h \
     src/objects/object.h \
     src/objects/tank.h \
     src/engine/spriteconfig.h \
