@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Tanks: Plik źródłowy src/app_state/menu.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Tanks
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_894369274bedb4feeca3bf9446c394c3.html">app_state</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">menu.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="menu_8cpp.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="menu_8h.html">menu.h</a>&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;../engine/engine.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;../engine/renderer.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../appconfig.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../type.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;../app_state/game.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="class_menu.html#ad466dd83355124a6ed958430450bfe94">   10</a></span>&#160;<a class="code" href="class_menu.html#ad466dd83355124a6ed958430450bfe94">Menu::Menu</a>()</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="class_menu.html#ab3fea4e61aa4eb17d4f19a7a9ad4ef76">m_menu_texts</a>.push_back(<span class="stringliteral">&quot;1 Player&quot;</span>);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="class_menu.html#ab3fea4e61aa4eb17d4f19a7a9ad4ef76">m_menu_texts</a>.push_back(<span class="stringliteral">&quot;2 Players&quot;</span>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="class_menu.html#ab3fea4e61aa4eb17d4f19a7a9ad4ef76">m_menu_texts</a>.push_back(<span class="stringliteral">&quot;Exit&quot;</span>);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> = 0;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a> = <span class="keyword">new</span> <a class="code" href="class_player.html">Player</a>(0, 0 , <a class="code" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31aaa890a694fc77959306213a6d169c51de">ST_PLAYER_1</a>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#a316c67f799b64265a676038da73b0676">direction</a> = <a class="code" href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aaa07fb0d616c46d4120eb541871fbdfd2d">D_RIGHT</a>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a> = 144;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a> = (<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> + 1) * 32 + 112;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#a4c624b0a64ca72567a758d17b3350873">setFlag</a>(<a class="code" href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafaff222d57ba0fe2d436a66e86b44d844d">TSF_LIFE</a>);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_player.html#af5cac4f8c62903d39c7dc7bdf8f05ddb">update</a>(0);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#ac8525d73bc6bd199ca51bb447f342925">clearFlag</a>(<a class="code" href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafaff222d57ba0fe2d436a66e86b44d844d">TSF_LIFE</a>);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#ac8525d73bc6bd199ca51bb447f342925">clearFlag</a>(<a class="code" href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafae6fe388a49bad40787ecf20350194070">TSF_SHIELD</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#a4c624b0a64ca72567a758d17b3350873">setFlag</a>(<a class="code" href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafa805e65dee37f4ccfc90042703abf96f0">TSF_MENU</a>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="class_menu.html#a2d50477fa881cae864ccf577f38b8665">m_finished</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="class_menu.html#a831387f51358cfb88cd018e1777bc980">   28</a></span>&#160;<a class="code" href="class_menu.html#a831387f51358cfb88cd018e1777bc980">Menu::~Menu</a>()</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">delete</span> <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_menu.html#a2cd7ab9901a8f42a3ae977d0774398a6">   33</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_menu.html#a2cd7ab9901a8f42a3ae977d0774398a6">Menu::draw</a>()</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_renderer.html">Renderer</a>* renderer = <a class="code" href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a>().<a class="code" href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">getRenderer</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4">clear</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">drawRect</a>(&amp;<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>, {0, 0, 0, 255}, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">drawRect</a>(&amp;<a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>, {0, 0, 0, 255}, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">//LOGO</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_sprite_data.html">SpriteData</a>* logo = <a class="code" href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a>().<a class="code" href="class_engine.html#add1c56f65b2ae1cee44d31a4e60559f3">getSpriteConfig</a>()-&gt;<a class="code" href="class_sprite_config.html#a347c7f41a0cba1a15f4c0e9c90f57499">getSpriteData</a>(<a class="code" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31aaccf9c9e3731afe82f495b30829210156">ST_TANKS_LOGO</a>);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    SDL_Rect dst = {(<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.w + <a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>.w - logo-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w)/2, 50, logo-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w, logo-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h};</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">drawObject</a>(&amp;logo-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>, &amp;dst);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    SDL_Point text_start;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span> text : <a class="code" href="class_menu.html#ab3fea4e61aa4eb17d4f19a7a9ad4ef76">m_menu_texts</a>)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        text_start = { 180, (i + 1) * 32 + 120};</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        i++;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        renderer-&gt;<a class="code" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">drawText</a>(&amp;text_start, text, {255, 255, 255, 255}, 2);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#ab30c54bb7378b522fa965d4e8ab7ed4f">draw</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a35401aa28259d4560aba5cebd2bac4e3">flush</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="class_menu.html#a02ff964c4a203ca08b11655c36252fc8">   60</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_menu.html#a02ff964c4a203ca08b11655c36252fc8">Menu::update</a>(Uint32 dt)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#a4c19847eec64e4d3793885150145aa93">speed</a> = <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#acd370abc3ccd4c67c8285e42884c7b1c">default_speed</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_tank.html#a4134e3bc03ed6453f1e76f161f29a657">stop</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_player.html#af5cac4f8c62903d39c7dc7bdf8f05ddb">update</a>(dt);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="class_menu.html#a0b84052947f8687e10afe15ec88c90a9">   67</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_menu.html#a0b84052947f8687e10afe15ec88c90a9">Menu::eventProcess</a>(SDL_Event *ev)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span>(ev-&gt;type == SDL_KEYDOWN)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span>(ev-&gt;key.keysym.sym == SDLK_UP)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a>--;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">if</span>(<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> &lt; 0)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> = m_menu_texts.size() - 1;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a> = (<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> + 1) * 32 + 110;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(ev-&gt;key.keysym.sym == SDLK_DOWN)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a>++;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">if</span>(<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> &gt;= m_menu_texts.size())</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> = 0;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <a class="code" href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">m_tank_pointer</a>-&gt;<a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a> = (<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> + 1) * 32 + 110;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(ev-&gt;key.keysym.sym == SDLK_SPACE || ev-&gt;key.keysym.sym == SDLK_RETURN)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <a class="code" href="class_menu.html#a2d50477fa881cae864ccf577f38b8665">m_finished</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(ev-&gt;key.keysym.sym == SDLK_ESCAPE)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> = -1;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <a class="code" href="class_menu.html#a2d50477fa881cae864ccf577f38b8665">m_finished</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="class_menu.html#ac72d49b5565464340c2c25bd335c9424">   99</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_menu.html#ac72d49b5565464340c2c25bd335c9424">Menu::finished</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_menu.html#a2d50477fa881cae864ccf577f38b8665">m_finished</a>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="class_menu.html#a52b14eefa8e7e9bee6624f759daa5028">  104</a></span>&#160;<a class="code" href="class_app_state.html">AppState</a>* <a class="code" href="class_menu.html#a52b14eefa8e7e9bee6624f759daa5028">Menu::nextState</a>()</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;{</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> == m_menu_texts.size() - 1)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> == 0)</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <a class="code" href="class_game.html">Game</a>* g = <span class="keyword">new</span> <a class="code" href="class_game.html">Game</a>(1);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">return</span> g;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_menu.html#af26a32277353514baa2dbd1829f787f1">m_menu_index</a> == 1)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <a class="code" href="class_game.html">Game</a>* g = <span class="keyword">new</span> <a class="code" href="class_game.html">Game</a>(2);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">return</span> g;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
+<div class="ttc" id="class_renderer_html_ac46720b3fc0dbb2fc37674766490a8c4"><div class="ttname"><a href="class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4">Renderer::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00053">renderer.cpp:53</a></div></div>
+<div class="ttc" id="class_engine_html_a4ae702a17d6ca093ea6d2bbe37494805"><div class="ttname"><a href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">Engine::getRenderer</a></div><div class="ttdeci">Renderer * getRenderer() const </div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00046">engine.cpp:46</a></div></div>
+<div class="ttc" id="class_menu_html_a831387f51358cfb88cd018e1777bc980"><div class="ttname"><a href="class_menu.html#a831387f51358cfb88cd018e1777bc980">Menu::~Menu</a></div><div class="ttdeci">~Menu()</div><div class="ttdef"><b>Definition:</b> <a href="menu_8cpp_source.html#l00028">menu.cpp:28</a></div></div>
+<div class="ttc" id="class_engine_html_a2fdd20971d12ee816899854c05d8ed9b"><div class="ttname"><a href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a></div><div class="ttdeci">static Engine &amp; getEngine()</div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00010">engine.cpp:10</a></div></div>
+<div class="ttc" id="class_menu_html_ad466dd83355124a6ed958430450bfe94"><div class="ttname"><a href="class_menu.html#ad466dd83355124a6ed958430450bfe94">Menu::Menu</a></div><div class="ttdeci">Menu()</div><div class="ttdef"><b>Definition:</b> <a href="menu_8cpp_source.html#l00010">menu.cpp:10</a></div></div>
+<div class="ttc" id="class_app_state_html"><div class="ttname"><a href="class_app_state.html">AppState</a></div><div class="ttdoc">Klasa jest interfejsem, po którym dziedziczą klasy Game, Menu, Scores. </div><div class="ttdef"><b>Definition:</b> <a href="appstate_8h_source.html#l00011">appstate.h:11</a></div></div>
+<div class="ttc" id="class_sprite_config_html_a347c7f41a0cba1a15f4c0e9c90f57499"><div class="ttname"><a href="class_sprite_config.html#a347c7f41a0cba1a15f4c0e9c90f57499">SpriteConfig::getSpriteData</a></div><div class="ttdeci">const SpriteData * getSpriteData(SpriteType sp) const </div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8cpp_source.html#l00047">spriteconfig.cpp:47</a></div></div>
+<div class="ttc" id="struct_sprite_data_html"><div class="ttname"><a href="struct_sprite_data.html">SpriteData</a></div><div class="ttdoc">Struktura przechowująca informacjie danym typie animacji obiektu. </div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8h_source.html#l00012">spriteconfig.h:12</a></div></div>
+<div class="ttc" id="class_renderer_html"><div class="ttname"><a href="class_renderer.html">Renderer</a></div><div class="ttdoc">Klasa odpowiada za rysowanie obiektów na ekranie. </div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00012">renderer.h:12</a></div></div>
+<div class="ttc" id="class_tank_html_a4c624b0a64ca72567a758d17b3350873"><div class="ttname"><a href="class_tank.html#a4c624b0a64ca72567a758d17b3350873">Tank::setFlag</a></div><div class="ttdeci">void setFlag(TankStateFlag flag)</div><div class="ttdef"><b>Definition:</b> <a href="tank_8cpp_source.html#l00314">tank.cpp:314</a></div></div>
+<div class="ttc" id="class_menu_html_a0b84052947f8687e10afe15ec88c90a9"><div class="ttname"><a href="class_menu.html#a0b84052947f8687e10afe15ec88c90a9">Menu::eventProcess</a></div><div class="ttdeci">void eventProcess(SDL_Event *ev)</div><div class="ttdef"><b>Definition:</b> <a href="menu_8cpp_source.html#l00067">menu.cpp:67</a></div></div>
+<div class="ttc" id="class_tank_html_ab30c54bb7378b522fa965d4e8ab7ed4f"><div class="ttname"><a href="class_tank.html#ab30c54bb7378b522fa965d4e8ab7ed4f">Tank::draw</a></div><div class="ttdeci">void draw()</div><div class="ttdef"><b>Definition:</b> <a href="tank_8cpp_source.html#l00048">tank.cpp:48</a></div></div>
+<div class="ttc" id="type_8h_html_a4cfefb8efe4714111e829031e2df4fafae6fe388a49bad40787ecf20350194070"><div class="ttname"><a href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafae6fe388a49bad40787ecf20350194070">TSF_SHIELD</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00052">type.h:52</a></div></div>
+<div class="ttc" id="class_menu_html_a2cd7ab9901a8f42a3ae977d0774398a6"><div class="ttname"><a href="class_menu.html#a2cd7ab9901a8f42a3ae977d0774398a6">Menu::draw</a></div><div class="ttdeci">void draw()</div><div class="ttdef"><b>Definition:</b> <a href="menu_8cpp_source.html#l00033">menu.cpp:33</a></div></div>
+<div class="ttc" id="class_menu_html_a50f7c62c35e3dff4c351c7bfea16961a"><div class="ttname"><a href="class_menu.html#a50f7c62c35e3dff4c351c7bfea16961a">Menu::m_tank_pointer</a></div><div class="ttdeci">Player * m_tank_pointer</div><div class="ttdef"><b>Definition:</b> <a href="menu_8h_source.html#l00059">menu.h:59</a></div></div>
+<div class="ttc" id="class_app_config_html_ae2ae8d61b42619876e21e008cdabc7e0"><div class="ttname"><a href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a></div><div class="ttdeci">static SDL_Rect map_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00036">appconfig.h:36</a></div></div>
+<div class="ttc" id="class_renderer_html_a60b7766e3951432d333f90e55fcebd6a"><div class="ttname"><a href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">Renderer::drawRect</a></div><div class="ttdeci">void drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill=false)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00122">renderer.cpp:122</a></div></div>
+<div class="ttc" id="struct_sprite_data_html_ad4482d398fce500b0e4a0f408a2ddd49"><div class="ttname"><a href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">SpriteData::rect</a></div><div class="ttdeci">SDL_Rect rect</div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8h_source.html#l00021">spriteconfig.h:21</a></div></div>
+<div class="ttc" id="class_player_html_af5cac4f8c62903d39c7dc7bdf8f05ddb"><div class="ttname"><a href="class_player.html#af5cac4f8c62903d39c7dc7bdf8f05ddb">Player::update</a></div><div class="ttdeci">void update(Uint32 dt)</div><div class="ttdef"><b>Definition:</b> <a href="player_8cpp_source.html#l00032">player.cpp:32</a></div></div>
+<div class="ttc" id="type_8h_html_ac6fa10729dffeb6a192492f13c25e31aaccf9c9e3731afe82f495b30829210156"><div class="ttname"><a href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31aaccf9c9e3731afe82f495b30829210156">ST_TANKS_LOGO</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00045">type.h:45</a></div></div>
+<div class="ttc" id="class_tank_html_a4c19847eec64e4d3793885150145aa93"><div class="ttname"><a href="class_tank.html#a4c19847eec64e4d3793885150145aa93">Tank::speed</a></div><div class="ttdeci">double speed</div><div class="ttdef"><b>Definition:</b> <a href="tank_8h_source.html#l00097">tank.h:97</a></div></div>
+<div class="ttc" id="class_renderer_html_a1b5467dd2cfb2cb146c29c200b9bb251"><div class="ttname"><a href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">Renderer::drawObject</a></div><div class="ttdeci">void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00064">renderer.cpp:64</a></div></div>
+<div class="ttc" id="class_tank_html_ac8525d73bc6bd199ca51bb447f342925"><div class="ttname"><a href="class_tank.html#ac8525d73bc6bd199ca51bb447f342925">Tank::clearFlag</a></div><div class="ttdeci">void clearFlag(TankStateFlag flag)</div><div class="ttdef"><b>Definition:</b> <a href="tank_8cpp_source.html#l00335">tank.cpp:335</a></div></div>
+<div class="ttc" id="class_menu_html_af26a32277353514baa2dbd1829f787f1"><div class="ttname"><a href="class_menu.html#af26a32277353514baa2dbd1829f787f1">Menu::m_menu_index</a></div><div class="ttdeci">int m_menu_index</div><div class="ttdef"><b>Definition:</b> <a href="menu_8h_source.html#l00055">menu.h:55</a></div></div>
+<div class="ttc" id="type_8h_html_a224b9163917ac32fc95a60d8c1eec3aaa07fb0d616c46d4120eb541871fbdfd2d"><div class="ttname"><a href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aaa07fb0d616c46d4120eb541871fbdfd2d">D_RIGHT</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00066">type.h:66</a></div></div>
+<div class="ttc" id="class_game_html"><div class="ttname"><a href="class_game.html">Game</a></div><div class="ttdoc">Klasa odpowiada za ruch wszytkich czołgów oraz interaakcje między czołgami oraz między czołgami a inn...</div><div class="ttdef"><b>Definition:</b> <a href="game_8h_source.html#l00017">game.h:17</a></div></div>
+<div class="ttc" id="class_renderer_html_ac92b4e807b90c910e1bac003754a5ea6"><div class="ttname"><a href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">Renderer::drawText</a></div><div class="ttdeci">void drawText(const SDL_Point *start, std::string text, SDL_Color text_color, int font_size=1)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00086">renderer.cpp:86</a></div></div>
+<div class="ttc" id="type_8h_html_a4cfefb8efe4714111e829031e2df4fafaff222d57ba0fe2d436a66e86b44d844d"><div class="ttname"><a href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafaff222d57ba0fe2d436a66e86b44d844d">TSF_LIFE</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00059">type.h:59</a></div></div>
+<div class="ttc" id="class_menu_html_ab3fea4e61aa4eb17d4f19a7a9ad4ef76"><div class="ttname"><a href="class_menu.html#ab3fea4e61aa4eb17d4f19a7a9ad4ef76">Menu::m_menu_texts</a></div><div class="ttdeci">std::vector&lt; std::string &gt; m_menu_texts</div><div class="ttdef"><b>Definition:</b> <a href="menu_8h_source.html#l00051">menu.h:51</a></div></div>
+<div class="ttc" id="class_menu_html_a52b14eefa8e7e9bee6624f759daa5028"><div class="ttname"><a href="class_menu.html#a52b14eefa8e7e9bee6624f759daa5028">Menu::nextState</a></div><div class="ttdeci">AppState * nextState()</div><div class="ttdef"><b>Definition:</b> <a href="menu_8cpp_source.html#l00104">menu.cpp:104</a></div></div>
+<div class="ttc" id="class_engine_html_add1c56f65b2ae1cee44d31a4e60559f3"><div class="ttname"><a href="class_engine.html#add1c56f65b2ae1cee44d31a4e60559f3">Engine::getSpriteConfig</a></div><div class="ttdeci">SpriteConfig * getSpriteConfig() const </div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00051">engine.cpp:51</a></div></div>
+<div class="ttc" id="menu_8h_html"><div class="ttname"><a href="menu_8h.html">menu.h</a></div></div>
+<div class="ttc" id="class_object_html_a1f71a5693147aecc701db4ab51d3edcc"><div class="ttname"><a href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">Object::pos_x</a></div><div class="ttdeci">double pos_x</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00066">object.h:66</a></div></div>
+<div class="ttc" id="class_menu_html_a02ff964c4a203ca08b11655c36252fc8"><div class="ttname"><a href="class_menu.html#a02ff964c4a203ca08b11655c36252fc8">Menu::update</a></div><div class="ttdeci">void update(Uint32 dt)</div><div class="ttdef"><b>Definition:</b> <a href="menu_8cpp_source.html#l00060">menu.cpp:60</a></div></div>
+<div class="ttc" id="class_tank_html_a316c67f799b64265a676038da73b0676"><div class="ttname"><a href="class_tank.html#a316c67f799b64265a676038da73b0676">Tank::direction</a></div><div class="ttdeci">Direction direction</div><div class="ttdef"><b>Definition:</b> <a href="tank_8h_source.html#l00105">tank.h:105</a></div></div>
+<div class="ttc" id="class_player_html"><div class="ttname"><a href="class_player.html">Player</a></div><div class="ttdoc">Klasa odpowiadająca czołgom graczy. </div><div class="ttdef"><b>Definition:</b> <a href="player_8h_source.html#l00009">player.h:9</a></div></div>
+<div class="ttc" id="class_tank_html_acd370abc3ccd4c67c8285e42884c7b1c"><div class="ttname"><a href="class_tank.html#acd370abc3ccd4c67c8285e42884c7b1c">Tank::default_speed</a></div><div class="ttdeci">double default_speed</div><div class="ttdef"><b>Definition:</b> <a href="tank_8h_source.html#l00093">tank.h:93</a></div></div>
+<div class="ttc" id="class_menu_html_a2d50477fa881cae864ccf577f38b8665"><div class="ttname"><a href="class_menu.html#a2d50477fa881cae864ccf577f38b8665">Menu::m_finished</a></div><div class="ttdeci">bool m_finished</div><div class="ttdef"><b>Definition:</b> <a href="menu_8h_source.html#l00063">menu.h:63</a></div></div>
+<div class="ttc" id="class_menu_html_ac72d49b5565464340c2c25bd335c9424"><div class="ttname"><a href="class_menu.html#ac72d49b5565464340c2c25bd335c9424">Menu::finished</a></div><div class="ttdeci">bool finished() const </div><div class="ttdef"><b>Definition:</b> <a href="menu_8cpp_source.html#l00099">menu.cpp:99</a></div></div>
+<div class="ttc" id="class_renderer_html_a35401aa28259d4560aba5cebd2bac4e3"><div class="ttname"><a href="class_renderer.html#a35401aa28259d4560aba5cebd2bac4e3">Renderer::flush</a></div><div class="ttdeci">void flush()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00059">renderer.cpp:59</a></div></div>
+<div class="ttc" id="class_tank_html_a4134e3bc03ed6453f1e76f161f29a657"><div class="ttname"><a href="class_tank.html#a4134e3bc03ed6453f1e76f161f29a657">Tank::stop</a></div><div class="ttdeci">bool stop</div><div class="ttdef"><b>Definition:</b> <a href="tank_8h_source.html#l00101">tank.h:101</a></div></div>
+<div class="ttc" id="type_8h_html_ac6fa10729dffeb6a192492f13c25e31aaa890a694fc77959306213a6d169c51de"><div class="ttname"><a href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31aaa890a694fc77959306213a6d169c51de">ST_PLAYER_1</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00011">type.h:11</a></div></div>
+<div class="ttc" id="class_app_config_html_a6aa81e994502bb576cb7a203c9230a61"><div class="ttname"><a href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a></div><div class="ttdeci">static SDL_Rect status_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00040">appconfig.h:40</a></div></div>
+<div class="ttc" id="class_object_html_a986134c27f3e74ba41a4d28e20b183a9"><div class="ttname"><a href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">Object::pos_y</a></div><div class="ttdeci">double pos_y</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00070">object.h:70</a></div></div>
+<div class="ttc" id="type_8h_html_a4cfefb8efe4714111e829031e2df4fafa805e65dee37f4ccfc90042703abf96f0"><div class="ttname"><a href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafa805e65dee37f4ccfc90042703abf96f0">TSF_MENU</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00060">type.h:60</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano N, 24 maj 2015 00:12:58 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>

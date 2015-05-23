@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Tanks: Plik źródłowy src/appconfig.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Tanks
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">appconfig.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="appconfig_8cpp.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="appconfig_8h.html">appconfig.h</a>&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keywordtype">string</span> <a class="code" href="class_app_config.html#a65465439dccccead6f012308c44a4c69">AppConfig::texture_path</a> = <span class="stringliteral">&quot;texture.png&quot;</span>;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keywordtype">string</span> <a class="code" href="class_app_config.html#a381fc79705578228b73a1d182f6264f0">AppConfig::levels_path</a> = <span class="stringliteral">&quot;levels/&quot;</span>;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keywordtype">string</span> <a class="code" href="class_app_config.html#a8791b4aad5b035b27ce6bbc8c519b586">AppConfig::font_name</a> = <span class="stringliteral">&quot;prstartk.ttf&quot;</span>;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keywordtype">string</span> <a class="code" href="class_app_config.html#a11efeaaa7242d7e57feee9ad5846f099">AppConfig::game_over_text</a> = <span class="stringliteral">&quot;GAME OVER&quot;</span>;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;SDL_Rect <a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a> = {0, 0, 26*16, 26*16};</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;SDL_Rect <a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a> = {26*16, 0, 3*16, <a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.h};</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;SDL_Rect <a class="code" href="class_app_config.html#a3084e1368b670ab054843b2adf17c1b8">AppConfig::windows_rect</a> = {0, 0, <a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.w + <a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>.w, <a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.h};</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;SDL_Rect <a class="code" href="class_app_config.html#a0b948189431fbfb94ae6de07099b8c27">AppConfig::tile_rect</a> = {0, 0, 16, 16};</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;vector&lt;SDL_Point&gt; <a class="code" href="class_app_config.html#a142c3a4707dab014b2056e426d77a67d">AppConfig::player_starting_point</a> =</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;[]{</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    vector&lt;SDL_Point&gt; v;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    v.push_back({128, 384});</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    v.push_back({256, 384});</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> v;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;vector&lt;SDL_Point&gt; <a class="code" href="class_app_config.html#a3ff8c966e47fe083d3c05efe171f35f7">AppConfig::enemy_starting_point</a> =</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;[]{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    vector&lt;SDL_Point&gt; v;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    v.push_back({1, 1});</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    v.push_back({192, 1});</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    v.push_back({384, 1});</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">return</span> v;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;vector&lt;Player::PlayerKeys&gt; <a class="code" href="class_app_config.html#a8e37a09b8c71975463adcb2c20772021">AppConfig::player_keys</a> =</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;[]{</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    vector&lt;Player::PlayerKeys&gt; v;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    v.push_back({SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT, SDL_SCANCODE_RCTRL});</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    v.push_back({SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D, SDL_SCANCODE_LCTRL});</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">return</span> v;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a2c87bbaa3d4140b5aad70f8b62c012bd">AppConfig::level_start_time</a> = 2000;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a607f43c11d16d60415e59d9af744865b">AppConfig::slip_time</a> = 380;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a70c6740393da27baf8d67137eafc0817">AppConfig::enemy_start_count</a> = 20;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a64c3cd6cd3e16b336f6577e4618fafa6">AppConfig::enemy_redy_time</a> = 500;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a31d367b3754781a3559b38da0c6e5a43">AppConfig::player_bullet_max_size</a> = 2;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a126c2521d99678ca21d8c83ae41808fb">AppConfig::score_show_time</a> = 3000;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a25af1c0e6ab7d46215b6dea68f65ff65">AppConfig::bonus_show_time</a> = 10000;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a65eb52c4705dd9f24ac32c80526b0726">AppConfig::tank_shield_time</a> = 10000;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a1a81d61ebe8ff5538a824fcf685c0e10">AppConfig::tank_frozen_time</a> = 8000;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a458fbb29529e514869a57cd494a60aa6">AppConfig::level_end_time</a> = 5000;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a208cb555bfc7a1945334368c0aba081e">AppConfig::protect_eagle_time</a> = 15000;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a39d9ef6ce22c6ec46fe693a8d96e6d5c">AppConfig::bonus_blink_time</a> = 350;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">unsigned</span> <a class="code" href="class_app_config.html#a623d06a5d3749f2f4177b9017b54fd9d">AppConfig::player_reload_time</a> = 120;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">int</span> <a class="code" href="class_app_config.html#a2dd88164209eeb2717e5aaa50177c1bd">AppConfig::enemy_max_count_on_map</a> = 4;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_app_config.html#af1955c96963f2fc779004fcc7298c92c">AppConfig::game_over_entry_speed</a> = 0.13;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_app_config.html#a7f52e49c897ef576443e8e0f177aa0a7">AppConfig::tank_default_speed</a> = 0.08;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordtype">double</span> <a class="code" href="class_app_config.html#a1e4b88ab661bf3406c72f1c8b65e7603">AppConfig::bullet_default_speed</a> = 0.23;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_app_config.html#a9ebca92d71f6aa8b351f675db12d2c80">AppConfig::show_enemy_target</a> = <span class="keyword">false</span>;</div>
+<div class="ttc" id="class_app_config_html_a458fbb29529e514869a57cd494a60aa6"><div class="ttname"><a href="class_app_config.html#a458fbb29529e514869a57cd494a60aa6">AppConfig::level_end_time</a></div><div class="ttdeci">static unsigned level_end_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00100">appconfig.h:100</a></div></div>
+<div class="ttc" id="class_app_config_html_a25af1c0e6ab7d46215b6dea68f65ff65"><div class="ttname"><a href="class_app_config.html#a25af1c0e6ab7d46215b6dea68f65ff65">AppConfig::bonus_show_time</a></div><div class="ttdeci">static unsigned bonus_show_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00088">appconfig.h:88</a></div></div>
+<div class="ttc" id="class_app_config_html_a1e4b88ab661bf3406c72f1c8b65e7603"><div class="ttname"><a href="class_app_config.html#a1e4b88ab661bf3406c72f1c8b65e7603">AppConfig::bullet_default_speed</a></div><div class="ttdeci">static double bullet_default_speed</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00128">appconfig.h:128</a></div></div>
+<div class="ttc" id="class_app_config_html_a0b948189431fbfb94ae6de07099b8c27"><div class="ttname"><a href="class_app_config.html#a0b948189431fbfb94ae6de07099b8c27">AppConfig::tile_rect</a></div><div class="ttdeci">static SDL_Rect tile_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00048">appconfig.h:48</a></div></div>
+<div class="ttc" id="class_app_config_html_a39d9ef6ce22c6ec46fe693a8d96e6d5c"><div class="ttname"><a href="class_app_config.html#a39d9ef6ce22c6ec46fe693a8d96e6d5c">AppConfig::bonus_blink_time</a></div><div class="ttdeci">static unsigned bonus_blink_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00108">appconfig.h:108</a></div></div>
+<div class="ttc" id="class_app_config_html_af1955c96963f2fc779004fcc7298c92c"><div class="ttname"><a href="class_app_config.html#af1955c96963f2fc779004fcc7298c92c">AppConfig::game_over_entry_speed</a></div><div class="ttdeci">static double game_over_entry_speed</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00120">appconfig.h:120</a></div></div>
+<div class="ttc" id="class_app_config_html_a208cb555bfc7a1945334368c0aba081e"><div class="ttname"><a href="class_app_config.html#a208cb555bfc7a1945334368c0aba081e">AppConfig::protect_eagle_time</a></div><div class="ttdeci">static unsigned protect_eagle_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00104">appconfig.h:104</a></div></div>
+<div class="ttc" id="class_app_config_html_a70c6740393da27baf8d67137eafc0817"><div class="ttname"><a href="class_app_config.html#a70c6740393da27baf8d67137eafc0817">AppConfig::enemy_start_count</a></div><div class="ttdeci">static unsigned enemy_start_count</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00072">appconfig.h:72</a></div></div>
+<div class="ttc" id="class_app_config_html_a2c87bbaa3d4140b5aad70f8b62c012bd"><div class="ttname"><a href="class_app_config.html#a2c87bbaa3d4140b5aad70f8b62c012bd">AppConfig::level_start_time</a></div><div class="ttdeci">static unsigned level_start_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00064">appconfig.h:64</a></div></div>
+<div class="ttc" id="class_app_config_html_a7f52e49c897ef576443e8e0f177aa0a7"><div class="ttname"><a href="class_app_config.html#a7f52e49c897ef576443e8e0f177aa0a7">AppConfig::tank_default_speed</a></div><div class="ttdeci">static double tank_default_speed</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00124">appconfig.h:124</a></div></div>
+<div class="ttc" id="class_app_config_html_a11efeaaa7242d7e57feee9ad5846f099"><div class="ttname"><a href="class_app_config.html#a11efeaaa7242d7e57feee9ad5846f099">AppConfig::game_over_text</a></div><div class="ttdeci">static string game_over_text</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00032">appconfig.h:32</a></div></div>
+<div class="ttc" id="appconfig_8h_html"><div class="ttname"><a href="appconfig_8h.html">appconfig.h</a></div></div>
+<div class="ttc" id="class_app_config_html_a381fc79705578228b73a1d182f6264f0"><div class="ttname"><a href="class_app_config.html#a381fc79705578228b73a1d182f6264f0">AppConfig::levels_path</a></div><div class="ttdeci">static string levels_path</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00024">appconfig.h:24</a></div></div>
+<div class="ttc" id="class_app_config_html_ae2ae8d61b42619876e21e008cdabc7e0"><div class="ttname"><a href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a></div><div class="ttdeci">static SDL_Rect map_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00036">appconfig.h:36</a></div></div>
+<div class="ttc" id="class_app_config_html_a65eb52c4705dd9f24ac32c80526b0726"><div class="ttname"><a href="class_app_config.html#a65eb52c4705dd9f24ac32c80526b0726">AppConfig::tank_shield_time</a></div><div class="ttdeci">static unsigned tank_shield_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00092">appconfig.h:92</a></div></div>
+<div class="ttc" id="class_app_config_html_a126c2521d99678ca21d8c83ae41808fb"><div class="ttname"><a href="class_app_config.html#a126c2521d99678ca21d8c83ae41808fb">AppConfig::score_show_time</a></div><div class="ttdeci">static unsigned score_show_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00084">appconfig.h:84</a></div></div>
+<div class="ttc" id="class_app_config_html_a607f43c11d16d60415e59d9af744865b"><div class="ttname"><a href="class_app_config.html#a607f43c11d16d60415e59d9af744865b">AppConfig::slip_time</a></div><div class="ttdeci">static unsigned slip_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00068">appconfig.h:68</a></div></div>
+<div class="ttc" id="class_app_config_html_a623d06a5d3749f2f4177b9017b54fd9d"><div class="ttname"><a href="class_app_config.html#a623d06a5d3749f2f4177b9017b54fd9d">AppConfig::player_reload_time</a></div><div class="ttdeci">static unsigned player_reload_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00112">appconfig.h:112</a></div></div>
+<div class="ttc" id="class_app_config_html_a64c3cd6cd3e16b336f6577e4618fafa6"><div class="ttname"><a href="class_app_config.html#a64c3cd6cd3e16b336f6577e4618fafa6">AppConfig::enemy_redy_time</a></div><div class="ttdeci">static unsigned enemy_redy_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00076">appconfig.h:76</a></div></div>
+<div class="ttc" id="class_app_config_html_a65465439dccccead6f012308c44a4c69"><div class="ttname"><a href="class_app_config.html#a65465439dccccead6f012308c44a4c69">AppConfig::texture_path</a></div><div class="ttdeci">static string texture_path</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00020">appconfig.h:20</a></div></div>
+<div class="ttc" id="class_app_config_html_a9ebca92d71f6aa8b351f675db12d2c80"><div class="ttname"><a href="class_app_config.html#a9ebca92d71f6aa8b351f675db12d2c80">AppConfig::show_enemy_target</a></div><div class="ttdeci">static bool show_enemy_target</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00132">appconfig.h:132</a></div></div>
+<div class="ttc" id="class_app_config_html_a31d367b3754781a3559b38da0c6e5a43"><div class="ttname"><a href="class_app_config.html#a31d367b3754781a3559b38da0c6e5a43">AppConfig::player_bullet_max_size</a></div><div class="ttdeci">static unsigned player_bullet_max_size</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00080">appconfig.h:80</a></div></div>
+<div class="ttc" id="class_app_config_html_a2dd88164209eeb2717e5aaa50177c1bd"><div class="ttname"><a href="class_app_config.html#a2dd88164209eeb2717e5aaa50177c1bd">AppConfig::enemy_max_count_on_map</a></div><div class="ttdeci">static int enemy_max_count_on_map</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00116">appconfig.h:116</a></div></div>
+<div class="ttc" id="class_app_config_html_a1a81d61ebe8ff5538a824fcf685c0e10"><div class="ttname"><a href="class_app_config.html#a1a81d61ebe8ff5538a824fcf685c0e10">AppConfig::tank_frozen_time</a></div><div class="ttdeci">static unsigned tank_frozen_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00096">appconfig.h:96</a></div></div>
+<div class="ttc" id="class_app_config_html_a142c3a4707dab014b2056e426d77a67d"><div class="ttname"><a href="class_app_config.html#a142c3a4707dab014b2056e426d77a67d">AppConfig::player_starting_point</a></div><div class="ttdeci">static vector&lt; SDL_Point &gt; player_starting_point</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00052">appconfig.h:52</a></div></div>
+<div class="ttc" id="class_app_config_html_a8e37a09b8c71975463adcb2c20772021"><div class="ttname"><a href="class_app_config.html#a8e37a09b8c71975463adcb2c20772021">AppConfig::player_keys</a></div><div class="ttdeci">static vector&lt; Player::PlayerKeys &gt; player_keys</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00060">appconfig.h:60</a></div></div>
+<div class="ttc" id="class_app_config_html_a3ff8c966e47fe083d3c05efe171f35f7"><div class="ttname"><a href="class_app_config.html#a3ff8c966e47fe083d3c05efe171f35f7">AppConfig::enemy_starting_point</a></div><div class="ttdeci">static vector&lt; SDL_Point &gt; enemy_starting_point</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00056">appconfig.h:56</a></div></div>
+<div class="ttc" id="class_app_config_html_a8791b4aad5b035b27ce6bbc8c519b586"><div class="ttname"><a href="class_app_config.html#a8791b4aad5b035b27ce6bbc8c519b586">AppConfig::font_name</a></div><div class="ttdeci">static string font_name</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00028">appconfig.h:28</a></div></div>
+<div class="ttc" id="class_app_config_html_a3084e1368b670ab054843b2adf17c1b8"><div class="ttname"><a href="class_app_config.html#a3084e1368b670ab054843b2adf17c1b8">AppConfig::windows_rect</a></div><div class="ttdeci">static SDL_Rect windows_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00044">appconfig.h:44</a></div></div>
+<div class="ttc" id="class_app_config_html_a6aa81e994502bb576cb7a203c9230a61"><div class="ttname"><a href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a></div><div class="ttdeci">static SDL_Rect status_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00040">appconfig.h:40</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano N, 24 maj 2015 00:12:58 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>

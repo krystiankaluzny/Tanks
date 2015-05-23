@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Tanks: Plik źródłowy src/objects/object.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Tanks
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a7fa5847c07dc92c5227f8a150238560.html">objects</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">object.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="object_8cpp.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="object_8h.html">object.h</a>&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;SDL2/SDL.h&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="class_object.html#a40860402e64d8008fb42329df7097cdb">    6</a></span>&#160;<a class="code" href="class_object.html#a40860402e64d8008fb42329df7097cdb">Object::Object</a>()</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a> = 0.0;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a> = 0.0;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">type</a> = <a class="code" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa9a8ebd951565c1079c216cdc7408a8de">ST_NONE</a>;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="class_object.html#a77c2ada7189758c530ab24a7b366d3fb">to_erase</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="class_object.html#a76a3f8ee17746de53b8f162b5df2c837">m_frame_display_time</a> = 0;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a> = 0;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_object.html#aaf2083b10a26fc519b5a2bb79aaf6986">   17</a></span>&#160;<a class="code" href="class_object.html#a40860402e64d8008fb42329df7097cdb">Object::Object</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <a class="code" href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a> type)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a> = x;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a> = y;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    this-&gt;type = <a class="code" href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">type</a>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="class_object.html#a77c2ada7189758c530ab24a7b366d3fb">to_erase</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a> = <a class="code" href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a>().<a class="code" href="class_engine.html#add1c56f65b2ae1cee44d31a4e60559f3">getSpriteConfig</a>()-&gt;<a class="code" href="class_sprite_config.html#a347c7f41a0cba1a15f4c0e9c90f57499">getSpriteData</a>(type);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="class_object.html#a76a3f8ee17746de53b8f162b5df2c837">m_frame_display_time</a> = 0;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a> = 0;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.x = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.x;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.y = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.y;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.x = <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.y = <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.x = <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.y = <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_object.html#a8738ecc2b99c528875cf98787ceff25b">   43</a></span>&#160;<a class="code" href="class_object.html#a40860402e64d8008fb42329df7097cdb">Object::Object</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <span class="keyword">const</span> <a class="code" href="struct_sprite_data.html">SpriteData</a> *sprite)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a> = x;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a> = y;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    this-&gt;<a class="code" href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">type</a> = <a class="code" href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">type</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="class_object.html#a77c2ada7189758c530ab24a7b366d3fb">to_erase</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a> = sprite;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="class_object.html#a76a3f8ee17746de53b8f162b5df2c837">m_frame_display_time</a> = 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a> = 0;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.x = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.x;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.y = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.y;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.x = <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.y = <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.x = <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.y = <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_object.html#ae8f5483f459e46687bd01e6f9977afd3">   69</a></span>&#160;<a class="code" href="class_object.html#ae8f5483f459e46687bd01e6f9977afd3">Object::~Object</a>()</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_object.html#a821f5b25b450fa1acdb3f9c0b5962592">   73</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_object.html#a821f5b25b450fa1acdb3f9c0b5962592">Object::draw</a>()</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a> == <span class="keyword">nullptr</span> || <a class="code" href="class_object.html#a77c2ada7189758c530ab24a7b366d3fb">to_erase</a>) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a>().<a class="code" href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">getRenderer</a>()-&gt;<a class="code" href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">drawObject</a>(&amp;<a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a>, &amp;<a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_object.html#a02c1621329cb9ec5268072a2402d2ac5">   79</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_object.html#a02c1621329cb9ec5268072a2402d2ac5">Object::update</a>(Uint32 dt)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_object.html#a77c2ada7189758c530ab24a7b366d3fb">to_erase</a>) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.x = <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.y = <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">dest_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.x = <a class="code" href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">pos_x</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.y = <a class="code" href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">pos_y</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.h = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.h;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="class_object.html#a308c5fde145e854d4a2808283f18e14b">collision_rect</a>.w = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>.w;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#aafe351d09e5676b4960124f80be55d8c">frames_count</a> &gt; 1)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <a class="code" href="class_object.html#a76a3f8ee17746de53b8f162b5df2c837">m_frame_display_time</a> += dt;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="class_object.html#a76a3f8ee17746de53b8f162b5df2c837">m_frame_display_time</a> &gt; <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad0223b5392f02bf68ec30169fbdafd52">frame_duration</a>)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <a class="code" href="class_object.html#a76a3f8ee17746de53b8f162b5df2c837">m_frame_display_time</a> = 0;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a>++;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">if</span>(<a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a> &gt;= <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#aafe351d09e5676b4960124f80be55d8c">frames_count</a>)</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keywordflow">if</span>(<a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#a0833cf779f1fb40ae68048e2dc1ebb43">loop</a>) <a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a> = 0;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <span class="keywordflow">else</span> <a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a> = <a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#aafe351d09e5676b4960124f80be55d8c">frames_count</a> - 1;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <a class="code" href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">src_rect</a> = <a class="code" href="class_object.html#a98ac32f03f7ec5f9bf082cd697a9b4fc">moveRect</a>(<a class="code" href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">m_sprite</a>-&gt;<a class="code" href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">rect</a>, 0, <a class="code" href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">m_current_frame</a>);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="class_object.html#a98ac32f03f7ec5f9bf082cd697a9b4fc">  111</a></span>&#160;SDL_Rect <a class="code" href="class_object.html#a98ac32f03f7ec5f9bf082cd697a9b4fc">Object::moveRect</a>(<span class="keyword">const</span> SDL_Rect &amp;rect, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;{</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    SDL_Rect r;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    r.x = rect.x + x*rect.w;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    r.y = rect.y + y*rect.h;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    r.w = rect.w;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    r.h = rect.h;<span class="comment">//dzisiaj mi juz nie stanie</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">return</span> r;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="object_8h.html#a732bd3390fa1a9f38d81aa317e06354b">  123</a></span>&#160;SDL_Rect <a class="code" href="object_8cpp.html#a732bd3390fa1a9f38d81aa317e06354b">intersectRect</a>(SDL_Rect *rect1, SDL_Rect *rect2)</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;{</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    SDL_Rect intersect_rect;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    intersect_rect.x = std::max(rect1-&gt;x, rect2-&gt;x);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    intersect_rect.y = std::max(rect1-&gt;y, rect2-&gt;y);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    intersect_rect.w = std::min(rect1-&gt;x + rect1-&gt;w, rect2-&gt;x + rect2-&gt;w) - intersect_rect.x;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    intersect_rect.h = std::min(rect1-&gt;y + rect1-&gt;h, rect2-&gt;y + rect2-&gt;h) - intersect_rect.y;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordflow">return</span> intersect_rect;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
+<div class="ttc" id="class_engine_html_a4ae702a17d6ca093ea6d2bbe37494805"><div class="ttname"><a href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">Engine::getRenderer</a></div><div class="ttdeci">Renderer * getRenderer() const </div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00046">engine.cpp:46</a></div></div>
+<div class="ttc" id="class_engine_html_a2fdd20971d12ee816899854c05d8ed9b"><div class="ttname"><a href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a></div><div class="ttdeci">static Engine &amp; getEngine()</div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00010">engine.cpp:10</a></div></div>
+<div class="ttc" id="class_object_html_a4e03c944bc9142a5c34b7049c20c4301"><div class="ttname"><a href="class_object.html#a4e03c944bc9142a5c34b7049c20c4301">Object::m_current_frame</a></div><div class="ttdeci">int m_current_frame</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00093">object.h:93</a></div></div>
+<div class="ttc" id="class_sprite_config_html_a347c7f41a0cba1a15f4c0e9c90f57499"><div class="ttname"><a href="class_sprite_config.html#a347c7f41a0cba1a15f4c0e9c90f57499">SpriteConfig::getSpriteData</a></div><div class="ttdeci">const SpriteData * getSpriteData(SpriteType sp) const </div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8cpp_source.html#l00047">spriteconfig.cpp:47</a></div></div>
+<div class="ttc" id="struct_sprite_data_html"><div class="ttname"><a href="struct_sprite_data.html">SpriteData</a></div><div class="ttdoc">Struktura przechowująca informacjie danym typie animacji obiektu. </div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8h_source.html#l00012">spriteconfig.h:12</a></div></div>
+<div class="ttc" id="class_object_html_a1b89f32cd9e0040f8a2455f3cef7d0d2"><div class="ttname"><a href="class_object.html#a1b89f32cd9e0040f8a2455f3cef7d0d2">Object::type</a></div><div class="ttdeci">SpriteType type</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00062">object.h:62</a></div></div>
+<div class="ttc" id="class_object_html_aa11a2e0ccb927f542aee786bc7bd731d"><div class="ttname"><a href="class_object.html#aa11a2e0ccb927f542aee786bc7bd731d">Object::dest_rect</a></div><div class="ttdeci">SDL_Rect dest_rect</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00054">object.h:54</a></div></div>
+<div class="ttc" id="class_object_html_a308c5fde145e854d4a2808283f18e14b"><div class="ttname"><a href="class_object.html#a308c5fde145e854d4a2808283f18e14b">Object::collision_rect</a></div><div class="ttdeci">SDL_Rect collision_rect</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00050">object.h:50</a></div></div>
+<div class="ttc" id="class_object_html_a07c5c7138bb081dacbe9ddfb0295ced7"><div class="ttname"><a href="class_object.html#a07c5c7138bb081dacbe9ddfb0295ced7">Object::m_sprite</a></div><div class="ttdeci">const SpriteData * m_sprite</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00085">object.h:85</a></div></div>
+<div class="ttc" id="class_object_html_a40860402e64d8008fb42329df7097cdb"><div class="ttname"><a href="class_object.html#a40860402e64d8008fb42329df7097cdb">Object::Object</a></div><div class="ttdeci">Object()</div><div class="ttdef"><b>Definition:</b> <a href="object_8cpp_source.html#l00006">object.cpp:6</a></div></div>
+<div class="ttc" id="class_object_html_a821f5b25b450fa1acdb3f9c0b5962592"><div class="ttname"><a href="class_object.html#a821f5b25b450fa1acdb3f9c0b5962592">Object::draw</a></div><div class="ttdeci">virtual void draw()</div><div class="ttdef"><b>Definition:</b> <a href="object_8cpp_source.html#l00073">object.cpp:73</a></div></div>
+<div class="ttc" id="class_object_html_ae8f5483f459e46687bd01e6f9977afd3"><div class="ttname"><a href="class_object.html#ae8f5483f459e46687bd01e6f9977afd3">Object::~Object</a></div><div class="ttdeci">virtual ~Object()</div><div class="ttdef"><b>Definition:</b> <a href="object_8cpp_source.html#l00069">object.cpp:69</a></div></div>
+<div class="ttc" id="struct_sprite_data_html_aafe351d09e5676b4960124f80be55d8c"><div class="ttname"><a href="struct_sprite_data.html#aafe351d09e5676b4960124f80be55d8c">SpriteData::frames_count</a></div><div class="ttdeci">int frames_count</div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8h_source.html#l00025">spriteconfig.h:25</a></div></div>
+<div class="ttc" id="struct_sprite_data_html_a0833cf779f1fb40ae68048e2dc1ebb43"><div class="ttname"><a href="struct_sprite_data.html#a0833cf779f1fb40ae68048e2dc1ebb43">SpriteData::loop</a></div><div class="ttdeci">bool loop</div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8h_source.html#l00033">spriteconfig.h:33</a></div></div>
+<div class="ttc" id="struct_sprite_data_html_ad4482d398fce500b0e4a0f408a2ddd49"><div class="ttname"><a href="struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49">SpriteData::rect</a></div><div class="ttdeci">SDL_Rect rect</div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8h_source.html#l00021">spriteconfig.h:21</a></div></div>
+<div class="ttc" id="class_renderer_html_a1b5467dd2cfb2cb146c29c200b9bb251"><div class="ttname"><a href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">Renderer::drawObject</a></div><div class="ttdeci">void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00064">renderer.cpp:64</a></div></div>
+<div class="ttc" id="type_8h_html_ac6fa10729dffeb6a192492f13c25e31a"><div class="ttname"><a href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31a">SpriteType</a></div><div class="ttdeci">SpriteType</div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00004">type.h:4</a></div></div>
+<div class="ttc" id="struct_sprite_data_html_ad0223b5392f02bf68ec30169fbdafd52"><div class="ttname"><a href="struct_sprite_data.html#ad0223b5392f02bf68ec30169fbdafd52">SpriteData::frame_duration</a></div><div class="ttdeci">unsigned frame_duration</div><div class="ttdef"><b>Definition:</b> <a href="spriteconfig_8h_source.html#l00029">spriteconfig.h:29</a></div></div>
+<div class="ttc" id="class_object_html_aef9bec0e47c5d8cc04145de236881f47"><div class="ttname"><a href="class_object.html#aef9bec0e47c5d8cc04145de236881f47">Object::src_rect</a></div><div class="ttdeci">SDL_Rect src_rect</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00058">object.h:58</a></div></div>
+<div class="ttc" id="class_object_html_a02c1621329cb9ec5268072a2402d2ac5"><div class="ttname"><a href="class_object.html#a02c1621329cb9ec5268072a2402d2ac5">Object::update</a></div><div class="ttdeci">virtual void update(Uint32 dt)</div><div class="ttdef"><b>Definition:</b> <a href="object_8cpp_source.html#l00079">object.cpp:79</a></div></div>
+<div class="ttc" id="class_object_html_a77c2ada7189758c530ab24a7b366d3fb"><div class="ttname"><a href="class_object.html#a77c2ada7189758c530ab24a7b366d3fb">Object::to_erase</a></div><div class="ttdeci">bool to_erase</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00046">object.h:46</a></div></div>
+<div class="ttc" id="object_8h_html"><div class="ttname"><a href="object_8h.html">object.h</a></div></div>
+<div class="ttc" id="object_8cpp_html_a732bd3390fa1a9f38d81aa317e06354b"><div class="ttname"><a href="object_8cpp.html#a732bd3390fa1a9f38d81aa317e06354b">intersectRect</a></div><div class="ttdeci">SDL_Rect intersectRect(SDL_Rect *rect1, SDL_Rect *rect2)</div><div class="ttdef"><b>Definition:</b> <a href="object_8cpp_source.html#l00123">object.cpp:123</a></div></div>
+<div class="ttc" id="class_engine_html_add1c56f65b2ae1cee44d31a4e60559f3"><div class="ttname"><a href="class_engine.html#add1c56f65b2ae1cee44d31a4e60559f3">Engine::getSpriteConfig</a></div><div class="ttdeci">SpriteConfig * getSpriteConfig() const </div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00051">engine.cpp:51</a></div></div>
+<div class="ttc" id="class_object_html_a76a3f8ee17746de53b8f162b5df2c837"><div class="ttname"><a href="class_object.html#a76a3f8ee17746de53b8f162b5df2c837">Object::m_frame_display_time</a></div><div class="ttdeci">Uint32 m_frame_display_time</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00089">object.h:89</a></div></div>
+<div class="ttc" id="class_object_html_a1f71a5693147aecc701db4ab51d3edcc"><div class="ttname"><a href="class_object.html#a1f71a5693147aecc701db4ab51d3edcc">Object::pos_x</a></div><div class="ttdeci">double pos_x</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00066">object.h:66</a></div></div>
+<div class="ttc" id="type_8h_html_ac6fa10729dffeb6a192492f13c25e31aa9a8ebd951565c1079c216cdc7408a8de"><div class="ttname"><a href="type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa9a8ebd951565c1079c216cdc7408a8de">ST_NONE</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00047">type.h:47</a></div></div>
+<div class="ttc" id="class_object_html_a98ac32f03f7ec5f9bf082cd697a9b4fc"><div class="ttname"><a href="class_object.html#a98ac32f03f7ec5f9bf082cd697a9b4fc">Object::moveRect</a></div><div class="ttdeci">SDL_Rect moveRect(const SDL_Rect &amp;rect, int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="object_8cpp_source.html#l00111">object.cpp:111</a></div></div>
+<div class="ttc" id="class_object_html_a986134c27f3e74ba41a4d28e20b183a9"><div class="ttname"><a href="class_object.html#a986134c27f3e74ba41a4d28e20b183a9">Object::pos_y</a></div><div class="ttdeci">double pos_y</div><div class="ttdef"><b>Definition:</b> <a href="object_8h_source.html#l00070">object.h:70</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano N, 24 maj 2015 00:12:59 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Tanks: Plik źródłowy src/app_state/scores.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Tanks
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_894369274bedb4feeca3bf9446c394c3.html">app_state</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">scores.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="scores_8cpp.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="scores_8h.html">scores.h</a>&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;../engine/engine.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;../appconfig.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="game_8h.html">game.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="menu_8h.html">menu.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="class_scores.html#a2fa6bcad8977919743d5af197f178c84">    7</a></span>&#160;<a class="code" href="class_scores.html#a2fa6bcad8977919743d5af197f178c84">Scores::Scores</a>()</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="class_scores.html#abec2ebeb89959ea326779392718819b5">m_show_time</a> = 0;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="class_scores.html#a397959cdcafa83d8d7b2eebdbcdf3b06">m_level</a> = 0;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="class_scores.html#a7594e11267aa86c217d1fdd5c8a2d97b">m_game_over</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="class_scores.html#a322b7ad0e3d784ae8e929c3d990eb0a9">m_score_counter_run</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> = 0;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="class_scores.html#ada4320f7250c4a5b261a5d411b2014bd">m_max_score</a> = 0;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_scores.html#a911d7590e2708759f26c585ecdbf6a89">   17</a></span>&#160;<a class="code" href="class_scores.html#a2fa6bcad8977919743d5af197f178c84">Scores::Scores</a>(std::vector&lt;Player *&gt; players, <span class="keywordtype">int</span> level, <span class="keywordtype">bool</span> game_over)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="class_scores.html#aa67bb3cbd59f94ce0df5f1e29c758926">m_players</a> = players;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_scores.html#a397959cdcafa83d8d7b2eebdbcdf3b06">m_level</a> = level;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="class_scores.html#a7594e11267aa86c217d1fdd5c8a2d97b">m_game_over</a> = game_over;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="class_scores.html#abec2ebeb89959ea326779392718819b5">m_show_time</a> = 0;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="class_scores.html#a322b7ad0e3d784ae8e929c3d990eb0a9">m_score_counter_run</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> = 0;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="class_scores.html#ada4320f7250c4a5b261a5d411b2014bd">m_max_score</a> = 0;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span> player : <a class="code" href="class_scores.html#aa67bb3cbd59f94ce0df5f1e29c758926">m_players</a>)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        player-&gt;to_erase = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">if</span>(player-&gt;lives_count == 0 &amp;&amp; !game_over) player-&gt;lives_count = 2;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordflow">else</span> player-&gt;lives_count++;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        player-&gt;respawn();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        player-&gt;setFlag(<a class="code" href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafa805e65dee37f4ccfc90042703abf96f0">TSF_MENU</a>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">if</span>(player-&gt;score &gt; <a class="code" href="class_scores.html#ada4320f7250c4a5b261a5d411b2014bd">m_max_score</a>) <a class="code" href="class_scores.html#ada4320f7250c4a5b261a5d411b2014bd">m_max_score</a> = player-&gt;score;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_scores.html#a9fb6838fe10b06aa9f439e3aae90a803">   38</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_scores.html#a9fb6838fe10b06aa9f439e3aae90a803">Scores::draw</a>()</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="class_renderer.html">Renderer</a>* renderer = <a class="code" href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a>().<a class="code" href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">getRenderer</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4">clear</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">drawRect</a>(&amp;<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>, {0, 0, 0, 255}, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">drawRect</a>(&amp;<a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>, {0, 0, 0, 255}, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    SDL_Point p_dst;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    SDL_Rect dst;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    p_dst = {-1, 10};</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">drawText</a>(&amp;p_dst, std::string(<span class="stringliteral">&quot;STAGE &quot;</span>) + <a class="code" href="class_engine.html#a7aeb45fda14d92d4310eb7ec0f5af432">Engine::intToString</a>(<a class="code" href="class_scores.html#a397959cdcafa83d8d7b2eebdbcdf3b06">m_level</a>), {255, 255, 220, 255}, 1);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    p_dst = {100, 50};</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">drawText</a>(&amp;p_dst, std::string(<span class="stringliteral">&quot;PLAYER&quot;</span>), {255, 255, 255, 255}, 2);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    p_dst = {270, 50};</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">drawText</a>(&amp;p_dst, std::string(<span class="stringliteral">&quot;SCORE&quot;</span>), {255, 255, 255, 255}, 2);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    dst = {75, 75, 300, 2};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">drawRect</a>(&amp;dst, {250, 250, 200, 255}, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span> player : <a class="code" href="class_scores.html#aa67bb3cbd59f94ce0df5f1e29c758926">m_players</a>)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        dst = {100, 90 + i * (player-&gt;src_rect.h), player-&gt;src_rect.w, player-&gt;src_rect.h};</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        renderer-&gt;<a class="code" href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">drawObject</a>(&amp;player-&gt;src_rect, &amp;dst);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        p_dst = {140, 98 + i * (player-&gt;src_rect.h)};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        renderer-&gt;<a class="code" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">drawText</a>(&amp;p_dst, std::string(<span class="stringliteral">&quot;x&quot;</span>) + <a class="code" href="class_engine.html#a7aeb45fda14d92d4310eb7ec0f5af432">Engine::intToString</a>(player-&gt;lives_count), {255, 255, 255, 255}, 2);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        p_dst = {270, 98 + i * (player-&gt;src_rect.h)};</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        renderer-&gt;<a class="code" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">drawText</a>(&amp;p_dst, (m_score_counter &lt; player-&gt;score ? <a class="code" href="class_engine.html#a7aeb45fda14d92d4310eb7ec0f5af432">Engine::intToString</a>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a>) : <a class="code" href="class_engine.html#a7aeb45fda14d92d4310eb7ec0f5af432">Engine::intToString</a>(player-&gt;score)), {255, 255, 255, 255}, 2);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        i++;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    renderer-&gt;<a class="code" href="class_renderer.html#a35401aa28259d4560aba5cebd2bac4e3">flush</a>();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="class_scores.html#ae1eda4aec4cfc65c8bacb648ea28212e">   72</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_scores.html#ae1eda4aec4cfc65c8bacb648ea28212e">Scores::update</a>(Uint32 dt)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &gt; (1 &lt;&lt; 30) || <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &gt; <a class="code" href="class_scores.html#ada4320f7250c4a5b261a5d411b2014bd">m_max_score</a>)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <a class="code" href="class_scores.html#abec2ebeb89959ea326779392718819b5">m_show_time</a> += dt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="class_scores.html#a322b7ad0e3d784ae8e929c3d990eb0a9">m_score_counter_run</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a322b7ad0e3d784ae8e929c3d990eb0a9">m_score_counter_run</a>)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &lt; 20) <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a>++;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &lt; 200) <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> += 10;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &lt; 2000) <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> += 100;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &lt; 20000) <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> += 1000;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &lt; 200000) <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> += 10000;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">else</span> <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> += 100000;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span> player : m_players)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        player-&gt;speed = player-&gt;default_speed;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        player-&gt;stop = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        player-&gt;setDirection(<a class="code" href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aaa07fb0d616c46d4120eb541871fbdfd2d">D_RIGHT</a>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        player-&gt;update(dt);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="class_scores.html#ad6600e877a2b1c794cd1e849a7092d5e">   97</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_scores.html#ad6600e877a2b1c794cd1e849a7092d5e">Scores::eventProcess</a>(SDL_Event *ev)</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;{</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">if</span>(ev-&gt;type == SDL_KEYDOWN)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">if</span>(ev-&gt;key.keysym.sym == SDLK_RETURN)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> &gt; (1 &lt;&lt; 30)) <a class="code" href="class_scores.html#abec2ebeb89959ea326779392718819b5">m_show_time</a> = <a class="code" href="class_app_config.html#a126c2521d99678ca21d8c83ae41808fb">AppConfig::score_show_time</a> + 1;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">else</span> <a class="code" href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">m_score_counter</a> = (1 &lt;&lt; 30) + 1;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="class_scores.html#ace5dca138217e9bc5b18871b9ea9764b">  109</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_scores.html#ace5dca138217e9bc5b18871b9ea9764b">Scores::finished</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_scores.html#abec2ebeb89959ea326779392718819b5">m_show_time</a> &gt; <a class="code" href="class_app_config.html#a126c2521d99678ca21d8c83ae41808fb">AppConfig::score_show_time</a>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="class_scores.html#abd664c78d44381251db40ebba0e5b773">  114</a></span>&#160;<a class="code" href="class_app_state.html">AppState</a> *<a class="code" href="class_scores.html#abd664c78d44381251db40ebba0e5b773">Scores::nextState</a>()</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_scores.html#a7594e11267aa86c217d1fdd5c8a2d97b">m_game_over</a>)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <a class="code" href="class_menu.html">Menu</a>* m = <span class="keyword">new</span> <a class="code" href="class_menu.html">Menu</a>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">return</span> m;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="class_game.html">Game</a>* g = <span class="keyword">new</span> <a class="code" href="class_game.html">Game</a>(m_players, <a class="code" href="class_scores.html#a397959cdcafa83d8d7b2eebdbcdf3b06">m_level</a>);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">return</span> g;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
+<div class="ttc" id="class_scores_html_a7594e11267aa86c217d1fdd5c8a2d97b"><div class="ttname"><a href="class_scores.html#a7594e11267aa86c217d1fdd5c8a2d97b">Scores::m_game_over</a></div><div class="ttdeci">bool m_game_over</div><div class="ttdef"><b>Definition:</b> <a href="scores_8h_source.html#l00061">scores.h:61</a></div></div>
+<div class="ttc" id="class_renderer_html_ac46720b3fc0dbb2fc37674766490a8c4"><div class="ttname"><a href="class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4">Renderer::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00053">renderer.cpp:53</a></div></div>
+<div class="ttc" id="class_engine_html_a4ae702a17d6ca093ea6d2bbe37494805"><div class="ttname"><a href="class_engine.html#a4ae702a17d6ca093ea6d2bbe37494805">Engine::getRenderer</a></div><div class="ttdeci">Renderer * getRenderer() const </div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00046">engine.cpp:46</a></div></div>
+<div class="ttc" id="class_engine_html_a2fdd20971d12ee816899854c05d8ed9b"><div class="ttname"><a href="class_engine.html#a2fdd20971d12ee816899854c05d8ed9b">Engine::getEngine</a></div><div class="ttdeci">static Engine &amp; getEngine()</div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00010">engine.cpp:10</a></div></div>
+<div class="ttc" id="class_scores_html_abec2ebeb89959ea326779392718819b5"><div class="ttname"><a href="class_scores.html#abec2ebeb89959ea326779392718819b5">Scores::m_show_time</a></div><div class="ttdeci">Uint32 m_show_time</div><div class="ttdef"><b>Definition:</b> <a href="scores_8h_source.html#l00077">scores.h:77</a></div></div>
+<div class="ttc" id="class_engine_html_a7aeb45fda14d92d4310eb7ec0f5af432"><div class="ttname"><a href="class_engine.html#a7aeb45fda14d92d4310eb7ec0f5af432">Engine::intToString</a></div><div class="ttdeci">static std::string intToString(int num)</div><div class="ttdef"><b>Definition:</b> <a href="engine_8cpp_source.html#l00016">engine.cpp:16</a></div></div>
+<div class="ttc" id="class_app_state_html"><div class="ttname"><a href="class_app_state.html">AppState</a></div><div class="ttdoc">Klasa jest interfejsem, po którym dziedziczą klasy Game, Menu, Scores. </div><div class="ttdef"><b>Definition:</b> <a href="appstate_8h_source.html#l00011">appstate.h:11</a></div></div>
+<div class="ttc" id="class_menu_html"><div class="ttname"><a href="class_menu.html">Menu</a></div><div class="ttdoc">Klasa wyboru trybu gry: 1 gracz czy 2 graczy lub wyjścia. Klasa jest pierwszym stanem aplikacji...</div><div class="ttdef"><b>Definition:</b> <a href="menu_8h_source.html#l00013">menu.h:13</a></div></div>
+<div class="ttc" id="class_renderer_html"><div class="ttname"><a href="class_renderer.html">Renderer</a></div><div class="ttdoc">Klasa odpowiada za rysowanie obiektów na ekranie. </div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00012">renderer.h:12</a></div></div>
+<div class="ttc" id="game_8h_html"><div class="ttname"><a href="game_8h.html">game.h</a></div></div>
+<div class="ttc" id="class_scores_html_ae1eda4aec4cfc65c8bacb648ea28212e"><div class="ttname"><a href="class_scores.html#ae1eda4aec4cfc65c8bacb648ea28212e">Scores::update</a></div><div class="ttdeci">void update(Uint32 dt)</div><div class="ttdef"><b>Definition:</b> <a href="scores_8cpp_source.html#l00072">scores.cpp:72</a></div></div>
+<div class="ttc" id="class_app_config_html_ae2ae8d61b42619876e21e008cdabc7e0"><div class="ttname"><a href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a></div><div class="ttdeci">static SDL_Rect map_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00036">appconfig.h:36</a></div></div>
+<div class="ttc" id="class_renderer_html_a60b7766e3951432d333f90e55fcebd6a"><div class="ttname"><a href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">Renderer::drawRect</a></div><div class="ttdeci">void drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill=false)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00122">renderer.cpp:122</a></div></div>
+<div class="ttc" id="class_app_config_html_a126c2521d99678ca21d8c83ae41808fb"><div class="ttname"><a href="class_app_config.html#a126c2521d99678ca21d8c83ae41808fb">AppConfig::score_show_time</a></div><div class="ttdeci">static unsigned score_show_time</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00084">appconfig.h:84</a></div></div>
+<div class="ttc" id="class_scores_html_ace5dca138217e9bc5b18871b9ea9764b"><div class="ttname"><a href="class_scores.html#ace5dca138217e9bc5b18871b9ea9764b">Scores::finished</a></div><div class="ttdeci">bool finished() const </div><div class="ttdef"><b>Definition:</b> <a href="scores_8cpp_source.html#l00109">scores.cpp:109</a></div></div>
+<div class="ttc" id="class_renderer_html_a1b5467dd2cfb2cb146c29c200b9bb251"><div class="ttname"><a href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">Renderer::drawObject</a></div><div class="ttdeci">void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00064">renderer.cpp:64</a></div></div>
+<div class="ttc" id="class_scores_html_a322b7ad0e3d784ae8e929c3d990eb0a9"><div class="ttname"><a href="class_scores.html#a322b7ad0e3d784ae8e929c3d990eb0a9">Scores::m_score_counter_run</a></div><div class="ttdeci">bool m_score_counter_run</div><div class="ttdef"><b>Definition:</b> <a href="scores_8h_source.html#l00069">scores.h:69</a></div></div>
+<div class="ttc" id="type_8h_html_a224b9163917ac32fc95a60d8c1eec3aaa07fb0d616c46d4120eb541871fbdfd2d"><div class="ttname"><a href="type_8h.html#a224b9163917ac32fc95a60d8c1eec3aaa07fb0d616c46d4120eb541871fbdfd2d">D_RIGHT</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00066">type.h:66</a></div></div>
+<div class="ttc" id="class_scores_html_aa67bb3cbd59f94ce0df5f1e29c758926"><div class="ttname"><a href="class_scores.html#aa67bb3cbd59f94ce0df5f1e29c758926">Scores::m_players</a></div><div class="ttdeci">std::vector&lt; Player * &gt; m_players</div><div class="ttdef"><b>Definition:</b> <a href="scores_8h_source.html#l00053">scores.h:53</a></div></div>
+<div class="ttc" id="class_scores_html_a397959cdcafa83d8d7b2eebdbcdf3b06"><div class="ttname"><a href="class_scores.html#a397959cdcafa83d8d7b2eebdbcdf3b06">Scores::m_level</a></div><div class="ttdeci">int m_level</div><div class="ttdef"><b>Definition:</b> <a href="scores_8h_source.html#l00057">scores.h:57</a></div></div>
+<div class="ttc" id="class_game_html"><div class="ttname"><a href="class_game.html">Game</a></div><div class="ttdoc">Klasa odpowiada za ruch wszytkich czołgów oraz interaakcje między czołgami oraz między czołgami a inn...</div><div class="ttdef"><b>Definition:</b> <a href="game_8h_source.html#l00017">game.h:17</a></div></div>
+<div class="ttc" id="class_renderer_html_ac92b4e807b90c910e1bac003754a5ea6"><div class="ttname"><a href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">Renderer::drawText</a></div><div class="ttdeci">void drawText(const SDL_Point *start, std::string text, SDL_Color text_color, int font_size=1)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00086">renderer.cpp:86</a></div></div>
+<div class="ttc" id="class_scores_html_ad6600e877a2b1c794cd1e849a7092d5e"><div class="ttname"><a href="class_scores.html#ad6600e877a2b1c794cd1e849a7092d5e">Scores::eventProcess</a></div><div class="ttdeci">void eventProcess(SDL_Event *ev)</div><div class="ttdef"><b>Definition:</b> <a href="scores_8cpp_source.html#l00097">scores.cpp:97</a></div></div>
+<div class="ttc" id="menu_8h_html"><div class="ttname"><a href="menu_8h.html">menu.h</a></div></div>
+<div class="ttc" id="class_scores_html_abd664c78d44381251db40ebba0e5b773"><div class="ttname"><a href="class_scores.html#abd664c78d44381251db40ebba0e5b773">Scores::nextState</a></div><div class="ttdeci">AppState * nextState()</div><div class="ttdef"><b>Definition:</b> <a href="scores_8cpp_source.html#l00114">scores.cpp:114</a></div></div>
+<div class="ttc" id="class_scores_html_a2fa6bcad8977919743d5af197f178c84"><div class="ttname"><a href="class_scores.html#a2fa6bcad8977919743d5af197f178c84">Scores::Scores</a></div><div class="ttdeci">Scores()</div><div class="ttdef"><b>Definition:</b> <a href="scores_8cpp_source.html#l00007">scores.cpp:7</a></div></div>
+<div class="ttc" id="scores_8h_html"><div class="ttname"><a href="scores_8h.html">scores.h</a></div></div>
+<div class="ttc" id="class_scores_html_a9fb6838fe10b06aa9f439e3aae90a803"><div class="ttname"><a href="class_scores.html#a9fb6838fe10b06aa9f439e3aae90a803">Scores::draw</a></div><div class="ttdeci">void draw()</div><div class="ttdef"><b>Definition:</b> <a href="scores_8cpp_source.html#l00038">scores.cpp:38</a></div></div>
+<div class="ttc" id="class_renderer_html_a35401aa28259d4560aba5cebd2bac4e3"><div class="ttname"><a href="class_renderer.html#a35401aa28259d4560aba5cebd2bac4e3">Renderer::flush</a></div><div class="ttdeci">void flush()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00059">renderer.cpp:59</a></div></div>
+<div class="ttc" id="class_scores_html_ada4320f7250c4a5b261a5d411b2014bd"><div class="ttname"><a href="class_scores.html#ada4320f7250c4a5b261a5d411b2014bd">Scores::m_max_score</a></div><div class="ttdeci">unsigned m_max_score</div><div class="ttdef"><b>Definition:</b> <a href="scores_8h_source.html#l00073">scores.h:73</a></div></div>
+<div class="ttc" id="class_scores_html_a8c9941f01575d7309db84f15ab3acca1"><div class="ttname"><a href="class_scores.html#a8c9941f01575d7309db84f15ab3acca1">Scores::m_score_counter</a></div><div class="ttdeci">unsigned m_score_counter</div><div class="ttdef"><b>Definition:</b> <a href="scores_8h_source.html#l00065">scores.h:65</a></div></div>
+<div class="ttc" id="class_app_config_html_a6aa81e994502bb576cb7a203c9230a61"><div class="ttname"><a href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a></div><div class="ttdeci">static SDL_Rect status_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00040">appconfig.h:40</a></div></div>
+<div class="ttc" id="type_8h_html_a4cfefb8efe4714111e829031e2df4fafa805e65dee37f4ccfc90042703abf96f0"><div class="ttname"><a href="type_8h.html#a4cfefb8efe4714111e829031e2df4fafa805e65dee37f4ccfc90042703abf96f0">TSF_MENU</a></div><div class="ttdef"><b>Definition:</b> <a href="type_8h_source.html#l00060">type.h:60</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano N, 24 maj 2015 00:12:58 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>

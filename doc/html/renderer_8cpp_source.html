@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Tanks: Plik źródłowy src/engine/renderer.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Tanks
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2052808828190f934b76e979ee65af8a.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">renderer.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="renderer_8cpp.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="renderer_8h.html">renderer.h</a>&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;../appconfig.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;SDL2/SDL.h&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;SDL2/SDL_image.h&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="class_renderer.html#a7ebf46f54dab9905f79b80f7fddb76a6">    7</a></span>&#160;<a class="code" href="class_renderer.html#a7ebf46f54dab9905f79b80f7fddb76a6">Renderer::Renderer</a>()</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="class_renderer.html#a28de089bb37f4b4d1325fe49a33f009d">m_texture</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="class_renderer.html#a547306aaaf8564a5e1bf5836c0fb797d">m_font1</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="class_renderer.html#a58cc526f44486fc6dba729dde5b85343">m_font2</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_renderer.html#afeee408862d5bd6255a6882d47e6d5cd">   16</a></span>&#160;<a class="code" href="class_renderer.html#afeee408862d5bd6255a6882d47e6d5cd">Renderer::~Renderer</a>()</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        SDL_DestroyRenderer(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#a28de089bb37f4b4d1325fe49a33f009d">m_texture</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        SDL_DestroyTexture(<a class="code" href="class_renderer.html#a28de089bb37f4b4d1325fe49a33f009d">m_texture</a>);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        SDL_DestroyTexture(<a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#a547306aaaf8564a5e1bf5836c0fb797d">m_font1</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        TTF_CloseFont(<a class="code" href="class_renderer.html#a547306aaaf8564a5e1bf5836c0fb797d">m_font1</a>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#a58cc526f44486fc6dba729dde5b85343">m_font2</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        TTF_CloseFont(<a class="code" href="class_renderer.html#a58cc526f44486fc6dba729dde5b85343">m_font2</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#a7bd293c0b251a3b7d6026b7708f84c3f">m_font3</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        TTF_CloseFont(<a class="code" href="class_renderer.html#a7bd293c0b251a3b7d6026b7708f84c3f">m_font3</a>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="class_renderer.html#a08b774e4621e4c4ab96783dcdc8c17d7">   32</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#a08b774e4621e4c4ab96783dcdc8c17d7">Renderer::loadTexture</a>(SDL_Window* window)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    SDL_Surface* surface = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a> = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    surface = IMG_Load(<a class="code" href="class_app_config.html#a65465439dccccead6f012308c44a4c69">AppConfig::texture_path</a>.c_str());</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">//load surface</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">if</span>(surface != <span class="keyword">nullptr</span> &amp;&amp; <a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="class_renderer.html#a28de089bb37f4b4d1325fe49a33f009d">m_texture</a> = SDL_CreateTextureFromSurface(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, surface);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    SDL_FreeSurface(surface);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_renderer.html#a3f2e2461fbefbe1760f28e2894079095">   46</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#a3f2e2461fbefbe1760f28e2894079095">Renderer::loadFont</a>()</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="class_renderer.html#a547306aaaf8564a5e1bf5836c0fb797d">m_font1</a> = TTF_OpenFont(<a class="code" href="class_app_config.html#a8791b4aad5b035b27ce6bbc8c519b586">AppConfig::font_name</a>.c_str(), 28);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="class_renderer.html#a58cc526f44486fc6dba729dde5b85343">m_font2</a> = TTF_OpenFont(<a class="code" href="class_app_config.html#a8791b4aad5b035b27ce6bbc8c519b586">AppConfig::font_name</a>.c_str(), 14);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="class_renderer.html#a7bd293c0b251a3b7d6026b7708f84c3f">m_font3</a> = TTF_OpenFont(<a class="code" href="class_app_config.html#a8791b4aad5b035b27ce6bbc8c519b586">AppConfig::font_name</a>.c_str(), 10);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4">   53</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4">Renderer::clear</a>()</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    SDL_SetRenderDrawColor(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, 110, 110, 110, 255);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    SDL_RenderClear(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>); <span class="comment">//czyścimy tylny bufor</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="class_renderer.html#a35401aa28259d4560aba5cebd2bac4e3">   59</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#a35401aa28259d4560aba5cebd2bac4e3">Renderer::flush</a>()</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    SDL_RenderPresent(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>); <span class="comment">//zamieniamy bufory</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">   64</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">Renderer::drawObject</a>(<span class="keyword">const</span> SDL_Rect *texture_src, <span class="keyword">const</span> SDL_Rect *window_dest)</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    SDL_RenderCopy(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, <a class="code" href="class_renderer.html#a28de089bb37f4b4d1325fe49a33f009d">m_texture</a>, texture_src, window_dest); <span class="comment">//rysujemy na tylnim buforze</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_renderer.html#a32ff9710cfe1208b4d9c5d9b6b3cc34d">   69</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#a32ff9710cfe1208b4d9c5d9b6b3cc34d">Renderer::setScale</a>(<span class="keywordtype">float</span> xs, <span class="keywordtype">float</span> ys)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">float</span> scale = min(xs, ys);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">if</span>(scale &lt; 0.1) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    SDL_Rect viewport;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    viewport.x = ((float)<a class="code" href="class_app_config.html#a3084e1368b670ab054843b2adf17c1b8">AppConfig::windows_rect</a>.w / scale - (<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.w + <a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>.w)) / 2.0;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    viewport.y = ((float)<a class="code" href="class_app_config.html#a3084e1368b670ab054843b2adf17c1b8">AppConfig::windows_rect</a>.h / scale - <a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.h) / 2.0;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">if</span>(viewport.x &lt; 0) viewport.x = 0;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span>(viewport.y &lt; 0) viewport.y = 0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    viewport.w = <a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.w + <a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>.w;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    viewport.h = <a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.h;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    SDL_RenderSetScale(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, scale, scale);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    SDL_RenderSetViewport(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, &amp;viewport);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">   86</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">Renderer::drawText</a>(<span class="keyword">const</span> SDL_Point* start, <span class="keywordtype">string</span> text, SDL_Color text_color, <span class="keywordtype">int</span> font_size)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#a547306aaaf8564a5e1bf5836c0fb797d">m_font1</a> == <span class="keyword">nullptr</span> || <a class="code" href="class_renderer.html#a58cc526f44486fc6dba729dde5b85343">m_font2</a> == <span class="keyword">nullptr</span> || <a class="code" href="class_renderer.html#a7bd293c0b251a3b7d6026b7708f84c3f">m_font3</a> == <span class="keyword">nullptr</span>) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a> != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        SDL_DestroyTexture(<a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a>);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    SDL_Surface* text_surface = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">if</span>(font_size == 2) text_surface = TTF_RenderText_Solid(<a class="code" href="class_renderer.html#a58cc526f44486fc6dba729dde5b85343">m_font2</a>, text.c_str(), text_color);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(font_size == 3) text_surface = TTF_RenderText_Solid(<a class="code" href="class_renderer.html#a7bd293c0b251a3b7d6026b7708f84c3f">m_font3</a>, text.c_str(), text_color);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">else</span> text_surface = TTF_RenderText_Solid(<a class="code" href="class_renderer.html#a547306aaaf8564a5e1bf5836c0fb797d">m_font1</a>, text.c_str(), text_color);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">if</span>(text_surface == <span class="keyword">nullptr</span>) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a> = SDL_CreateTextureFromSurface(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, text_surface);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a> == <span class="keyword">nullptr</span>) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    SDL_Rect window_dest;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">if</span>(start == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        window_dest.x = (<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.w + <a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>.w - text_surface-&gt;w)/2;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        window_dest.y = (<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.h - text_surface-&gt;h)/2;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">if</span>(start-&gt;x &lt; 0) window_dest.x = (<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.w + <a class="code" href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a>.w - text_surface-&gt;w)/2;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">else</span> window_dest.x = start-&gt;x;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">if</span>(start-&gt;y &lt; 0) window_dest.y = (<a class="code" href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a>.h - text_surface-&gt;h)/2;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">else</span> window_dest.y = start-&gt;y;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    window_dest.w = text_surface-&gt;w;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    window_dest.h = text_surface-&gt;h;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    SDL_RenderCopy(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, <a class="code" href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">m_text_texture</a>, NULL, &amp;window_dest);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">  122</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">Renderer::drawRect</a>(<span class="keyword">const</span> SDL_Rect *rect, SDL_Color rect_color, <span class="keywordtype">bool</span> fill)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    SDL_SetRenderDrawColor(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, rect_color.r, rect_color.g, rect_color.b, rect_color.a);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">if</span>(fill)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        SDL_RenderFillRect(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, rect);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        SDL_RenderDrawRects(<a class="code" href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">m_renderer</a>, rect, 1);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="ttc" id="class_renderer_html_ac46720b3fc0dbb2fc37674766490a8c4"><div class="ttname"><a href="class_renderer.html#ac46720b3fc0dbb2fc37674766490a8c4">Renderer::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00053">renderer.cpp:53</a></div></div>
+<div class="ttc" id="class_renderer_html_a5e9f4ba52c0b1fcf1cc59a5446376c23"><div class="ttname"><a href="class_renderer.html#a5e9f4ba52c0b1fcf1cc59a5446376c23">Renderer::m_renderer</a></div><div class="ttdeci">SDL_Renderer * m_renderer</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00067">renderer.h:67</a></div></div>
+<div class="ttc" id="class_renderer_html_a58cc526f44486fc6dba729dde5b85343"><div class="ttname"><a href="class_renderer.html#a58cc526f44486fc6dba729dde5b85343">Renderer::m_font2</a></div><div class="ttdeci">TTF_Font * m_font2</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00083">renderer.h:83</a></div></div>
+<div class="ttc" id="class_renderer_html_a7bd293c0b251a3b7d6026b7708f84c3f"><div class="ttname"><a href="class_renderer.html#a7bd293c0b251a3b7d6026b7708f84c3f">Renderer::m_font3</a></div><div class="ttdeci">TTF_Font * m_font3</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00087">renderer.h:87</a></div></div>
+<div class="ttc" id="class_renderer_html_a547306aaaf8564a5e1bf5836c0fb797d"><div class="ttname"><a href="class_renderer.html#a547306aaaf8564a5e1bf5836c0fb797d">Renderer::m_font1</a></div><div class="ttdeci">TTF_Font * m_font1</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00079">renderer.h:79</a></div></div>
+<div class="ttc" id="class_app_config_html_ae2ae8d61b42619876e21e008cdabc7e0"><div class="ttname"><a href="class_app_config.html#ae2ae8d61b42619876e21e008cdabc7e0">AppConfig::map_rect</a></div><div class="ttdeci">static SDL_Rect map_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00036">appconfig.h:36</a></div></div>
+<div class="ttc" id="class_renderer_html_a60b7766e3951432d333f90e55fcebd6a"><div class="ttname"><a href="class_renderer.html#a60b7766e3951432d333f90e55fcebd6a">Renderer::drawRect</a></div><div class="ttdeci">void drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill=false)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00122">renderer.cpp:122</a></div></div>
+<div class="ttc" id="class_renderer_html_a28de089bb37f4b4d1325fe49a33f009d"><div class="ttname"><a href="class_renderer.html#a28de089bb37f4b4d1325fe49a33f009d">Renderer::m_texture</a></div><div class="ttdeci">SDL_Texture * m_texture</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00071">renderer.h:71</a></div></div>
+<div class="ttc" id="class_renderer_html_a1b5467dd2cfb2cb146c29c200b9bb251"><div class="ttname"><a href="class_renderer.html#a1b5467dd2cfb2cb146c29c200b9bb251">Renderer::drawObject</a></div><div class="ttdeci">void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00064">renderer.cpp:64</a></div></div>
+<div class="ttc" id="class_renderer_html_a32ff9710cfe1208b4d9c5d9b6b3cc34d"><div class="ttname"><a href="class_renderer.html#a32ff9710cfe1208b4d9c5d9b6b3cc34d">Renderer::setScale</a></div><div class="ttdeci">void setScale(float xs, float ys)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00069">renderer.cpp:69</a></div></div>
+<div class="ttc" id="class_renderer_html_afeee408862d5bd6255a6882d47e6d5cd"><div class="ttname"><a href="class_renderer.html#afeee408862d5bd6255a6882d47e6d5cd">Renderer::~Renderer</a></div><div class="ttdeci">~Renderer()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00016">renderer.cpp:16</a></div></div>
+<div class="ttc" id="class_renderer_html_ac92b4e807b90c910e1bac003754a5ea6"><div class="ttname"><a href="class_renderer.html#ac92b4e807b90c910e1bac003754a5ea6">Renderer::drawText</a></div><div class="ttdeci">void drawText(const SDL_Point *start, std::string text, SDL_Color text_color, int font_size=1)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00086">renderer.cpp:86</a></div></div>
+<div class="ttc" id="class_app_config_html_a65465439dccccead6f012308c44a4c69"><div class="ttname"><a href="class_app_config.html#a65465439dccccead6f012308c44a4c69">AppConfig::texture_path</a></div><div class="ttdeci">static string texture_path</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00020">appconfig.h:20</a></div></div>
+<div class="ttc" id="class_renderer_html_adbc42d2680a05d687a0fc927ad5293f0"><div class="ttname"><a href="class_renderer.html#adbc42d2680a05d687a0fc927ad5293f0">Renderer::m_text_texture</a></div><div class="ttdeci">SDL_Texture * m_text_texture</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8h_source.html#l00075">renderer.h:75</a></div></div>
+<div class="ttc" id="class_app_config_html_a8791b4aad5b035b27ce6bbc8c519b586"><div class="ttname"><a href="class_app_config.html#a8791b4aad5b035b27ce6bbc8c519b586">AppConfig::font_name</a></div><div class="ttdeci">static string font_name</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00028">appconfig.h:28</a></div></div>
+<div class="ttc" id="class_app_config_html_a3084e1368b670ab054843b2adf17c1b8"><div class="ttname"><a href="class_app_config.html#a3084e1368b670ab054843b2adf17c1b8">AppConfig::windows_rect</a></div><div class="ttdeci">static SDL_Rect windows_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00044">appconfig.h:44</a></div></div>
+<div class="ttc" id="class_renderer_html_a08b774e4621e4c4ab96783dcdc8c17d7"><div class="ttname"><a href="class_renderer.html#a08b774e4621e4c4ab96783dcdc8c17d7">Renderer::loadTexture</a></div><div class="ttdeci">void loadTexture(SDL_Window *window)</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00032">renderer.cpp:32</a></div></div>
+<div class="ttc" id="class_renderer_html_a35401aa28259d4560aba5cebd2bac4e3"><div class="ttname"><a href="class_renderer.html#a35401aa28259d4560aba5cebd2bac4e3">Renderer::flush</a></div><div class="ttdeci">void flush()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00059">renderer.cpp:59</a></div></div>
+<div class="ttc" id="class_renderer_html_a3f2e2461fbefbe1760f28e2894079095"><div class="ttname"><a href="class_renderer.html#a3f2e2461fbefbe1760f28e2894079095">Renderer::loadFont</a></div><div class="ttdeci">void loadFont()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00046">renderer.cpp:46</a></div></div>
+<div class="ttc" id="renderer_8h_html"><div class="ttname"><a href="renderer_8h.html">renderer.h</a></div></div>
+<div class="ttc" id="class_app_config_html_a6aa81e994502bb576cb7a203c9230a61"><div class="ttname"><a href="class_app_config.html#a6aa81e994502bb576cb7a203c9230a61">AppConfig::status_rect</a></div><div class="ttdeci">static SDL_Rect status_rect</div><div class="ttdef"><b>Definition:</b> <a href="appconfig_8h_source.html#l00040">appconfig.h:40</a></div></div>
+<div class="ttc" id="class_renderer_html_a7ebf46f54dab9905f79b80f7fddb76a6"><div class="ttname"><a href="class_renderer.html#a7ebf46f54dab9905f79b80f7fddb76a6">Renderer::Renderer</a></div><div class="ttdeci">Renderer()</div><div class="ttdef"><b>Definition:</b> <a href="renderer_8cpp_source.html#l00007">renderer.cpp:7</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano N, 24 maj 2015 00:12:59 dla Tanks programem &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>
