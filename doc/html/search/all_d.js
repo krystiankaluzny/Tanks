@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
   ['rect',['rect',['../struct_sprite_data.html#ad4482d398fce500b0e4a0f408a2ddd49',1,'SpriteData']]],
   ['renderer',['Renderer',['../class_renderer.html',1,'Renderer'],['../class_renderer.html#a7ebf46f54dab9905f79b80f7fddb76a6',1,'Renderer::Renderer()']]],
   ['renderer_2ecpp',['renderer.cpp',['../renderer_8cpp.html',1,'']]],

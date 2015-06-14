@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['tanks',['Tanks',['../md_src__r_e_a_d_m_e.html',1,'']]],
   ['tank',['Tank',['../class_tank.html',1,'Tank'],['../class_tank.html#ae8be1e2c9376c3a4590b4bf689eaed76',1,'Tank::Tank()'],['../class_tank.html#ab6b6a6d0ec3994fa12f4933602dd4325',1,'Tank::Tank(double x, double y, SpriteType type)']]],
   ['tank_2ecpp',['tank.cpp',['../tank_8cpp.html',1,'']]],
   ['tank_2eh',['tank.h',['../tank_8h.html',1,'']]],
