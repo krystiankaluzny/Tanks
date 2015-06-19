@@ -114,7 +114,7 @@ SDL_Rect Object::moveRect(const SDL_Rect &rect, int x, int y)
     r.x = rect.x + x*rect.w;
     r.y = rect.y + y*rect.h;
     r.w = rect.w;
-    r.h = rect.h;//dzisiaj mi juz nie stanie
+    r.h = rect.h;
 
     return r;
 }
