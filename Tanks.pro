@@ -20,7 +20,9 @@ SOURCES += src/main.cpp \
     src/objects/eagle.cpp \
     src/app_state/menu.cpp \
     src/app_state/scores.cpp \
-    src/objects/bonus.cpp
+    src/objects/bonus.cpp \
+    src/app_state/server.cpp \
+    src/engine/servertcp.cpp
 
 CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
@@ -49,4 +51,7 @@ HEADERS += \
     src/objects/eagle.h \
     src/app_state/menu.h \
     src/app_state/scores.h \
-    src/objects/bonus.h
+    src/objects/bonus.h \
+    src/app_state/server.h \
+    src/engine/servertcp.h \
+    src/engine/event.h

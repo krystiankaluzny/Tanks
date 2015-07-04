@@ -8,8 +8,7 @@ var indexSectionsWithContent =
   5: "t",
   6: "dst",
   7: "dst",
-  8: "v",
-  9: "t"
+  8: "v"
 };
 
 var indexSectionNames =
@@ -22,8 +21,7 @@ var indexSectionNames =
   5: "typedefs",
   6: "enums",
   7: "enumvalues",
-  8: "defines",
-  9: "pages"
+  8: "defines"
 };
 
 var indexSectionLabels =
@@ -36,7 +34,6 @@ var indexSectionLabels =
   5: "Definicje typów",
   6: "Wyliczenia",
   7: "Wartości wyliczeń",
-  8: "Definicje",
-  9: "Strony"
+  8: "Definicje"
 };
 
