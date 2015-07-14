@@ -4,6 +4,7 @@
 #include "../appconfig.h"
 #include "../type.h"
 #include "../app_state/game.h"
+#include "../app_state/server.h"
 
 #include <iostream>
 

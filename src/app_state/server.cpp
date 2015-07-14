@@ -22,10 +22,10 @@ void Server::eventProcess(SDL_Event *ev)
 
 bool Server::finished() const
 {
-
+    return true;
 }
 
 AppState *Server::nextState()
 {
-
+    return nullptr;
 }

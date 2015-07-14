@@ -22,7 +22,8 @@ SOURCES += src/main.cpp \
     src/app_state/scores.cpp \
     src/objects/bonus.cpp \
     src/app_state/server.cpp \
-    src/engine/servertcp.cpp
+    src/engine/servertcp.cpp \
+    src/engine/event.cpp
 
 CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
