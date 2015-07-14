@@ -90,6 +90,7 @@ void ServerTCP::run()
                 }
             }
         }
+
     }
 }
 
@@ -129,34 +130,19 @@ void ServerTCP::closeSocket(int socket_index)
 void ServerTCP::readSocket(int socket_index)
 {
     char buffer[20];
-    int size = recv(sockets[socket_index], buffer, sizeof(buffer), 0);
+    int size = recv(sockets[socket_index], buffer, sizeof(buffer), 0); //odczytanie danych i zapis do bufora
 
     if(size != SOCKET_ERROR && size >= 5)
     {
         int index = 0;
         char event_type = buffer[index++];
+
         if(event_type == COLLISION_EVENT)
         {
             CollisionEvent ce();
             if(ce.event_datagram_size == size)
             {
-                ce.frame_number.c_value[0] = buffer[index++];
-                ce.frame_number.c_value[1] = buffer[index++];
-                ce.frame_number.c_value[2] = buffer[index++];
-                ce.frame_number.c_value[3] = buffer[index++];
-
-                ce.collision_type = static_cast<CollisionEvent::CollisionType>(buffer[index++]);
-
-                ce.id_object1.c_value[0] = buffer[index++];
-                ce.id_object1.c_value[1] = buffer[index++];
-                ce.id_object1.c_value[2] = buffer[index++];
-                ce.id_object1.c_value[3] = buffer[index++];
-
-                ce.id_object2.c_value[0] = buffer[index++];
-                ce.id_object2.c_value[1] = buffer[index++];
-                ce.id_object2.c_value[2] = buffer[index++];
-                ce.id_object2.c_value[3] = buffer[index++];
-
+                ce.fillData(buffer + 1);
                 events.insert(pair<SOCKET, Event>(sockets[socket_index], ce));
                 cout << ce << endl;
             }
@@ -168,18 +154,7 @@ void ServerTCP::readSocket(int socket_index)
             MoveEvent me();
             if(me.event_datagram_size == size)
             {
-                me.frame_number.c_value[0] = buffer[index++];
-                me.frame_number.c_value[1] = buffer[index++];
-                me.frame_number.c_value[2] = buffer[index++];
-                me.frame_number.c_value[3] = buffer[index++];
-
-                me.move_direction = static_cast<MoveEvent::Direction>(buffer[index++]);
-
-                me.id_tank.c_value[0] = buffer[index++];
-                me.id_tank.c_value[1] = buffer[index++];
-                me.id_tank.c_value[2] = buffer[index++];
-                me.id_tank.c_value[3] = buffer[index++];
-
+                me.fillData(buffer + 1);
                 events.insert( pair<SOCKET, Event>(sockets[socket_index], me));
             }
             else
@@ -190,16 +165,7 @@ void ServerTCP::readSocket(int socket_index)
             FireEvent fe();
             if(fe.event_datagram_size == size)
             {
-                fe.frame_number.c_value[0] = buffer[index++];
-                fe.frame_number.c_value[1] = buffer[index++];
-                fe.frame_number.c_value[2] = buffer[index++];
-                fe.frame_number.c_value[3] = buffer[index++];
-
-                fe.id_tank.c_value[0] = buffer[index++];
-                fe.id_tank.c_value[1] = buffer[index++];
-                fe.id_tank.c_value[2] = buffer[index++];
-                fe.id_tank.c_value[3] = buffer[index++];
-
+                fe.fillData(buffer + 1);
             }
             else
                 cout << "Zly rozmiar FireEvent " << size << endl;
@@ -214,17 +180,7 @@ void ServerTCP::readSocket(int socket_index)
             BonusEvent be();
             if(be.event_datagram_size == size)
             {
-                be.frame_number.c_value[0] = buffer[index++];
-                be.frame_number.c_value[1] = buffer[index++];
-                be.frame_number.c_value[2] = buffer[index++];
-                be.frame_number.c_value[3] = buffer[index++];
-
-                be.bonus_type = static_cast<BonusEvent::BonusEventType>(buffer[index++]);
-
-                be.id_tank.c_value[0] = buffer[index++];
-                be.id_tank.c_value[1] = buffer[index++];
-                be.id_tank.c_value[2] = buffer[index++];
-                be.id_tank.c_value[3] = buffer[index++];
+                be.fillData(buffer + 1);
             }
             else
                 cout << "Zly rozmiar BonusEvent " << size << endl;

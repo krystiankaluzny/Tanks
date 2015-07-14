@@ -58,6 +58,7 @@ public:
     LongData id_object1;
     LongData id_object2;
 
+    void fillData(char *buffer);
     friend std::ostream& operator<< (std::ostream& out, CollisionEvent& e);
 };
 
@@ -76,6 +77,8 @@ public:
 
     Direction move_direction;
     LongData id_tank;
+
+    void fillData(char *buffer);
 };
 
 class FireEvent : public Event
@@ -100,6 +103,8 @@ public:
 
     GenerateObject object_type;
     LongData generate_seed;
+
+    void fillData(char *buffer);
 };
 
 
@@ -127,6 +132,8 @@ public:
 
     BonusEventType bonus_type;
     LongData id_player;
+
+    void fillData(char *buffer);
 };
 
 #endif // EVENT_H

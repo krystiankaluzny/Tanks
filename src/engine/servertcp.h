@@ -29,7 +29,7 @@ private:
     void acceptSocket();
     //zamknięcie socketu
     void closeSocket(int socket_index);
-
+    //odczyt ramki z socketu
     void readSocket(int socket_index);
 
     bool is_running;

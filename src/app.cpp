@@ -73,7 +73,8 @@ void App::run()
             SDL_Delay(delay);
 
             //FPS
-            fps_time += dt; fps_count++;
+            fps_time += dt;
+            fps_count++;
             if(fps_time > 200)
             {
                 FPS = (double)fps_count / fps_time * 1000;
