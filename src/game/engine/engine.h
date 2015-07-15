@@ -9,8 +9,10 @@
  */
 class Engine
 {
-public:
+private:
     Engine();
+
+public:
 
     /**
      * @return statyczną instancję obiektu @a Engine

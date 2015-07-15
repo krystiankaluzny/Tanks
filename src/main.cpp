@@ -9,17 +9,17 @@
  * Rozgrywkę można zatrzymać i ponownie wznowić przyciskiem @a Enter.
  * @author Krystian Kałużny
  * @date 12.05.215
- * @version 1.0
+ * @version 1.0.1
  * @par Kontakt:
  * @a k.kaluzny141@gmail.com
 */
 
-#include "game.h"
+#include "app.h"
 
 int main( int argc, char* args[] )
 {
-    Game game;
-    game.run();
+    App app;
+    app.run();
 
     return 0;
 }

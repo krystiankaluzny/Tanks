@@ -2,12 +2,10 @@
 #define GAME_H
 
 #include "game_state/gamestate.h"
+#include "appthread.h"
 
-/**
- * @brief
- * Klasa główna aplikacji. Jej działanie jest równoważne z działaniem aplikacji.
- */
-class Game
+
+class Game : public AppThread
 {
 public:
     Game();
