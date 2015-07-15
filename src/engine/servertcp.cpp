@@ -139,7 +139,7 @@ void ServerTCP::readSocket(int socket_index)
 
         if(event_type == COLLISION_EVENT)
         {
-            CollisionEvent ce();
+            CollisionEvent ce;
             if(ce.event_datagram_size == size)
             {
                 ce.fillData(buffer + 1);
@@ -151,7 +151,7 @@ void ServerTCP::readSocket(int socket_index)
         }
         else if(event_type == MOVE_EVENT)
         {
-            MoveEvent me();
+            MoveEvent me;
             if(me.event_datagram_size == size)
             {
                 me.fillData(buffer + 1);
@@ -162,7 +162,7 @@ void ServerTCP::readSocket(int socket_index)
         }
         else if(event_type == FIRE_EVENT)
         {
-            FireEvent fe();
+            FireEvent fe;
             if(fe.event_datagram_size == size)
             {
                 fe.fillData(buffer + 1);
@@ -177,7 +177,7 @@ void ServerTCP::readSocket(int socket_index)
         }
         else if(event_type == BONUS_EVENT)
         {
-            BonusEvent be();
+            BonusEvent be;
             if(be.event_datagram_size == size)
             {
                 be.fillData(buffer + 1);

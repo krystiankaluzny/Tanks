@@ -1,17 +1,17 @@
-#ifndef APP_H
-#define APP_H
+#ifndef GAME_H
+#define GAME_H
 
-#include "app_state/appstate.h"
+#include "game_state/gamestate.h"
 
 /**
  * @brief
  * Klasa główna aplikacji. Jej działanie jest równoważne z działaniem aplikacji.
  */
-class App
+class Game
 {
 public:
-    App();
-    ~App();
+    Game();
+    ~Game();
     /**
      * Funkcja zawiera inicjalizację biblioteki SDL2, silnika gry, wczytanie tekstur oraz czcionek.
      * Po poprawnej inicjalizacji następuje wejście w pętlę główną programu, która kolejno: reaguje na zdarzenie,
@@ -30,11 +30,11 @@ private:
     /**
      * Aktualny stan aplikacji.
      */
-    AppState* m_app_state;
+    GameState* m_game_state;
     /**
      * Obiekt okna aplikacji.
      */
     SDL_Window* m_window;
 };
 
-#endif // APP_H
+#endif // GAME_H

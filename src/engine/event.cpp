@@ -13,7 +13,12 @@ Event::Event(EventType type, int data_size) :
 {
 }
 
-std::ostream &Event::operator<<(std::ostream &out, Event &e)
+void Event::fillData(char *buffer)
+{
+
+}
+
+std::ostream& operator<<(std::ostream &out, Event &e)
 {
     return out << "EventType: " << e.type << " FrameNum: " << e.frame_number.l_value << " Size: " << e.event_datagram_size;
 }
@@ -47,7 +52,7 @@ void CollisionEvent::fillData(char *buffer)
     id_object2.c_value[3] = buffer[index++];
 }
 
-std::ostream &CollisionEvent::operator<<(std::ostream &out, CollisionEvent &e)
+std::ostream& operator<<(std::ostream &out, CollisionEvent &e)
 {
     out << "EventType: " << e.type << " FrameNum: " << e.frame_number.l_value << " Size: " << e.event_datagram_size;
     return out << " CollisionType: " << e.collision_type << " ID1: " << e.id_object1.l_value << " ID2: " << e.id_object2.l_value;
@@ -125,8 +130,8 @@ void BonusEvent::fillData(char *buffer)
 
     bonus_type = static_cast<BonusEvent::BonusEventType>(buffer[index++]);
 
-    id_tank.c_value[0] = buffer[index++];
-    id_tank.c_value[1] = buffer[index++];
-    id_tank.c_value[2] = buffer[index++];
-    id_tank.c_value[3] = buffer[index++];
+    id_player.c_value[0] = buffer[index++];
+    id_player.c_value[1] = buffer[index++];
+    id_player.c_value[2] = buffer[index++];
+    id_player.c_value[3] = buffer[index++];
 }

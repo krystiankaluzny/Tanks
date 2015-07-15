@@ -32,7 +32,7 @@ public:
 
     const int event_datagram_size;
 
-    virtual void fillData(char* buffer) = 0;
+    virtual void fillData(char* buffer);
     friend std::ostream& operator<< (std::ostream& out, Event& e);
 };
 
@@ -87,6 +87,8 @@ public:
     FireEvent();
 
     LongData id_tank;
+
+    void fillData(char *buffer);
 };
 
 class GenerateEvent : public Event

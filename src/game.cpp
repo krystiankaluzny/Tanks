@@ -1,8 +1,8 @@
-#include "app.h"
+#include "game.h"
 #include "appconfig.h"
 #include "engine/engine.h"
-#include "app_state/game.h"
-#include "app_state/menu.h"
+#include "game_state/game.h"
+#include "game_state/menu.h"
 
 #include <ctime>
 #include <iostream>
@@ -13,18 +13,18 @@
 
 #define VERSION "1.0.0"
 
-App::App()
+Game::Game()
 {
     m_window = nullptr;
 }
 
-App::~App()
+Game::~Game()
 {
-    if(m_app_state != nullptr)
-        delete m_app_state;
+    if(m_game_state != nullptr)
+        delete m_game_state;
 }
 
-void App::run()
+void Game::run()
 {
     is_running = true;
     //inicjalizacja SDL i utworzenie okan
@@ -46,7 +46,7 @@ void App::run()
         engine.getRenderer()->loadTexture(m_window);
         engine.getRenderer()->loadFont();
 
-        m_app_state = new Menu;
+        m_game_state = new Menu;
 
         double FPS;
         Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 15;
@@ -57,18 +57,18 @@ void App::run()
             dt = time2 - time1;
             time1 = time2;
 
-            if(m_app_state->finished())
+            if(m_game_state->finished())
             {
-                AppState* new_state = m_app_state->nextState();
-                delete m_app_state;
-                m_app_state = new_state;
+                GameState* new_state = m_game_state->nextState();
+                delete m_game_state;
+                m_game_state = new_state;
             }
-            if(m_app_state == nullptr) break;
+            if(m_game_state == nullptr) break;
 
             eventProces();
 
-            m_app_state->update(dt);
-            m_app_state->draw();
+            m_game_state->update(dt);
+            m_game_state->draw();
 
             SDL_Delay(delay);
 
@@ -94,7 +94,7 @@ void App::run()
     SDL_Quit();
 }
 
-void App::eventProces()
+void Game::eventProces()
 {
     SDL_Event event;
     while(SDL_PollEvent(&event))
@@ -118,6 +118,6 @@ void App::eventProces()
             }
         }
 
-        m_app_state->eventProcess(&event);
+        m_game_state->eventProcess(&event);
     }
 }

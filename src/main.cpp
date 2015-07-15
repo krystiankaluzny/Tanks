@@ -14,12 +14,12 @@
  * @a k.kaluzny141@gmail.com
 */
 
-#include "app.h"
+#include "game.h"
 
 int main( int argc, char* args[] )
 {
-    App app;
-    app.run();
+    Game game;
+    game.run();
 
     return 0;
 }
