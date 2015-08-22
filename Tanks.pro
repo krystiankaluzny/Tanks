@@ -30,7 +30,8 @@ SOURCES += src/app.cpp \
     src/shareddata.cpp \
     src/network/network.cpp \
     src/appthread.cpp \
-    src/network/clenttcp.cpp
+    src/network/clienttcp.cpp \
+    src/network/tcpconnection.cpp
 
 CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
@@ -71,5 +72,5 @@ HEADERS += src/app.h \
     src/event/eventstore.h \
     src/shareddata.h \
     src/network/network.h \
-    src/network/clenttcp.h \
-    src/network/tcpconnection.h
+    src/network/tcpconnection.h \
+    src/network/clienttcp.h

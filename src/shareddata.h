@@ -28,9 +28,14 @@ public:
 
     /**
      * Jeśli zmienna jest równa true to klent TCP próbuje wysłać zebrane eventy.
-     * Tylko wątek gry może zmieniać zmienną.
      */
     bool send_events;
+
+    /**
+     * Numebr obecnej ramki gry.
+     * Tylko wątek gry może zmieniać zmienną.
+     */
+    unsigned long current_frame_number;
 };
 
 #endif // SHAREDDATA_H

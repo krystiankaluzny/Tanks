@@ -35,13 +35,26 @@ void Network::run()
 
             if(new_state == NetworkState::SERVER)
             {
-                server.init();
+                if(server.init())
+                {
+                    state = new_state;
+                }
+                else
+                {
+                    state = NetworkState::NONE;
+                }
             }
             else if(new_state == NetworkState::CLIENT)
             {
-                //init client
+                if(client.init())
+                {
+                    state = new_state;
+                }
+                else
+                {
+                    state = NetworkState::NONE;
+                }
             }
-            state = new_state;
         }
 
         if(state == NetworkState::SERVER)
@@ -50,11 +63,11 @@ void Network::run()
         }
         else if(state == NetworkState::CLIENT)
         {
-            //do client stuff;
+            client.run();
         }
         else
         {
-            Sleep(10);
+            Sleep(7);
         }
         Sleep( 0 ); // reszta czasu dla drugiego wątku
     }

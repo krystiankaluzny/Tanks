@@ -21,7 +21,6 @@ public:
      */
     virtual void run() = 0;
 
-protected:
     /**
      * Zapisanie eventu do kolejki, która ma zostać wysłana na server.
      * @param event

@@ -1,4 +1,5 @@
 #include "servertcp.h"
+#include "network.h"
 
 ServerTCP::ServerTCP()
 {
@@ -86,6 +87,12 @@ void ServerTCP::run()
             else if(network_events.lNetworkEvents & FD_CLOSE)
             {
                 closeSocket(event_index);
+                if(event_index == 0)
+                {
+                    EnterCriticalSection(parent->critical_section);
+                        parent->shared_data->network_state = NetworkState::NONE;
+                    LeaveCriticalSection(parent->critical_section);
+                }
             }
         }
     }
@@ -129,7 +136,7 @@ void ServerTCP::readSocket(int socket_index)
     char buffer[20];
     int size = recv(sockets[socket_index], buffer, sizeof(buffer), 0); //odczytanie danych i zapis do bufora
 
-    if(size != SOCKET_ERROR && size >= 5)
+    if(size != SOCKET_ERROR && size >= 6)
     {
         int index = 0;
         char event_type = buffer[index++];
@@ -162,7 +169,7 @@ void ServerTCP::addEvent(Event *ev, char *data, int size, int socket_index)
     if(ev->event_datagram_size == size)
     {
         ev->setByteArray(data);
-        events.insert( pair<SOCKET, Event*>(sockets[socket_index], ev));
+//        events.insert( pair<SOCKET, Event*>(sockets[socket_index], ev));
     }
     else
     {

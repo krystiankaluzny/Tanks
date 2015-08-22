@@ -1,9 +1,11 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+//#define _WIN32_WINNT 0x501
+
 #include "../appthread.h"
 #include "servertcp.h"
-#include "clenttcp.h"
+#include "clienttcp.h"
 
 class Network : public AppThread
 {
