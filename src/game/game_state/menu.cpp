@@ -1,8 +1,8 @@
 #include "menu.h"
 #include "../engine/engine.h"
 #include "../engine/renderer.h"
-#include "../appconfig.h"
-#include "../type.h"
+#include "../../appconfig.h"
+#include "../../type.h"
 #include "../game_state/battle.h"
 #include "../game_state/server.h"
 

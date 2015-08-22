@@ -1,5 +1,5 @@
 #include "player.h"
-#include "../appconfig.h"
+#include "../../appconfig.h"
 #include <SDL2/SDL.h>
 #include <iostream>
 

@@ -3,7 +3,7 @@
 
 #include "object.h"
 #include "bullet.h"
-#include "../type.h"
+#include "../../type.h"
 
 #include <vector>
 

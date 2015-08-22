@@ -1,7 +1,7 @@
 #ifndef SPRITECONFIG_H
 #define SPRITECONFIG_H
 
-#include "../type.h"
+#include "../../type.h"
 #include <map>
 #include <SDL2/SDL.h>
 

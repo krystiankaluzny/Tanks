@@ -1,5 +1,5 @@
 #include "game.h"
-#include "appconfig.h"
+#include "../appconfig.h"
 #include "engine/engine.h"
 #include "game_state/battle.h"
 #include "game_state/menu.h"

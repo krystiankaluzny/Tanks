@@ -1,7 +1,7 @@
 #include "app.h"
-#include "engine/engine.h"
+#include "game/engine/engine.h"
 #include "appthread.h"
-#include "game.h"
+#include "game/game.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>

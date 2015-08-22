@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include "game_state/gamestate.h"
-#include "appthread.h"
+#include "../appthread.h"
 
 
 class Game : public AppThread

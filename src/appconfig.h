@@ -1,7 +1,7 @@
 #ifndef APPCONFIG_H
 #define APPCONFIG_H
 
-#include "objects/player.h"
+#include "game/objects/player.h"
 #include <iostream>
 #include <SDL2/SDL_rect.h>
 #include <vector>

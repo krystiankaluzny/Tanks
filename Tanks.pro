@@ -4,13 +4,11 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += \
-    src/app.cpp \
+SOURCES += src/app.cpp \
     src/appconfig.cpp \
     src/main.cpp \
     src/game/game.cpp \
     src/game/engine/engine.cpp \
-    src/game/engine/event.cpp \
     src/game/engine/renderer.cpp \
     src/game/engine/spriteconfig.cpp \
     src/game/game_state/battle.cpp \
@@ -25,7 +23,8 @@ SOURCES += \
     src/game/objects/object.cpp \
     src/game/objects/player.cpp \
     src/game/objects/tank.cpp \
-    src/network/servertcp.cpp
+    src/network/servertcp.cpp \
+    src/event/event.cpp
 
 CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
@@ -39,14 +38,12 @@ LIBS += -lws2_32
 DEPENDPATH += $$PWD/SDL/i686-w64-mingw32/include
 INCLUDEPATH += $$PWD/SDL/i686-w64-mingw32/include
 
-HEADERS += \
-    src/app.h \
+HEADERS += src/app.h \
     src/appconfig.h \
     src/appthread.h \
     src/type.h \
     src/game/game.h \
     src/game/engine/engine.h \
-    src/game/engine/event.h \
     src/game/engine/renderer.h \
     src/game/engine/spriteconfig.h \
     src/game/game_state/battle.h \
@@ -62,4 +59,5 @@ HEADERS += \
     src/game/objects/object.h \
     src/game/objects/player.h \
     src/game/objects/tank.h \
-    src/network/servertcp.h
+    src/network/servertcp.h \
+    src/event/event.h
