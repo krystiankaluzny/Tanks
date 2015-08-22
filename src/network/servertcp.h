@@ -12,19 +12,24 @@
 #include <map>
 
 #include "../event/event.h"
+#include "../appthread.h"
+#include "tcpconnection.h"
 
 using namespace std;
 
-class ServerTCP
+class ServerTCP : public TCPConnection
 {
 public:
     ServerTCP();
     ~ServerTCP();
 
-    bool init();
     void run();
-
+    bool init();
+    void close();
 private:
+
+    void mainLoop();
+
     //akceptowanie prośby od klienta o połączenie (dodanie nowego socketu)
     void acceptSocket();
     //zamknięcie socketu
@@ -32,9 +37,13 @@ private:
     //odczyt ramki z socketu
     void readSocket(int socket_index);
 
-    bool is_running;
+    //jeśli wszystko ok dodaje event do kolejki
+    void addEvent(Event* ev, char* data, int size, int socket_index);
+
+    const int wait_for_event_time = 100; //ms
+
     const u_short PORT = 3782;
-    multimap<SOCKET, Event> events;
+    multimap<SOCKET, Event*> events;
     vector<SOCKET> sockets; //pierwszy socket jest soketem serwera
     vector<WSAEVENT> sockets_event;
 };

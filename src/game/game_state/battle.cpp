@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <iostream>
 
-Battle::Battle()
+Battle::Battle(Game *parent) : GameState(parent)
 {
     m_level_columns_count = 0;
     m_level_rows_count = 0;
@@ -26,7 +26,7 @@ Battle::Battle()
     nextLevel();
 }
 
-Battle::Battle(int players_count)
+Battle::Battle(Game* parent, int players_count) : GameState(parent)
 {
     m_level_columns_count = 0;
     m_level_rows_count = 0;
@@ -41,7 +41,7 @@ Battle::Battle(int players_count)
     nextLevel();
 }
 
-Battle::Battle(std::vector<Player *> players, int previous_level)
+Battle::Battle(Game *parent, std::vector<Player *> players, int previous_level) : GameState(parent)
 {
     m_level_columns_count = 0;
     m_level_rows_count = 0;
@@ -444,10 +444,10 @@ GameState* Battle::nextState()
     if(m_game_over || m_enemy_to_kill <= 0)
     {
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){m_killed_players.push_back(p); return true;}), m_players.end());
-        Scores* scores = new Scores(m_killed_players, m_current_level, m_game_over);
+        Scores* scores = new Scores(parent, m_killed_players, m_current_level, m_game_over);
         return scores;
     }
-    Menu* m = new Menu;
+    Menu* m = new Menu(parent);
     return m;
 }
 

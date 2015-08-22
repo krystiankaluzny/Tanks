@@ -4,11 +4,10 @@
 #include "game_state/gamestate.h"
 #include "../appthread.h"
 
-
 class Game : public AppThread
 {
 public:
-    Game();
+    Game(SharedData* shared_data, CRITICAL_SECTION* critical_section);
     ~Game();
     /**
      * Funkcja zawiera inicjalizację biblioteki SDL2, silnika gry, wczytanie tekstur oraz czcionek.
@@ -16,10 +15,19 @@ public:
      * uaktualnia obecny stan aplikacji, rysuje obiety na ekranie.
      */
     void run();
+
+private:
     /**
      * Funkcja obsługująca zdarzenia czekające w kolejce.
      */
     void eventProces();
+
+    void mainLoop();
+
+    bool initSDL();
+
+    void quitSDL();
+
 private:
     /**
      * Zmienna podtrzymująca działanie pętli głównej programu.

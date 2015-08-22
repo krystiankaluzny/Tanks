@@ -6,7 +6,7 @@
 class Server : public GameState
 {
 public:
-    Server();
+    Server(Game* parent);
 
     /**
      * Funkcja zwraca @a true po określonym czasie wyświetlania ekranu punktów.
@@ -32,6 +32,9 @@ public:
      * @return wskaźnik na następny stan
      */
     GameState* nextState();
+
+private:
+   bool m_finished;
 };
 
 #endif // SERVER_H

@@ -32,7 +32,8 @@ public:
 
     const int event_datagram_size;
 
-    virtual void fillData(char* buffer);
+    virtual void setByteArray(char* buffer) = 0;
+    virtual char *getByteArray() = 0;
     friend std::ostream& operator<< (std::ostream& out, Event& e);
 };
 
@@ -58,7 +59,9 @@ public:
     LongData id_object1;
     LongData id_object2;
 
-    void fillData(char *buffer);
+    void setByteArray(char *buffer);
+    char* getByteArray();
+
     friend std::ostream& operator<< (std::ostream& out, CollisionEvent& e);
 };
 
@@ -78,7 +81,8 @@ public:
     Direction move_direction;
     LongData id_tank;
 
-    void fillData(char *buffer);
+    void setByteArray(char *buffer);
+    char* getByteArray();
 };
 
 class FireEvent : public Event
@@ -88,7 +92,8 @@ public:
 
     LongData id_tank;
 
-    void fillData(char *buffer);
+    void setByteArray(char *buffer);
+    char* getByteArray();
 };
 
 class GenerateEvent : public Event
@@ -106,9 +111,9 @@ public:
     GenerateObject object_type;
     LongData generate_seed;
 
-    void fillData(char *buffer);
+    void setByteArray(char *buffer);
+    char* getByteArray();
 };
-
 
 class BonusEvent : public Event
 {
@@ -135,7 +140,8 @@ public:
     BonusEventType bonus_type;
     LongData id_player;
 
-    void fillData(char *buffer);
+    void setByteArray(char *buffer);
+    char* getByteArray();
 };
 
 #endif // EVENT_H

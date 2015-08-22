@@ -2,12 +2,11 @@
 
 ServerTCP::ServerTCP()
 {
-    is_running = false;
 }
 
 ServerTCP::~ServerTCP()
 {
-
+    close();
 }
 
 bool ServerTCP::init()
@@ -58,39 +57,37 @@ bool ServerTCP::init()
     return true;
 }
 
+void ServerTCP::close()
+{
+    closeSocket(0);
+}
+
 void ServerTCP::run()
 {
-    is_running = true;
-    while(is_running)
+    if(sockets.size() > 0)
     {
-        if(sockets.size() > 0)
+        unsigned event_index = WSAWaitForMultipleEvents(sockets.size(), &sockets_event[0], false, wait_for_event_time, false); //czekaj na jakiś event
+        if(event_index != WSA_WAIT_FAILED && event_index != WSA_WAIT_TIMEOUT)
         {
-            unsigned event_index = WSAWaitForMultipleEvents(sockets.size(), &sockets_event[0], false, 100, false); //czekaj na jakiś event
-            if(event_index == WSA_WAIT_FAILED || event_index == WSA_WAIT_TIMEOUT)
-                continue;
-            else
+            WSANETWORKEVENTS network_events;
+            if(WSAEnumNetworkEvents(sockets[event_index], sockets_event[event_index], &network_events) == SOCKET_ERROR)
             {
-                WSANETWORKEVENTS network_events;
-                if(WSAEnumNetworkEvents(sockets[event_index], sockets_event[event_index], &network_events) == SOCKET_ERROR)
-                {
 
-                }
-                else if(network_events.lNetworkEvents & FD_ACCEPT)
-                {
-                    acceptSocket();
-                }
-                else if(network_events.lNetworkEvents & FD_READ)
-                {
-                    cout << " Cos idzie " <<endl;
-                    readSocket(event_index);
-                }
-                else if(network_events.lNetworkEvents & FD_CLOSE)
-                {
-                    closeSocket(event_index);
-                }
+            }
+            else if(network_events.lNetworkEvents & FD_ACCEPT)
+            {
+                acceptSocket();
+            }
+            else if(network_events.lNetworkEvents & FD_READ)
+            {
+                cout << " Cos idzie " <<endl;
+                readSocket(event_index);
+            }
+            else if(network_events.lNetworkEvents & FD_CLOSE)
+            {
+                closeSocket(event_index);
             }
         }
-
     }
 }
 
@@ -136,56 +133,40 @@ void ServerTCP::readSocket(int socket_index)
     {
         int index = 0;
         char event_type = buffer[index++];
+        Event* event = nullptr;
+        switch(event_type)
+        {
+        case COLLISION_EVENT:
+            event = new CollisionEvent;
+            break;
+        case MOVE_EVENT:
+            event = new MoveEvent;
+            break;
+        case FIRE_EVENT:
+            event = new FireEvent;
+            break;
+        case GENERATE_EVENT:
+            event = new GenerateEvent;
+            break;
+        case BONUS_EVENT:
+            event = new BonusEvent;
+            break;
+        }
+        addEvent(event, buffer, size, socket_index);
+    }
+}
 
-        if(event_type == COLLISION_EVENT)
-        {
-            CollisionEvent ce;
-            if(ce.event_datagram_size == size)
-            {
-                ce.fillData(buffer + 1);
-                events.insert(pair<SOCKET, Event>(sockets[socket_index], ce));
-                cout << ce << endl;
-            }
-            else
-                cout << "Zly rozmiar collision " << size << endl;
-        }
-        else if(event_type == MOVE_EVENT)
-        {
-            MoveEvent me;
-            if(me.event_datagram_size == size)
-            {
-                me.fillData(buffer + 1);
-                events.insert( pair<SOCKET, Event>(sockets[socket_index], me));
-            }
-            else
-                cout << "Zly rozmiar MoveEvent " << size << endl;
-        }
-        else if(event_type == FIRE_EVENT)
-        {
-            FireEvent fe;
-            if(fe.event_datagram_size == size)
-            {
-                fe.fillData(buffer + 1);
-            }
-            else
-                cout << "Zly rozmiar FireEvent " << size << endl;
-        }
-        else if(event_type == GENERATE_EVENT)
-        {
-            GenerateEvent ge();
-
-        }
-        else if(event_type == BONUS_EVENT)
-        {
-            BonusEvent be;
-            if(be.event_datagram_size == size)
-            {
-                be.fillData(buffer + 1);
-            }
-            else
-                cout << "Zly rozmiar BonusEvent " << size << endl;
-        }
+void ServerTCP::addEvent(Event *ev, char *data, int size, int socket_index)
+{
+    if(ev == nullptr) return;
+    if(ev->event_datagram_size == size)
+    {
+        ev->setByteArray(data);
+        events.insert( pair<SOCKET, Event*>(sockets[socket_index], ev));
     }
     else
-        cout << "Zly rozmiar " << size << endl;
+    {
+        cout << "Zly rozmiar eventu " << size << endl;
+    }
 }
+

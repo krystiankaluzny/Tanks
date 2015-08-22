@@ -20,20 +20,20 @@ public:
     /**
      * Domyślny konstruktor - umożliwia grę dla jednego gracza
      */
-    Battle();
+    Battle(Game* parent);
     /**
      * Konstruktor pozwalający podać początkową liczbę graczy. Liczba graczy może być równa 1 lub 2, każda inna wartość spowoduje uruchomienie gry dla jednego gracza.
      * Konstruktor jest wywoływany w @a Menu::nextState.
      * @param players_count - liczba graczy 1 lub 2
      */
-    Battle(int players_count);
+    Battle(Game* parent, int players_count);
     /**
      * Konstruktor przyjmujący już isteniejących graczy.
      * Wywoływany w @a Score::nextState
      * @param players - kontener z graczami
      * @param previous_level - zmienna przechowująca numer poprzedniego poziomu
      */
-    Battle(std::vector<Player*> players, int previous_level);
+    Battle(Game* parent, std::vector<Player*> players, int previous_level);
 
     ~Battle();
     /**

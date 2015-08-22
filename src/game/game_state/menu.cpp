@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-Menu::Menu()
+Menu::Menu(Game *parent) : GameState(parent)
 {
     m_menu_texts.push_back("1 Player");
     m_menu_texts.push_back("2 Players");
@@ -109,17 +109,17 @@ GameState *Menu::nextState()
         return nullptr;
     else if(m_menu_index == 0)
     {
-        Battle* g = new Battle(1);
+        Battle* g = new Battle(parent, 1);
         return g;
     }
     else if(m_menu_index == 1)
     {
-        Battle* g = new Battle(2);
+        Battle* g = new Battle(parent, 2);
         return g;
     }
     else if(m_menu_index == 2)
     {
-        Server* s = new Server();
+        Server* s = new Server(parent);
         return s;
     }
     return nullptr;

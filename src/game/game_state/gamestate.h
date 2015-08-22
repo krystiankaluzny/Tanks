@@ -4,6 +4,9 @@
 #include <SDL2/SDL_events.h>
 #include <string>
 
+#include "../../event/event.h"
+
+class Game;
 /**
  * @brief
  * Klasa jest interfejsem, po którym dziedziczą klasy @a Game, @a Menu, @a Scores
@@ -11,6 +14,11 @@
 class GameState
 {
 public:
+    GameState(Game* parent)
+    {
+        this->parent = parent;
+    }
+
     virtual ~GameState() {}
 
     /**
@@ -37,5 +45,13 @@ public:
      * @return następny stan gry
      */
     virtual GameState* nextState() = 0;
+
+protected:
+    Game* parent;
+
+    void saveEvent(Event* event)
+    {
+//        parent->
+    }
 };
 #endif // APPSTATE_H

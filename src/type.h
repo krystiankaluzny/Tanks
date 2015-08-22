@@ -68,4 +68,11 @@ enum Direction
     D_LEFT = 3
 };
 
+enum NetworkState
+{
+    SERVER,
+    CLIENT,
+    NONE
+};
+
 #endif // TYPE_H

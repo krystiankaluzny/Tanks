@@ -13,11 +13,6 @@ Event::Event(EventType type, int data_size) :
 {
 }
 
-void Event::fillData(char *buffer)
-{
-
-}
-
 std::ostream& operator<<(std::ostream &out, Event &e)
 {
     return out << "EventType: " << e.type << " FrameNum: " << e.frame_number.l_value << " Size: " << e.event_datagram_size;
@@ -31,9 +26,9 @@ CollisionEvent::CollisionEvent() :
 {
 }
 
-void CollisionEvent::fillData(char *buffer)
+void CollisionEvent::setByteArray(char *buffer)
 {
-    int index = 0;
+    int index = 1;
     frame_number.c_value[0] = buffer[index++];
     frame_number.c_value[1] = buffer[index++];
     frame_number.c_value[2] = buffer[index++];
@@ -41,15 +36,41 @@ void CollisionEvent::fillData(char *buffer)
 
     collision_type = static_cast<CollisionEvent::CollisionType>(buffer[index++]);
 
-    id_object1.c_value[0] = buffer[index++];
     id_object1.c_value[1] = buffer[index++];
     id_object1.c_value[2] = buffer[index++];
+    id_object1.c_value[0] = buffer[index++];
     id_object1.c_value[3] = buffer[index++];
 
-    id_object2.c_value[0] = buffer[index++];
     id_object2.c_value[1] = buffer[index++];
     id_object2.c_value[2] = buffer[index++];
     id_object2.c_value[3] = buffer[index++];
+    id_object2.c_value[0] = buffer[index++];
+}
+
+char *CollisionEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    int index = 0;
+
+    buffer[index++] = type;
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = collision_type;
+
+    buffer[index++] = id_object1.c_value[0];
+    buffer[index++] = id_object1.c_value[1];
+    buffer[index++] = id_object1.c_value[2];
+    buffer[index++] = id_object1.c_value[3];
+
+    buffer[index++] = id_object2.c_value[0];
+    buffer[index++] = id_object2.c_value[1];
+    buffer[index++] = id_object2.c_value[2];
+    buffer[index++] = id_object2.c_value[3];
+
+    return buffer;
 }
 
 std::ostream& operator<<(std::ostream &out, CollisionEvent &e)
@@ -66,9 +87,10 @@ MoveEvent::MoveEvent() :
 {
 }
 
-void MoveEvent::fillData(char *buffer)
+void MoveEvent::setByteArray(char *buffer)
 {
-    int index = 0;
+    int index = 1;
+
     frame_number.c_value[0] = buffer[index++];
     frame_number.c_value[1] = buffer[index++];
     frame_number.c_value[2] = buffer[index++];
@@ -82,13 +104,31 @@ void MoveEvent::fillData(char *buffer)
     id_tank.c_value[3] = buffer[index++];
 }
 
+char *MoveEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    int index = 0;
+    buffer[index++] = type;
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = move_direction = static_cast<MoveEvent::Direction>(buffer[index++]);
+
+    buffer[index++] = id_tank.c_value[0];
+    buffer[index++] = id_tank.c_value[1];
+    buffer[index++] = id_tank.c_value[2];
+    buffer[index++] = id_tank.c_value[3];
+}
+
 //================================================
 
 FireEvent::FireEvent() : Event(FIRE_EVENT, 9)
 {
 }
 
-void FireEvent::fillData(char *buffer)
+void FireEvent::setByteArray(char *buffer)
 {
     int index = 0;
     frame_number.c_value[0] = buffer[index++];
@@ -96,10 +136,33 @@ void FireEvent::fillData(char *buffer)
     frame_number.c_value[2] = buffer[index++];
     frame_number.c_value[3] = buffer[index++];
 
+    index++;//nie ma sepc type
+
     id_tank.c_value[0] = buffer[index++];
     id_tank.c_value[1] = buffer[index++];
     id_tank.c_value[2] = buffer[index++];
     id_tank.c_value[3] = buffer[index++];
+}
+
+char *FireEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    int index = 0;
+    buffer[index++] = type;
+
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = 0;
+
+    buffer[index++] = id_tank.c_value[0];
+    buffer[index++] = id_tank.c_value[1];
+    buffer[index++] = id_tank.c_value[2];
+    buffer[index++] = id_tank.c_value[3];
+
+    return buffer;
 }
 
 //================================================
@@ -108,10 +171,19 @@ GenerateEvent::GenerateEvent() : Event(GENERATE_EVENT, 10), object_type(NONE)
 {
 }
 
-void GenerateEvent::fillData(char *buffer)
+void GenerateEvent::setByteArray(char *buffer)
 {
     int index = 0;
     //TODO uzupełnić
+}
+
+char *GenerateEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    int index = 0;
+    buffer[index++] = type;
+
+    return buffer;
 }
 
 //================================================
@@ -120,7 +192,7 @@ BonusEvent::BonusEvent() : Event(BONUS_EVENT, 10), bonus_type(NONE)
 {
 }
 
-void BonusEvent::fillData(char *buffer)
+void BonusEvent::setByteArray(char *buffer)
 {
     int index = 0;
     frame_number.c_value[0] = buffer[index++];
@@ -134,4 +206,25 @@ void BonusEvent::fillData(char *buffer)
     id_player.c_value[1] = buffer[index++];
     id_player.c_value[2] = buffer[index++];
     id_player.c_value[3] = buffer[index++];
+}
+
+char *BonusEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    int index = 0;
+    buffer[index++] = type;
+
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = bonus_type;
+
+    buffer[index++] = id_player.c_value[0];
+    buffer[index++] = id_player.c_value[1];
+    buffer[index++] = id_player.c_value[2];
+    buffer[index++] = id_player.c_value[3];
+
+    return buffer;
 }

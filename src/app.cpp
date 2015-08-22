@@ -2,16 +2,23 @@
 #include "game/engine/engine.h"
 #include "appthread.h"
 #include "game/game.h"
+#include "network/network.h"
+#include "shareddata.h"
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_thread.h>
+#include <process.h>
+#include <windows.h>
+#include <vector>
 
-int threadFunction(void* ptr)
+
+void threadFunction(void* ptr)
 {
     AppThread* thread = reinterpret_cast<AppThread*>(ptr);
     thread->run();
-    return 0;
+
+    _endthread();
 }
 
 App::App()
@@ -21,18 +28,24 @@ App::App()
 
 void App::run()
 {
-    if(initSDL())
-    {
-        Engine::getEngine().initModules();
+        std::vector < HANDLE > threads;
 
-        Game* game = new Game();
-        SDL_Thread* game_thread = SDL_CreateThread(threadFunction, "Game", game);
+        CRITICAL_SECTION critical_section;
+        InitializeCriticalSection(&critical_section);
 
-        SDL_WaitThread(game_thread, nullptr);
+        SharedData shared_data;
+        shared_data.network_state = NetworkState::SERVER;
 
-        Engine::getEngine().destroyModules();
-        quitSDL();
-    }
+        Game* game = new Game(&shared_data, &critical_section);
+        Network* server = new Network(&shared_data, &critical_section);
+
+        HANDLE game_thread = (HANDLE) _beginthread( threadFunction, 0, game );
+        HANDLE network_thread = (HANDLE) _beginthread( threadFunction, 0, server );
+        threads.push_back(game_thread);
+        threads.push_back(network_thread);
+
+        WaitForMultipleObjects(threads.size(), &threads[0], TRUE, INFINITE);
+        DeleteCriticalSection(&critical_section );
 }
 
 bool App::initSDL()

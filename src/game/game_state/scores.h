@@ -13,14 +13,14 @@
 class Scores : public GameState
 {
 public:
-    Scores();
+    Scores(Game* parent);
     /**
      * Konstruktor wywoływany przez Game po zakończeniu rozgrywki.
      * @param players - kontener z wszystkimi graczami, którzy brali udział w rozgrywce
      * @param level - numer ostatniego poziomu
      * @param game_over - zmianan mówiąca czy ostatni poziom został przegrany
      */
-    Scores(std::vector<Player*> players, int level, bool game_over);
+    Scores(Game* parent, std::vector<Player*> players, int level, bool game_over);
     /**
      * Funkcja zwraca @a true po określonym czasie wyświetlania ekranu punktów.
      * @return @a true lub @a false

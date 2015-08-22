@@ -13,7 +13,7 @@
 class Menu : public GameState
 {
 public:
-    Menu();
+    Menu(Game* parent);
     ~Menu();
     /**
      * Funkcja sprawdzająca czy należy zakończyć stan menu i przejści do kolejnego stanu gry.

@@ -7,8 +7,14 @@
 #include <ctime>
 #include <iostream>
 #include <stdlib.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_thread.h>
+#include <windows.h>
 
-Game::Game()
+Game::Game(SharedData *shared_data, CRITICAL_SECTION *critical_section) :
+    AppThread(shared_data, critical_section)
 {
     m_window = nullptr;
 }
@@ -21,21 +27,71 @@ Game::~Game()
 
 void Game::run()
 {
-    is_running = true;
+    if(initSDL())
+    {
+        Engine::getEngine().initModules();
 
-    //utworzenie okna
-    m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                AppConfig::windows_rect.w, AppConfig::windows_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        is_running = true;
 
-    if(m_window == nullptr) return;
+        //utworzenie okna
+        m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                    AppConfig::windows_rect.w, AppConfig::windows_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
-    Engine::getEngine().getRenderer()->loadTexture(m_window);
-    Engine::getEngine().getRenderer()->loadFont();
+        if(m_window == nullptr) return;
 
-    srand(time(NULL)); //inicjowanie generatora pseudolosowego
+        Engine::getEngine().getRenderer()->loadTexture(m_window);
+        Engine::getEngine().getRenderer()->loadFont();
 
-    m_game_state = new Menu;
+        srand(time(NULL)); //inicjowanie generatora pseudolosowego
 
+        m_game_state = new Menu(this);
+
+        //========pętla główna========
+        mainLoop();
+        //========pętla główna========
+
+        EnterCriticalSection(critical_section);
+            shared_data->run_app = false;
+        LeaveCriticalSection(critical_section);
+
+        SDL_DestroyWindow(m_window);
+        m_window = nullptr;
+
+        Engine::getEngine().destroyModules();
+        quitSDL();
+    }
+}
+
+void Game::eventProces()
+{
+    SDL_Event event;
+    while(SDL_PollEvent(&event))
+    {
+        if(event.type == SDL_QUIT)
+        {
+            is_running = false;
+        }
+        else if(event.type == SDL_WINDOWEVENT)
+        {
+            if(event.window.event == SDL_WINDOWEVENT_RESIZED ||
+               event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
+               event.window.event == SDL_WINDOWEVENT_RESTORED ||
+               event.window.event == SDL_WINDOWEVENT_SHOWN)
+            {
+
+                AppConfig::windows_rect.w = event.window.data1;
+                AppConfig::windows_rect.h = event.window.data2;
+                Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_rect.w / (AppConfig::map_rect.w + AppConfig::status_rect.w),
+                                                            (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
+            }
+        }
+
+        m_game_state->eventProcess(&event);
+    }
+}
+
+void Game::mainLoop()
+{
     double FPS;
     Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 15;
     time1 = SDL_GetTicks();
@@ -70,36 +126,22 @@ void Game::run()
             else if(delay > 0) delay--;
             fps_time = 0; fps_count = 0;
         }
-    }
 
-    SDL_DestroyWindow(m_window);
-    m_window = nullptr;
+        Sleep( 0 ); // reszta czasu dla drugiego wątku
+    }
 }
 
-void Game::eventProces()
+bool Game::initSDL()
 {
-    SDL_Event event;
-    while(SDL_PollEvent(&event))
-    {
-        if(event.type == SDL_QUIT)
-        {
-            is_running = false;
-        }
-        else if(event.type == SDL_WINDOWEVENT)
-        {
-            if(event.window.event == SDL_WINDOWEVENT_RESIZED ||
-               event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
-               event.window.event == SDL_WINDOWEVENT_RESTORED ||
-               event.window.event == SDL_WINDOWEVENT_SHOWN)
-            {
+    if(SDL_Init(SDL_INIT_VIDEO) != 0) return false;
+    if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return false;
+    if(TTF_Init() == -1) return false;
+    return true;
+}
 
-                AppConfig::windows_rect.w = event.window.data1;
-                AppConfig::windows_rect.h = event.window.data2;
-                Engine::getEngine().getRenderer()->setScale((float)AppConfig::windows_rect.w / (AppConfig::map_rect.w + AppConfig::status_rect.w),
-                                                            (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
-            }
-        }
-
-        m_game_state->eventProcess(&event);
-    }
+void Game::quitSDL()
+{
+    TTF_Quit();
+    IMG_Quit();
+    SDL_Quit();
 }

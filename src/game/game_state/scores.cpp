@@ -4,7 +4,7 @@
 #include "battle.h"
 #include "menu.h"
 
-Scores::Scores()
+Scores::Scores(Game *parent) : GameState(parent)
 {
     m_show_time = 0;
     m_level = 0;
@@ -14,7 +14,7 @@ Scores::Scores()
     m_max_score = 0;
 }
 
-Scores::Scores(std::vector<Player *> players, int level, bool game_over)
+Scores::Scores(Game *parent, std::vector<Player *> players, int level, bool game_over) : GameState(parent)
 {
     m_players = players;
     m_level = level;
@@ -115,9 +115,9 @@ GameState *Scores::nextState()
 {
     if(m_game_over)
     {
-        Menu* m = new Menu;
+        Menu* m = new Menu(parent);
         return m;
     }
-    Battle* g = new Battle(m_players, m_level);
+    Battle* g = new Battle(parent, m_players, m_level);
     return g;
 }
