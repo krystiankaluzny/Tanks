@@ -1,8 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "game_state/gamestate.h"
+#include <SDL2/SDL.h>
 #include "../appthread.h"
+
+class GameState;
 
 class Game : public AppThread
 {

@@ -8,6 +8,8 @@
 Client::Client(Game *parent) : GameState(parent)
 {
     m_finished = false;
+
+    setNetworkState(NetworkState::CLIENT);
 }
 
 bool Client::finished() const
@@ -49,6 +51,8 @@ void Client::eventProcess(SDL_Event *ev)
 
 GameState *Client::nextState()
 {
+    setNetworkState(NetworkState::NONE);
     return new Menu(parent);
 }
+
 

@@ -33,7 +33,7 @@ void App::run()
         InitializeCriticalSection(&critical_section);       //inicjalizacja
 
         SharedData shared_data;                             //współdzielone dane
-        shared_data.network_state = NetworkState::SERVER;   //włączamy serwer //docelowo NONE
+//        shared_data.network_state = NetworkState::SERVER;   //włączamy serwer //docelowo NONE
 
         Game* game = new Game(&shared_data, &critical_section);             //instancja gry
         Network* server = new Network(&shared_data, &critical_section);     //instancja sieci

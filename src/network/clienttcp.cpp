@@ -76,53 +76,46 @@ void ClientTCP::run()
 
     char buf[15];
     int len = 0;
-    for(int i = 0 ; i < 1000; i++)
-    {
-        if(sockets.size() > 0)
-        {
-            cout << "DU" << endl;
-            Sleep(50);
+    Sleep(50);
 //            sprintf(buf,"%d\r\n",i);
-            buf[0] = 0;
-            buf[1] = 3;
+    buf[0] = 0;
+    buf[1] = 3;
 
-            buf[2] = 20;
-            buf[3] = 20;
-            buf[4] = 20;
-            buf[5] = 20;
+    buf[2] = 20;
+    buf[3] = 20;
+    buf[4] = 20;
+    buf[5] = 20;
 
-            buf[6] = 0;
-            buf[7] = 20;
-            buf[8] = 20;
-            buf[9] = 20;
+    buf[6] = 0;
+    buf[7] = 20;
+    buf[8] = 20;
+    buf[9] = 20;
 
-            buf[10] = 0;
-            buf[11] = 0;
-            buf[12] = 20;
-            buf[13] = 20;
+    buf[10] = 0;
+    buf[11] = 0;
+    buf[12] = 20;
+    buf[13] = 20;
 
-            buf[14] = 0;
+    buf[14] = 0;
 
-            int size = send(sockets[0], buf , 14, 0);
-            cout << "SEND " << size << endl;
+    int size = send(sockets[0], buf , 14, 0);
+    cout << "SEND " << size << endl;
 
-            unsigned event_index = WSAWaitForMultipleEvents(sockets.size(), &sockets_event[0], false, wait_for_event_time, false);
-            if(event_index != WSA_WAIT_FAILED && event_index != WSA_WAIT_TIMEOUT)
-            {
-                WSANETWORKEVENTS network_events;
-                if(WSAEnumNetworkEvents(sockets[event_index], sockets_event[event_index], &network_events) == SOCKET_ERROR);
-                else if(network_events.lNetworkEvents & FD_READ)
-                {
-                    readData();
-                }
-                else if(network_events.lNetworkEvents & FD_CLOSE)
-                {
-                    close();
-                    EnterCriticalSection(parent->critical_section);
-                        parent->shared_data->network_state = NetworkState::NONE;
-                    LeaveCriticalSection(parent->critical_section);
-                }
-            }
+    unsigned event_index = WSAWaitForMultipleEvents(sockets.size(), &sockets_event[0], false, wait_for_event_time, false);
+    if(event_index != WSA_WAIT_FAILED && event_index != WSA_WAIT_TIMEOUT)
+    {
+        WSANETWORKEVENTS network_events;
+        if(WSAEnumNetworkEvents(sockets[event_index], sockets_event[event_index], &network_events) == SOCKET_ERROR);
+        else if(network_events.lNetworkEvents & FD_READ)
+        {
+            readData();
+        }
+        else if(network_events.lNetworkEvents & FD_CLOSE)
+        {
+            close();
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->network_state = NetworkState::NONE;
+            LeaveCriticalSection(parent->critical_section);
         }
     }
 }

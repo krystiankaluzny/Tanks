@@ -30,27 +30,21 @@ void Network::run()
             }
             else if(state == NetworkState::CLIENT)
             {
-                //close client
+                client.close();
             }
+
+            state = new_state;
 
             if(new_state == NetworkState::SERVER)
             {
-                if(server.init())
-                {
-                    state = new_state;
-                }
-                else
+                if(!server.init())
                 {
                     state = NetworkState::NONE;
                 }
             }
             else if(new_state == NetworkState::CLIENT)
             {
-                if(client.init())
-                {
-                    state = new_state;
-                }
-                else
+                if(!client.init())
                 {
                     state = NetworkState::NONE;
                 }

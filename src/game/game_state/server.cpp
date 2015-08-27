@@ -9,6 +9,7 @@ Server::Server(Game *parent) : GameState(parent)
 {
     m_finished = false;
     m_get_names_time = 0;
+    setNetworkState(NetworkState::SERVER);
 }
 
 
@@ -81,6 +82,7 @@ bool Server::finished() const
 
 GameState *Server::nextState()
 {
+    setNetworkState(NetworkState::NONE);
     return new Menu(parent);
 }
 

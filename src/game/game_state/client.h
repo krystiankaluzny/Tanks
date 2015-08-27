@@ -32,6 +32,7 @@ public:
      * @return wskaźnik na następny stan
      */
     GameState* nextState();
+
 };
 
 #endif // CLIENT_H

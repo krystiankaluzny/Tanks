@@ -37,6 +37,8 @@ public:
     GameState* nextState();
 
 private:
+    void startClientTcp();
+
     void getNames();
 
     std::map<SOCKET, std::string> m_player_name;

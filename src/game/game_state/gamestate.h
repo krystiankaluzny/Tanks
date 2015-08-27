@@ -5,8 +5,9 @@
 #include <string>
 
 #include "../../event/event.h"
-
-class Game;
+#include "../../type.h"
+#include "../game.h"
+//class Game;
 /**
  * @brief
  * Klasa jest interfejsem, po którym dziedziczą klasy @a Game, @a Menu, @a Scores
@@ -49,6 +50,13 @@ public:
 protected:
     bool m_finished;
     Game* parent;
+
+    void setNetworkState(NetworkState state)
+    {
+        EnterCriticalSection(parent->critical_section);
+            parent->shared_data->network_state = state;
+        LeaveCriticalSection(parent->critical_section);
+    }
 
     void saveEvent(Event* event)
     {

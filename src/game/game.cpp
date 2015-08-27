@@ -3,11 +3,12 @@
 #include "engine/engine.h"
 #include "game_state/battle.h"
 #include "game_state/menu.h"
+#include "game_state/gamestate.h"
 
 #include <ctime>
 #include <iostream>
 #include <stdlib.h>
-#include <SDL2/SDL.h>
+
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_thread.h>
