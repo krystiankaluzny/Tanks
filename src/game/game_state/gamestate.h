@@ -47,6 +47,7 @@ public:
     virtual GameState* nextState() = 0;
 
 protected:
+    bool m_finished;
     Game* parent;
 
     void saveEvent(Event* event)

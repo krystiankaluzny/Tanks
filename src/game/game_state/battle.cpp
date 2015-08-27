@@ -147,7 +147,7 @@ void Battle::update(Uint32 dt)
     }
     else
     {
-        if(m_pause) return;
+        if(m_pause) return;  // TODO z konfiga
 
         std::vector<Player*>::iterator pl1, pl2;
         std::vector<Enemy*>::iterator en1, en2;
@@ -601,6 +601,7 @@ void Battle::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
 
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
     {
+        //TODO emit event collision
         tank1->collide(intersect_rect);
         tank2->collide(intersect_rect);
     }
@@ -661,6 +662,7 @@ void Battle::checkCollisionBulletWithLevel(Bullet* bullet)
 
             if(intersect_rect.w > 0 && intersect_rect.h > 0)
             {
+                //TODO emit bullet collision
                 if(bullet->increased_damage)
                 {
                     delete o;

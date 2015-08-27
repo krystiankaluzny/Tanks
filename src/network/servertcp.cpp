@@ -113,6 +113,9 @@ void ServerTCP::acceptSocket()
     }
     sockets.push_back(client_socket);
     sockets_event.push_back(client_event);
+
+    setPlayerName(client_socket, "Nowy");
+
     cout << "Otwarto socket" << endl;
 }
 
@@ -126,6 +129,7 @@ void ServerTCP::closeSocket(int socket_index)
     WSACloseEvent(sockets_event[socket_index]);
     sockets_event.erase(sockets_event.begin() + socket_index);
 
+    removePlayerName(sockets[socket_index]);
     closesocket(sockets[socket_index]);
     sockets.erase(sockets.begin() + socket_index);
     cout << "Zamknieto socket" << endl;
@@ -143,20 +147,8 @@ void ServerTCP::readSocket(int socket_index)
         Event* event = nullptr;
         switch(event_type)
         {
-        case COLLISION_EVENT:
-            event = new CollisionEvent;
-            break;
-        case MOVE_EVENT:
-            event = new MoveEvent;
-            break;
-        case FIRE_EVENT:
-            event = new FireEvent;
-            break;
-        case GENERATE_EVENT:
+        case GENERATE_EVENT_TYPE:
             event = new GenerateEvent;
-            break;
-        case BONUS_EVENT:
-            event = new BonusEvent;
             break;
         }
         addEvent(event, buffer, size, socket_index);

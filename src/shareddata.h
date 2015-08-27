@@ -4,6 +4,11 @@
 #include "event/eventstore.h"
 #include "type.h"
 
+#include <map>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <stdlib.h>
+
 class SharedData
 {
 public:
@@ -36,6 +41,8 @@ public:
      * Tylko wątek gry może zmieniać zmienną.
      */
     unsigned long current_frame_number;
+
+    std::map<SOCKET, std::string> player_name;
 };
 
 #endif // SHAREDDATA_H

@@ -5,12 +5,9 @@
 
 enum EventType
 {
-    NONE_EVENT,
-    COLLISION_EVENT,
-    MOVE_EVENT,
-    FIRE_EVENT,
-    GENERATE_EVENT,
-    BONUS_EVENT
+    NONE_EVENT_TYPE,
+    KEY_EVENT_TYPE,
+    GENERATE_EVENT_TYPE
 };
 
 union LongData
@@ -20,7 +17,15 @@ union LongData
     LongData() : l_value(0) {}
 };
 
-//
+union IntData
+{
+    unsigned int i_value;
+    char c_value[2]; //c_value[0] - najmłodszy bajt i_value
+    IntData() : i_value(0) {}
+};
+
+
+
 class Event
 {
 public:
@@ -37,59 +42,23 @@ public:
     friend std::ostream& operator<< (std::ostream& out, Event& e);
 };
 
-class CollisionEvent : public Event
+class KeyEvent : public Event
 {
 public:
-    enum CollisionType
-    {
-        NONE,
-        TANK_TANK,
-        BULLET_LEVEL,
-        BULLET_BUSH,
-        BULLET_ENEMY,
-        BULLET_BULLET,
-        BULLET_PLAYER,
-        PLAYER_BONUS,
-        TANK_LEVEL
-    };
-
-    CollisionEvent();
-
-    CollisionType collision_type;
-    LongData id_object1;
-    LongData id_object2;
-
-    void setByteArray(char *buffer);
-    char* getByteArray();
-
-    friend std::ostream& operator<< (std::ostream& out, CollisionEvent& e);
-};
-
-class MoveEvent : public Event
-{
-public:
-    enum Direction
+    enum KeyType
     {
         NONE,
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
+
+        FIRE,
+        PAUSE
     };
-    MoveEvent();
+    KeyEvent();
 
-    Direction move_direction;
-    LongData id_tank;
-
-    void setByteArray(char *buffer);
-    char* getByteArray();
-};
-
-class FireEvent : public Event
-{
-public:
-    FireEvent();
-
+    KeyType key_type;
     LongData id_tank;
 
     void setByteArray(char *buffer);
@@ -99,49 +68,16 @@ public:
 class GenerateEvent : public Event
 {
 public:
-    enum GenerateObject
-    {
-        NONE,
-        BONUS,
-        ENEMY
-    };
-
     GenerateEvent();
 
-    GenerateObject object_type;
-    LongData generate_seed;
+    LongData seed1;
+    LongData seed2;
+    LongData seed3;
 
     void setByteArray(char *buffer);
     char* getByteArray();
 };
 
-class BonusEvent : public Event
-{
-public:
-    enum BonusEventType
-    {
-        NONE,
-        GRANATE_START,
-        HELMET_START,
-        HELMET_END,
-        CLOCK_START,
-        CLOCK_END,
-        SHOVEL_START,
-        SHOVEL_END,
-        TANK_START,
-        STAR_START,
-        GUN_START,
-        BOAT_START,
-        BOAT_END
-    };
 
-    BonusEvent();
-
-    BonusEventType bonus_type;
-    LongData id_player;
-
-    void setByteArray(char *buffer);
-    char* getByteArray();
-};
-
+//TODO next stage
 #endif // EVENT_H

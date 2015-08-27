@@ -12,10 +12,6 @@ class App
 public:
     App();
     void run();
-
-private:
-    bool initSDL();
-    void quitSDL();
 };
 
 #endif // APP_H

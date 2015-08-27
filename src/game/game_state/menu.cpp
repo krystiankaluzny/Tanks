@@ -5,6 +5,7 @@
 #include "../../type.h"
 #include "../game_state/battle.h"
 #include "../game_state/server.h"
+#include "client.h"
 
 #include <iostream>
 
@@ -13,6 +14,7 @@ Menu::Menu(Game *parent) : GameState(parent)
     m_menu_texts.push_back("1 Player");
     m_menu_texts.push_back("2 Players");
     m_menu_texts.push_back("Create Server");
+    m_menu_texts.push_back("Join game");
     m_menu_texts.push_back("Exit");
     m_menu_index = 0;
     m_tank_pointer = new Player(0, 0 , ST_PLAYER_1);
@@ -121,6 +123,10 @@ GameState *Menu::nextState()
     {
         Server* s = new Server(parent);
         return s;
+    }
+    else if(m_menu_index == 3)
+    {
+        return new Client(parent);
     }
     return nullptr;
 }

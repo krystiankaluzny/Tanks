@@ -23,42 +23,27 @@ void threadFunction(void* ptr)
 
 App::App()
 {
-
 }
 
 void App::run()
 {
         std::vector < HANDLE > threads;
 
-        CRITICAL_SECTION critical_section;
-        InitializeCriticalSection(&critical_section);
+        CRITICAL_SECTION critical_section;                  //instancja sekcji krytycznej
+        InitializeCriticalSection(&critical_section);       //inicjalizacja
 
-        SharedData shared_data;
-        shared_data.network_state = NetworkState::SERVER;
+        SharedData shared_data;                             //współdzielone dane
+        shared_data.network_state = NetworkState::SERVER;   //włączamy serwer //docelowo NONE
 
-        Game* game = new Game(&shared_data, &critical_section);
-        Network* server = new Network(&shared_data, &critical_section);
+        Game* game = new Game(&shared_data, &critical_section);             //instancja gry
+        Network* server = new Network(&shared_data, &critical_section);     //instancja sieci
 
-        HANDLE game_thread = (HANDLE) _beginthread( threadFunction, 0, game );
-        HANDLE network_thread = (HANDLE) _beginthread( threadFunction, 0, server );
+        HANDLE game_thread = (HANDLE) _beginthread(threadFunction, 0, game);      //odpalenie wątku gry
+        HANDLE network_thread = (HANDLE) _beginthread(threadFunction, 0, server); //odpalenie wątku sieci
         threads.push_back(game_thread);
         threads.push_back(network_thread);
 
-        WaitForMultipleObjects(threads.size(), &threads[0], TRUE, INFINITE);
-        DeleteCriticalSection(&critical_section );
+        WaitForMultipleObjects(threads.size(), &threads[0], TRUE, INFINITE);        //czekanie na zakończenie wątków
+        DeleteCriticalSection(&critical_section );                                  //usuwanie sekcji krytycznej
 }
 
-bool App::initSDL()
-{
-    if(SDL_Init(SDL_INIT_VIDEO) != 0) return false;
-    if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return false;
-    if(TTF_Init() == -1) return false;
-    return true;
-}
-
-void App::quitSDL()
-{
-    TTF_Quit();
-    IMG_Quit();
-    SDL_Quit();
-}

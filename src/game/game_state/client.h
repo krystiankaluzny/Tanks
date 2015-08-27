@@ -1,15 +1,12 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #include "gamestate.h"
-#include <vector>
-#include <map>
-#include <winsock2.h>
 
-class Server : public GameState
+class Client : public GameState
 {
 public:
-    Server(Game* parent);
+    Client(Game* parent);
 
     /**
      * Funkcja zwraca @a true po określonym czasie wyświetlania ekranu punktów.
@@ -35,12 +32,6 @@ public:
      * @return wskaźnik na następny stan
      */
     GameState* nextState();
-
-private:
-    void getNames();
-
-    std::map<SOCKET, std::string> m_player_name;
-    unsigned m_get_names_time;
 };
 
-#endif // SERVER_H
+#endif // CLIENT_H

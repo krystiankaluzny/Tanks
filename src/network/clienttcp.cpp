@@ -27,7 +27,7 @@ bool ClientTCP::init()
     }
 
     PHOSTENT host;
-    if((host=gethostbyname("tank"))==NULL)
+    if((host = gethostbyname("tank"))==NULL)
     {
         closesocket(client_socket);
         WSACleanup();
@@ -149,34 +149,7 @@ void ClientTCP::readData()
         LongData event_index, events_count;
         switch(event_type)
         {
-            case COLLISION_EVENT:
-            {
-                CollisionEvent* c_event = new CollisionEvent;
-                getLongData(event_index, events_count, buffer + c_event->event_datagram_size);
-                EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->received_events.addEvent(c_event, event_index.l_value, events_count.l_value);
-                LeaveCriticalSection(parent->critical_section);
-                break;
-            }
-            case MOVE_EVENT:
-            {
-                MoveEvent* m_event = new MoveEvent;
-                getLongData(event_index, events_count, buffer + m_event->event_datagram_size);
-                EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->received_events.addEvent(m_event, event_index.l_value, events_count.l_value);
-                LeaveCriticalSection(parent->critical_section);
-                break;
-            }
-            case FIRE_EVENT:
-            {
-                FireEvent* f_event = new FireEvent;
-                getLongData(event_index, events_count, buffer + f_event->event_datagram_size);
-                EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->received_events.addEvent(f_event, event_index.l_value, events_count.l_value);
-                LeaveCriticalSection(parent->critical_section);
-                break;
-            }
-            case GENERATE_EVENT:
+            case GENERATE_EVENT_TYPE:
             {
                 GenerateEvent* g_event = new GenerateEvent;
                 getLongData(event_index, events_count, buffer + g_event->event_datagram_size);
@@ -184,16 +157,7 @@ void ClientTCP::readData()
                     parent->shared_data->received_events.addEvent(g_event, event_index.l_value, events_count.l_value);
                 LeaveCriticalSection(parent->critical_section);
                 break;
-            }
-            case BONUS_EVENT:
-            {
-                BonusEvent* b_event = new BonusEvent;
-                getLongData(event_index, events_count, buffer + b_event->event_datagram_size);
-                EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->received_events.addEvent(b_event, event_index.l_value, events_count.l_value);
-                LeaveCriticalSection(parent->critical_section);
-                break;
-            }
+            } 
         }
     }
 }

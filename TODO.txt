@@ -1,0 +1,21 @@
+[Events]
+//CollisionEvent
+//Generowane przez klientów
+KeyEvent
+{
+	MoveEvent
+	FireEvent
+	pause ka¿dy mo¿e wys³¹æ i ka¿dy zdj¹æ - naj³atwiej
+}
+
+//Generowane z servera
+GenerateEvent ziarna do randomów wysy³ane w ka¿dym numerze ramki
+//BonusEvent
+next stage
+Current_frame od czasu do czasu, ¿eby okresliæ, czy przyspieszyæ, czy zwolniæ
+Speed up / slow dawn
+
+[Rrefactorization]
+Battle::m_pause do jakiegoœ konfiga
+
+

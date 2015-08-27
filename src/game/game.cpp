@@ -111,7 +111,7 @@ void Game::mainLoop()
 
         eventProces();
 
-        m_game_state->update(dt);
+        m_game_state->update(AppConfig::game_speed);
         m_game_state->draw();
 
         SDL_Delay(delay);

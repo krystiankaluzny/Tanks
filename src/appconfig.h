@@ -130,6 +130,15 @@ public:
      * Zmienna przechowuje informację o tym czy zostało włączone pokazywanie celów przeciwników.
      */
     static bool show_enemy_target;
+    /**
+     * Ogólna prędkość gry. Wartość ta jest przemnażana przez indywidualne prędkości obiektów.
+     */
+    static Uint32 game_speed;
+
+    /**
+     * Czas co jaki są pobierane nazwy graczy w trybie czekania na grę.
+     */
+    static unsigned get_player_names_time;
 };
 
 #endif // APPCONFIG_H
