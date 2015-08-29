@@ -8,7 +8,8 @@ enum EventType
     NONE_EVENT_TYPE,
     KEY_EVENT_TYPE,
     GENERATE_EVENT_TYPE,
-    PLAYER_ID_TYPE
+    PLAYER_ID_TYPE,
+    INIT_EVENT_TYPE
 };
 
 union LongData
@@ -40,6 +41,7 @@ public:
 
     virtual void setByteArray(char* buffer) = 0;
     virtual char *getByteArray() = 0;
+    int bufferSize();
     friend std::ostream& operator<< (std::ostream& out, Event& e);
 };
 
@@ -86,6 +88,17 @@ public:
 
     LongData player_id; //4 byte
     char name[15];      //15 byte
+    void setByteArray(char *buffer);
+    char* getByteArray();
+};
+
+class InitEvent : public Event
+{
+public:
+    InitEvent();
+
+    LongData current_frame;
+
     void setByteArray(char *buffer);
     char* getByteArray();
 };

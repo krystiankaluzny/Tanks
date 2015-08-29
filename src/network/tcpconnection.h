@@ -29,10 +29,11 @@ protected:
     void removePlayerName(SOCKET player_socket);
     void addEventFromBuffer(char* buffer, int size);
     void getLongData(LongData &event_index, LongData &events_count, char* buffer);
+    void printHex(char* data, int size);
 
     Network* parent;
 
-    const int wait_for_event_time = 100; //ms
+    const int wait_for_event_time = 10; //ms
     const u_short PORT = 3782;
 };
 

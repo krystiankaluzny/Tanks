@@ -98,12 +98,13 @@ void Game::networkEvent()
     if(!isNetworkRunning()) return;
 
     EventsWrapper events;
-    unsigned long current_frame;
+    unsigned long current_frame = getCurrentFrame();
     EnterCriticalSection(critical_section);
-        current_frame = shared_data->current_frame_number;
         events = shared_data->received_events.frame_events[current_frame];
     LeaveCriticalSection(critical_section);
 
+    if(events.player_id_events.size())
+        std::cout << events.player_id_events.size() << " " << current_frame << std::endl;
     m_game_state->eventProcess(events);
 }
 

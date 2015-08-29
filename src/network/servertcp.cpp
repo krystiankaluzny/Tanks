@@ -109,10 +109,25 @@ void ServerTCP::sendData()
         events = parent->shared_data->received_events.frame_events[current_frame + 3];
     LeaveCriticalSection(parent->critical_section);
 
+//    std::cout <<"send farme " << current_frame << std::endl;
+
     char* buf;
     Event* e;
     LongData evet_index;
     LongData evets_count;
+
+    auto frame_footer = [&](char* buf, int pos)
+    {
+        buf[pos] = evet_index.c_value[0];
+        buf[pos + 1] = evet_index.c_value[1];
+        buf[pos + 2] = evet_index.c_value[2];
+        buf[pos + 3] = evet_index.c_value[3];
+
+        buf[pos + 4] = evets_count.c_value[0];
+        buf[pos + 5] = evets_count.c_value[1];
+        buf[pos + 6] = evets_count.c_value[2];
+        buf[pos + 7] = evets_count.c_value[3];
+    };
 
     evets_count.l_value = events.generate_events.size();
     for(int i = 0; i < evets_count.l_value; ++i)
@@ -120,15 +135,9 @@ void ServerTCP::sendData()
         e = events.generate_events[i];
         evet_index.l_value = i;
         buf = e->getByteArray();
-        buf[e->event_datagram_size] = evet_index.c_value[0];
-        buf[e->event_datagram_size + 1] = evet_index.c_value[1];
-        buf[e->event_datagram_size + 2] = evet_index.c_value[2];
-        buf[e->event_datagram_size + 3] = evet_index.c_value[3];
 
-        buf[e->event_datagram_size + 4] = evets_count.c_value[0];
-        buf[e->event_datagram_size + 5] = evets_count.c_value[1];
-        buf[e->event_datagram_size + 6] = evets_count.c_value[2];
-        buf[e->event_datagram_size + 7] = evets_count.c_value[3];
+        frame_footer(buf, e->event_datagram_size);
+
         broadcast(buf, e->event_datagram_size);
         delete[] buf;
     }
@@ -136,19 +145,16 @@ void ServerTCP::sendData()
     evets_count.l_value = events.player_id_events.size();
     for(int i = 0; i < evets_count.l_value; ++i)
     {
+        std::cout <<"send " << i << std::endl;
+
         e = events.player_id_events[i];
         evet_index.l_value = i;
         buf = e->getByteArray();
-        buf[e->event_datagram_size] = evet_index.c_value[0];
-        buf[e->event_datagram_size + 1] = evet_index.c_value[1];
-        buf[e->event_datagram_size + 2] = evet_index.c_value[2];
-        buf[e->event_datagram_size + 3] = evet_index.c_value[3];
+        printHex(buf, e->event_datagram_size + 8);
 
-        buf[e->event_datagram_size + 4] = evets_count.c_value[0];
-        buf[e->event_datagram_size + 5] = evets_count.c_value[1];
-        buf[e->event_datagram_size + 6] = evets_count.c_value[2];
-        buf[e->event_datagram_size + 7] = evets_count.c_value[3];
-        broadcast(buf, e->event_datagram_size);
+        frame_footer(buf, e->event_datagram_size);
+
+        broadcast(buf, e->event_datagram_size + 8);
         delete[] buf;
     }
 }
@@ -174,7 +180,22 @@ void ServerTCP::acceptSocket()
     sockets.push_back(client_socket);
     sockets_event.push_back(client_event);
 
-    setPlayerName(client_socket, "Nowy");
+    sendInit(client_socket);
+
+    PlayerIdEvent *player = new PlayerIdEvent();
+    player->frame_number.l_value = parent->getCurrentFrame() + 50;
+    player->player_id.l_value = client_socket;
+    player->name[0] = 'N';
+    player->name[1] = 'o';
+    player->name[2] = 'w';
+    player->name[3] = 'y';
+
+    std::cout <<"save " << player->frame_number.l_value << std::endl;
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->received_events.addEvent(player);
+    LeaveCriticalSection(parent->critical_section);
+//    setPlayerName(client_socket, "Nowy");
 
     cout << "Otwarto socket" << endl;
 }
@@ -212,6 +233,16 @@ void ServerTCP::broadcast(char *buf, int size)
     {
         send(sockets[i], buf , size, 0);
     }
+}
+
+void ServerTCP::sendInit(SOCKET s)
+{
+    InitEvent init;
+    init.current_frame.l_value = parent->getCurrentFrame();
+    char* buf = init.getByteArray();
+
+    std::cout << "SEND INIT " << init.bufferSize() << std::endl;
+    send(s, buf , init.bufferSize(), 0);
 }
 
 

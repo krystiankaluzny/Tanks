@@ -23,8 +23,8 @@ public:
     unsigned long current_frame;
     std::map<unsigned long, EventsWrapper> frame_events;
 
-    void addEvent(GenerateEvent* event, unsigned long pos = -1, unsigned long event_count = -1);
-    void addEvent(PlayerIdEvent* event, unsigned long pos = -1, unsigned long event_count = -1);
+    void addEvent(GenerateEvent* event, unsigned long pos = 0, unsigned long event_count = 0);
+    void addEvent(PlayerIdEvent* event, unsigned long pos = 0, unsigned long event_count = 0);
 };
 
 //send to server by client

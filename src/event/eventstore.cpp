@@ -12,15 +12,15 @@ void ReceivedEvents::addEvent(GenerateEvent *event, unsigned long pos, unsigned 
 
     if(pos >= 0 && event_count > 0)
     {
-        if(frame_events.at(event->frame_number.l_value).generate_events.empty())
+        if(frame_events[event->frame_number.l_value].generate_events.empty())
         {
-            frame_events.at(event->frame_number.l_value).generate_events.reserve(event_count);
+            frame_events[event->frame_number.l_value].generate_events.resize(event_count);
         }
-        frame_events.at(event->frame_number.l_value).generate_events.at(pos) = event;
+        frame_events[event->frame_number.l_value].generate_events.at(pos) = event;
     }
     else
     {
-        frame_events.at(event->frame_number.l_value).generate_events.push_back(event);
+        frame_events[event->frame_number.l_value].generate_events.push_back(event);
     }
 }
 
@@ -30,15 +30,15 @@ void ReceivedEvents::addEvent(PlayerIdEvent *event, unsigned long pos, unsigned 
 
     if(pos >= 0 && event_count > 0)
     {
-        if(frame_events.at(event->frame_number.l_value).player_id_events.empty())
+        if(frame_events[event->frame_number.l_value].player_id_events.empty())
         {
-            frame_events.at(event->frame_number.l_value).player_id_events.reserve(event_count);
+            frame_events[event->frame_number.l_value].player_id_events.resize(event_count);
         }
-        frame_events.at(event->frame_number.l_value).player_id_events.at(pos) = event;
+        frame_events[event->frame_number.l_value].player_id_events.at(pos) = event;
     }
     else
     {
-        frame_events.at(event->frame_number.l_value).player_id_events.push_back(event);
+        frame_events[event->frame_number.l_value].player_id_events.push_back(event);
     }
 }
 

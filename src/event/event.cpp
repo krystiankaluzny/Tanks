@@ -13,6 +13,11 @@ Event::Event(EventType type, int data_size) :
 {
 }
 
+int Event::bufferSize()
+{
+    return event_datagram_size + 8;
+}
+
 std::ostream& operator<<(std::ostream &out, Event &e)
 {
     return out << "EventType: " << e.type << " FrameNum: " << e.frame_number.l_value << " Size: " << e.event_datagram_size;
@@ -170,6 +175,50 @@ char *PlayerIdEvent::getByteArray()
     {
         buffer[index++] = name[i];
     }
+
+    return buffer;
+}
+
+
+InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 9)
+{
+
+}
+
+void InitEvent::setByteArray(char *buffer)
+{
+    int index = 1;
+
+    frame_number.c_value[0] = buffer[index++];
+    frame_number.c_value[1] = buffer[index++];
+    frame_number.c_value[2] = buffer[index++];
+    frame_number.c_value[3] = buffer[index++];
+    index++;    //no sepc type
+
+    current_frame.c_value[0] = buffer[index++];
+    current_frame.c_value[1] = buffer[index++];
+    current_frame.c_value[2] = buffer[index++];
+    current_frame.c_value[3] = buffer[index++];
+
+}
+
+char *InitEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    int index = 0;
+    buffer[index++] = type;
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = 0;
+
+    buffer[index++] = current_frame.c_value[0];
+    buffer[index++] = current_frame.c_value[1];
+    buffer[index++] = current_frame.c_value[2];
+    buffer[index++] = current_frame.c_value[3];
+
 
     return buffer;
 }

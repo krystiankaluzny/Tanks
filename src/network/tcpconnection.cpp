@@ -1,6 +1,7 @@
 #include "tcpconnection.h"
 
 #include "network.h"
+#include <stdio.h>
 
 TCPConnection::TCPConnection(){}
 
@@ -33,7 +34,7 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
         case GENERATE_EVENT_TYPE:
         {
             GenerateEvent* event = new GenerateEvent;
-            if(event->event_datagram_size != size) break;
+            if(event->bufferSize() != size) break;
 
             getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
             event->setByteArray(buffer);
@@ -46,7 +47,7 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
         case PLAYER_ID_TYPE:
         {
             PlayerIdEvent* event = new PlayerIdEvent;
-            if(event->event_datagram_size != size) break;
+            if(event->bufferSize() != size) break;
 
             getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
             event->setByteArray(buffer);
@@ -55,6 +56,24 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             LeaveCriticalSection(parent->critical_section);
             break;
         }
+        case INIT_EVENT_TYPE:
+        {
+            InitEvent* event = new InitEvent;
+            if(event->bufferSize() != size) break;
+
+            getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
+            event->setByteArray(buffer);
+            std::cout << "Init: Old "  << parent->getCurrentFrame() << std::endl;
+
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->setCurrentFrameNumber(event->current_frame.l_value);
+            LeaveCriticalSection(parent->critical_section);
+
+            std::cout << "Init: New "  << parent->getCurrentFrame() << std::endl;
+            break;
+        }
+    default:
+        std::cout << "NIE ROZPOZNANO " << event_type << std::endl;
     }
 }
 
@@ -70,5 +89,15 @@ void TCPConnection::getLongData(LongData &event_index, LongData &events_count, c
     events_count.c_value[1] = buffer[index++];
     events_count.c_value[2] = buffer[index++];
     events_count.c_value[3] = buffer[index++];
+}
+
+void TCPConnection::printHex(char *data, int size)
+{
+    printf("data_size %d \n", size);
+    for(int i = 0; i < size; ++i)
+    {
+        printf("0x%02x ", data[i]);
+    }
+    printf("\n");
 }
 
