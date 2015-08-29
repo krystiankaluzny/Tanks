@@ -89,6 +89,22 @@ void Game::eventProces()
 
         m_game_state->eventProcess(&event);
     }
+
+    networkEvent();
+}
+
+void Game::networkEvent()
+{
+    if(!isNetworkRunning()) return;
+
+    EventsWrapper events;
+    unsigned long current_frame;
+    EnterCriticalSection(critical_section);
+        current_frame = shared_data->current_frame_number;
+        events = shared_data->received_events.frame_events[current_frame];
+    LeaveCriticalSection(critical_section);
+
+    m_game_state->eventProcess(events);
 }
 
 void Game::mainLoop()
@@ -127,6 +143,7 @@ void Game::mainLoop()
             else if(delay > 0) delay--;
             fps_time = 0; fps_count = 0;
         }
+        shared_data->incrementFrameNumber();
 
         Sleep( 0 ); // reszta czasu dla drugiego wątku
     }

@@ -21,10 +21,14 @@ public:
     virtual bool init() = 0;
     virtual void run() = 0;
     virtual void close() = 0;
+    virtual void sendData() = 0;
+    virtual void readData() = 0;
 
 protected:
     void setPlayerName(SOCKET player_socket, std::string player_name);
     void removePlayerName(SOCKET player_socket);
+    void addEventFromBuffer(char* buffer, int size);
+    void getLongData(LongData &event_index, LongData &events_count, char* buffer);
 
     Network* parent;
 

@@ -68,6 +68,8 @@ void ServerTCP::run()
 {
     if(sockets.size() > 0)
     {
+        sendData();
+
         unsigned event_index = WSAWaitForMultipleEvents(sockets.size(), &sockets_event[0], false, wait_for_event_time, false); //czekaj na jakiś event
         if(event_index != WSA_WAIT_FAILED && event_index != WSA_WAIT_TIMEOUT)
         {
@@ -98,6 +100,63 @@ void ServerTCP::run()
         }
     }
 }
+
+void ServerTCP::sendData()
+{
+    EventsWrapper events;
+    unsigned long current_frame = parent->getCurrentFrame();
+    EnterCriticalSection(parent->critical_section);
+        events = parent->shared_data->received_events.frame_events[current_frame + 3];
+    LeaveCriticalSection(parent->critical_section);
+
+    char* buf;
+    Event* e;
+    LongData evet_index;
+    LongData evets_count;
+
+    evets_count.l_value = events.generate_events.size();
+    for(int i = 0; i < evets_count.l_value; ++i)
+    {
+        e = events.generate_events[i];
+        evet_index.l_value = i;
+        buf = e->getByteArray();
+        buf[e->event_datagram_size] = evet_index.c_value[0];
+        buf[e->event_datagram_size + 1] = evet_index.c_value[1];
+        buf[e->event_datagram_size + 2] = evet_index.c_value[2];
+        buf[e->event_datagram_size + 3] = evet_index.c_value[3];
+
+        buf[e->event_datagram_size + 4] = evets_count.c_value[0];
+        buf[e->event_datagram_size + 5] = evets_count.c_value[1];
+        buf[e->event_datagram_size + 6] = evets_count.c_value[2];
+        buf[e->event_datagram_size + 7] = evets_count.c_value[3];
+        broadcast(buf, e->event_datagram_size);
+        delete[] buf;
+    }
+
+    evets_count.l_value = events.player_id_events.size();
+    for(int i = 0; i < evets_count.l_value; ++i)
+    {
+        e = events.player_id_events[i];
+        evet_index.l_value = i;
+        buf = e->getByteArray();
+        buf[e->event_datagram_size] = evet_index.c_value[0];
+        buf[e->event_datagram_size + 1] = evet_index.c_value[1];
+        buf[e->event_datagram_size + 2] = evet_index.c_value[2];
+        buf[e->event_datagram_size + 3] = evet_index.c_value[3];
+
+        buf[e->event_datagram_size + 4] = evets_count.c_value[0];
+        buf[e->event_datagram_size + 5] = evets_count.c_value[1];
+        buf[e->event_datagram_size + 6] = evets_count.c_value[2];
+        buf[e->event_datagram_size + 7] = evets_count.c_value[3];
+        broadcast(buf, e->event_datagram_size);
+        delete[] buf;
+    }
+}
+
+void ServerTCP::readData()
+{
+}
+
 
 void ServerTCP::acceptSocket()
 {
@@ -143,30 +202,16 @@ void ServerTCP::readSocket(int socket_index)
 
     if(size != SOCKET_ERROR && size >= 6)
     {
-        int index = 0;
-        char event_type = buffer[index++];
-        Event* event = nullptr;
-        switch(event_type)
-        {
-        case GENERATE_EVENT_TYPE:
-            event = new GenerateEvent;
-            break;
-        }
-        addEvent(event, buffer, size, socket_index);
+        addEventFromBuffer(buffer, size);
     }
 }
 
-void ServerTCP::addEvent(Event *ev, char *data, int size, int socket_index)
+void ServerTCP::broadcast(char *buf, int size)
 {
-    if(ev == nullptr) return;
-    if(ev->event_datagram_size == size)
+    for(int i = 1; i < sockets.size(); i++)
     {
-        ev->setByteArray(data);
-//        events.insert( pair<SOCKET, Event*>(sockets[socket_index], ev));
-    }
-    else
-    {
-        cout << "Zly rozmiar eventu " << size << endl;
+        send(sockets[i], buf , size, 0);
     }
 }
+
 

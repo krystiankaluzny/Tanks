@@ -16,7 +16,7 @@ public:
     /**
      * Kolejka eventów do wysłania na server.
      */
-//    TransmitEvents transmit_events;
+    TransmitEvents transmit_events;
     /**
      * Eventy odebrane z servera
      */
@@ -53,6 +53,8 @@ public:
      * @param current_frame
      */
     void setCurrentFrameNumber(unsigned long current_frame);
+
+    void incrementFrameNumber();
 };
 
 #endif // SHAREDDATA_H

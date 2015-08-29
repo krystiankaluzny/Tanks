@@ -19,3 +19,9 @@ void SharedData::setCurrentFrameNumber(unsigned long current_frame)
     received_events.current_frame = current_frame;
 }
 
+void SharedData::incrementFrameNumber()
+{
+    current_frame_number++;
+    received_events.current_frame++;
+}
+

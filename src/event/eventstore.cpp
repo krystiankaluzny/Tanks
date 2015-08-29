@@ -42,9 +42,8 @@ void ReceivedEvents::addEvent(PlayerIdEvent *event, unsigned long pos, unsigned 
     }
 }
 
-/*
+
 void TransmitEvents::addEvent(Event *event)
 {
-    frame_events.at(event->frame_number.l_value).events.push_back(event);
+    events.push_back(event);
 }
-*/

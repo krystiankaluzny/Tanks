@@ -20,6 +20,9 @@ public:
     void run();
     bool init();
     void close();
+    void sendData();
+    void readData();
+
 private:
 
     //akceptowanie prośby od klienta o połączenie (dodanie nowego socketu)
@@ -29,10 +32,10 @@ private:
     //odczyt ramki z socketu
     void readSocket(int socket_index);
 
-    //jeśli wszystko ok dodaje event do kolejki
-    void addEvent(Event* ev, char* data, int size, int socket_index);
+    void broadcast(char* buf, int size);
 
-    vector<SOCKET> sockets; //pierwszy socket jest soketem serwera
+
+    vector<SOCKET> sockets; //pierwszy socket jest socketem serwera
     vector<WSAEVENT> sockets_event;
 };
 

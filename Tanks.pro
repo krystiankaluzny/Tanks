@@ -32,7 +32,9 @@ SOURCES += src/app.cpp \
     src/appthread.cpp \
     src/network/clienttcp.cpp \
     src/network/tcpconnection.cpp \
-    src/game/game_state/client.cpp
+    src/game/game_state/client.cpp \
+    src/game/handler/handler.cpp \
+    src/game/game_state/networkbattle.cpp
 
 CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
@@ -75,4 +77,6 @@ HEADERS += src/app.h \
     src/network/network.h \
     src/network/tcpconnection.h \
     src/network/clienttcp.h \
-    src/game/game_state/client.h
+    src/game/game_state/client.h \
+    src/game/handler/handler.h \
+    src/game/game_state/networkbattle.h

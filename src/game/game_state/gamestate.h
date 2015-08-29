@@ -42,6 +42,11 @@ public:
      */
     virtual void eventProcess(SDL_Event* ev) = 0;
     /**
+     * Funkcja umożliwiająca obsługę zdarzeń przygotowanych na obecną ramkę.
+     * @param events
+     */
+    virtual void eventProcess(EventsWrapper& events){}
+    /**
      * Funkcja zwracającya następny stan po zakończeniu obecnego. Funkcję należy wywołać tylko wtedy, gdy funkcja @a finished zwróci wartość @a true.
      * @return następny stan gry
      */
@@ -60,7 +65,7 @@ protected:
 
     void saveEvent(Event* event)
     {
-//        parent->
+        parent->saveEvent(event);
     }
 };
 #endif // APPSTATE_H

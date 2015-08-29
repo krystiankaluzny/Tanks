@@ -24,6 +24,8 @@ private:
      */
     void eventProces();
 
+    void networkEvent();
+
     void mainLoop();
 
     bool initSDL();

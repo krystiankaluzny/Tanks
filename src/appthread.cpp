@@ -9,9 +9,9 @@ AppThread::AppThread(SharedData *shared_data, CRITICAL_SECTION *critical_section
 
 void AppThread::saveEvent(Event *event)
 {
-//    EnterCriticalSection(critical_section);
-//        shared_data->transmit_events.addEvent(event);
-//    LeaveCriticalSection(critical_section);
+    EnterCriticalSection(critical_section);
+        shared_data->transmit_events.addEvent(event);
+    LeaveCriticalSection(critical_section);
 }
 
 void AppThread::sendEventQueue()
@@ -19,4 +19,14 @@ void AppThread::sendEventQueue()
     EnterCriticalSection(critical_section);
         shared_data->send_events = true;
     LeaveCriticalSection(critical_section);
+}
+
+boolean AppThread::isNetworkRunning()
+{
+    NetworkState state;
+    EnterCriticalSection(critical_section);
+        state = shared_data->network_state;
+    LeaveCriticalSection(critical_section);
+
+    return state != NetworkState::NONE;
 }

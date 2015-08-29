@@ -81,6 +81,7 @@ public:
 
 class PlayerIdEvent : public Event
 {
+public:
     PlayerIdEvent();
 
     LongData player_id; //4 byte

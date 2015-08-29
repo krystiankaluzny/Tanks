@@ -68,38 +68,7 @@ bool ClientTCP::init()
 
 void ClientTCP::run()
 {
-    //zdjęcie z kolejki odpowiednich eventów
-    bool send_events = false;
-    EnterCriticalSection(parent->critical_section);
-        send_events = parent->shared_data->send_events;
-    LeaveCriticalSection(parent->critical_section);
-
-    char buf[15];
-    int len = 0;
-    Sleep(50);
-//            sprintf(buf,"%d\r\n",i);
-    buf[0] = 0;
-    buf[1] = 3;
-
-    buf[2] = 20;
-    buf[3] = 20;
-    buf[4] = 20;
-    buf[5] = 20;
-
-    buf[6] = 0;
-    buf[7] = 20;
-    buf[8] = 20;
-    buf[9] = 20;
-
-    buf[10] = 0;
-    buf[11] = 0;
-    buf[12] = 20;
-    buf[13] = 20;
-
-    buf[14] = 0;
-
-    int size = send(sockets[0], buf , 14, 0);
-    cout << "SEND " << size << endl;
+    sendData();
 
     unsigned event_index = WSAWaitForMultipleEvents(sockets.size(), &sockets_event[0], false, wait_for_event_time, false);
     if(event_index != WSA_WAIT_FAILED && event_index != WSA_WAIT_TIMEOUT)
@@ -130,50 +99,49 @@ void ClientTCP::close()
     sockets.erase(sockets.begin());
 }
 
+void ClientTCP::sendData()
+{
+    //zdjęcie z kolejki odpowiednich eventów
+    bool send_events = false;
+    EnterCriticalSection(parent->critical_section);
+        send_events = parent->shared_data->send_events;
+    LeaveCriticalSection(parent->critical_section);
+
+    int size = 15;
+    char* buf = new char[size];
+
+    buf[0] = 0;
+    buf[1] = 3;
+
+    buf[2] = 20;
+    buf[3] = 20;
+    buf[4] = 20;
+    buf[5] = 20;
+
+    buf[6] = 0;
+    buf[7] = 20;
+    buf[8] = 20;
+    buf[9] = 20;
+
+    buf[10] = 0;
+    buf[11] = 0;
+    buf[12] = 20;
+    buf[13] = 20;
+
+    buf[14] = 0;
+
+    send(sockets[0], buf , size, 0);
+    cout << "SEND " << size << endl;
+}
+
 void ClientTCP::readData()
 {
     char buffer[30];
     int size = recv(sockets[0], buffer, sizeof(buffer), 0);
     if(size != SOCKET_ERROR && size >= 6)
     {
-        int index = 0;
-        char event_type = buffer[index++];
-        Event* event = nullptr;
-        LongData event_index, events_count;
-        switch(event_type)
-        {
-            case GENERATE_EVENT_TYPE:
-            {
-                GenerateEvent* g_event = new GenerateEvent;
-                getLongData(event_index, events_count, buffer + g_event->event_datagram_size); //dwa longi z końca ramki
-
-                EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->received_events.addEvent(g_event, event_index.l_value, events_count.l_value);
-                LeaveCriticalSection(parent->critical_section);
-
-                break;
-            } 
-            case PLAYER_ID_TYPE:
-            {
-                PlayerIdEvent* p_event = new PlayerIdEvent;
-
-                break;
-            }
-        }
+        addEventFromBuffer(buffer, size);
     }
 }
 
-void ClientTCP::getLongData(LongData &event_index, LongData &events_count, char* buffer)
-{
-    int index = 0;
-    event_index.c_value[0] = buffer[index++];
-    event_index.c_value[1] = buffer[index++];
-    event_index.c_value[2] = buffer[index++];
-    event_index.c_value[3] = buffer[index++];
-
-    events_count.c_value[0] = buffer[index++];
-    events_count.c_value[1] = buffer[index++];
-    events_count.c_value[2] = buffer[index++];
-    events_count.c_value[3] = buffer[index++];
-}
 

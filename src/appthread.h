@@ -31,6 +31,11 @@ public:
      * Ustawienie flagi wysłania eventów na server.
      */
     void sendEventQueue();
+    /**
+     * Czy gra jest w sieci.
+     * @return
+     */
+    boolean isNetworkRunning();
 
     /**
      * Dane współdzielone między wątkami.
@@ -41,6 +46,16 @@ public:
      * Blokada wątku wykorzystywana przy dostępie do współdzielonych danych.
      */
     CRITICAL_SECTION* critical_section;
+
+    unsigned long getCurrentFrame()
+    {
+        unsigned long frame;
+        EnterCriticalSection(critical_section);
+            frame = shared_data->current_frame_number;
+        LeaveCriticalSection(critical_section);
+
+        return frame;
+    }
 };
 
 #endif // APPTHREAD

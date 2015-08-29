@@ -75,6 +75,11 @@ void Server::eventProcess(SDL_Event *ev)
     }
 }
 
+void Server::eventProcess(EventsWrapper &ev)
+{
+
+}
+
 bool Server::finished() const
 {
     return m_finished;

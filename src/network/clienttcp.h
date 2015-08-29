@@ -15,10 +15,9 @@ public:
     bool init();
     void run();
     void close();
-
-private:
+    void sendData();
     void readData();
-    void getLongData(LongData& event_index, LongData& events_count, char *buffer);
+private:
 
     vector<SOCKET> sockets;
     vector<WSAEVENT> sockets_event;

@@ -38,6 +38,7 @@ public:
      * @param ev -  wskaźnik na unię SDL_Event przechowującą typ i parametry różnych zdarzeń
      */
     void eventProcess(SDL_Event* ev);
+
     /**
      * Pzejście do gry w wybranym trybie lub wyjście z aplikacji.
      * @return @a nullptr jeżli wybrano "Exit" lub wciśnięto Esc, w przeciwnym wypadku funkcja zwraca wskaźnik na Game

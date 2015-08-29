@@ -28,6 +28,12 @@ public:
      */
     void eventProcess(SDL_Event* ev);
     /**
+     * Obsługa eventów, które przyszły przez sieć.
+     * @param ev
+     */
+    void eventProcess(EventsWrapper& ev);
+
+    /**
      * Funkcja zwraca wskaźnik na obiekt będący następnym stanem aplikacji. Jeśli gracz przegrał następnym stanem jest @a Menu jeśli przeszedł rundę następnym stanem jest @a Game.
      * @return wskaźnik na następny stan
      */

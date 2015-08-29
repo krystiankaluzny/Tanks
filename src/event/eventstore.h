@@ -15,7 +15,7 @@ public:
     std::vector<PlayerIdEvent*> player_id_events;
 };
 
-//send from server, get by client
+//get by client or server
 class ReceivedEvents
 {
 public:
@@ -27,13 +27,12 @@ public:
     void addEvent(PlayerIdEvent* event, unsigned long pos = -1, unsigned long event_count = -1);
 };
 
-//to send to server by client or get by server
-/*
+//send to server by client
 class TransmitEvents
 {
 public:
-    std::map<unsigned long, EventsWrapper> frame_events;
+    std::vector<Event*> events;
     void addEvent(Event* event);
 };
-*/
+
 #endif // EVENTSTORE_H

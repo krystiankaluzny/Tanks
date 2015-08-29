@@ -60,12 +60,12 @@ void Client::draw()
 
 void Client::update(Uint32 dt)
 {
-    m_get_names_time += dt;
-    if(m_get_names_time > AppConfig::get_player_names_time)
-    {
-        getNames();
-        m_get_names_time = 0;
-    }
+//    m_get_names_time += dt;
+//    if(m_get_names_time > AppConfig::get_player_names_time)
+//    {
+//        getNames();
+//        m_get_names_time = 0;
+//    }
 }
 
 void Client::eventProcess(SDL_Event *ev)
@@ -76,6 +76,19 @@ void Client::eventProcess(SDL_Event *ev)
         {
             m_finished = true;
         }
+    }
+}
+
+void Client::eventProcess(EventsWrapper &ev)
+{
+    SOCKET player_socket;
+    std::string player_name;
+    std::vector<PlayerIdEvent*> players = ev.player_id_events;
+
+    for(PlayerIdEvent* p : players)
+    {
+        player_socket = p->player_id.l_value;
+        m_player_name[player_socket] = std::string(p->name);
     }
 }
 
