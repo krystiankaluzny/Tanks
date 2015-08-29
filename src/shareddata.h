@@ -16,7 +16,7 @@ public:
     /**
      * Kolejka eventów do wysłania na server.
      */
-    TransmitEvents transmit_events;
+//    TransmitEvents transmit_events;
     /**
      * Eventy odebrane z servera
      */
@@ -43,6 +43,16 @@ public:
     unsigned long current_frame_number;
 
     std::map<SOCKET, std::string> player_name;
+
+    /**
+     * Usuwanie eventów z obecnej ramki.
+     */
+    void clearEvents();
+    /**
+     * Ustawienie obecnej ramki gry w SharedData oraz w ReceivedEvents.
+     * @param current_frame
+     */
+    void setCurrentFrameNumber(unsigned long current_frame);
 };
 
 #endif // SHAREDDATA_H

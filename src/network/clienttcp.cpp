@@ -145,12 +145,20 @@ void ClientTCP::readData()
             case GENERATE_EVENT_TYPE:
             {
                 GenerateEvent* g_event = new GenerateEvent;
-                getLongData(event_index, events_count, buffer + g_event->event_datagram_size);
+                getLongData(event_index, events_count, buffer + g_event->event_datagram_size); //dwa longi z końca ramki
+
                 EnterCriticalSection(parent->critical_section);
                     parent->shared_data->received_events.addEvent(g_event, event_index.l_value, events_count.l_value);
                 LeaveCriticalSection(parent->critical_section);
+
                 break;
             } 
+            case PLAYER_ID_TYPE:
+            {
+                PlayerIdEvent* p_event = new PlayerIdEvent;
+
+                break;
+            }
         }
     }
 }

@@ -33,6 +33,11 @@ public:
      */
     GameState* nextState();
 
+private:
+    void getNames();
+
+    std::map<SOCKET, std::string> m_player_name;
+    unsigned m_get_names_time;
 };
 
 #endif // CLIENT_H

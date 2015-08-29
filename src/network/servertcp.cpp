@@ -55,6 +55,7 @@ bool ServerTCP::init()
     }
     sockets.push_back(server_socket);
     sockets_event.push_back(server_event);
+    setPlayerName(server_socket, "SERVER");
     return true;
 }
 
@@ -137,7 +138,7 @@ void ServerTCP::closeSocket(int socket_index)
 
 void ServerTCP::readSocket(int socket_index)
 {
-    char buffer[20];
+    char buffer[30];
     int size = recv(sockets[socket_index], buffer, sizeof(buffer), 0); //odczytanie danych i zapis do bufora
 
     if(size != SOCKET_ERROR && size >= 6)

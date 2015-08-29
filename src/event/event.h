@@ -7,7 +7,8 @@ enum EventType
 {
     NONE_EVENT_TYPE,
     KEY_EVENT_TYPE,
-    GENERATE_EVENT_TYPE
+    GENERATE_EVENT_TYPE,
+    PLAYER_ID_TYPE
 };
 
 union LongData
@@ -32,8 +33,8 @@ public:
     Event();
     Event(EventType type, int data_size);
 
-    EventType type;
-    LongData frame_number;
+    EventType type;                 //1 byte
+    LongData frame_number;          //4 byte
 
     const int event_datagram_size;
 
@@ -58,8 +59,8 @@ public:
     };
     KeyEvent();
 
-    KeyType key_type;
-    LongData id_tank;
+    KeyType key_type;   //1 byte
+    LongData id_tank;   //4 byte
 
     void setByteArray(char *buffer);
     char* getByteArray();
@@ -70,14 +71,23 @@ class GenerateEvent : public Event
 public:
     GenerateEvent();
 
-    LongData seed1;
-    LongData seed2;
-    LongData seed3;
+    LongData seed1; //4 byte
+    LongData seed2; //4 byte
+    LongData seed3; //4 byte
 
     void setByteArray(char *buffer);
     char* getByteArray();
 };
 
+class PlayerIdEvent : public Event
+{
+    PlayerIdEvent();
+
+    LongData player_id; //4 byte
+    char name[15];      //15 byte
+    void setByteArray(char *buffer);
+    char* getByteArray();
+};
 
 //TODO next stage
 #endif // EVENT_H
