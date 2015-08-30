@@ -42,6 +42,7 @@ public:
     virtual void setByteArray(char* buffer) = 0;
     virtual char *getByteArray() = 0;
     int bufferSize();
+    void setZeroPos(char *buff, int starting_point);
     friend std::ostream& operator<< (std::ostream& out, Event& e);
 };
 
@@ -81,10 +82,10 @@ public:
     char* getByteArray();
 };
 
-class PlayerIdEvent : public Event
+class PlayerNameEvent : public Event
 {
 public:
-    PlayerIdEvent();
+    PlayerNameEvent();
 
     LongData player_id; //4 byte
     char name[15];      //15 byte
@@ -97,8 +98,8 @@ class InitEvent : public Event
 public:
     InitEvent();
 
-    LongData current_frame;
-
+    LongData current_frame; //4 byte
+    LongData player_id; //4 byte
     void setByteArray(char *buffer);
     char* getByteArray();
 };

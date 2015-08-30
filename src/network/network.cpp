@@ -24,16 +24,22 @@ void Network::run()
 
         if(state != new_state)
         {
-            if(state == NetworkState::SERVER)
+            if(state == NetworkState::CLIENT && new_state == NetworkState::CLIENT_INITIALIZED)
             {
+                //nic nie rób
+            }
+            else if(state == NetworkState::SERVER)
+            {
+                std::cout << "SERVER close " << std::endl;
                 server.close();
             }
-            else if(state == NetworkState::CLIENT)
+            else if(state == NetworkState::CLIENT || state == NetworkState::CLIENT_INITIALIZED)
             {
+                std::cout << "CLIENT close " << state << " " << new_state << std::endl;
                 client.close();
             }
 
-            state = new_state;
+            state = new_state; //przypisanie nowego stanu
 
             if(new_state == NetworkState::SERVER)
             {
@@ -55,7 +61,7 @@ void Network::run()
         {
             server.run();
         }
-        else if(state == NetworkState::CLIENT)
+        else if(state == NetworkState::CLIENT || state == NetworkState::CLIENT_INITIALIZED)
         {
             client.run();
         }

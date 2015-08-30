@@ -114,9 +114,16 @@ void ClientTCP::sendData()
     for(Event* e : transmit_events)
     {
         buf = e->getByteArray();
-        send(sockets[0], buf , e->event_datagram_size, 0);
+
+        printHex(buf, e->bufferSize());
+        send(sockets[0], buf , e->bufferSize(), 0);
         delete[] buf;
     }
+
+    //czyszczenie
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->transmit_events.events.clear();
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void ClientTCP::readData()

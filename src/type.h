@@ -72,6 +72,7 @@ enum NetworkState
 {
     SERVER,
     CLIENT,
+    CLIENT_INITIALIZED,
     NONE
 };
 

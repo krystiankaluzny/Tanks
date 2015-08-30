@@ -34,7 +34,11 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
         case GENERATE_EVENT_TYPE:
         {
             GenerateEvent* event = new GenerateEvent;
-            if(event->bufferSize() != size) break;
+            if(event->bufferSize() != size)
+            {
+                std::cout << "GenerateEvent event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
+                break;
+            }
 
             getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
             event->setByteArray(buffer);
@@ -46,8 +50,12 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
         }
         case PLAYER_ID_TYPE:
         {
-            PlayerIdEvent* event = new PlayerIdEvent;
-            if(event->bufferSize() != size) break;
+            PlayerNameEvent* event = new PlayerNameEvent;
+            if(event->bufferSize() != size)
+            {
+                std::cout << "PLAYER_ID_TYPE event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
+                break;
+            }
 
             getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
             event->setByteArray(buffer);
@@ -65,9 +73,7 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             event->setByteArray(buffer);
             std::cout << "Init: Old "  << parent->getCurrentFrame() << std::endl;
 
-            EnterCriticalSection(parent->critical_section);
-                parent->shared_data->setCurrentFrameNumber(event->current_frame.l_value);
-            LeaveCriticalSection(parent->critical_section);
+            initialize(event);
 
             std::cout << "Init: New "  << parent->getCurrentFrame() << std::endl;
             break;
@@ -99,5 +105,22 @@ void TCPConnection::printHex(char *data, int size)
         printf("0x%02x ", data[i]);
     }
     printf("\n");
+}
+
+void TCPConnection::initialize(InitEvent* event)
+{
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->setCurrentFrameNumber(event->current_frame.l_value);
+        parent->shared_data->player_id = event->player_id.l_value;
+    LeaveCriticalSection(parent->critical_section);
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->clearReceiveEvents(-1);
+        parent->shared_data->transmit_events.events.clear();
+    LeaveCriticalSection(parent->critical_section);
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->network_state = NetworkState::CLIENT_INITIALIZED;
+    LeaveCriticalSection(parent->critical_section);
 }
 

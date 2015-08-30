@@ -31,6 +31,7 @@ public:
      */
     bool run_app;
 
+    //TODO czy to potrzebne
     /**
      * Jeśli zmienna jest równa true to klent TCP próbuje wysłać zebrane eventy.
      */
@@ -42,12 +43,20 @@ public:
      */
     unsigned long current_frame_number;
 
+    unsigned long player_id;
+
     std::map<SOCKET, std::string> player_name;
 
     /**
-     * Usuwanie eventów z obecnej ramki.
+     * Usuwanie eventów z wybranej ramki.
+     * @param frame -1 oznacza usunięcie wszystkiego
      */
-    void clearEvents();
+    void clearReceiveEvents(unsigned long frame);
+
+    /**
+     * Usuwanie eventów z obecnej ramki
+     */
+    void clearCurrentEvents();
     /**
      * Ustawienie obecnej ramki gry w SharedData oraz w ReceivedEvents.
      * @param current_frame

@@ -5,10 +5,14 @@
 #include "menu.h"
 #include "../game.h"
 
+#include <cstdio>
+
 Client::Client(Game *parent) : GameState(parent)
 {
     m_finished = false;
 
+    m_get_names_time = 0;
+    m_send_name_time = 0;
     setNetworkState(NetworkState::CLIENT);
 }
 
@@ -60,12 +64,27 @@ void Client::draw()
 
 void Client::update(Uint32 dt)
 {
-//    m_get_names_time += dt;
-//    if(m_get_names_time > AppConfig::get_player_names_time)
-//    {
-//        getNames();
-//        m_get_names_time = 0;
-//    }
+    m_get_names_time += dt;
+    if(m_get_names_time > AppConfig::get_player_names_time)
+    {
+        getNames();
+        m_get_names_time = 0;
+    }
+
+    NetworkState state;
+    EnterCriticalSection(parent->critical_section);
+        state = parent->shared_data->network_state;
+    LeaveCriticalSection(parent->critical_section);
+
+    if(state == NetworkState::CLIENT_INITIALIZED)
+    {
+        m_send_name_time += dt;
+        if(m_send_name_time > AppConfig::send_player_name_time)
+        {
+            sendName();
+            m_send_name_time = 0;
+        }
+    }
 }
 
 void Client::eventProcess(SDL_Event *ev)
@@ -83,12 +102,12 @@ void Client::eventProcess(EventsWrapper &ev)
 {
     SOCKET player_socket;
     std::string player_name;
-    std::vector<PlayerIdEvent*> players = ev.player_id_events;
+    std::vector<PlayerNameEvent*> players = ev.player_id_events;
 
-    for(PlayerIdEvent* p : players)
+    for(PlayerNameEvent* p : players)
     {
         player_socket = p->player_id.l_value;
-        m_player_name[player_socket] = std::string(p->name);
+        parent->shared_data->player_name[player_socket] = std::string(p->name);
     }
 }
 
@@ -102,6 +121,18 @@ void Client::getNames()
 {
     EnterCriticalSection(parent->critical_section);
         m_player_name = parent->shared_data->player_name;
+    LeaveCriticalSection(parent->critical_section);
+}
+
+void Client::sendName()
+{
+    PlayerNameEvent *player = new PlayerNameEvent();
+    player->frame_number.l_value = parent->getCurrentFrame() + 20;
+    player->player_id.l_value = parent->getPlayerId();
+    sprintf(player->name, "Nowy %d", player->frame_number.l_value);
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->transmit_events.addEvent(player);
     LeaveCriticalSection(parent->critical_section);
 }
 

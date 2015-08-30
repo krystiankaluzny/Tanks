@@ -18,6 +18,18 @@ int Event::bufferSize()
     return event_datagram_size + 8;
 }
 
+void Event::setZeroPos(char *buff, int starting_point)
+{
+    buff[starting_point++] = 0;
+    buff[starting_point++] = 0;
+    buff[starting_point++] = 0;
+    buff[starting_point++] = 0;
+    buff[starting_point++] = 0;
+    buff[starting_point++] = 0;
+    buff[starting_point++] = 0;
+    buff[starting_point++] = 0;
+}
+
 std::ostream& operator<<(std::ostream &out, Event &e)
 {
     return out << "EventType: " << e.type << " FrameNum: " << e.frame_number.l_value << " Size: " << e.event_datagram_size;
@@ -64,6 +76,10 @@ char *KeyEvent::getByteArray()
     buffer[index++] = id_tank.c_value[1];
     buffer[index++] = id_tank.c_value[2];
     buffer[index++] = id_tank.c_value[3];
+
+    setZeroPos(buffer, event_datagram_size);
+
+    return buffer;
 }
 
 //================================================
@@ -125,15 +141,17 @@ char *GenerateEvent::getByteArray()
     buffer[index++] = seed3.c_value[2];
     buffer[index++] = seed3.c_value[3];
 
+    setZeroPos(buffer, event_datagram_size);
+
     return buffer;
 }
 
 
-PlayerIdEvent::PlayerIdEvent() : Event(PLAYER_ID_TYPE, 24)
+PlayerNameEvent::PlayerNameEvent() : Event(PLAYER_ID_TYPE, 24)
 {
 }
 
-void PlayerIdEvent::setByteArray(char *buffer)
+void PlayerNameEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
@@ -154,7 +172,7 @@ void PlayerIdEvent::setByteArray(char *buffer)
     }
 }
 
-char *PlayerIdEvent::getByteArray()
+char *PlayerNameEvent::getByteArray()
 {
     char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
     int index = 0;
@@ -176,11 +194,13 @@ char *PlayerIdEvent::getByteArray()
         buffer[index++] = name[i];
     }
 
+    setZeroPos(buffer, event_datagram_size);
+
     return buffer;
 }
 
 
-InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 9)
+InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 13)
 {
 
 }
@@ -199,6 +219,11 @@ void InitEvent::setByteArray(char *buffer)
     current_frame.c_value[1] = buffer[index++];
     current_frame.c_value[2] = buffer[index++];
     current_frame.c_value[3] = buffer[index++];
+
+    player_id.c_value[0] = buffer[index++];
+    player_id.c_value[1] = buffer[index++];
+    player_id.c_value[2] = buffer[index++];
+    player_id.c_value[3] = buffer[index++];
 
 }
 
@@ -219,6 +244,12 @@ char *InitEvent::getByteArray()
     buffer[index++] = current_frame.c_value[2];
     buffer[index++] = current_frame.c_value[3];
 
+    buffer[index++] = player_id.c_value[0];
+    buffer[index++] = player_id.c_value[1];
+    buffer[index++] = player_id.c_value[2];
+    buffer[index++] = player_id.c_value[3];
+
+    setZeroPos(buffer, event_datagram_size);
 
     return buffer;
 }

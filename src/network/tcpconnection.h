@@ -30,6 +30,7 @@ protected:
     void addEventFromBuffer(char* buffer, int size);
     void getLongData(LongData &event_index, LongData &events_count, char* buffer);
     void printHex(char* data, int size);
+    void initialize(InitEvent *event);
 
     Network* parent;
 

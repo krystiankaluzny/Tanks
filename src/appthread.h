@@ -56,6 +56,16 @@ public:
 
         return frame;
     }
+
+    unsigned long getPlayerId()
+    {
+        unsigned long player_id;
+        EnterCriticalSection(critical_section);
+            player_id = shared_data->player_id;
+        LeaveCriticalSection(critical_section);
+
+        return player_id;
+    }
 };
 
 #endif // APPTHREAD

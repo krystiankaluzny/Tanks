@@ -84,7 +84,6 @@ void ServerTCP::run()
             }
             else if(network_events.lNetworkEvents & FD_READ)
             {
-                cout << " Cos idzie " <<endl;
                 readSocket(event_index);
             }
             else if(network_events.lNetworkEvents & FD_CLOSE)
@@ -182,21 +181,6 @@ void ServerTCP::acceptSocket()
 
     sendInit(client_socket);
 
-    PlayerIdEvent *player = new PlayerIdEvent();
-    player->frame_number.l_value = parent->getCurrentFrame() + 50;
-    player->player_id.l_value = client_socket;
-    player->name[0] = 'N';
-    player->name[1] = 'o';
-    player->name[2] = 'w';
-    player->name[3] = 'y';
-
-    std::cout <<"save " << player->frame_number.l_value << std::endl;
-
-    EnterCriticalSection(parent->critical_section);
-        parent->shared_data->received_events.addEvent(player);
-    LeaveCriticalSection(parent->critical_section);
-//    setPlayerName(client_socket, "Nowy");
-
     cout << "Otwarto socket" << endl;
 }
 
@@ -218,11 +202,12 @@ void ServerTCP::closeSocket(int socket_index)
 
 void ServerTCP::readSocket(int socket_index)
 {
-    char buffer[30];
+    char buffer[50];
     int size = recv(sockets[socket_index], buffer, sizeof(buffer), 0); //odczytanie danych i zapis do bufora
 
     if(size != SOCKET_ERROR && size >= 6)
     {
+        cout << " Cos idzie z " << sockets[socket_index] << endl;
         addEventFromBuffer(buffer, size);
     }
 }

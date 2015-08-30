@@ -8,9 +8,14 @@ SharedData::SharedData()
     current_frame_number = 0;
 }
 
-void SharedData::clearEvents()
+void SharedData::clearReceiveEvents(unsigned long frame)
 {
-    //TODO usunąć ewenty z aktualnej ramki
+    received_events.clearFrameEvents(frame);
+}
+
+void SharedData::clearCurrentEvents()
+{
+    clearReceiveEvents(current_frame_number);
 }
 
 void SharedData::setCurrentFrameNumber(unsigned long current_frame)

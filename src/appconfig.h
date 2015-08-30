@@ -134,11 +134,14 @@ public:
      * Ogólna prędkość gry. Wartość ta jest przemnażana przez indywidualne prędkości obiektów.
      */
     static Uint32 game_speed;
-
     /**
      * Czas co jaki są pobierane nazwy graczy w trybie czekania na grę.
      */
     static unsigned get_player_names_time;
+    /**
+     * Czas co jaki są pobierane nazwy graczy w trybie czekania na grę.
+     */
+    static unsigned send_player_name_time;
 };
 
 #endif // APPCONFIG_H

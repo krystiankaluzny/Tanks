@@ -41,9 +41,11 @@ public:
 
 private:
     void getNames();
+    void sendName();
 
     std::map<SOCKET, std::string> m_player_name;
     unsigned m_get_names_time;
+    unsigned m_send_name_time;
 };
 
 #endif // CLIENT_H

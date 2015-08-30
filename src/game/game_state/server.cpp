@@ -79,9 +79,9 @@ void Server::eventProcess(EventsWrapper &ev)
 {
     SOCKET player_socket;
     std::string player_name;
-    std::vector<PlayerIdEvent*> players = ev.player_id_events;
+    std::vector<PlayerNameEvent*> players = ev.player_id_events;
 
-    for(PlayerIdEvent* p : players)
+    for(PlayerNameEvent* p : players)
     {
         player_socket = p->player_id.l_value;
         m_player_name[player_socket] = std::string(p->name);

@@ -50,4 +50,5 @@ double AppConfig::tank_default_speed = 0.08;
 double AppConfig::bullet_default_speed = 0.23;
 bool AppConfig::show_enemy_target = false;
 Uint32 AppConfig::game_speed = 15;
-unsigned AppConfig::get_player_names_time = 300;
+unsigned AppConfig::get_player_names_time = 500;
+unsigned AppConfig::send_player_name_time = 1000;
