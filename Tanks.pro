@@ -25,16 +25,17 @@ SOURCES += src/app.cpp \
     src/game/objects/tank.cpp \
     src/network/servertcp.cpp \
     src/event/event.cpp \
-    src/scopelock.cpp \
     src/event/eventstore.cpp \
-    src/shareddata.cpp \
     src/network/network.cpp \
     src/appthread.cpp \
     src/network/clienttcp.cpp \
     src/network/tcpconnection.cpp \
     src/game/game_state/client.cpp \
     src/game/handler/handler.cpp \
-    src/game/game_state/networkbattle.cpp
+    src/game/game_state/networkbattle.cpp \
+    src/util/myqueue.cpp \
+    src/util/shareddata.cpp \
+    src/game/graphicthread.cpp
 
 CC = C:\MinGW\bin\mingw32-g++.exe
 CFLAGS = -c -Wall -std=c++11
@@ -71,12 +72,13 @@ HEADERS += src/app.h \
     src/game/objects/tank.h \
     src/network/servertcp.h \
     src/event/event.h \
-    src/scopelock.h \
     src/event/eventstore.h \
-    src/shareddata.h \
     src/network/network.h \
     src/network/tcpconnection.h \
     src/network/clienttcp.h \
     src/game/game_state/client.h \
     src/game/handler/handler.h \
-    src/game/game_state/networkbattle.h
+    src/game/game_state/networkbattle.h \
+    src/util/myqueue.h \
+    src/util/shareddata.h \
+    src/game/graphicthread.h

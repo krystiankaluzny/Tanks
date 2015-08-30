@@ -62,7 +62,7 @@ void Client::draw()
     renderer->flush();
 }
 
-void Client::update(Uint32 dt)
+void Client::updateState(Uint32 dt)
 {
     m_get_names_time += dt;
     if(m_get_names_time > AppConfig::get_player_names_time)
@@ -85,6 +85,10 @@ void Client::update(Uint32 dt)
             m_send_name_time = 0;
         }
     }
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->object_to_render.push(this);
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void Client::eventProcess(SDL_Event *ev)

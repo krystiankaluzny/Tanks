@@ -69,7 +69,7 @@ void Scores::draw()
     renderer->flush();
 }
 
-void Scores::update(Uint32 dt)
+void Scores::updateState(Uint32 dt)
 {
     if(m_score_counter > (1 << 30) || m_score_counter > m_max_score)
     {
@@ -92,6 +92,10 @@ void Scores::update(Uint32 dt)
         player->setDirection(D_RIGHT);
         player->update(dt);
     }
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->object_to_render.push(this);
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void Scores::eventProcess(SDL_Event *ev)

@@ -10,7 +10,7 @@
  * @brief
  * Klasa wyboru trybu gry: 1 gracz czy 2 graczy lub wyjścia. Klasa jest pierwszym stanem aplikacji, pojawia się zaraz po uruchomieniu programu i pozwala na przejście do stanu gry (klasa Game).
  */
-class Menu : public GameState
+class Menu : public GameState, Object
 {
 public:
     Menu(Game* parent);
@@ -29,7 +29,7 @@ public:
      * @param dt - czas od ostatniej animacji
      * @see Tank::update(Uint32 dt)
      */
-    void update(Uint32 dt);
+    void updateState(Uint32 dt);
     /**
      * Funkcja odpowiada na reakcję na klawisze:
      * @li Strzałka w górę i w dół - zmiana wybranej pozycji menu

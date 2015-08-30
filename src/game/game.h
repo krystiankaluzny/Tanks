@@ -28,10 +28,6 @@ private:
 
     void mainLoop();
 
-    bool initSDL();
-
-    void quitSDL();
-
 private:
     /**
      * Zmienna podtrzymująca działanie pętli głównej programu.

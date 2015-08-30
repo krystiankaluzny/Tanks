@@ -134,7 +134,7 @@ void Battle::draw()
     renderer->flush();
 }
 
-void Battle::update(Uint32 dt)
+void Battle::updateState(Uint32 dt)
 {
     if(dt > 40) return;
 
@@ -231,14 +231,15 @@ void Battle::update(Uint32 dt)
         }
 
         //Update wszystkich obiektów
+        for(auto row : m_level)
+            for(auto item : row)
+                if(item != nullptr) item->update(dt);
+
+
         for(auto enemy : m_enemies) enemy->update(dt);
         for(auto player : m_players) player->update(dt);
         for(auto bonus : m_bonuses) bonus->update(dt);
         m_eagle->update(dt);
-
-        for(auto row : m_level)
-            for(auto item : row)
-                if(item != nullptr) item->update(dt);
 
 
         for(auto bush : m_bushes) bush->update(dt);
@@ -342,6 +343,10 @@ void Battle::update(Uint32 dt)
             }
         }
     }
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->object_to_render.push(this);
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void Battle::eventProcess(SDL_Event *ev)

@@ -1,14 +1,15 @@
 #ifndef SHAREDDATA_H
 #define SHAREDDATA_H
 
-#include "event/eventstore.h"
-#include "type.h"
+#include "../event/eventstore.h"
+#include "../type.h"
+#include "myqueue.h"
+#include "../game/objects/object.h"
 
 #include <map>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdlib.h>
-
 class SharedData
 {
 public:
@@ -47,6 +48,9 @@ public:
 
     std::map<SOCKET, std::string> player_name;
 
+    MyQueue<SDL_Event> sdl_events_queue;
+
+    MyQueue<Object*> object_to_render;
     /**
      * Usuwanie eventów z wybranej ramki.
      * @param frame -1 oznacza usunięcie wszystkiego

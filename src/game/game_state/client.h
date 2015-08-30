@@ -3,7 +3,7 @@
 
 #include "gamestate.h"
 
-class Client : public GameState
+class Client : public GameState, Object
 {
 public:
     Client(Game* parent);
@@ -21,7 +21,7 @@ public:
      * Funkcaj odpowiada za zmianę licznika punktów.
      * @param dt - czas od ostatniego wywołania funkcji pozwala określić czas wyświetlania okna wyników
      */
-    void update(Uint32 dt);
+    void updateState(Uint32 dt);
     /**
      * Funkcja odpowiada na wciśnięcie klawisza Enter, co kończy odliczanie punktów i przyspiesza przejście do następnego stanu.
      * @param ev - wskaźnik na unię SDL_Event przechowującą typ i parametry różnych zdarzeń

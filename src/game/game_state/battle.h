@@ -14,7 +14,7 @@
 /**
  * @brief Klasa odpowiada za ruch wszytkich czołgów oraz interaakcje między czołgami oraz między czołgami a innymi obiektami na mapie
  */
-class Battle : public GameState
+class Battle : public GameState, Object
 {
 public:
     /**
@@ -52,7 +52,7 @@ public:
      * Naspępuje tu usuwanie zniszczonych obiektów, dodawanie nowych wrogich czołgów oraz sprawdzenie warunków zakończenia rundy.
      * @param dt - czas od ostatniego wywołania funkcji w milisekundach
      */
-    void update(Uint32 dt);
+    void updateState(Uint32 dt);
     /**
      * Następuje tu reakcja na klawisze:
      * @li Enter - pauza gry

@@ -3,7 +3,8 @@
 #include "appthread.h"
 #include "game/game.h"
 #include "network/network.h"
-#include "shareddata.h"
+#include "util/shareddata.h"
+#include "game/graphicthread.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -17,7 +18,7 @@ void threadFunction(void* ptr)
 {
     AppThread* thread = reinterpret_cast<AppThread*>(ptr);
     thread->run();
-
+     std::cout << "AppThread " << thread << " done" << std::endl;
     _endthread();
 }
 
@@ -33,15 +34,19 @@ void App::run()
         InitializeCriticalSection(&critical_section);       //inicjalizacja
 
         SharedData shared_data;                             //współdzielone dane
-//        shared_data.network_state = NetworkState::SERVER;   //włączamy serwer //docelowo NONE
 
         Game* game = new Game(&shared_data, &critical_section);             //instancja gry
-        Network* server = new Network(&shared_data, &critical_section);     //instancja sieci
+        GraphicThread* graphic = new GraphicThread(&shared_data, &critical_section); //grafika i SDL eventy
+        Network* network = new Network(&shared_data, &critical_section);     //instancja sieci
 
         HANDLE game_thread = (HANDLE) _beginthread(threadFunction, 0, game);      //odpalenie wątku gry
-        HANDLE network_thread = (HANDLE) _beginthread(threadFunction, 0, server); //odpalenie wątku sieci
+        HANDLE graphic_thread = (HANDLE) _beginthread(threadFunction, 0, graphic); //odpalenie wątku sieci
+        HANDLE network_thread = (HANDLE) _beginthread(threadFunction, 0, network); //odpalenie wątku sieci
+
         threads.push_back(game_thread);
+        threads.push_back(graphic_thread);
         threads.push_back(network_thread);
+
 
         WaitForMultipleObjects(threads.size(), &threads[0], TRUE, INFINITE);        //czekanie na zakończenie wątków
         DeleteCriticalSection(&critical_section );                                  //usuwanie sekcji krytycznej

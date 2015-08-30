@@ -61,11 +61,15 @@ void Menu::draw()
     renderer->flush();
 }
 
-void Menu::update(Uint32 dt)
+void Menu::updateState(Uint32 dt)
 {
     m_tank_pointer->speed = m_tank_pointer->default_speed;
     m_tank_pointer->stop = true;
     m_tank_pointer->update(dt);
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->object_to_render.push(this);
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void Menu::eventProcess(SDL_Event *ev)

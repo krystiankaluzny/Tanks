@@ -2,6 +2,7 @@
 
 #include "../engine/engine.h"
 #include "../../appconfig.h"
+#include "../../util/myqueue.h"
 #include "menu.h"
 #include "scores.h"
 
@@ -135,7 +136,7 @@ void NetworkBattle::draw()
     renderer->flush();
 }
 
-void NetworkBattle::update(Uint32 dt)
+void NetworkBattle::updateState(Uint32 dt)
 {
     if(dt > 40) return;
 
@@ -343,6 +344,9 @@ void NetworkBattle::update(Uint32 dt)
             }
         }
     }
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->object_to_render.push(this);
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void NetworkBattle::eventProcess(EventsWrapper &events)

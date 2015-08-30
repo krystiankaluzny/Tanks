@@ -30,12 +30,12 @@ public:
     /**
      * Funkcja rysująca elementy gry należące do danego stanu
      */
-    virtual void draw() = 0;
+//    virtual void draw() = 0;
     /**
      * Funkcja aktualizująca stan obiektów i liczników w grze
      * @param dt - czas od ostatniego wywołania funkcji w milisekundach
      */
-    virtual void update(Uint32 dt) = 0;
+    virtual void updateState(Uint32 dt) = 0;
     /**
      * Funkcja umożliwiająca obsługę zdarzeń wykrywanych przez bibliotekę SDL2.
      * @param ev - wskaźnik na unię SDL_Event przechowującą typ i parametry różnych zdarzeń

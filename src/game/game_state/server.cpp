@@ -54,7 +54,7 @@ void Server::draw()
     renderer->flush();
 }
 
-void Server::update(Uint32 dt)
+void Server::updateState(Uint32 dt)
 {
 //    m_get_names_time += dt;
 //    if(m_get_names_time > AppConfig::get_player_names_time)
@@ -62,6 +62,9 @@ void Server::update(Uint32 dt)
 //        getNames();
 //        m_get_names_time = 0;
 //    }
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->object_to_render.push(this);
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void Server::eventProcess(SDL_Event *ev)

@@ -1,8 +1,7 @@
 #ifndef APPTHREAD
 #define APPTHREAD
-#include "scopelock.h"
 #include "event/eventstore.h"
-#include "shareddata.h"
+#include "util/shareddata.h"
 
 #include <process.h>
 #include <windows.h>

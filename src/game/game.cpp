@@ -17,6 +17,7 @@
 Game::Game(SharedData *shared_data, CRITICAL_SECTION *critical_section) :
     AppThread(shared_data, critical_section)
 {
+//    Menu* dupa = new Menu(this);
     m_window = nullptr;
 }
 
@@ -28,49 +29,37 @@ Game::~Game()
 
 void Game::run()
 {
-    if(initSDL())
-    {
-        Engine::getEngine().initModules();
+    is_running = true;
 
-        is_running = true;
+    EnterCriticalSection(critical_section);
+        m_game_state = nullptr;
+    LeaveCriticalSection(critical_section);
 
-        //utworzenie okna
-        m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                    AppConfig::windows_rect.w, AppConfig::windows_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-
-        if(m_window == nullptr) return;
-
-        Engine::getEngine().getRenderer()->loadTexture(m_window);
-        Engine::getEngine().getRenderer()->loadFont();
-
-        srand(time(NULL)); //inicjowanie generatora pseudolosowego
-
-        m_game_state = new Menu(this);
-
-        //========pętla główna========
-        mainLoop();
-        //========pętla główna========
-
-        EnterCriticalSection(critical_section);
-            shared_data->run_app = false;
-        LeaveCriticalSection(critical_section);
-
-        SDL_DestroyWindow(m_window);
-        m_window = nullptr;
-
-        Engine::getEngine().destroyModules();
-        quitSDL();
-    }
+    mainLoop();
 }
 
 void Game::eventProces()
 {
     SDL_Event event;
-    while(SDL_PollEvent(&event))
+    bool result = false;
+    do
     {
+//        EnterCriticalSection(critical_section);
+//            result = shared_data->sdl_events_queue.pop(&event);
+//        LeaveCriticalSection(critical_section);
+
+
+        if(!result) break;
+        std::cout << "Run2 " << std::endl;
+
         if(event.type == SDL_QUIT)
         {
             is_running = false;
+
+            EnterCriticalSection(critical_section);
+                shared_data->run_app = false;
+            LeaveCriticalSection(critical_section);
+
         }
         else if(event.type == SDL_WINDOWEVENT)
         {
@@ -86,9 +75,12 @@ void Game::eventProces()
                                                             (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
             }
         }
+        std::cout << "pop Event " << std::endl;
 
         m_game_state->eventProcess(&event);
+
     }
+    while(true);
 
     networkEvent();
 }
@@ -115,52 +107,46 @@ void Game::mainLoop()
     time1 = SDL_GetTicks();
     while(is_running)
     {
+        EnterCriticalSection(critical_section);
+            is_running = shared_data->run_app;
+        LeaveCriticalSection(critical_section);
+
         time2 = SDL_GetTicks();
         dt = time2 - time1;
         time1 = time2;
 
-        if(m_game_state->finished())
+        std::cout << "DUPA " << time2 << std::endl;
+        std::cout << m_game_state << std::endl;
+
+//        if(m_game_state->finished())
         {
-            GameState* new_state = m_game_state->nextState();
-            delete m_game_state;
-            m_game_state = new_state;
+//            GameState* new_state = m_game_state->nextState();
+//            delete m_game_state;
+//            m_game_state = new_state;
         }
-        if(m_game_state == nullptr) break;
+//        if(m_game_state == nullptr) break;
 
-        eventProces();
+//        eventProces();
 
-        m_game_state->update(AppConfig::game_speed);
-        m_game_state->draw();
+//        m_game_state->updateState(AppConfig::game_speed);
+//        m_game_state->draw();
 
         SDL_Delay(delay);
 
         //FPS
-        fps_time += dt;
-        fps_count++;
-        if(fps_time > 200)
-        {
-            FPS = (double)fps_count / fps_time * 1000;
-            if(FPS > 60) delay++;
-            else if(delay > 0) delay--;
-            fps_time = 0; fps_count = 0;
-        }
-        shared_data->incrementFrameNumber();
+//        fps_time += dt;
+//        fps_count++;
+//        if(fps_time > 200)
+//        {
+////            std::cout << "Run " << dt << " "  << delay<< std::endl;
+//            FPS = (double)fps_count / fps_time * 1000;
+//            if(FPS > 60) delay++;
+//            else if(delay > 1) delay--;
+//            fps_time = 0; fps_count = 0;
+//        }
+//        shared_data->incrementFrameNumber();
 
-        Sleep( 0 ); // reszta czasu dla drugiego wątku
+        Sleep( 15 ); // reszta czasu dla drugiego wątku
     }
 }
 
-bool Game::initSDL()
-{
-    if(SDL_Init(SDL_INIT_VIDEO) != 0) return false;
-    if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return false;
-    if(TTF_Init() == -1) return false;
-    return true;
-}
-
-void Game::quitSDL()
-{
-    TTF_Quit();
-    IMG_Quit();
-    SDL_Quit();
-}
