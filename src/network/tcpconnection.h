@@ -27,6 +27,7 @@ public:
 protected:
     void setPlayerName(SOCKET player_socket, std::string player_name);
     void removePlayerName(SOCKET player_socket);
+    void clearNames();
     void addEventFromBuffer(char* buffer, int size);
     void getLongData(LongData &event_index, LongData &events_count, char* buffer);
     void printHex(char* data, int size);

@@ -24,62 +24,62 @@ void TCPConnection::removePlayerName(SOCKET player_socket)
     LeaveCriticalSection(parent->critical_section);
 }
 
+void TCPConnection::clearNames()
+{
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->player_name.clear();
+    LeaveCriticalSection(parent->critical_section);
+}
+
 void TCPConnection::addEventFromBuffer(char *buffer, int size)
 {
     int index = 0;
     char event_type = buffer[index++];
-    LongData event_index, events_count;
+    Event* event = nullptr;
     switch(event_type)
     {
         case GENERATE_EVENT_TYPE:
         {
-            GenerateEvent* event = new GenerateEvent;
-            if(event->bufferSize() != size)
-            {
-                std::cout << "GenerateEvent event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
-                break;
-            }
-
-            getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
-            event->setByteArray(buffer);
-            EnterCriticalSection(parent->critical_section);
-                parent->shared_data->received_events.addEvent(event, event_index.l_value, events_count.l_value);
-            LeaveCriticalSection(parent->critical_section);
-
+            event = new GenerateEvent;
             break;
         }
         case PLAYER_ID_TYPE:
         {
-            PlayerNameEvent* event = new PlayerNameEvent;
-            if(event->bufferSize() != size)
-            {
-                std::cout << "PLAYER_ID_TYPE event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
-                break;
-            }
-
-            getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
-            event->setByteArray(buffer);
-            EnterCriticalSection(parent->critical_section);
-                parent->shared_data->received_events.addEvent(event, event_index.l_value, events_count.l_value);
-            LeaveCriticalSection(parent->critical_section);
+            event = new PlayerNameEvent;
             break;
         }
         case INIT_EVENT_TYPE:
         {
-            InitEvent* event = new InitEvent;
-            if(event->bufferSize() != size) break;
+            InitEvent* init = new InitEvent;
+            if(init->bufferSize() != size) break;
 
-            getLongData(event_index, events_count, buffer + event->event_datagram_size); //dwa longi z końca ramki
-            event->setByteArray(buffer);
-            std::cout << "Init: Old "  << parent->getCurrentFrame() << std::endl;
+            init->setByteArray(buffer);
+            std::cout << "init" <<std::endl;
+            initialize(init);
+            std::cout << "init" <<std::endl;
 
-            initialize(event);
-
-            std::cout << "Init: New "  << parent->getCurrentFrame() << std::endl;
             break;
         }
     default:
         std::cout << "NIE ROZPOZNANO " << event_type << std::endl;
+    }
+
+
+
+    if(event != nullptr)
+    {
+        if(event->bufferSize() != size)
+        {
+            std::cout << "event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
+        }
+        else
+        {
+            event->setByteArray(buffer);
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->received_events.addEvent(event);
+            LeaveCriticalSection(parent->critical_section);
+        }
+
     }
 }
 

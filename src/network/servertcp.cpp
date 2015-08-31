@@ -112,48 +112,17 @@ void ServerTCP::sendData()
 
     char* buf;
     Event* e;
-    LongData evet_index;
-    LongData evets_count;
-
-    auto frame_footer = [&](char* buf, int pos)
-    {
-        buf[pos] = evet_index.c_value[0];
-        buf[pos + 1] = evet_index.c_value[1];
-        buf[pos + 2] = evet_index.c_value[2];
-        buf[pos + 3] = evet_index.c_value[3];
-
-        buf[pos + 4] = evets_count.c_value[0];
-        buf[pos + 5] = evets_count.c_value[1];
-        buf[pos + 6] = evets_count.c_value[2];
-        buf[pos + 7] = evets_count.c_value[3];
-    };
-
-    evets_count.l_value = events.generate_events.size();
-    for(int i = 0; i < evets_count.l_value; ++i)
-    {
-        e = events.generate_events[i];
-        evet_index.l_value = i;
-        buf = e->getByteArray();
-
-        frame_footer(buf, e->event_datagram_size);
-
-        broadcast(buf, e->event_datagram_size);
-        delete[] buf;
-    }
-
-    evets_count.l_value = events.player_id_events.size();
-    for(int i = 0; i < evets_count.l_value; ++i)
+    int events_count = events.events.size();
+    for(int i = 0; i < events_count; ++i)
     {
         std::cout <<"send " << i << std::endl;
 
-        e = events.player_id_events[i];
-        evet_index.l_value = i;
+        e = events.events[i];
         buf = e->getByteArray();
-        printHex(buf, e->event_datagram_size + 8);
+        printHex(buf, e->bufferSize());
 
-        frame_footer(buf, e->event_datagram_size);
+        broadcast(buf, e->bufferSize());
 
-        broadcast(buf, e->event_datagram_size + 8);
         delete[] buf;
     }
 }
@@ -194,7 +163,17 @@ void ServerTCP::closeSocket(int socket_index)
     WSACloseEvent(sockets_event[socket_index]);
     sockets_event.erase(sockets_event.begin() + socket_index);
 
-    removePlayerName(sockets[socket_index]);
+    //removePlayerName(sockets[socket_index]);    //usuwanie gracza z shared data player_name
+
+
+    DisconnectEvent* event = new DisconnectEvent;
+    event->player_id.l_value = sockets[socket_index];
+    event->frame_number.l_value =  parent->getCurrentFrame() + event->priority;
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->received_events.addEvent(event);
+    LeaveCriticalSection(parent->critical_section);
+
     closesocket(sockets[socket_index]);
     sockets.erase(sockets.begin() + socket_index);
     cout << "Zamknieto socket" << endl;
@@ -223,8 +202,12 @@ void ServerTCP::broadcast(char *buf, int size)
 void ServerTCP::sendInit(SOCKET s)
 {
     InitEvent init;
-    init.current_frame.l_value = parent->getCurrentFrame();
+    init.current_frame.l_value = parent->getCurrentFrame() + init.priority;
+    init.player_id.l_value = s;
+    std::cout << init.player_id.l_value << " " << s << std::endl;
     char* buf = init.getByteArray();
+
+    printHex(buf, init.bufferSize());
 
     std::cout << "SEND INIT " << init.bufferSize() << std::endl;
     send(s, buf , init.bufferSize(), 0);

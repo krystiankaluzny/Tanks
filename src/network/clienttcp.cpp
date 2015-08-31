@@ -95,6 +95,8 @@ void ClientTCP::close()
     WSACloseEvent(sockets_event[0]);
     sockets_event.erase(sockets_event.begin());
 
+    clearNames();   //usuwanie wszystkich graczy z listy w shared data, żeby przy kolejnej próbie łączenia lista była pusta
+
     closesocket(sockets[0]);
     sockets.erase(sockets.begin());
 }
@@ -132,8 +134,6 @@ void ClientTCP::readData()
     int size = recv(sockets[0], buffer, sizeof(buffer), 0);
     if(size != SOCKET_ERROR && size >= 6)
     {
-        std::cout << parent->getCurrentFrame() << std::endl;
-        printHex(buffer, size);
         addEventFromBuffer(buffer, size);
     }
 }

@@ -56,12 +56,12 @@ void Server::draw()
 
 void Server::update(Uint32 dt)
 {
-//    m_get_names_time += dt;
-//    if(m_get_names_time > AppConfig::get_player_names_time)
-//    {
-//        getNames();
-//        m_get_names_time = 0;
-//    }
+    m_get_names_time += dt;
+    if(m_get_names_time > AppConfig::get_player_names_time)
+    {
+        getNames();
+        m_get_names_time = 0;
+    }
 }
 
 void Server::eventProcess(SDL_Event *ev)
@@ -78,13 +78,34 @@ void Server::eventProcess(SDL_Event *ev)
 void Server::eventProcess(EventsWrapper &ev)
 {
     SOCKET player_socket;
-    std::string player_name;
-    std::vector<PlayerNameEvent*> players = ev.player_id_events;
+    std::vector<Event*> events = ev.events;
 
-    for(PlayerNameEvent* p : players)
+    for(Event* e : events)
     {
-        player_socket = p->player_id.l_value;
-        m_player_name[player_socket] = std::string(p->name);
+        std::cout << "TYPE:" << e->type << std::endl;
+        switch (e->type)
+        {
+        case EventType::PLAYER_ID_TYPE:
+        {
+            PlayerNameEvent* p = (PlayerNameEvent*)e;
+            player_socket = p->player_id.l_value;
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->player_name[player_socket] = std::string(p->name);
+            LeaveCriticalSection(parent->critical_section);
+            break;
+        }
+        case EventType::DISCONNECT_EVENT_TYPE:
+        {
+            DisconnectEvent* d = (DisconnectEvent*)e;
+            player_socket = d->player_id.l_value;
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->player_name.erase(player_socket);
+            LeaveCriticalSection(parent->critical_section);
+            break;
+        }
+        default:
+            break;
+        }
     }
 }
 

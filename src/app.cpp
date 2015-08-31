@@ -12,7 +12,6 @@
 #include <windows.h>
 #include <vector>
 
-
 void threadFunction(void* ptr)
 {
     AppThread* thread = reinterpret_cast<AppThread*>(ptr);

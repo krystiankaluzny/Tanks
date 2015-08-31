@@ -101,13 +101,34 @@ void Client::eventProcess(SDL_Event *ev)
 void Client::eventProcess(EventsWrapper &ev)
 {
     SOCKET player_socket;
-    std::string player_name;
-    std::vector<PlayerNameEvent*> players = ev.player_id_events;
+    std::vector<Event*> events = ev.events;
 
-    for(PlayerNameEvent* p : players)
+    for(Event* e : events)
     {
-        player_socket = p->player_id.l_value;
-        parent->shared_data->player_name[player_socket] = std::string(p->name);
+        std::cout << "TYPE:" << e->type << std::endl;
+        switch (e->type)
+        {
+        case EventType::PLAYER_ID_TYPE:
+        {
+            PlayerNameEvent* p = (PlayerNameEvent*)e;
+            player_socket = p->player_id.l_value;
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->player_name[player_socket] = std::string(p->name);
+            LeaveCriticalSection(parent->critical_section);
+            break;
+        }
+        case EventType::DISCONNECT_EVENT_TYPE:
+        {
+            DisconnectEvent* d = (DisconnectEvent*)e;
+            player_socket = d->player_id.l_value;
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->player_name.erase(player_socket);
+            LeaveCriticalSection(parent->critical_section);
+            break;
+        }
+        default:
+            break;
+        }
     }
 }
 
@@ -127,7 +148,7 @@ void Client::getNames()
 void Client::sendName()
 {
     PlayerNameEvent *player = new PlayerNameEvent();
-    player->frame_number.l_value = parent->getCurrentFrame() + 20;
+    player->frame_number.l_value = parent->getCurrentFrame() + player->priority;
     player->player_id.l_value = parent->getPlayerId();
     sprintf(player->name, "Nowy %d", player->frame_number.l_value);
 

@@ -14,6 +14,8 @@
 #include <SDL2/SDL_thread.h>
 #include <windows.h>
 
+//#define RELEASE
+
 Game::Game(SharedData *shared_data, CRITICAL_SECTION *critical_section) :
     AppThread(shared_data, critical_section)
 {
@@ -36,7 +38,13 @@ void Game::run()
 
         //utworzenie okna
         m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                    AppConfig::windows_rect.w, AppConfig::windows_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                                    AppConfig::windows_rect.w, AppConfig::windows_rect.h,
+                            #ifdef RELEASE
+                                    SDL_WINDOW_FULLSCREEN_DESKTOP
+                            #else
+                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+                            #endif
+                            );
 
         if(m_window == nullptr) return;
 
@@ -103,8 +111,6 @@ void Game::networkEvent()
         events = shared_data->received_events.frame_events[current_frame];
     LeaveCriticalSection(critical_section);
 
-    if(events.player_id_events.size())
-        std::cout << events.player_id_events.size() << " " << current_frame << std::endl;
     m_game_state->eventProcess(events);
 }
 

@@ -3,19 +3,21 @@
 
 Event::Event() :
     type(NONE_EVENT_TYPE),
-    event_datagram_size(0)
+    event_datagram_size(0),
+    priority(10)
 {
 }
 
-Event::Event(EventType type, int data_size) :
+Event::Event(EventType type, int data_size, int priority) :
     type(type),
-    event_datagram_size(data_size)
+    event_datagram_size(data_size),
+    priority(priority)
 {
 }
 
 int Event::bufferSize()
 {
-    return event_datagram_size + 8;
+    return event_datagram_size;
 }
 
 void Event::setZeroPos(char *buff, int starting_point)
@@ -62,7 +64,7 @@ void KeyEvent::setByteArray(char *buffer)
 
 char *KeyEvent::getByteArray()
 {
-    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
     buffer[index++] = frame_number.c_value[0];
@@ -76,8 +78,6 @@ char *KeyEvent::getByteArray()
     buffer[index++] = id_tank.c_value[1];
     buffer[index++] = id_tank.c_value[2];
     buffer[index++] = id_tank.c_value[3];
-
-    setZeroPos(buffer, event_datagram_size);
 
     return buffer;
 }
@@ -116,7 +116,7 @@ void GenerateEvent::setByteArray(char *buffer)
 
 char *GenerateEvent::getByteArray()
 {
-    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
     buffer[index++] = frame_number.c_value[0];
@@ -141,13 +141,11 @@ char *GenerateEvent::getByteArray()
     buffer[index++] = seed3.c_value[2];
     buffer[index++] = seed3.c_value[3];
 
-    setZeroPos(buffer, event_datagram_size);
-
     return buffer;
 }
 
 
-PlayerNameEvent::PlayerNameEvent() : Event(PLAYER_ID_TYPE, 24)
+PlayerNameEvent::PlayerNameEvent() : Event(PLAYER_ID_TYPE, 25)
 {
 }
 
@@ -174,7 +172,7 @@ void PlayerNameEvent::setByteArray(char *buffer)
 
 char *PlayerNameEvent::getByteArray()
 {
-    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
     buffer[index++] = frame_number.c_value[0];
@@ -194,13 +192,11 @@ char *PlayerNameEvent::getByteArray()
         buffer[index++] = name[i];
     }
 
-    setZeroPos(buffer, event_datagram_size);
-
     return buffer;
 }
 
 
-InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 13)
+InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 14)
 {
 
 }
@@ -229,7 +225,7 @@ void InitEvent::setByteArray(char *buffer)
 
 char *InitEvent::getByteArray()
 {
-    char* buffer = new char[event_datagram_size + 8]; //+8 na event index i event count
+    char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
     buffer[index++] = frame_number.c_value[0];
@@ -249,7 +245,47 @@ char *InitEvent::getByteArray()
     buffer[index++] = player_id.c_value[2];
     buffer[index++] = player_id.c_value[3];
 
-    setZeroPos(buffer, event_datagram_size);
+    return buffer;
+}
+
+
+DisconnectEvent::DisconnectEvent() : Event(DISCONNECT_EVENT_TYPE, 10)
+{
+
+}
+
+void DisconnectEvent::setByteArray(char *buffer)
+{
+    int index = 1;
+
+    frame_number.c_value[0] = buffer[index++];
+    frame_number.c_value[1] = buffer[index++];
+    frame_number.c_value[2] = buffer[index++];
+    frame_number.c_value[3] = buffer[index++];
+    index++;    //no sepc type
+
+    player_id.c_value[0] = buffer[index++];
+    player_id.c_value[1] = buffer[index++];
+    player_id.c_value[2] = buffer[index++];
+    player_id.c_value[3] = buffer[index++];
+}
+
+char *DisconnectEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size];
+    int index = 0;
+    buffer[index++] = type;
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = 0;
+
+    buffer[index++] = player_id.c_value[0];
+    buffer[index++] = player_id.c_value[1];
+    buffer[index++] = player_id.c_value[2];
+    buffer[index++] = player_id.c_value[3];
 
     return buffer;
 }
