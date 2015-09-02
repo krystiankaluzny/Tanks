@@ -64,6 +64,9 @@ public:
     void setCurrentFrameNumber(unsigned long current_frame);
 
     void incrementFrameNumber();
+
+    void newEvent(Event* event);
+
 };
 
 #endif // SHAREDDATA_H

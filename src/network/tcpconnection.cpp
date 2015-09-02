@@ -34,57 +34,73 @@ void TCPConnection::clearNames()
 void TCPConnection::addEventFromBuffer(char *buffer, int size)
 {
     int index = 0;
-    char event_type = buffer[index++];
-    Event* event = nullptr;
-    switch(event_type)
+    char event_type;
+    Event* event;
+
+    do
     {
-        case GENERATE_EVENT_TYPE:
+        event = nullptr;
+        event_type = buffer[index];
+        switch(event_type)
         {
-            event = new GenerateEvent;
-            break;
-        }
-        case PLAYER_ID_TYPE:
-        {
-            event = new PlayerNameEvent;
-            break;
-        }
-        case INIT_EVENT_TYPE:
-        {
-            InitEvent* init = new InitEvent;
-            if(init->bufferSize() != size) break;
+            case GENERATE_EVENT_TYPE:
+            {
+                event = new GenerateEvent;
+                break;
+            }
+            case PLAYER_ID_TYPE:
+            {
+                event = new PlayerNameEvent;
+                break;
+            }
+            case INIT_EVENT_TYPE:
+            {
+                InitEvent* init = new InitEvent;
+                if(init->bufferSize() != size) break;
 
-            init->setByteArray(buffer);
-            std::cout << "Odebrano init" <<std::endl;
-            initialize(init);
+                init->setByteArray(buffer);
+                std::cout << "Odebrano init" <<std::endl;
+                initialize(init);
 
-            break;
+                index += init->bufferSize();
+
+                break;
+            }
+            case START_GAME_TYPE:
+            {
+                event = new StartGameEvent;
+                break;
+            }
+            case DISCONNECT_EVENT_TYPE:
+            {
+                event = new DisconnectEvent;
+                break;
+            }
         }
-        case START_GAME_TYPE:
-        {
-            event = new StartGameEvent;
-            break;
-        }
-    default:
-        std::cout << "NIE ROZPOZNANO TYPU: " << event_type << " , current frame" << parent->getCurrentFrame() << std::endl;
-    }
 
 
-    if(event != nullptr)
-    {
-        if(event->bufferSize() != size)
+        if(event != nullptr)
         {
-            std::cout << "NIE ROZPOZNANO, current frame" << parent->getCurrentFrame() << std::endl;
-            std::cout << "event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
+            if(event->bufferSize() > size - index)
+            {
+                std::cout << "NIE ROZPOZNANO, current frame" << parent->getCurrentFrame() << std::endl;
+                std::cout << "event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
+            }
+            else
+            {
+                event->setByteArray(buffer);
+                EnterCriticalSection(parent->critical_section);
+                    parent->shared_data->received_events.addEvent(event);
+                LeaveCriticalSection(parent->critical_section);
+            }
+            index += event->bufferSize();
         }
         else
         {
-            event->setByteArray(buffer);
-            EnterCriticalSection(parent->critical_section);
-                parent->shared_data->received_events.addEvent(event);
-            LeaveCriticalSection(parent->critical_section);
+            std::cout << "Nie rozpoznano EVENTU: " << event_type << " , current frame" << parent->getCurrentFrame() << " index: " << index << " size: " << size << std::endl;
         }
+    }while(index < size);
 
-    }
 }
 
 void TCPConnection::getLongData(LongData &event_index, LongData &events_count, char *buffer)

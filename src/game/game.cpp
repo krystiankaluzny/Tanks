@@ -106,14 +106,11 @@ void Game::networkEvent()
     if(!isNetworkRunning()) return;
 
     EventsWrapper events;
-//    std::cout << "Start game 2.1" << std::endl;
     unsigned long current_frame = getCurrentFrame();
-//    std::cout << "Start game 2.2" << std::endl;
     EnterCriticalSection(critical_section);
         events = shared_data->received_events.frame_events[current_frame];
     LeaveCriticalSection(critical_section);
 
-//    std::cout << "Start game 2.3" << std::endl;
     m_game_state->eventProcess(events);
 }
 

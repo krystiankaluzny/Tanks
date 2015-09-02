@@ -166,7 +166,7 @@ void Client::sendName()
     sprintf(player->name, "Nowy %d", player->frame_number.l_value);
 
     EnterCriticalSection(parent->critical_section);
-        parent->shared_data->transmit_events.addEvent(player);
+        parent->shared_data->newEvent(player);
     LeaveCriticalSection(parent->critical_section);
 }
 

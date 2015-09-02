@@ -140,8 +140,8 @@ void Server::eventProcess(SDL_Event *ev)
                 start_game->frame_number.l_value = parent->getCurrentFrame() + start_game->priority;
                 std::cout << "Start game" << std::endl;
                 EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->received_events.addEvent(start_game);
-                    parent->shared_data->transmit_events.addEvent(start_game);
+                    parent->shared_data->newEvent(start_game);
+//                    parent->shared_data->transmit_events.addEvent(start_game);
                 LeaveCriticalSection(parent->critical_section);
                 std::cout << "Start game2" << std::endl;
             }
@@ -161,16 +161,12 @@ void Server::eventProcess(SDL_Event *ev)
 void Server::eventProcess(EventsWrapper &ev)
 {
     SOCKET player_socket;
-    std::cout << "Start game 2.4" << std::endl;
     std::vector<Event*> events = ev.events;
-
-    std::cout << "Start game 2.44 " << events.size() << std::endl;
 
     if(events.size() == 0) return;
 
     for(Event* e : events)
     {
-        std::cout << "Server::eventProcess TYPE: " << e->type << std::endl;
         switch (e->type)
         {
         case EventType::PLAYER_ID_TYPE:
@@ -193,7 +189,6 @@ void Server::eventProcess(EventsWrapper &ev)
         }
         case EventType::START_GAME_TYPE:
         {
-            std::cout << "Start game3" << std::endl;
             m_start_game = true;
             m_finished = true;
 
@@ -243,7 +238,7 @@ void Server::sendNames()
         sprintf(player_event->name, "%s", player.second.c_str());
 
         EnterCriticalSection(parent->critical_section);
-            parent->shared_data->transmit_events.addEvent(player_event);
+            parent->shared_data->newEvent(player_event);
         LeaveCriticalSection(parent->critical_section);
     }
 }

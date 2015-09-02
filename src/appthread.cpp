@@ -10,7 +10,7 @@ AppThread::AppThread(SharedData *shared_data, CRITICAL_SECTION *critical_section
 void AppThread::saveEvent(Event *event)
 {
     EnterCriticalSection(critical_section);
-        shared_data->transmit_events.addEvent(event);
+        shared_data->newEvent(event);
     LeaveCriticalSection(critical_section);
 }
 

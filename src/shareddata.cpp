@@ -30,3 +30,15 @@ void SharedData::incrementFrameNumber()
     received_events.current_frame++;
 }
 
+void SharedData::newEvent(Event *event)
+{
+    if(network_state == SERVER)
+    {
+        received_events.addEvent(event);
+    }
+    else
+    {
+        transmit_events.addEvent(event);
+    }
+}
+
