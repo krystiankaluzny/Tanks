@@ -291,12 +291,12 @@ char *DisconnectEvent::getByteArray()
 }
 
 
-StartGame::StartGame() : Event(START_GAME_TYPE, 6)
+StartGameEvent::StartGameEvent() : Event(START_GAME_TYPE, 6, 30)
 {
 
 }
 
-void StartGame::setByteArray(char *buffer)
+void StartGameEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
@@ -307,7 +307,7 @@ void StartGame::setByteArray(char *buffer)
     index++;    //no sepc type
 }
 
-char *StartGame::getByteArray()
+char *StartGameEvent::getByteArray()
 {
     char* buffer = new char[event_datagram_size];
     int index = 0;

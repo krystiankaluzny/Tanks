@@ -49,7 +49,7 @@ public:
 
 private:
     void getNames();
-
+    void sendNames();
     /**
      * Kontener przechowujący wszystkie napisy jakie pojawiają się w menu.
      */
@@ -59,9 +59,11 @@ private:
      */
     int m_menu_index;
     Player* m_tank_pointer;
+    bool m_start_game;
 
     std::map<SOCKET, std::string> m_player_name;
     unsigned m_get_names_time;
+    unsigned m_send_names_time;
 };
 
 #endif // SERVER_H

@@ -4,6 +4,7 @@
 #include "../../appconfig.h"
 #include "menu.h"
 #include "../game.h"
+#include "networkbattle.h"
 
 #include <cstdio>
 
@@ -14,6 +15,7 @@ Client::Client(Game *parent) : GameState(parent)
     m_get_names_time = 0;
     m_send_name_time = 0;
     setNetworkState(NetworkState::CLIENT);
+    m_start_game = false;
 }
 
 bool Client::finished() const
@@ -65,7 +67,7 @@ void Client::draw()
 void Client::update(Uint32 dt)
 {
     m_get_names_time += dt;
-    if(m_get_names_time > AppConfig::get_player_names_time)
+    if(m_get_names_time > AppConfig::get_players_names_time)
     {
         getNames();
         m_get_names_time = 0;
@@ -79,7 +81,7 @@ void Client::update(Uint32 dt)
     if(state == NetworkState::CLIENT_INITIALIZED)
     {
         m_send_name_time += dt;
-        if(m_send_name_time > AppConfig::send_player_name_time)
+        if(m_send_name_time > AppConfig::send_players_names_time)
         {
             sendName();
             m_send_name_time = 0;
@@ -105,7 +107,7 @@ void Client::eventProcess(EventsWrapper &ev)
 
     for(Event* e : events)
     {
-        std::cout << "Client eventProcess TYPE:" << e->type << std::endl;
+//        std::cout << "Client eventProcess TYPE: " << e->type << std::endl;
         switch (e->type)
         {
         case EventType::PLAYER_ID_TYPE:
@@ -126,6 +128,13 @@ void Client::eventProcess(EventsWrapper &ev)
             LeaveCriticalSection(parent->critical_section);
             break;
         }
+        case EventType::START_GAME_TYPE:
+        {
+            m_start_game = true;
+            m_finished = true;
+
+            break;
+        }
         default:
             break;
         }
@@ -134,6 +143,10 @@ void Client::eventProcess(EventsWrapper &ev)
 
 GameState *Client::nextState()
 {
+    if(m_start_game)
+    {
+        return new NetworkBattle(parent);
+    }
     setNetworkState(NetworkState::NONE);
     return new Menu(parent);
 }

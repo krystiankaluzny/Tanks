@@ -137,11 +137,11 @@ public:
     /**
      * Czas co jaki są pobierane nazwy graczy w trybie czekania na grę.
      */
-    static unsigned get_player_names_time;
+    static unsigned get_players_names_time;
     /**
      * Czas co jaki są pobierane nazwy graczy w trybie czekania na grę.
      */
-    static unsigned send_player_name_time;
+    static unsigned send_players_names_time;
 };
 
 #endif // APPCONFIG_H

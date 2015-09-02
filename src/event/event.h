@@ -115,9 +115,10 @@ public:
     char* getByteArray();
 };
 
-class StartGame : public Event
+class StartGameEvent : public Event
 {
-    StartGame();
+public:
+    StartGameEvent();
     //1byte spec
     void setByteArray(char *buffer);
     char* getByteArray();

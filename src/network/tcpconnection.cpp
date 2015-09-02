@@ -57,14 +57,16 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             std::cout << "Odebrano init" <<std::endl;
             initialize(init);
 
-            char* tets = new char[10];
-            send(sockets[0], tets, 10, 0);
+            break;
+        }
+        case START_GAME_TYPE:
+        {
+            event = new StartGameEvent;
             break;
         }
     default:
-        std::cout << "NIE ROZPOZNANO, current frame" << parent->getCurrentFrame() << std::endl;
+        std::cout << "NIE ROZPOZNANO TYPU: " << event_type << " , current frame" << parent->getCurrentFrame() << std::endl;
     }
-
 
 
     if(event != nullptr)

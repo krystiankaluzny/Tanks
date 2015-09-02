@@ -106,11 +106,14 @@ void Game::networkEvent()
     if(!isNetworkRunning()) return;
 
     EventsWrapper events;
+//    std::cout << "Start game 2.1" << std::endl;
     unsigned long current_frame = getCurrentFrame();
+//    std::cout << "Start game 2.2" << std::endl;
     EnterCriticalSection(critical_section);
         events = shared_data->received_events.frame_events[current_frame];
     LeaveCriticalSection(critical_section);
 
+//    std::cout << "Start game 2.3" << std::endl;
     m_game_state->eventProcess(events);
 }
 
@@ -157,10 +160,10 @@ void Game::mainLoop()
             state = shared_data->network_state;
         LeaveCriticalSection(critical_section);
 
-        if(state != NetworkState::NONE)
-        {
-            std::cout << "Current frame: " << getCurrentFrame() << std::endl;
-        }
+//        if(state != NetworkState::NONE)
+//        {
+//            std::cout << "Current frame: " << getCurrentFrame() << std::endl;
+//        }
         Sleep( 0 ); // reszta czasu dla drugiego wątku
     }
 }

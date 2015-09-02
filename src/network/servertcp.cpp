@@ -105,7 +105,7 @@ void ServerTCP::sendData()
     EventsWrapper events;
     unsigned long current_frame = parent->getCurrentFrame();
     EnterCriticalSection(parent->critical_section);
-        events = parent->shared_data->received_events.frame_events[current_frame + 15];
+        events = parent->shared_data->received_events.frame_events[current_frame + 10];
     LeaveCriticalSection(parent->critical_section);
 
     char* buf;
@@ -113,17 +113,36 @@ void ServerTCP::sendData()
     int events_count = events.events.size();
     for(int i = 0; i < events_count; ++i)
     {
-        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << std::endl;
+//        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << std::endl;
 
         e = events.events[i];
         buf = e->getByteArray();
 
-        printHex(buf, e->bufferSize());
+//        printHex(buf, e->bufferSize());
 
         broadcast(buf, e->bufferSize());
 
         delete[] buf;
     }
+
+    std::vector<Event*> events2;
+    EnterCriticalSection(parent->critical_section);
+        events2 = parent->shared_data->transmit_events.events;
+    LeaveCriticalSection(parent->critical_section);
+
+
+    for(Event* ev : events2)
+    {
+        buf = ev->getByteArray();
+//        printHex(buf, ev->bufferSize());
+        broadcast(buf, ev->bufferSize());
+
+        delete[] buf;
+    }
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->transmit_events.clear();
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void ServerTCP::readData()
@@ -187,7 +206,7 @@ void ServerTCP::readSocket(int socket_index)
 
     if(size != SOCKET_ERROR && size >= 6)
     {
-        cout << " Cos idzie z " << sockets[socket_index] << endl;
+//        cout << " Cos idzie z " << sockets[socket_index] << endl;
         addEventFromBuffer(buffer, size);
     }
 }
@@ -206,13 +225,11 @@ void ServerTCP::sendInit(SOCKET s)
     init.frame_number.l_value = 0;
     init.current_frame.l_value = parent->getCurrentFrame();
     init.player_id.l_value = s;
-    std::cout << init.player_id.l_value << " " << s << std::endl;
+
     char* buf = init.getByteArray();
 
-    printHex(buf, init.bufferSize());
-
-    std::cout << "SEND INIT " << init.bufferSize() << "currenta frame" << parent->getCurrentFrame() << std::endl;
     send(s, buf , init.bufferSize(), 0);
+    delete[] buf;
 }
 
 

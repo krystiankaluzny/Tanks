@@ -6,10 +6,13 @@
 #include "../game.h"
 #include "../game_state/networkbattle.h"
 
+#include <cstdio>
+
 Server::Server(Game *parent) : GameState(parent)
 {
     m_finished = false;
     m_get_names_time = 0;
+    m_send_names_time = 0;
     setNetworkState(NetworkState::SERVER);
 
     m_menu_texts.push_back("Start Game");
@@ -25,6 +28,8 @@ Server::Server(Game *parent) : GameState(parent)
     m_tank_pointer->clearFlag(TSF_LIFE);
     m_tank_pointer->clearFlag(TSF_SHIELD);
     m_tank_pointer->setFlag(TSF_MENU);
+
+    m_start_game = false;
 }
 
 Server::~Server()
@@ -89,10 +94,17 @@ void Server::draw()
 void Server::update(Uint32 dt)
 {
     m_get_names_time += dt;
-    if(m_get_names_time > AppConfig::get_player_names_time)
+    if(m_get_names_time > AppConfig::get_players_names_time)
     {
         getNames();
         m_get_names_time = 0;
+    }
+
+    m_send_names_time += dt;
+    if(m_send_names_time > AppConfig::send_players_names_time)
+    {
+        sendNames();
+        m_send_names_time = 0;
     }
 
     m_tank_pointer->speed = m_tank_pointer->default_speed;
@@ -122,7 +134,21 @@ void Server::eventProcess(SDL_Event *ev)
         }
         else if(ev->key.keysym.sym == SDLK_SPACE || ev->key.keysym.sym == SDLK_RETURN)
         {
-            m_finished = true;
+            if(m_menu_index == 0)
+            {
+                StartGameEvent* start_game = new StartGameEvent;
+                start_game->frame_number.l_value = parent->getCurrentFrame() + start_game->priority;
+                std::cout << "Start game" << std::endl;
+                EnterCriticalSection(parent->critical_section);
+                    parent->shared_data->received_events.addEvent(start_game);
+                    parent->shared_data->transmit_events.addEvent(start_game);
+                LeaveCriticalSection(parent->critical_section);
+                std::cout << "Start game2" << std::endl;
+            }
+            else
+            {
+                m_finished = true;
+            }
         }
         else if(ev->key.keysym.sym == SDLK_ESCAPE)
         {
@@ -135,11 +161,16 @@ void Server::eventProcess(SDL_Event *ev)
 void Server::eventProcess(EventsWrapper &ev)
 {
     SOCKET player_socket;
+    std::cout << "Start game 2.4" << std::endl;
     std::vector<Event*> events = ev.events;
+
+    std::cout << "Start game 2.44 " << events.size() << std::endl;
+
+    if(events.size() == 0) return;
 
     for(Event* e : events)
     {
-        std::cout << "Server::eventProcess TYPE:" << e->type << std::endl;
+        std::cout << "Server::eventProcess TYPE: " << e->type << std::endl;
         switch (e->type)
         {
         case EventType::PLAYER_ID_TYPE:
@@ -160,6 +191,14 @@ void Server::eventProcess(EventsWrapper &ev)
             LeaveCriticalSection(parent->critical_section);
             break;
         }
+        case EventType::START_GAME_TYPE:
+        {
+            std::cout << "Start game3" << std::endl;
+            m_start_game = true;
+            m_finished = true;
+
+            break;
+        }
         default:
             break;
         }
@@ -178,8 +217,9 @@ GameState *Server::nextState()
         setNetworkState(NetworkState::NONE);
         return new Menu(parent);
     }
-    else if(m_menu_index == 0)
+    else if(m_start_game)
     {
+        std::cout << "Start game4" << std::endl;
         return new NetworkBattle(parent);
     }
     return nullptr;
@@ -190,4 +230,20 @@ void Server::getNames()
     EnterCriticalSection(parent->critical_section);
         m_player_name = parent->shared_data->player_name;
     LeaveCriticalSection(parent->critical_section);
+}
+
+void Server::sendNames()
+{
+    for(auto player : m_player_name)
+    {
+        PlayerNameEvent *player_event = new PlayerNameEvent();
+        player_event->frame_number.l_value = parent->getCurrentFrame() + player_event->priority;
+        player_event->player_id.l_value = player.first;
+
+        sprintf(player_event->name, "%s", player.second.c_str());
+
+        EnterCriticalSection(parent->critical_section);
+            parent->shared_data->transmit_events.addEvent(player_event);
+        LeaveCriticalSection(parent->critical_section);
+    }
 }

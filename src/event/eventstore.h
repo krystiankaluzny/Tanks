@@ -37,6 +37,7 @@ class TransmitEvents
 public:
     std::vector<Event*> events;
     void addEvent(Event* event);
+    void clear();
 };
 
 #endif // EVENTSTORE_H
