@@ -18,9 +18,6 @@ public:
     void sendData();
     void readData();
 private:
-
-    vector<SOCKET> sockets;
-    vector<WSAEVENT> sockets_event;
 };
 
 #endif // CLENTTCP_H

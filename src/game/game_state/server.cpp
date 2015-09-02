@@ -4,12 +4,32 @@
 #include "../../appconfig.h"
 #include "menu.h"
 #include "../game.h"
+#include "../game_state/networkbattle.h"
 
 Server::Server(Game *parent) : GameState(parent)
 {
     m_finished = false;
     m_get_names_time = 0;
     setNetworkState(NetworkState::SERVER);
+
+    m_menu_texts.push_back("Start Game");
+    m_menu_texts.push_back("Exit");
+    m_menu_index = 0;
+
+    m_tank_pointer = new Player(0, 0 , ST_PLAYER_1);
+    m_tank_pointer->direction = D_RIGHT;
+    m_tank_pointer->pos_x = 144;
+    m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+    m_tank_pointer->setFlag(TSF_LIFE);
+    m_tank_pointer->update(0);
+    m_tank_pointer->clearFlag(TSF_LIFE);
+    m_tank_pointer->clearFlag(TSF_SHIELD);
+    m_tank_pointer->setFlag(TSF_MENU);
+}
+
+Server::~Server()
+{
+    delete m_tank_pointer;
 }
 
 
@@ -51,6 +71,18 @@ void Server::draw()
         i++;
     }
 
+    //menu
+    i = 0;
+    SDL_Point text_start;
+    for(auto text : m_menu_texts)
+    {
+        text_start = { 180, (i + 1) * 32 + 300};
+        i++;
+        renderer->drawText(&text_start, text, {255, 255, 255, 255}, 2);
+    }
+
+    m_tank_pointer->draw();
+
     renderer->flush();
 }
 
@@ -62,14 +94,39 @@ void Server::update(Uint32 dt)
         getNames();
         m_get_names_time = 0;
     }
+
+    m_tank_pointer->speed = m_tank_pointer->default_speed;
+    m_tank_pointer->stop = true;
+    m_tank_pointer->update(dt);
 }
 
 void Server::eventProcess(SDL_Event *ev)
 {
     if(ev->type == SDL_KEYDOWN)
     {
-        if(ev->key.keysym.sym == SDLK_ESCAPE)
+        if(ev->key.keysym.sym == SDLK_UP)
         {
+            m_menu_index--;
+            if(m_menu_index < 0)
+                m_menu_index = m_menu_texts.size() - 1;
+
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+        }
+        else if(ev->key.keysym.sym == SDLK_DOWN)
+        {
+            m_menu_index++;
+            if(m_menu_index >= m_menu_texts.size())
+                m_menu_index = 0;
+
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+        }
+        else if(ev->key.keysym.sym == SDLK_SPACE || ev->key.keysym.sym == SDLK_RETURN)
+        {
+            m_finished = true;
+        }
+        else if(ev->key.keysym.sym == SDLK_ESCAPE)
+        {
+            m_menu_index = m_menu_texts.size() - 1;
             m_finished = true;
         }
     }
@@ -82,7 +139,7 @@ void Server::eventProcess(EventsWrapper &ev)
 
     for(Event* e : events)
     {
-        std::cout << "TYPE:" << e->type << std::endl;
+        std::cout << "Server::eventProcess TYPE:" << e->type << std::endl;
         switch (e->type)
         {
         case EventType::PLAYER_ID_TYPE:
@@ -116,8 +173,16 @@ bool Server::finished() const
 
 GameState *Server::nextState()
 {
-    setNetworkState(NetworkState::NONE);
-    return new Menu(parent);
+    if(m_menu_index == m_menu_texts.size() - 1)
+    {
+        setNetworkState(NetworkState::NONE);
+        return new Menu(parent);
+    }
+    else if(m_menu_index == 0)
+    {
+        return new NetworkBattle(parent);
+    }
+    return nullptr;
 }
 
 void Server::getNames()

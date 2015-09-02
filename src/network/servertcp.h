@@ -34,9 +34,6 @@ private:
 
     void broadcast(char* buf, int size);
     void sendInit(SOCKET s);
-
-    vector<SOCKET> sockets; //pierwszy socket jest socketem serwera
-    vector<WSAEVENT> sockets_event;
 };
 
 #endif // SERVERTCP_H

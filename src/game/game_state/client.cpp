@@ -105,7 +105,7 @@ void Client::eventProcess(EventsWrapper &ev)
 
     for(Event* e : events)
     {
-        std::cout << "TYPE:" << e->type << std::endl;
+        std::cout << "Client eventProcess TYPE:" << e->type << std::endl;
         switch (e->type)
         {
         case EventType::PLAYER_ID_TYPE:

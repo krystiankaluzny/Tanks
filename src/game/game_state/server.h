@@ -2,6 +2,8 @@
 #define SERVER_H
 
 #include "gamestate.h"
+#include "../objects/player.h"
+
 #include <vector>
 #include <map>
 #include <winsock2.h>
@@ -10,6 +12,8 @@ class Server : public GameState
 {
 public:
     Server(Game* parent);
+
+    ~Server();
 
     /**
      * Funkcja zwraca @a true po określonym czasie wyświetlania ekranu punktów.
@@ -45,6 +49,16 @@ public:
 
 private:
     void getNames();
+
+    /**
+     * Kontener przechowujący wszystkie napisy jakie pojawiają się w menu.
+     */
+    std::vector<std::string> m_menu_texts;
+    /**
+     * Indeks wybranej pozycji menu.
+     */
+    int m_menu_index;
+    Player* m_tank_pointer;
 
     std::map<SOCKET, std::string> m_player_name;
     unsigned m_get_names_time;

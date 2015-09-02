@@ -289,3 +289,35 @@ char *DisconnectEvent::getByteArray()
 
     return buffer;
 }
+
+
+StartGame::StartGame() : Event(START_GAME_TYPE, 6)
+{
+
+}
+
+void StartGame::setByteArray(char *buffer)
+{
+    int index = 1;
+
+    frame_number.c_value[0] = buffer[index++];
+    frame_number.c_value[1] = buffer[index++];
+    frame_number.c_value[2] = buffer[index++];
+    frame_number.c_value[3] = buffer[index++];
+    index++;    //no sepc type
+}
+
+char *StartGame::getByteArray()
+{
+    char* buffer = new char[event_datagram_size];
+    int index = 0;
+    buffer[index++] = type;
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = 0;
+
+    return buffer;
+}

@@ -54,14 +54,15 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             if(init->bufferSize() != size) break;
 
             init->setByteArray(buffer);
-            std::cout << "init" <<std::endl;
+            std::cout << "Odebrano init" <<std::endl;
             initialize(init);
-            std::cout << "init" <<std::endl;
 
+            char* tets = new char[10];
+            send(sockets[0], tets, 10, 0);
             break;
         }
     default:
-        std::cout << "NIE ROZPOZNANO " << event_type << std::endl;
+        std::cout << "NIE ROZPOZNANO, current frame" << parent->getCurrentFrame() << std::endl;
     }
 
 
@@ -70,6 +71,7 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
     {
         if(event->bufferSize() != size)
         {
+            std::cout << "NIE ROZPOZNANO, current frame" << parent->getCurrentFrame() << std::endl;
             std::cout << "event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
         }
         else

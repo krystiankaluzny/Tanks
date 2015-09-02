@@ -106,6 +106,7 @@ void ClientTCP::sendData()
     //zdjęcie z kolejki odpowiednich eventów
     bool send_events = false;
     std::vector<Event*> transmit_events;
+    long current = parent->getCurrentFrame();
     EnterCriticalSection(parent->critical_section);
 //        send_events = parent->shared_data->send_events;
         transmit_events = parent->shared_data->transmit_events.events;
@@ -116,7 +117,7 @@ void ClientTCP::sendData()
     for(Event* e : transmit_events)
     {
         buf = e->getByteArray();
-
+        std::cout << "CLIENT send " << current << std::endl;
         printHex(buf, e->bufferSize());
         send(sockets[0], buf , e->bufferSize(), 0);
         delete[] buf;

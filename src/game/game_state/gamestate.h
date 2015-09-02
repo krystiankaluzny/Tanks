@@ -53,6 +53,9 @@ public:
     virtual GameState* nextState() = 0;
 
 protected:
+    /**
+     * Zmienna przechowuje informację, czy należy zakończyć bieżący stan gry i przejść do gry lub wyłączyć aplikację.
+     */
     bool m_finished;
     Game* parent;
 

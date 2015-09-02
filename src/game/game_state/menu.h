@@ -58,10 +58,6 @@ private:
      * Zmienna odpowiadająca za wskaźnik w postaci czołgu.
      */
     Player* m_tank_pointer;
-    /**
-     * Zmienna przechowuje informację, czy należy zakończyć bieżący stan gry i przejść do gry lub wyłączyć aplikację.
-     */
-    bool m_finished;
 };
 
 #endif // MENU_H

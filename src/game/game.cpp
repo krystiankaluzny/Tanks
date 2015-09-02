@@ -150,8 +150,17 @@ void Game::mainLoop()
             else if(delay > 0) delay--;
             fps_time = 0; fps_count = 0;
         }
-        shared_data->incrementFrameNumber();
 
+        NetworkState state;
+        EnterCriticalSection(critical_section);
+            shared_data->incrementFrameNumber();
+            state = shared_data->network_state;
+        LeaveCriticalSection(critical_section);
+
+        if(state != NetworkState::NONE)
+        {
+            std::cout << "Current frame: " << getCurrentFrame() << std::endl;
+        }
         Sleep( 0 ); // reszta czasu dla drugiego wątku
     }
 }

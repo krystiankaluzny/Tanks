@@ -105,20 +105,19 @@ void ServerTCP::sendData()
     EventsWrapper events;
     unsigned long current_frame = parent->getCurrentFrame();
     EnterCriticalSection(parent->critical_section);
-        events = parent->shared_data->received_events.frame_events[current_frame + 3];
+        events = parent->shared_data->received_events.frame_events[current_frame + 15];
     LeaveCriticalSection(parent->critical_section);
-
-//    std::cout <<"send farme " << current_frame << std::endl;
 
     char* buf;
     Event* e;
     int events_count = events.events.size();
     for(int i = 0; i < events_count; ++i)
     {
-        std::cout <<"send " << i << std::endl;
+        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << std::endl;
 
         e = events.events[i];
         buf = e->getByteArray();
+
         printHex(buf, e->bufferSize());
 
         broadcast(buf, e->bufferSize());
@@ -159,6 +158,8 @@ void ServerTCP::closeSocket(int socket_index)
     if(socket_index == 0)
     {
         while(sockets.size() > 1) closeSocket(1);
+
+        clearNames();
     }
     WSACloseEvent(sockets_event[socket_index]);
     sockets_event.erase(sockets_event.begin() + socket_index);
@@ -202,14 +203,15 @@ void ServerTCP::broadcast(char *buf, int size)
 void ServerTCP::sendInit(SOCKET s)
 {
     InitEvent init;
-    init.current_frame.l_value = parent->getCurrentFrame() + init.priority;
+    init.frame_number.l_value = 0;
+    init.current_frame.l_value = parent->getCurrentFrame();
     init.player_id.l_value = s;
     std::cout << init.player_id.l_value << " " << s << std::endl;
     char* buf = init.getByteArray();
 
     printHex(buf, init.bufferSize());
 
-    std::cout << "SEND INIT " << init.bufferSize() << std::endl;
+    std::cout << "SEND INIT " << init.bufferSize() << "currenta frame" << parent->getCurrentFrame() << std::endl;
     send(s, buf , init.bufferSize(), 0);
 }
 

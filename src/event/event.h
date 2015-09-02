@@ -10,7 +10,8 @@ enum EventType
     GENERATE_EVENT_TYPE,
     PLAYER_ID_TYPE,
     INIT_EVENT_TYPE,
-    DISCONNECT_EVENT_TYPE
+    DISCONNECT_EVENT_TYPE,
+    START_GAME_TYPE
 };
 
 union LongData
@@ -28,12 +29,11 @@ union IntData
 };
 
 
-
 class Event
 {
 public:
     Event();
-    Event(EventType type, int data_size, int priority = 10);
+    Event(EventType type, int data_size, int priority = 20);
 
     EventType type;                 //1 byte
     LongData frame_number;          //4 byte
@@ -111,6 +111,14 @@ public:
     DisconnectEvent();
     //1 byte spec
     LongData player_id; //4 byte
+    void setByteArray(char *buffer);
+    char* getByteArray();
+};
+
+class StartGame : public Event
+{
+    StartGame();
+    //1byte spec
     void setByteArray(char *buffer);
     char* getByteArray();
 };
