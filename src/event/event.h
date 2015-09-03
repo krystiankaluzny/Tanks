@@ -11,7 +11,7 @@ enum EventType
     PLAYER_ID_TYPE,
     INIT_EVENT_TYPE,
     DISCONNECT_EVENT_TYPE,
-    START_GAME_TYPE
+    START_GAME_TYPE,
 };
 
 union LongData

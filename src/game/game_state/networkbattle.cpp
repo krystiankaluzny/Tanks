@@ -24,6 +24,11 @@ NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
+
+    EnterCriticalSection(parent->critical_section);
+        m_player_name = parent->shared_data->player_name;
+    LeaveCriticalSection(parent->critical_section);
+
     nextLevel();
 }
 
@@ -39,6 +44,11 @@ NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
+
+    EnterCriticalSection(parent->critical_section);
+        m_player_name = parent->shared_data->player_name;
+    LeaveCriticalSection(parent->critical_section);
+
     nextLevel();
 }
 
@@ -61,6 +71,11 @@ NetworkBattle::NetworkBattle(Game *parent, std::vector<Player *> players, int pr
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
+
+    EnterCriticalSection(parent->critical_section);
+        m_player_name = parent->shared_data->player_name;
+    LeaveCriticalSection(parent->critical_section);
+
     nextLevel();
 }
 
@@ -345,9 +360,109 @@ void NetworkBattle::update(Uint32 dt)
     }
 }
 
-void NetworkBattle::eventProcess(EventsWrapper &events)
+void NetworkBattle::eventProcess(EventsWrapper &ev)
 {
+    SOCKET player_socket;
+    std::vector<Event*> events = ev.events;
 
+    for(Event* e : events)
+    {
+        switch (e->type)
+        {
+        case EventType::PLAYER_ID_TYPE:
+        {
+            PlayerNameEvent* p = (PlayerNameEvent*)e;
+            player_socket = p->player_id.l_value;
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->player_name[player_socket] = std::string(p->name);
+            LeaveCriticalSection(parent->critical_section);
+            break;
+        }
+        case EventType::DISCONNECT_EVENT_TYPE:
+        {
+            DisconnectEvent* d = (DisconnectEvent*)e;
+            player_socket = d->player_id.l_value;
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->player_name.erase(player_socket);
+            LeaveCriticalSection(parent->critical_section);
+            break;
+        }
+        case EventType::KEY_EVENT_TYPE:
+        {
+            KeyEvent* key =(KeyEvent*)e;
+            switch(key->key_type)
+            {
+            case KeyEvent::KeyType::UP:
+            {
+                for(Player* p : m_players)
+                {
+                    if(p->object_id == key->id_tank.l_value)
+                    {
+                        p->setDirection(D_UP);
+                        p->speed = p->default_speed;
+                    }
+                }
+                break;
+            }
+            case KeyEvent::KeyType::DOWN:
+            {
+                for(Player* p : m_players)
+                {
+                    if(p->object_id == key->id_tank.l_value)
+                    {
+                        p->setDirection(D_DOWN);
+                        p->speed = p->default_speed;
+                    }
+                }
+                break;
+            }
+            case KeyEvent::KeyType::LEFT:
+            {
+                for(Player* p : m_players)
+                {
+                    if(p->object_id == key->id_tank.l_value)
+                    {
+                        p->setDirection(D_LEFT);
+                        p->speed = p->default_speed;
+                    }
+                }
+                break;
+            }
+            case KeyEvent::KeyType::RIGHT:
+            {
+                for(Player* p : m_players)
+                {
+                    if(p->object_id == key->id_tank.l_value)
+                    {
+                        p->setDirection(D_RIGHT);
+                        p->speed = p->default_speed;
+                    }
+                }
+                break;
+            }
+            case KeyEvent::KeyType::FIRE:
+            {
+                for(Player* p : m_players)
+                {
+                    if(p->object_id == key->id_tank.l_value)
+                    {
+                        p->fire();
+                    }
+                }
+                break;
+            }
+            case KeyEvent::KeyType::PAUSE:
+            {
+                m_pause = !m_pause;
+                break;
+            }
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
 }
 
 void NetworkBattle::eventProcess(SDL_Event *ev)
@@ -356,24 +471,41 @@ void NetworkBattle::eventProcess(SDL_Event *ev)
     {
         switch(ev->key.keysym.sym)
         {
-        case SDLK_n:
-            m_enemy_to_kill = 0;
-            m_finished = true;
-            break;
-        case SDLK_b:
-            m_enemy_to_kill = 0;
-            m_current_level -= 2;
-            m_finished = true;
-            break;
+//        case SDLK_n:
+//            m_enemy_to_kill = 0;
+//            m_finished = true;
+//            break;
+//        case SDLK_b:
+//            m_enemy_to_kill = 0;
+//            m_current_level -= 2;
+//            m_finished = true;
+//            break;
         case SDLK_t:
+        {
             AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
             break;
+        }
         case SDLK_RETURN:
-            m_pause = !m_pause;
+        {
+            KeyEvent* pause = new KeyEvent;
+            pause->key_type = KeyEvent::KeyType::PAUSE;
+            pause->frame_number.l_value = parent->getCurrentFrame() + pause->priority;
+            pause->id_tank.l_value = 0;
+
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->newEvent(pause);
+            LeaveCriticalSection(parent->critical_section);
+
             break;
+        }
         case SDLK_ESCAPE:
+        {
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->network_state = NetworkState::NONE;
+            LeaveCriticalSection(parent->critical_section);
             m_finished = true;
             break;
+        }
         }
     }
 }
@@ -880,8 +1012,30 @@ void NetworkBattle::nextLevel()
         {
             Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
             Player* p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2);
-            p1->player_keys = AppConfig::player_keys.at(0);
-            p2->player_keys = AppConfig::player_keys.at(1);
+            p1->setParent(parent);
+            p2->setParent(parent);
+            NetworkState state;
+            EnterCriticalSection(parent->critical_section);
+                state = parent->shared_data->network_state;
+            LeaveCriticalSection(parent->critical_section);
+            if(state == NetworkState::SERVER)
+            {
+                p1->player_keys = AppConfig::player_keys.at(2);
+            }
+            else if(state == NetworkState::CLIENT || state == NetworkState::CLIENT_INITIALIZED)
+            {
+                p2->player_keys = AppConfig::player_keys.at(2);
+            }
+
+            vector<SOCKET> v;
+            for(map<SOCKET,std::string>::iterator it = m_player_name.begin(); it != m_player_name.end(); ++it)
+            {
+              v.push_back(it->first);
+            }
+
+            p1->object_id = v[0];
+            p2->object_id = v[1];
+
             m_players.push_back(p1);
             m_players.push_back(p2);
 
@@ -889,7 +1043,17 @@ void NetworkBattle::nextLevel()
         else
         {
             Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
-            p1->player_keys = AppConfig::player_keys.at(0);
+            p1->setParent(parent);
+            p1->player_keys = AppConfig::player_keys.at(2);
+
+            vector<SOCKET> v;
+            for(map<SOCKET,std::string>::iterator it = m_player_name.begin(); it != m_player_name.end(); ++it)
+            {
+              v.push_back(it->first);
+            }
+
+            p1->object_id = v[0];
+
             m_players.push_back(p1);
         }
     }

@@ -70,7 +70,7 @@ public:
      * Obsługa eventów, które przyszły przez sieć.
      * @param events
      */
-    void eventProcess(EventsWrapper& events);
+    void eventProcess(EventsWrapper& ev);
     /**
      * Przejście do następnyego stanu.
      * @return wskaźnik na obiekty klasy @a Scores jeżeli gracz przeszedł rundę lub przegrał. Jeżeli gracz wcisną Esc funkcja zwraca wskaźnik na obiekt @a Menu.
@@ -260,6 +260,8 @@ private:
      * Numer pozycji now stworzonego przeciwnika. Zmieniana przy każdym tworzeniu przeciwnika.
      */
     int m_enemy_respown_position;
+
+    std::map<SOCKET, std::string> m_player_name;
 };
 
 

@@ -76,6 +76,11 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
                 event = new DisconnectEvent;
                 break;
             }
+            case KEY_EVENT_TYPE:
+            {
+                event = new KeyEvent;
+                break;
+            }
         }
 
 

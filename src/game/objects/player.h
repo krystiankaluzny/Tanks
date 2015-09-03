@@ -94,6 +94,7 @@ private:
      * Aktualnie posiadana liczba gwiazdek; może się zawierać w przedziale [0, 3].
      */
     int star_count;
+//    KeyEvent* new_key(KeyEvent::KeyType key_type);
     /**
      * Czas jaki minął od ostatnego wystrzału pocisku.
      */

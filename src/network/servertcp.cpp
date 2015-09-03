@@ -56,6 +56,11 @@ bool ServerTCP::init()
     sockets.push_back(server_socket);
     sockets_event.push_back(server_event);
     setPlayerName(server_socket, "SERVER");
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->player_id = server_socket;
+    LeaveCriticalSection(parent->critical_section);
+
     return true;
 }
 
@@ -152,23 +157,26 @@ void ServerTCP::readData()
 
 void ServerTCP::acceptSocket()
 {
-    SOCKADDR_IN client_address;
-    int client_address_size = sizeof(client_address);
-    SOCKET client_socket = accept(sockets[0], (struct sockaddr *)&client_address, &client_address_size); //zaakceptowanie prośby o połączenie
-    if(client_socket == SOCKET_ERROR) return;
-
-    WSAEVENT client_event = WSACreateEvent();
-    if(WSAEventSelect(client_socket, client_event, FD_READ | FD_CLOSE) == INVALID_SOCKET)
+    if(sockets.size() < socket_limit)
     {
-        WSACloseEvent(client_event);
-        return;
+        SOCKADDR_IN client_address;
+        int client_address_size = sizeof(client_address);
+        SOCKET client_socket = accept(sockets[0], (struct sockaddr *)&client_address, &client_address_size); //zaakceptowanie prośby o połączenie
+        if(client_socket == SOCKET_ERROR) return;
+
+        WSAEVENT client_event = WSACreateEvent();
+        if(WSAEventSelect(client_socket, client_event, FD_READ | FD_CLOSE) == INVALID_SOCKET)
+        {
+            WSACloseEvent(client_event);
+            return;
+        }
+        sockets.push_back(client_socket);
+        sockets_event.push_back(client_event);
+
+        sendInit(client_socket);
+
+        cout << "Otwarto socket" << endl;
     }
-    sockets.push_back(client_socket);
-    sockets_event.push_back(client_event);
-
-    sendInit(client_socket);
-
-    cout << "Otwarto socket" << endl;
 }
 
 void ServerTCP::closeSocket(int socket_index)

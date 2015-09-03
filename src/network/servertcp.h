@@ -34,6 +34,8 @@ private:
 
     void broadcast(char* buf, int size);
     void sendInit(SOCKET s);
+
+
 };
 
 #endif // SERVERTCP_H

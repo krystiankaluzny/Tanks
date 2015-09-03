@@ -2,7 +2,7 @@
 #define OBJECT_H
 
 #include "../engine/engine.h"
-
+#include "../../appthread.h"
 /**
  * @brief
  * Klasa bazowa dla obiektów w grze.
@@ -40,6 +40,8 @@ public:
      */
     virtual void update(Uint32 dt);
 
+    void setParent(AppThread* parent);
+
     /**
      * Zmienna mowi czy obiekt ma być usunięty. Jeżeli zmianan jest równa @a true to nie aktualizacja i rysowanie obiektu jest pomijane.
      */
@@ -69,6 +71,12 @@ public:
      */
     double pos_y;
 
+    /**
+     * Identyfikator obiektu
+     */
+
+    unsigned long object_id;
+
 protected:
     /**
      * Funkcja zwraca prostokąt przesunięty o wielokrotności rozmiaru prostokąta rect.
@@ -91,6 +99,10 @@ protected:
      * Numer obecnej klatki animacji.
      */
     int m_current_frame;
+
+    static unsigned long next_object_id;
+
+    AppThread* parent;
 };
 
 /**

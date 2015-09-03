@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
+unsigned long Object::next_object_id = 3000;
+
 Object::Object()
 {
     pos_x = 0.0;
@@ -12,6 +14,10 @@ Object::Object()
     m_sprite = nullptr;
     m_frame_display_time = 0;
     m_current_frame = 0;
+
+    ++Object::next_object_id;
+
+    object_id = Object::next_object_id;
 }
 
 Object::Object(double x, double y, SpriteType type)
@@ -106,6 +112,11 @@ void Object::update(Uint32 dt)
             src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
         }
     }
+}
+
+void Object::setParent(AppThread *parent)
+{
+    this->parent = parent;
 }
 
 SDL_Rect Object::moveRect(const SDL_Rect &rect, int x, int y)

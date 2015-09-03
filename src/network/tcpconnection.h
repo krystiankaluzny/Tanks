@@ -40,6 +40,7 @@ protected:
 
     std::vector<SOCKET> sockets; //pierwszy socket jest socketem serwera jeśli włączono serwer
     std::vector<WSAEVENT> sockets_event;
+    const int socket_limit = 2;
 };
 
 #endif // TCPCONNECTION

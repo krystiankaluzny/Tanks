@@ -132,7 +132,6 @@ void Client::eventProcess(EventsWrapper &ev)
         {
             m_start_game = true;
             m_finished = true;
-
             break;
         }
         default:
@@ -145,7 +144,7 @@ GameState *Client::nextState()
 {
     if(m_start_game)
     {
-        return new NetworkBattle(parent);
+        return new NetworkBattle(parent, 2);
     }
     setNetworkState(NetworkState::NONE);
     return new Menu(parent);

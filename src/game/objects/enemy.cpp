@@ -80,6 +80,9 @@ void Enemy::draw()
 
 void Enemy::update(Uint32 dt)
 {
+    //TODO usunąć
+    return;
+
     if(to_erase) return;
     Tank::update(dt);
 

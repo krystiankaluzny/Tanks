@@ -2,6 +2,7 @@
 #include "../../appconfig.h"
 #include <SDL2/SDL.h>
 #include <iostream>
+#include "../../event/event.h"
 
 Player::Player()
     : Tank(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1)
@@ -37,36 +38,65 @@ void Player::update(Uint32 dt)
 
     if(key_state != nullptr && !testFlag(TSF_MENU))
     {
+        auto new_key = [&](KeyEvent::KeyType key_type)->KeyEvent*
+        {
+            KeyEvent* key = new KeyEvent;
+            key->key_type = key_type;
+            key->frame_number.l_value = parent->getCurrentFrame() + key->priority;
+            key->id_tank.l_value = object_id;
+            return key;
+        };
+
+        KeyEvent* key_event = nullptr;
         if(key_state[player_keys.up])
         {
-            setDirection(D_UP);
-            speed = default_speed;
+            key_event = new_key(KeyEvent::KeyType::UP);
+
+//            setDirection(D_UP);
+//            speed = default_speed;
         }
         else if(key_state[player_keys.down])
         {
-            setDirection(D_DOWN);
-            speed = default_speed;
+            key_event = new_key(KeyEvent::KeyType::DOWN);
+
+//            setDirection(D_DOWN);
+//            speed = default_speed;
         }
         else if(key_state[player_keys.left])
         {
-            setDirection(D_LEFT);
-            speed = default_speed;
+            key_event = new_key(KeyEvent::KeyType::LEFT);
+
+//            setDirection(D_LEFT);
+//            speed = default_speed;
         }
         else if(key_state[player_keys.right])
         {
-            setDirection(D_RIGHT);
-            speed = default_speed;
+            key_event = new_key(KeyEvent::KeyType::RIGHT);
+
+//            setDirection(D_RIGHT);
+//            speed = default_speed;
         }
         else
         {
             if(!testFlag(TSF_ON_ICE) || m_slip_time == 0)
                 speed = 0.0;
         }
+        if(key_event != nullptr)
+        {
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->newEvent(key_event);
+            LeaveCriticalSection(parent->critical_section);
+        }
 
         if(key_state[player_keys.fire] && m_fire_time > AppConfig::player_reload_time)
         {
-            fire();
-            m_fire_time = 0;
+            key_event = new_key(KeyEvent::KeyType::FIRE);
+            EnterCriticalSection(parent->critical_section);
+                parent->shared_data->newEvent(key_event);
+            LeaveCriticalSection(parent->critical_section);
+
+//            fire();
+//            m_fire_time = 0;
         }
     }
 
@@ -131,6 +161,7 @@ void Player::destroy()
 
 Bullet* Player::fire()
 {
+    m_fire_time = 0;
     Bullet* b = Tank::fire();
     if(b != nullptr)
     {

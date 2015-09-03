@@ -215,7 +215,7 @@ GameState *Server::nextState()
     else if(m_start_game)
     {
         std::cout << "Start game4" << std::endl;
-        return new NetworkBattle(parent);
+        return new NetworkBattle(parent, 2);
     }
     return nullptr;
 }

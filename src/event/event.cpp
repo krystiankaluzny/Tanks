@@ -40,7 +40,7 @@ std::ostream& operator<<(std::ostream &out, Event &e)
 //================================================
 
 KeyEvent::KeyEvent() :
-    Event(KEY_EVENT_TYPE, 10),
+    Event(KEY_EVENT_TYPE, 10, 10),
     key_type(NONE)
 {
 }
@@ -249,7 +249,7 @@ char *InitEvent::getByteArray()
 }
 
 
-DisconnectEvent::DisconnectEvent() : Event(DISCONNECT_EVENT_TYPE, 10)
+DisconnectEvent::DisconnectEvent() : Event(DISCONNECT_EVENT_TYPE, 25)
 {
 
 }
@@ -321,3 +321,5 @@ char *StartGameEvent::getByteArray()
 
     return buffer;
 }
+
+
