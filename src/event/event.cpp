@@ -323,3 +323,56 @@ char *StartGameEvent::getByteArray()
 }
 
 
+
+
+PositionEvent::PositionEvent() : Event(POSITION_TYPE, 14, 5)
+{
+
+}
+
+void PositionEvent::setByteArray(char *buffer)
+{
+    int index = 1;
+
+    frame_number.c_value[0] = buffer[index++];
+    frame_number.c_value[1] = buffer[index++];
+    frame_number.c_value[2] = buffer[index++];
+    frame_number.c_value[3] = buffer[index++];
+    obj = static_cast<PositionEvent::PosObj>(index++);    //no sepc type
+
+    pos_x.c_value[0] = buffer[index++];
+    pos_x.c_value[1] = buffer[index++];
+    pos_x.c_value[2] = buffer[index++];
+    pos_x.c_value[3] = buffer[index++];
+
+    pos_y.c_value[0] = buffer[index++];
+    pos_y.c_value[1] = buffer[index++];
+    pos_y.c_value[2] = buffer[index++];
+    pos_y.c_value[3] = buffer[index++];
+}
+
+char *PositionEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size];
+    int index = 0;
+    buffer[index++] = type;
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = obj;
+
+    buffer[index++] = pos_x.c_value[0];
+    buffer[index++] = pos_x.c_value[1];
+    buffer[index++] = pos_x.c_value[2];
+    buffer[index++] = pos_x.c_value[3];
+
+    buffer[index++] = pos_y.c_value[0];
+    buffer[index++] = pos_y.c_value[1];
+    buffer[index++] = pos_y.c_value[2];
+    buffer[index++] = pos_y.c_value[3];
+
+
+    return buffer;
+}

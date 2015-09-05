@@ -63,9 +63,9 @@ void Player::update(Uint32 dt)
         {
             setDirection(next_direction);
             speed = default_speed;
-            move_next = false;
         }
-        else if(key_state[player_keys.up])
+
+        if(key_state[player_keys.up])
         {
             if(state == NetworkState::NONE)
             {
@@ -115,15 +115,28 @@ void Player::update(Uint32 dt)
         }
         else
         {
-            if(!testFlag(TSF_ON_ICE) || m_slip_time == 0)
+            if((!testFlag(TSF_ON_ICE) || m_slip_time == 0) && !move_next)
                 speed = 0.0;
+        }
+
+        long current = 0;
+        if(parent != nullptr)
+        {
+            EnterCriticalSection(parent->critical_section);
+                current = parent->shared_data->current_frame_number;
+            LeaveCriticalSection(parent->critical_section);
         }
 
         if(key_event != nullptr)
         {
+            std::cout << "key_event != nullptr Key press " << current << std::endl;
             EnterCriticalSection(parent->critical_section);
                 parent->shared_data->newEvent(key_event);
             LeaveCriticalSection(parent->critical_section);
+        }
+        else
+        {
+//            std::cout << "key_event == nullptr Key press " << current << std::endl;
         }
 
         if(key_state[player_keys.fire] && m_fire_time > AppConfig::player_reload_time)
@@ -139,6 +152,11 @@ void Player::update(Uint32 dt)
                     parent->shared_data->newEvent(key_event);
                 LeaveCriticalSection(parent->critical_section);
             }
+        }
+
+        if(move_next)
+        {
+            move_next = false;
         }
     }
 

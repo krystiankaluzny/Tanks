@@ -37,6 +37,8 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
     char event_type;
     Event* event;
 
+//    printHex(buffer, size);
+
     do
     {
         event = nullptr;
@@ -94,6 +96,7 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             else
             {
                 event->setByteArray(buffer);
+//                std::cout <<"CLIENT read " << event->frame_number.l_value << std::endl;
                 EnterCriticalSection(parent->critical_section);
                     parent->shared_data->received_events.addEvent(event);
                 LeaveCriticalSection(parent->critical_section);

@@ -123,10 +123,9 @@ void ServerTCP::sendData()
     int events_count = events.events.size();
     for(int i = 0; i < events_count; ++i)
     {
-//        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << std::endl;
-
         e = events.events[i];
         buf = e->getByteArray();
+//        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << " frame event " << e->frame_number.l_value << std::endl;
 
 //        printHex(buf, e->bufferSize());
 

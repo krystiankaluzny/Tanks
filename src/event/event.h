@@ -12,6 +12,7 @@ enum EventType
     INIT_EVENT_TYPE,
     DISCONNECT_EVENT_TYPE,
     START_GAME_TYPE,
+    POSITION_TYPE,
 };
 
 union LongData
@@ -120,6 +121,23 @@ class StartGameEvent : public Event
 public:
     StartGameEvent();
     //1byte spec
+    void setByteArray(char *buffer);
+    char* getByteArray();
+};
+
+class PositionEvent : public Event
+{
+public:
+    enum PosObj
+    {
+        TANK
+    };
+
+    PositionEvent();
+
+    PosObj obj; //1 byte spec
+    LongData pos_x; //4 byte
+    LongData pos_y; //4 byte
     void setByteArray(char *buffer);
     char* getByteArray();
 };
