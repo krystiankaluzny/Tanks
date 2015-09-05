@@ -164,6 +164,8 @@ private:
      */
     void checkCollisionPlayerWithBonus(Player* player, Bonus* bonus);
 
+    void createSeeds();
+
     /**
      * Liczaba kolumn siatki mapy.
      */
@@ -262,6 +264,10 @@ private:
     int m_enemy_respown_position;
 
     std::map<SOCKET, std::string> m_player_name;
+
+    int random_seed;
+
+    int key_num;
 };
 
 

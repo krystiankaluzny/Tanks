@@ -51,7 +51,7 @@ void Game::run()
         Engine::getEngine().getRenderer()->loadTexture(m_window);
         Engine::getEngine().getRenderer()->loadFont();
 
-        srand(time(NULL)); //inicjowanie generatora pseudolosowego
+        //srand(time(NULL)); //inicjowanie generatora pseudolosowego
 
         m_game_state = new Menu(this);
 

@@ -109,8 +109,13 @@ void ServerTCP::sendData()
 {
     EventsWrapper events;
     unsigned long current_frame = parent->getCurrentFrame();
+
+    if(last_send_frame_events == current_frame + 5) return;
+
+    last_send_frame_events = current_frame + 5;
+
     EnterCriticalSection(parent->critical_section);
-        events = parent->shared_data->received_events.frame_events[current_frame + 10];
+        events = parent->shared_data->received_events.frame_events[last_send_frame_events];
     LeaveCriticalSection(parent->critical_section);
 
     char* buf;
@@ -129,25 +134,6 @@ void ServerTCP::sendData()
 
         delete[] buf;
     }
-
-    std::vector<Event*> events2;
-    EnterCriticalSection(parent->critical_section);
-        events2 = parent->shared_data->transmit_events.events;
-    LeaveCriticalSection(parent->critical_section);
-
-
-    for(Event* ev : events2)
-    {
-        buf = ev->getByteArray();
-//        printHex(buf, ev->bufferSize());
-        broadcast(buf, ev->bufferSize());
-
-        delete[] buf;
-    }
-
-    EnterCriticalSection(parent->critical_section);
-        parent->shared_data->transmit_events.clear();
-    LeaveCriticalSection(parent->critical_section);
 }
 
 void ServerTCP::readData()

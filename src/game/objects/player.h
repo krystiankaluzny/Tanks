@@ -89,6 +89,9 @@ public:
      */
     unsigned score;
 
+    bool move_next;
+    Direction next_direction;
+
 private:
     /**
      * Aktualnie posiadana liczba gwiazdek; może się zawierać w przedziale [0, 3].

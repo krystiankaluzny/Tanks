@@ -14,6 +14,7 @@ Player::Player()
     star_count = 0;
     m_shield = new Object(0, 0, ST_SHIELD);
     m_shield_time = 0;
+    move_next = false;
     respawn();
 }
 
@@ -27,6 +28,7 @@ Player::Player(double x, double y, SpriteType type)
    star_count = 0;
    m_shield = new Object(x, y, ST_SHIELD);
    m_shield_time = 0;
+   move_next = false;
    respawn();
 }
 
@@ -47,40 +49,76 @@ void Player::update(Uint32 dt)
             return key;
         };
 
-        KeyEvent* key_event = nullptr;
-        if(key_state[player_keys.up])
+        NetworkState state = NetworkState::NONE;
+        if(parent != nullptr)
         {
-            key_event = new_key(KeyEvent::KeyType::UP);
+            EnterCriticalSection(parent->critical_section);
+                 state = parent->shared_data->network_state;
+            LeaveCriticalSection(parent->critical_section);
+        }
 
-//            setDirection(D_UP);
-//            speed = default_speed;
+
+        KeyEvent* key_event = nullptr;
+        if(move_next)
+        {
+            setDirection(next_direction);
+            speed = default_speed;
+            move_next = false;
+        }
+        else if(key_state[player_keys.up])
+        {
+            if(state == NetworkState::NONE)
+            {
+                setDirection(D_UP);
+                speed = default_speed;
+            }
+            else
+            {
+                key_event = new_key(KeyEvent::KeyType::UP);
+            }
         }
         else if(key_state[player_keys.down])
         {
-            key_event = new_key(KeyEvent::KeyType::DOWN);
-
-//            setDirection(D_DOWN);
-//            speed = default_speed;
+            if(state == NetworkState::NONE)
+            {
+                setDirection(D_DOWN);
+                speed = default_speed;
+            }
+            else
+            {
+                key_event = new_key(KeyEvent::KeyType::DOWN);
+            }
         }
         else if(key_state[player_keys.left])
         {
-            key_event = new_key(KeyEvent::KeyType::LEFT);
-
-//            setDirection(D_LEFT);
-//            speed = default_speed;
+            if(state == NetworkState::NONE)
+            {
+                setDirection(D_LEFT);
+                speed = default_speed;
+            }
+            else
+            {
+                key_event = new_key(KeyEvent::KeyType::LEFT);
+            }
         }
         else if(key_state[player_keys.right])
         {
-            key_event = new_key(KeyEvent::KeyType::RIGHT);
-
-//            setDirection(D_RIGHT);
-//            speed = default_speed;
+            if(state == NetworkState::NONE)
+            {
+                setDirection(D_RIGHT);
+                speed = default_speed;
+            }
+            else
+            {
+                key_event = new_key(KeyEvent::KeyType::RIGHT);
+            }
         }
         else
         {
             if(!testFlag(TSF_ON_ICE) || m_slip_time == 0)
                 speed = 0.0;
         }
+
         if(key_event != nullptr)
         {
             EnterCriticalSection(parent->critical_section);
@@ -90,13 +128,17 @@ void Player::update(Uint32 dt)
 
         if(key_state[player_keys.fire] && m_fire_time > AppConfig::player_reload_time)
         {
-            key_event = new_key(KeyEvent::KeyType::FIRE);
-            EnterCriticalSection(parent->critical_section);
-                parent->shared_data->newEvent(key_event);
-            LeaveCriticalSection(parent->critical_section);
-
-//            fire();
-//            m_fire_time = 0;
+            if(state == NetworkState::NONE)
+            {
+                fire();
+            }
+            else
+            {
+                key_event = new_key(KeyEvent::KeyType::FIRE);
+                EnterCriticalSection(parent->critical_section);
+                    parent->shared_data->newEvent(key_event);
+                LeaveCriticalSection(parent->critical_section);
+            }
         }
     }
 

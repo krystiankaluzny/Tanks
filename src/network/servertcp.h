@@ -35,6 +35,7 @@ private:
     void broadcast(char* buf, int size);
     void sendInit(SOCKET s);
 
+    unsigned long last_send_frame_events;
 
 };
 

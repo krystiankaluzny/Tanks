@@ -12,6 +12,7 @@ Object::Object()
     type = ST_NONE;
     to_erase = false;
     m_sprite = nullptr;
+    parent = nullptr;
     m_frame_display_time = 0;
     m_current_frame = 0;
 
@@ -26,6 +27,7 @@ Object::Object(double x, double y, SpriteType type)
     pos_y = y;
     this->type = type;
     to_erase = false;
+    parent = nullptr;
     m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(type);
     m_frame_display_time = 0;
     m_current_frame = 0;
@@ -52,6 +54,7 @@ Object::Object(double x, double y, const SpriteData *sprite)
     pos_y = y;
     this->type = type;
     to_erase = false;
+    parent = nullptr;
     m_sprite = sprite;
     m_frame_display_time = 0;
     m_current_frame = 0;

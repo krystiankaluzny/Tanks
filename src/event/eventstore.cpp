@@ -37,7 +37,11 @@ void ReceivedEvents::clearFrameEvents(unsigned long frame)
 void ReceivedEvents::addEvent(Event *event)
 {
 //    printEvent(event);
-    if(event->frame_number.l_value <= current_frame) return;
+    if(event->frame_number.l_value <= current_frame)
+    {
+        std::cout << "Za pozno: event frame:" << event->frame_number.l_value << " current frame: " << current_frame << std::endl;
+        return;
+    }
 
     frame_events[event->frame_number.l_value].events.push_back(event);
 }
@@ -57,4 +61,5 @@ void TransmitEvents::addEvent(Event *event)
 void TransmitEvents::clear()
 {
     events.erase(std::remove_if(events.begin(), events.end(), [](Event*e){delete e; return true;}), events.end());
+    events.clear();
 }

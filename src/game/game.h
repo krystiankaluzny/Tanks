@@ -32,7 +32,7 @@ private:
 
     void quitSDL();
 
-private:
+private:    
     /**
      * Zmienna podtrzymująca działanie pętli głównej programu.
      */

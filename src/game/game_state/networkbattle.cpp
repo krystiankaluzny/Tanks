@@ -13,6 +13,8 @@
 
 NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
 {
+    key_num = 0;
+
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
@@ -34,6 +36,8 @@ NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
 
 NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent)
 {
+    key_num = 0;
+
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
@@ -54,6 +58,8 @@ NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent
 
 NetworkBattle::NetworkBattle(Game *parent, std::vector<Player *> players, int previous_level) : GameState(parent)
 {
+    key_num = 0;
+
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = previous_level;
@@ -358,6 +364,16 @@ void NetworkBattle::update(Uint32 dt)
             }
         }
     }
+
+    NetworkState state;
+    EnterCriticalSection(parent->critical_section);
+        state = parent->shared_data->network_state;
+    LeaveCriticalSection(parent->critical_section);
+
+    if(state == NetworkState::SERVER)
+    {
+//        createSeeds();
+    }
 }
 
 void NetworkBattle::eventProcess(EventsWrapper &ev)
@@ -369,6 +385,13 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
     {
         switch (e->type)
         {
+        case EventType::GENERATE_EVENT_TYPE:
+        {
+            GenerateEvent* gen = (GenerateEvent*)e;
+            random_seed = gen->seed1.l_value;
+            srand(random_seed);
+            break;
+        }
         case EventType::PLAYER_ID_TYPE:
         {
             PlayerNameEvent* p = (PlayerNameEvent*)e;
@@ -389,17 +412,21 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
         }
         case EventType::KEY_EVENT_TYPE:
         {
+            key_num++;
+//            cout << "KEY_EVENT_TYPE frame: " << parent->getCurrentFrame() << " Key num: " << key_num << std::endl;
             KeyEvent* key =(KeyEvent*)e;
             switch(key->key_type)
             {
             case KeyEvent::KeyType::UP:
             {
+
                 for(Player* p : m_players)
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        p->setDirection(D_UP);
-                        p->speed = p->default_speed;
+                        p->move_next = true;
+                        p->next_direction = D_UP;
+                        break;
                     }
                 }
                 break;
@@ -410,8 +437,9 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        p->setDirection(D_DOWN);
-                        p->speed = p->default_speed;
+                        p->move_next = true;
+                        p->next_direction = D_DOWN;
+                        break;
                     }
                 }
                 break;
@@ -422,8 +450,9 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        p->setDirection(D_LEFT);
-                        p->speed = p->default_speed;
+                        p->move_next = true;
+                        p->next_direction = D_LEFT;
+                        break;
                     }
                 }
                 break;
@@ -434,8 +463,9 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        p->setDirection(D_RIGHT);
-                        p->speed = p->default_speed;
+                        p->move_next = true;
+                        p->next_direction = D_RIGHT;
+                        break;
                     }
                 }
                 break;
@@ -447,6 +477,7 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
                     if(p->object_id == key->id_tank.l_value)
                     {
                         p->fire();
+                        break;
                     }
                 }
                 break;
@@ -460,6 +491,7 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
             break;
         }
         default:
+            cout << "Nieznany event" << std::endl;
             break;
         }
     }
@@ -989,6 +1021,22 @@ void NetworkBattle::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         }
         bonus->to_erase = true;
     }
+}
+
+void NetworkBattle::createSeeds()
+{
+//    srand(parent->getCurrentFrame());
+    GenerateEvent* gen_rand = new GenerateEvent;
+    gen_rand->frame_number.l_value = parent->getCurrentFrame() + gen_rand->priority;
+    gen_rand->seed1.l_value = time(0);
+    gen_rand->seed2.l_value = time(0);
+    gen_rand->seed3.l_value = time(0);
+
+//    cout << "Seeds " << gen_rand->seed1.l_value << " " << gen_rand->seed2.l_value << " " << gen_rand->seed3.l_value << std::endl;
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->newEvent(gen_rand);
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void NetworkBattle::nextLevel()

@@ -40,7 +40,7 @@ std::ostream& operator<<(std::ostream &out, Event &e)
 //================================================
 
 KeyEvent::KeyEvent() :
-    Event(KEY_EVENT_TYPE, 10, 10),
+    Event(KEY_EVENT_TYPE, 10, 7),
     key_type(NONE)
 {
 }

@@ -32,6 +32,8 @@ void SharedData::incrementFrameNumber()
 
 void SharedData::newEvent(Event *event)
 {
+    std::cout << "new event " << event->frame_number.l_value << std::endl;
+
     if(network_state == SERVER)
     {
         received_events.addEvent(event);
