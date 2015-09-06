@@ -71,7 +71,6 @@ public:
     void sendObjectPosition(Object* obj, PositionEvent::PosObj obj_type, bool fast = false)
     {
         PositionEvent* pos = new PositionEvent;
-        pos->frame_number.l_value = getCurrentFrame() + (fast ? 1 : pos->priority);
         pos->obj = PositionEvent::PosObj::TANK; //obj_type;
         pos->obj_id.l_value = obj->object_id;
         pos->pos_x.d_value = obj->pos_x;

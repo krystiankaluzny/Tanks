@@ -19,6 +19,7 @@ public:
     void readData();
 private:
     char buffer[100];
+
 };
 
 #endif // CLENTTCP_H

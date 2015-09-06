@@ -3,7 +3,11 @@
 #include "network.h"
 #include <stdio.h>
 
-TCPConnection::TCPConnection(){}
+TCPConnection::TCPConnection()
+{
+    send_counter = 0;
+    read_counter = 0;
+}
 
 void TCPConnection::setParent(Network *parent)
 {
@@ -38,9 +42,9 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
     Event* event;
 
 //    printHex(buffer, size);
-
     do
     {
+        read_counter++;
         event = nullptr;
         event_type = buffer[index];
         switch(event_type)
@@ -124,6 +128,8 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             break;
         }
     }while(index < size);
+
+    std::cout << "read_counter: " << (int)read_counter << std::endl;
 }
 
 void TCPConnection::getLongData(LongData &event_index, LongData &events_count, char *buffer)

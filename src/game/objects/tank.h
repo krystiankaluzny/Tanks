@@ -90,6 +90,9 @@ public:
     /**
      * Domyślna prędkość danego czołgu. Może być różna dla różnych typów czołgów lub może być zmieniona po wzięcu bonusu przez gracza.
      */
+
+    void move();
+
     double default_speed;
     /**
      * Aktualna prędkość czołgu.

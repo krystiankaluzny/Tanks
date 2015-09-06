@@ -62,40 +62,17 @@ void Tank::draw()
 void Tank::update(Uint32 dt)
 {
     if(to_erase) return;
-    if(testFlag(TSF_LIFE))
+
+    NetworkState state = NetworkState::NONE;
+    if(parent != nullptr)
     {
-        if(!stop && !testFlag(TSF_FROZEN))
-        {
-            if(speed != 0.0 && parent != nullptr)
-            {
-//                cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << pos_x << " posY: " << pos_y << " speed: " << speed << " dt: " << dt << endl;
-            }
-            switch (direction)
-            {
-            case D_UP:
-                pos_y -= speed * dt;
-                break;
-            case D_RIGHT:
-                pos_x += speed * dt;
-                break;
-            case D_DOWN:
-                pos_y += speed * dt;
-                break;
-            case D_LEFT:
-                pos_x -= speed * dt;
-                break;
-            }
-        }
-
-        dest_rect.x = pos_x;
-        dest_rect.y = pos_y;
-        dest_rect.h = m_sprite->rect.h;
-        dest_rect.w = m_sprite->rect.w;
-
-        collision_rect.x = dest_rect.x + 2;
-        collision_rect.y = dest_rect.y + 2;
-        collision_rect.h = dest_rect.h - 4;
-        collision_rect.w = dest_rect.w - 4;
+        EnterCriticalSection(parent->critical_section);
+             state = parent->shared_data->network_state;
+        LeaveCriticalSection(parent->critical_section);
+    }
+    if(state == NetworkState::NONE)
+    {
+        move();
     }
 
     if(testFlag(TSF_ON_ICE) && m_slip_time > 0)
@@ -282,9 +259,10 @@ void Tank::setDirection(Direction d)
                  state = parent->shared_data->network_state;
             LeaveCriticalSection(parent->critical_section);
         }
-        if(state != NetworkState::SERVER)
+
+        if(object_id == parent->getPlayerId() && state != NetworkState::NONE)
         {
-            parent->sendObjectPosition(this, PositionEvent::PosObj::TANK, true);
+            parent->sendObjectPosition(this, PositionEvent::PosObj::TANK);
         }
     }
 }
@@ -380,6 +358,47 @@ void Tank::clearFlag(TankStateFlag flag)
 bool Tank::testFlag(TankStateFlag flag)
 {
     return (m_flags & flag) == flag;
+}
+
+void Tank::move()
+{
+    if(to_erase) return;
+    double dt = AppConfig::game_speed;
+    if(testFlag(TSF_LIFE))
+    {
+        if(!stop && !testFlag(TSF_FROZEN))
+        {
+            if(speed != 0.0 && parent != nullptr)
+            {
+//                cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << pos_x << " posY: " << pos_y << " speed: " << speed << " dt: " << dt << endl;
+            }
+            switch (direction)
+            {
+            case D_UP:
+                pos_y -= speed * dt;
+                break;
+            case D_RIGHT:
+                pos_x += speed * dt;
+                break;
+            case D_DOWN:
+                pos_y += speed * dt;
+                break;
+            case D_LEFT:
+                pos_x -= speed * dt;
+                break;
+            }
+        }
+
+        dest_rect.x = pos_x;
+        dest_rect.y = pos_y;
+        dest_rect.h = m_sprite->rect.h;
+        dest_rect.w = m_sprite->rect.w;
+
+        collision_rect.x = dest_rect.x + 2;
+        collision_rect.y = dest_rect.y + 2;
+        collision_rect.h = dest_rect.h - 4;
+        collision_rect.w = dest_rect.w - 4;
+    }
 }
 
 void Tank::respawn()

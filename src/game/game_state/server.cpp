@@ -137,9 +137,9 @@ void Server::eventProcess(SDL_Event *ev)
             if(m_menu_index == 0)
             {
                 StartGameEvent* start_game = new StartGameEvent;
-                start_game->frame_number.l_value = parent->getCurrentFrame() + start_game->priority;
                 EnterCriticalSection(parent->critical_section);
 //                    parent->shared_data->transmit_events(start_game);
+                    parent->shared_data->transmit_events.addEvent(start_game);
                     parent->shared_data->transmit_events.addEvent(start_game);
                 LeaveCriticalSection(parent->critical_section);
             }
@@ -239,7 +239,6 @@ void Server::sendNames()
     for(auto player : m_player_name)
     {
         PlayerNameEvent *player_event = new PlayerNameEvent();
-        player_event->frame_number.l_value = parent->getCurrentFrame() + player_event->priority;
         player_event->player_id.l_value = player.first;
 
         sprintf(player_event->name, "%s", player.second.c_str());

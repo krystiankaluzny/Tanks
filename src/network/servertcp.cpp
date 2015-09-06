@@ -56,7 +56,7 @@ bool ServerTCP::init()
     }
     sockets.push_back(server_socket);
     sockets_event.push_back(server_event);
-    setPlayerName(server_socket, "SERVER");
+    setPlayerName(server_socket, "Player 1");
 
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->player_id = server_socket;
@@ -113,7 +113,7 @@ void ServerTCP::sendData()
 //    LeaveCriticalSection(parent->critical_section);
 
     char* buf;
-    Event* e;
+
 //    int events_count = events.events.size();
 //    for(int i = 0; i < events_count; ++i)
 //    {
@@ -145,10 +145,12 @@ void ServerTCP::sendData()
         LeaveCriticalSection(parent->critical_section);
 
         delete[] buf;
+
+        std::cout << "send_counter: " << (int)send_counter << std::endl;
     }
     //czyszczenie
     EnterCriticalSection(parent->critical_section);
-        parent->shared_data->transmit_events.clear();
+        parent->shared_data->transmit_events.events.clear();
     LeaveCriticalSection(parent->critical_section);
 }
 
@@ -198,7 +200,6 @@ void ServerTCP::closeSocket(int socket_index)
 
     DisconnectEvent* event = new DisconnectEvent;
     event->player_id.l_value = sockets[socket_index];
-    event->frame_number.l_value =  parent->getCurrentFrame() + event->priority;
 
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->received_events_queue.push(event);
@@ -225,14 +226,16 @@ void ServerTCP::broadcast(char *buf, int size)
 {
     for(int i = 1; i < sockets.size(); i++)
     {
+
+        cout << " Type send " << (int)buf[0] << endl;
         send(sockets[i], buf , size, 0);
+        send_counter++;
     }
 }
 
 void ServerTCP::sendInit(SOCKET s)
 {
     InitEvent init;
-    init.frame_number.l_value = 0;
     init.current_frame.l_value = parent->getCurrentFrame();
     init.player_id.l_value = s;
 

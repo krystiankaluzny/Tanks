@@ -43,7 +43,6 @@ public:
     Event(EventType type, int data_size, int priority = 20);
 
     EventType type;                 //1 byte
-    LongData frame_number;          //4 byte
 
     const int event_datagram_size;
     int priority;

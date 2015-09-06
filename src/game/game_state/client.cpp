@@ -169,9 +169,8 @@ void Client::getNames()
 void Client::sendName()
 {
     PlayerNameEvent *player = new PlayerNameEvent();
-    player->frame_number.l_value = parent->getCurrentFrame() + player->priority;
     player->player_id.l_value = parent->getPlayerId();
-    sprintf(player->name, "Nowy %d", player->frame_number.l_value);
+    sprintf(player->name, "Player 2");
 
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->transmit_events.addEvent(player);

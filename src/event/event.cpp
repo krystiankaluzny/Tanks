@@ -41,13 +41,13 @@ void Event::setZeroPos(char *buff, int starting_point)
 
 std::ostream& operator<<(std::ostream &out, Event &e)
 {
-    return out << "EventType: " << e.type << " FrameNum: " << e.frame_number.l_value << " Size: " << e.event_datagram_size;
+//    return out << "EventType: " << e.type << " FrameNum: " << e.frame_number.l_value << " Size: " << e.event_datagram_size;
 }
 
 //================================================
 
 KeyEvent::KeyEvent() :
-    Event(KEY_EVENT_TYPE, 10, 7),
+    Event(KEY_EVENT_TYPE, 6, 7),
     key_type(NONE)
 {
 }
@@ -56,10 +56,10 @@ void KeyEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
 
     key_type = static_cast<KeyEvent::KeyType>(buffer[index++]);
 
@@ -74,10 +74,10 @@ char *KeyEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = key_type;
 
@@ -91,7 +91,7 @@ char *KeyEvent::getByteArray()
 
 //================================================
 
-GenerateEvent::GenerateEvent() : Event(GENERATE_EVENT_TYPE, 17)
+GenerateEvent::GenerateEvent() : Event(GENERATE_EVENT_TYPE, 14)
 {
 }
 
@@ -99,10 +99,10 @@ void GenerateEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
     index++;    //no sepc type
 
     seed1.c_value[0] = buffer[index++];
@@ -126,10 +126,10 @@ char *GenerateEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = 0;
 
@@ -152,7 +152,7 @@ char *GenerateEvent::getByteArray()
 }
 
 
-PlayerNameEvent::PlayerNameEvent() : Event(PLAYER_ID_TYPE, 25)
+PlayerNameEvent::PlayerNameEvent() : Event(PLAYER_ID_TYPE, 21)
 {
 }
 
@@ -160,10 +160,10 @@ void PlayerNameEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
     index++;    //no sepc type
 
     player_id.c_value[0] = buffer[index++];
@@ -182,10 +182,10 @@ char *PlayerNameEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = 0;
 
@@ -203,7 +203,7 @@ char *PlayerNameEvent::getByteArray()
 }
 
 
-InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 14)
+InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 10)
 {
 
 }
@@ -212,10 +212,10 @@ void InitEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
     index++;    //no sepc type
 
     current_frame.c_value[0] = buffer[index++];
@@ -235,10 +235,10 @@ char *InitEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = 0;
 
@@ -256,7 +256,7 @@ char *InitEvent::getByteArray()
 }
 
 
-DisconnectEvent::DisconnectEvent() : Event(DISCONNECT_EVENT_TYPE, 25)
+DisconnectEvent::DisconnectEvent() : Event(DISCONNECT_EVENT_TYPE, 6)
 {
 
 }
@@ -265,10 +265,10 @@ void DisconnectEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
     index++;    //no sepc type
 
     player_id.c_value[0] = buffer[index++];
@@ -282,10 +282,10 @@ char *DisconnectEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = 0;
 
@@ -298,7 +298,7 @@ char *DisconnectEvent::getByteArray()
 }
 
 
-StartGameEvent::StartGameEvent() : Event(START_GAME_TYPE, 6, 30)
+StartGameEvent::StartGameEvent() : Event(START_GAME_TYPE, 2, 30)
 {
 
 }
@@ -307,10 +307,10 @@ void StartGameEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
     index++;    //no sepc type
 }
 
@@ -319,10 +319,10 @@ char *StartGameEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = 0;
 
@@ -332,7 +332,7 @@ char *StartGameEvent::getByteArray()
 
 
 
-PositionEvent::PositionEvent() : Event(POSITION_TYPE, 10 + 2 * sizeof(double), 1)
+PositionEvent::PositionEvent() : Event(POSITION_TYPE, 6 + 2 * sizeof(double), 1)
 {
 
 }
@@ -341,10 +341,10 @@ void PositionEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
 
     obj = static_cast<PositionEvent::PosObj>(buffer[index++]);
 
@@ -369,10 +369,10 @@ char *PositionEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = obj;
 
@@ -395,7 +395,7 @@ char *PositionEvent::getByteArray()
 }
 
 
-SpeedChangeEvent::SpeedChangeEvent() : Event(SPEED_CHANGE_TYPE, 6, 3)
+SpeedChangeEvent::SpeedChangeEvent() : Event(SPEED_CHANGE_TYPE, 2, 3)
 {
 
 }
@@ -404,10 +404,10 @@ void SpeedChangeEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
-    frame_number.c_value[0] = buffer[index++];
-    frame_number.c_value[1] = buffer[index++];
-    frame_number.c_value[2] = buffer[index++];
-    frame_number.c_value[3] = buffer[index++];
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
     speed_change_type = static_cast<SpeedChangeType>(buffer[index++]);    //no sepc type
 }
 
@@ -416,10 +416,10 @@ char *SpeedChangeEvent::getByteArray()
     char* buffer = new char[event_datagram_size];
     int index = 0;
     buffer[index++] = type;
-    buffer[index++] = frame_number.c_value[0];
-    buffer[index++] = frame_number.c_value[1];
-    buffer[index++] = frame_number.c_value[2];
-    buffer[index++] = frame_number.c_value[3];
+//    buffer[index++] = frame_number.c_value[0];
+//    buffer[index++] = frame_number.c_value[1];
+//    buffer[index++] = frame_number.c_value[2];
+//    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = speed_change_type;
 

@@ -38,7 +38,7 @@ void Player::update(Uint32 dt)
 {
     const Uint8 *key_state = SDL_GetKeyboardState(NULL);
 
-//    Tank::update(dt);
+    Tank::update(dt);
 
     if(key_state != nullptr && !testFlag(TSF_MENU))
     {
@@ -46,7 +46,6 @@ void Player::update(Uint32 dt)
         {
             KeyEvent* key = new KeyEvent;
             key->key_type = key_type;
-            key->frame_number.l_value = parent->getCurrentFrame() + key->priority;
             key->id_tank.l_value = object_id;
             return key;
         };
@@ -59,13 +58,12 @@ void Player::update(Uint32 dt)
             LeaveCriticalSection(parent->critical_section);
         }
 
-
         KeyEvent* key_event = nullptr;
-        if(move_next)
-        {
-            setDirection(next_direction);
-            speed = default_speed;
-        }
+//        if(move_next)
+//        {
+//            setDirection(next_direction);
+//            speed = default_speed;
+//        }
 
         if(key_state[player_keys.up])
         {
@@ -117,7 +115,7 @@ void Player::update(Uint32 dt)
         }
         else
         {
-            if((!testFlag(TSF_ON_ICE) || m_slip_time == 0) && !move_next)
+            if((!testFlag(TSF_ON_ICE) || m_slip_time == 0))
                 speed = 0.0;
         }
 
@@ -145,7 +143,7 @@ void Player::update(Uint32 dt)
         }
     }
 
-    Tank::update(dt);
+//    Tank::update(dt);
 
     move_next = false;
 

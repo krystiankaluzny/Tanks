@@ -378,6 +378,8 @@ void NetworkBattle::update(Uint32 dt)
 
 void NetworkBattle::eventProcess()
 {
+//    std::cout << "eventProcess 1" << std::endl;
+    int event_count = 0;
     SOCKET player_socket;
     bool is_empty = true;
     Event* e = nullptr;
@@ -386,6 +388,7 @@ void NetworkBattle::eventProcess()
     LeaveCriticalSection(parent->critical_section);
     while(!is_empty)
     {
+        event_count++;
         EnterCriticalSection(parent->critical_section);
             e = parent->shared_data->received_events_queue.pop();
         LeaveCriticalSection(parent->critical_section);
@@ -431,8 +434,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->move_next = true;
-                        p->next_direction = D_UP;
+//                        p->next_direction = D_UP;
+                        p->setDirection(D_UP);
+                        p->speed = p->default_speed;
+                        p->move();
                         break;
                     }
                 }
@@ -444,8 +451,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->move_next = true;
-                        p->next_direction = D_DOWN;
+//                        p->next_direction = D_DOWN;
+                        p->setDirection(D_DOWN);
+                        p->speed = p->default_speed;
+                        p->move();
                         break;
                     }
                 }
@@ -457,8 +468,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->move_next = true;
-                        p->next_direction = D_LEFT;
+//                        p->next_direction = D_LEFT;
+                        p->setDirection(D_LEFT);
+                        p->speed = p->default_speed;
+                        p->move();
                         break;
                     }
                 }
@@ -470,8 +485,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->move_next = true;
-                        p->next_direction = D_RIGHT;
+//                        p->next_direction = D_RIGHT;
+                        p->setDirection(D_RIGHT);
+                        p->speed = p->default_speed;
+                        p->move();
                         break;
                     }
                 }
@@ -499,7 +518,6 @@ void NetworkBattle::eventProcess()
         }
         case EventType::POSITION_TYPE:
         {
-
             PositionEvent* pos = (PositionEvent*)e;
             switch(pos->obj)
             {
@@ -549,10 +567,14 @@ void NetworkBattle::eventProcess()
             break;
         }
 
+        delete e;
         EnterCriticalSection(parent->critical_section);
             is_empty = parent->shared_data->received_events_queue.empty();
         LeaveCriticalSection(parent->critical_section);
     }
+//    std::cout << "eventProcess 2" << std::endl;
+//    if(event_count)
+//        std::cout << "event_count: " << (int)event_count << std::endl;
 }
 
 void NetworkBattle::eventProcess(SDL_Event *ev)
@@ -579,7 +601,7 @@ void NetworkBattle::eventProcess(SDL_Event *ev)
         {
             KeyEvent* pause = new KeyEvent;
             pause->key_type = KeyEvent::KeyType::PAUSE;
-            pause->frame_number.l_value = parent->getCurrentFrame() + pause->priority;
+//            pause->frame_number.l_value = parent->getCurrentFrame() + pause->priority;
             pause->id_tank.l_value = 0;
 
             EnterCriticalSection(parent->critical_section);
@@ -1085,7 +1107,7 @@ void NetworkBattle::createSeeds()
 {
 //    srand(parent->getCurrentFrame());
     GenerateEvent* gen_rand = new GenerateEvent;
-    gen_rand->frame_number.l_value = parent->getCurrentFrame() + gen_rand->priority;
+//    gen_rand->frame_number.l_value = parent->getCurrentFrame() + gen_rand->priority;
     gen_rand->seed1.l_value = time(0);
     gen_rand->seed2.l_value = time(0);
     gen_rand->seed3.l_value = time(0);
