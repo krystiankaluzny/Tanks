@@ -127,12 +127,30 @@ void ServerTCP::sendData()
         buf = e->getByteArray();
 //        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << " frame event " << e->frame_number.l_value << std::endl;
 
-//        printHex(buf, e->bufferSize());
-
+        if(e->type == EventType::POSITION_TYPE)
+        {
+            printHex(buf, e->bufferSize());
+        }
         broadcast(buf, e->bufferSize());
 
         delete[] buf;
     }
+
+//    std::vector<Event*> transmit_events;
+//    EnterCriticalSection(parent->critical_section);
+//        transmit_events = parent->shared_data->transmit_events.events;
+//    LeaveCriticalSection(parent->critical_section);
+
+//    for(Event* e : transmit_events)
+//    {
+//        buf = e->getByteArray();
+//        broadcast(buf, e->bufferSize());
+//        delete[] buf;
+//    }
+//    //czyszczenie
+//    EnterCriticalSection(parent->critical_section);
+//        parent->shared_data->transmit_events.clear();
+//    LeaveCriticalSection(parent->critical_section);
 }
 
 void ServerTCP::readData()

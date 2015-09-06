@@ -3,6 +3,7 @@
 #include "scopelock.h"
 #include "event/eventstore.h"
 #include "shareddata.h"
+#include "game/objects/object.h"
 
 #include <process.h>
 #include <windows.h>
@@ -65,6 +66,18 @@ public:
         LeaveCriticalSection(critical_section);
 
         return player_id;
+    }
+
+    void sendObjectPosition(Object* obj, PositionEvent::PosObj obj_type)
+    {
+        PositionEvent* pos = new PositionEvent;
+        pos->frame_number.l_value = getCurrentFrame() + pos->priority;
+        pos->obj = obj_type;
+        pos->pos_x.d_value = obj->pos_x;
+        pos->pos_y.d_value = obj->pos_y;
+        EnterCriticalSection(critical_section);
+            shared_data->newEvent(pos);
+        LeaveCriticalSection(critical_section);
     }
 };
 

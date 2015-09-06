@@ -29,6 +29,11 @@ union IntData
     IntData() : i_value(0) {}
 };
 
+union DoubleData
+{
+  double d_value;
+  char c_value[sizeof(double)];
+};
 
 class Event
 {
@@ -136,8 +141,9 @@ public:
     PositionEvent();
 
     PosObj obj; //1 byte spec
-    LongData pos_x; //4 byte
-    LongData pos_y; //4 byte
+    LongData obj_id; //4 byte
+    DoubleData pos_x; //8 byte
+    DoubleData pos_y; //8 byte
     void setByteArray(char *buffer);
     char* getByteArray();
 };

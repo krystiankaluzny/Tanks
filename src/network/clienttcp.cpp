@@ -104,7 +104,6 @@ void ClientTCP::close()
 void ClientTCP::sendData()
 {
     //zdjęcie z kolejki odpowiednich eventów
-    bool send_events = false;
     std::vector<Event*> transmit_events;
     long current = parent->getCurrentFrame();
     EnterCriticalSection(parent->critical_section);

@@ -1,8 +1,10 @@
 #include "player.h"
 #include "../../appconfig.h"
+#include "../../appthread.h"
+#include "../../event/event.h"
+
 #include <SDL2/SDL.h>
 #include <iostream>
-#include "../../event/event.h"
 
 Player::Player()
     : Tank(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1)
@@ -36,7 +38,7 @@ void Player::update(Uint32 dt)
 {
     const Uint8 *key_state = SDL_GetKeyboardState(NULL);
 
-    Tank::update(dt);
+    //Tank::update(dt);
 
     if(key_state != nullptr && !testFlag(TSF_MENU))
     {
@@ -129,7 +131,7 @@ void Player::update(Uint32 dt)
 
         if(key_event != nullptr)
         {
-            std::cout << "key_event != nullptr Key press " << current << std::endl;
+//            std::cout << "key_event != nullptr Key press " << current << std::endl;
             EnterCriticalSection(parent->critical_section);
                 parent->shared_data->newEvent(key_event);
             LeaveCriticalSection(parent->critical_section);
@@ -153,12 +155,11 @@ void Player::update(Uint32 dt)
                 LeaveCriticalSection(parent->critical_section);
             }
         }
-
-        if(move_next)
-        {
-            move_next = false;
-        }
     }
+
+    Tank::update(dt);
+
+    move_next = false;
 
     m_fire_time += dt;
 

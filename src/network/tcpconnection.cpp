@@ -83,6 +83,11 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
                 event = new KeyEvent;
                 break;
             }
+            case POSITION_TYPE:
+            {
+                event = new PositionEvent;
+                break;
+            }
         }
 
 
@@ -96,7 +101,13 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             else
             {
                 event->setByteArray(buffer);
-//                std::cout <<"CLIENT read " << event->frame_number.l_value << std::endl;
+
+                if(event->type == EventType::POSITION_TYPE)
+                {
+                    std::cout << "type: " << reinterpret_cast<PositionEvent*>(event)->obj << " id: " << ((PositionEvent*)(event))->obj_id.l_value << std::endl;
+                    printHex(buffer, event->bufferSize());
+                }
+
                 EnterCriticalSection(parent->critical_section);
                     parent->shared_data->received_events.addEvent(event);
                 LeaveCriticalSection(parent->critical_section);
@@ -105,7 +116,8 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
         }
         else
         {
-            std::cout << "Nie rozpoznano EVENTU: " << event_type << " , current frame" << parent->getCurrentFrame() << " index: " << index << " size: " << size << std::endl;
+            std::cout << "Nie rozpoznano EVENTU: " << (int)event_type << " , current frame" << parent->getCurrentFrame() << " index: " << index << " size: " << size << std::endl;
+            break;
         }
     }while(index < size);
 

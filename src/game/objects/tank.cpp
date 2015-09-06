@@ -1,5 +1,7 @@
 #include "tank.h"
 #include "../../appconfig.h"
+#include "../../appthread.h"
+
 #include <algorithm>
 
 Tank::Tank()
@@ -64,6 +66,10 @@ void Tank::update(Uint32 dt)
     {
         if(!stop && !testFlag(TSF_FROZEN))
         {
+            if(speed != 0.0 && parent != nullptr)
+            {
+                cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << pos_x << " posY: " << pos_y << " speed: " << speed << " dt: " << dt << endl;
+            }
             switch (direction)
             {
             case D_UP:
@@ -150,6 +156,7 @@ void Tank::update(Uint32 dt)
         }
     }
 
+    speed = 0.0;
 
     // Obsługa pocisku
     for(auto bullet : bullets) bullet->update(dt);
@@ -232,6 +239,9 @@ SDL_Rect Tank::nextCollisionRect(Uint32 dt)
 void Tank::setDirection(Direction d)
 {
     if(!(testFlag(TSF_LIFE) || testFlag(TSF_CREATE))) return;
+
+    Direction old_direction = direction;
+
     if(testFlag(TSF_ON_ICE))
     {
         new_direction = d;
@@ -260,6 +270,21 @@ void Tank::setDirection(Direction d)
             if(pos_y - pos_y_tile < epsilon) pos_y = pos_y_tile;
             else if(pos_y_tile + AppConfig::tile_rect.h - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_rect.h;
             break;
+        }
+    }
+
+    if(old_direction != d)
+    {
+        NetworkState state = NetworkState::NONE;
+        if(parent != nullptr)
+        {
+            EnterCriticalSection(parent->critical_section);
+                 state = parent->shared_data->network_state;
+            LeaveCriticalSection(parent->critical_section);
+        }
+        if(state == NetworkState::SERVER)
+        {
+            parent->sendObjectPosition(this, PositionEvent::PosObj::TANK);
         }
     }
 }

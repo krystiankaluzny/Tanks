@@ -2,7 +2,10 @@
 #define OBJECT_H
 
 #include "../engine/engine.h"
-#include "../../appthread.h"
+//#include "../../appthread.h"
+
+class AppThread;
+
 /**
  * @brief
  * Klasa bazowa dla obiektów w grze.

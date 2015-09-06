@@ -415,6 +415,7 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
             key_num++;
 //            cout << "KEY_EVENT_TYPE frame: " << parent->getCurrentFrame() << " Key num: " << key_num << std::endl;
             KeyEvent* key =(KeyEvent*)e;
+//            cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << m_players.at(0)->pos_x << " posY: " << m_players.at(0)->pos_y << endl;
             switch(key->key_type)
             {
             case KeyEvent::KeyType::UP:
@@ -487,6 +488,56 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
                 m_pause = !m_pause;
                 break;
             }
+            }
+            break;
+        }
+        case EventType::POSITION_TYPE:
+        {
+            std::cout << "Pos type " << std::endl;
+
+            PositionEvent* pos = (PositionEvent*)e;
+            switch(pos->obj)
+            {
+                case PositionEvent::PosObj::TANK:
+                {
+                    bool found = false;
+                    std::cout << "dupa" << std::endl;
+                    for(Player* p : m_players)
+                    {
+                        if(p->object_id == pos->obj_id.l_value)
+                        {
+                            cout << "P Before" << " posX: " << p->pos_x << " posY: " << p->pos_y << endl;
+                            p->pos_x = pos->pos_x.d_value + 20;
+                            p->pos_y = pos->pos_y.d_value + 50;
+                            cout << "P After" << " posX: " << p->pos_x << " posY: " << p->pos_y << endl;
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(!found)
+                    {
+                        for(Enemy* e : m_enemies)
+                        {
+                            if(e->object_id == pos->obj_id.l_value)
+                            {
+                                cout << "E Before" << " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
+                                e->pos_x = pos->pos_x.d_value;
+                                e->pos_y = pos->pos_y.d_value + 23;
+                                cout << "E After" << " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(found)
+                        std::cout << "Pos type found" << std::endl;
+                    else
+                        std::cout << "Pos type NOT found" << std::endl;
+                    break;
+                }
+            default:
+                std::cout << "Unknown POSITION_TYPE " << (int) pos->obj << std::endl;
             }
             break;
         }
