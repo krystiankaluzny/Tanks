@@ -38,7 +38,7 @@ void Player::update(Uint32 dt)
 {
     const Uint8 *key_state = SDL_GetKeyboardState(NULL);
 
-    //Tank::update(dt);
+//    Tank::update(dt);
 
     if(key_state != nullptr && !testFlag(TSF_MENU))
     {
@@ -121,24 +121,12 @@ void Player::update(Uint32 dt)
                 speed = 0.0;
         }
 
-        long current = 0;
-        if(parent != nullptr)
-        {
-            EnterCriticalSection(parent->critical_section);
-                current = parent->shared_data->current_frame_number;
-            LeaveCriticalSection(parent->critical_section);
-        }
-
         if(key_event != nullptr)
         {
-//            std::cout << "key_event != nullptr Key press " << current << std::endl;
+            std::cout << "key_event != nullptr "<< std::endl;
             EnterCriticalSection(parent->critical_section);
-                parent->shared_data->newEvent(key_event);
+                parent->shared_data->transmit_events.addEvent(key_event);
             LeaveCriticalSection(parent->critical_section);
-        }
-        else
-        {
-//            std::cout << "key_event == nullptr Key press " << current << std::endl;
         }
 
         if(key_state[player_keys.fire] && m_fire_time > AppConfig::player_reload_time)
@@ -151,7 +139,7 @@ void Player::update(Uint32 dt)
             {
                 key_event = new_key(KeyEvent::KeyType::FIRE);
                 EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->newEvent(key_event);
+                    parent->shared_data->transmit_events.addEvent(key_event);
                 LeaveCriticalSection(parent->critical_section);
             }
         }
@@ -222,6 +210,7 @@ void Player::destroy()
 
 Bullet* Player::fire()
 {
+    if(m_fire_time < AppConfig::player_reload_time) return nullptr;
     m_fire_time = 0;
     Bullet* b = Tank::fire();
     if(b != nullptr)

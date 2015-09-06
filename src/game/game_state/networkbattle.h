@@ -70,7 +70,7 @@ public:
      * Obsługa eventów, które przyszły przez sieć.
      * @param events
      */
-    void eventProcess(EventsWrapper& ev);
+    void eventProcess();
     /**
      * Przejście do następnyego stanu.
      * @return wskaźnik na obiekty klasy @a Scores jeżeli gracz przeszedł rundę lub przegrał. Jeżeli gracz wcisną Esc funkcja zwraca wskaźnik na obiekt @a Menu.

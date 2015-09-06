@@ -138,12 +138,10 @@ void Server::eventProcess(SDL_Event *ev)
             {
                 StartGameEvent* start_game = new StartGameEvent;
                 start_game->frame_number.l_value = parent->getCurrentFrame() + start_game->priority;
-                std::cout << "Start game" << std::endl;
                 EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->newEvent(start_game);
-//                    parent->shared_data->transmit_events.addEvent(start_game);
+//                    parent->shared_data->transmit_events(start_game);
+                    parent->shared_data->transmit_events.addEvent(start_game);
                 LeaveCriticalSection(parent->critical_section);
-                std::cout << "Start game2" << std::endl;
             }
             else
             {
@@ -158,15 +156,20 @@ void Server::eventProcess(SDL_Event *ev)
     }
 }
 
-void Server::eventProcess(EventsWrapper &ev)
+void Server::eventProcess()
 {
     SOCKET player_socket;
-    std::vector<Event*> events = ev.events;
-
-    if(events.size() == 0) return;
-
-    for(Event* e : events)
+    bool is_empty = true;
+    Event* e = nullptr;
+    EnterCriticalSection(parent->critical_section);
+        is_empty = parent->shared_data->received_events_queue.empty();
+    LeaveCriticalSection(parent->critical_section);
+    while(!is_empty)
     {
+        EnterCriticalSection(parent->critical_section);
+            e = parent->shared_data->received_events_queue.pop();
+        LeaveCriticalSection(parent->critical_section);
+
         switch (e->type)
         {
         case EventType::PLAYER_ID_TYPE:
@@ -197,6 +200,10 @@ void Server::eventProcess(EventsWrapper &ev)
         default:
             break;
         }
+
+        EnterCriticalSection(parent->critical_section);
+            is_empty = parent->shared_data->received_events_queue.empty();
+        LeaveCriticalSection(parent->critical_section);
     }
 }
 
@@ -238,7 +245,7 @@ void Server::sendNames()
         sprintf(player_event->name, "%s", player.second.c_str());
 
         EnterCriticalSection(parent->critical_section);
-            parent->shared_data->newEvent(player_event);
+            parent->shared_data->transmit_events.addEvent(player_event);
         LeaveCriticalSection(parent->critical_section);
     }
 }

@@ -45,7 +45,7 @@ public:
      * Funkcja umożliwiająca obsługę zdarzeń przygotowanych na obecną ramkę.
      * @param events
      */
-    virtual void eventProcess(EventsWrapper& events){}
+    virtual void eventProcess(){}
     /**
      * Funkcja zwracającya następny stan po zakończeniu obecnego. Funkcję należy wywołać tylko wtedy, gdy funkcja @a finished zwróci wartość @a true.
      * @return następny stan gry
@@ -64,11 +64,6 @@ protected:
         EnterCriticalSection(parent->critical_section);
             parent->shared_data->network_state = state;
         LeaveCriticalSection(parent->critical_section);
-    }
-
-    void saveEvent(Event* event)
-    {
-        parent->saveEvent(event);
     }
 };
 #endif // APPSTATE_H

@@ -13,6 +13,7 @@ enum EventType
     DISCONNECT_EVENT_TYPE,
     START_GAME_TYPE,
     POSITION_TYPE,
+    SPEED_CHANGE_TYPE
 };
 
 union LongData
@@ -45,7 +46,7 @@ public:
     LongData frame_number;          //4 byte
 
     const int event_datagram_size;
-    const int priority;
+    int priority;
     virtual void setByteArray(char* buffer) = 0;
     virtual char *getByteArray() = 0;
     int bufferSize();
@@ -144,6 +145,21 @@ public:
     LongData obj_id; //4 byte
     DoubleData pos_x; //8 byte
     DoubleData pos_y; //8 byte
+    void setByteArray(char *buffer);
+    char* getByteArray();
+};
+
+class SpeedChangeEvent : public Event
+{
+public:
+    enum SpeedChangeType
+    {
+        SLOW_DOWN,
+        SPEED_UP
+    };
+    SpeedChangeEvent();
+
+    SpeedChangeType speed_change_type;
     void setByteArray(char *buffer);
     char* getByteArray();
 };

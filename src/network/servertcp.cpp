@@ -1,5 +1,6 @@
 #include "servertcp.h"
 #include "network.h"
+#include "../appconfig.h"
 
 ServerTCP::ServerTCP()
 {
@@ -107,50 +108,48 @@ void ServerTCP::run()
 
 void ServerTCP::sendData()
 {
-    EventsWrapper events;
-    unsigned long current_frame = parent->getCurrentFrame();
-
-    if(last_send_frame_events == current_frame + 5) return;
-
-    last_send_frame_events = current_frame + 5;
-
-    EnterCriticalSection(parent->critical_section);
-        events = parent->shared_data->received_events.frame_events[last_send_frame_events];
-    LeaveCriticalSection(parent->critical_section);
+//    EnterCriticalSection(parent->critical_section);
+//        events = parent->shared_data->received_events.frame_events[last_send_frame_events];
+//    LeaveCriticalSection(parent->critical_section);
 
     char* buf;
     Event* e;
-    int events_count = events.events.size();
-    for(int i = 0; i < events_count; ++i)
-    {
-        e = events.events[i];
-        buf = e->getByteArray();
-//        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << " frame event " << e->frame_number.l_value << std::endl;
+//    int events_count = events.events.size();
+//    for(int i = 0; i < events_count; ++i)
+//    {
+//        e = events.events[i];
+//        buf = e->getByteArray();
+////        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << " frame event " << e->frame_number.l_value << std::endl;
 
-        if(e->type == EventType::POSITION_TYPE)
-        {
-            printHex(buf, e->bufferSize());
-        }
+//        if(e->type == EventType::POSITION_TYPE)
+//        {
+//            printHex(buf, e->bufferSize());
+//        }
+//        broadcast(buf, e->bufferSize());
+
+//        delete[] buf;
+//    }
+
+    std::vector<Event*> transmit_events;
+    EnterCriticalSection(parent->critical_section);
+        transmit_events = parent->shared_data->transmit_events.events;
+    LeaveCriticalSection(parent->critical_section);
+
+    for(Event* e : transmit_events)
+    {
+        buf = e->getByteArray();
         broadcast(buf, e->bufferSize());
+
+        EnterCriticalSection(parent->critical_section);
+            parent->shared_data->received_events_queue.push(e);
+        LeaveCriticalSection(parent->critical_section);
 
         delete[] buf;
     }
-
-//    std::vector<Event*> transmit_events;
-//    EnterCriticalSection(parent->critical_section);
-//        transmit_events = parent->shared_data->transmit_events.events;
-//    LeaveCriticalSection(parent->critical_section);
-
-//    for(Event* e : transmit_events)
-//    {
-//        buf = e->getByteArray();
-//        broadcast(buf, e->bufferSize());
-//        delete[] buf;
-//    }
-//    //czyszczenie
-//    EnterCriticalSection(parent->critical_section);
-//        parent->shared_data->transmit_events.clear();
-//    LeaveCriticalSection(parent->critical_section);
+    //czyszczenie
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->transmit_events.clear();
+    LeaveCriticalSection(parent->critical_section);
 }
 
 void ServerTCP::readData()
@@ -202,7 +201,7 @@ void ServerTCP::closeSocket(int socket_index)
     event->frame_number.l_value =  parent->getCurrentFrame() + event->priority;
 
     EnterCriticalSection(parent->critical_section);
-        parent->shared_data->received_events.addEvent(event);
+        parent->shared_data->received_events_queue.push(event);
     LeaveCriticalSection(parent->critical_section);
 
     closesocket(sockets[socket_index]);

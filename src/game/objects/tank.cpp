@@ -68,7 +68,7 @@ void Tank::update(Uint32 dt)
         {
             if(speed != 0.0 && parent != nullptr)
             {
-                cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << pos_x << " posY: " << pos_y << " speed: " << speed << " dt: " << dt << endl;
+//                cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << pos_x << " posY: " << pos_y << " speed: " << speed << " dt: " << dt << endl;
             }
             switch (direction)
             {
@@ -282,9 +282,9 @@ void Tank::setDirection(Direction d)
                  state = parent->shared_data->network_state;
             LeaveCriticalSection(parent->critical_section);
         }
-        if(state == NetworkState::SERVER)
+        if(state != NetworkState::SERVER)
         {
-            parent->sendObjectPosition(this, PositionEvent::PosObj::TANK);
+            parent->sendObjectPosition(this, PositionEvent::PosObj::TANK, true);
         }
     }
 }

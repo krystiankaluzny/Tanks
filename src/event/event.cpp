@@ -1,18 +1,25 @@
 #include "event.h"
-
+#include "../appconfig.h"
 
 Event::Event() :
     type(NONE_EVENT_TYPE),
     event_datagram_size(0),
-    priority(10)
+    priority(AppConfig::sending_events_offset + 5)
 {
 }
 
 Event::Event(EventType type, int data_size, int priority) :
     type(type),
-    event_datagram_size(data_size),
-    priority(priority)
+    event_datagram_size(data_size)
 {
+    if(priority < AppConfig::sending_events_offset)
+    {
+        this->priority = AppConfig::sending_events_offset;
+    }
+    else
+    {
+        this->priority = priority;
+    }
 }
 
 int Event::bufferSize()
@@ -325,7 +332,7 @@ char *StartGameEvent::getByteArray()
 
 
 
-PositionEvent::PositionEvent() : Event(POSITION_TYPE, 10 + 2 * sizeof(double), 5)
+PositionEvent::PositionEvent() : Event(POSITION_TYPE, 10 + 2 * sizeof(double), 1)
 {
 
 }
@@ -339,7 +346,7 @@ void PositionEvent::setByteArray(char *buffer)
     frame_number.c_value[2] = buffer[index++];
     frame_number.c_value[3] = buffer[index++];
 
-    obj = static_cast<PositionEvent::PosObj>(index++);    //no sepc type
+    obj = static_cast<PositionEvent::PosObj>(buffer[index++]);
 
     for(int i = 0; i < 4; i++)
     {
@@ -383,6 +390,38 @@ char *PositionEvent::getByteArray()
     {
         buffer[index++] = pos_y.c_value[i];
     }
+
+    return buffer;
+}
+
+
+SpeedChangeEvent::SpeedChangeEvent() : Event(SPEED_CHANGE_TYPE, 6, 3)
+{
+
+}
+
+void SpeedChangeEvent::setByteArray(char *buffer)
+{
+    int index = 1;
+
+    frame_number.c_value[0] = buffer[index++];
+    frame_number.c_value[1] = buffer[index++];
+    frame_number.c_value[2] = buffer[index++];
+    frame_number.c_value[3] = buffer[index++];
+    speed_change_type = static_cast<SpeedChangeType>(buffer[index++]);    //no sepc type
+}
+
+char *SpeedChangeEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size];
+    int index = 0;
+    buffer[index++] = type;
+    buffer[index++] = frame_number.c_value[0];
+    buffer[index++] = frame_number.c_value[1];
+    buffer[index++] = frame_number.c_value[2];
+    buffer[index++] = frame_number.c_value[3];
+
+    buffer[index++] = speed_change_type;
 
     return buffer;
 }

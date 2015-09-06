@@ -2,8 +2,11 @@
 #define EVENTSTORE_H
 
 #include "event.h"
+//#include "../shareddata.h"
 #include <vector>
 #include <map>
+
+class SharedData;
 
 class EventsWrapper
 {
@@ -29,6 +32,8 @@ public:
     void addEvent(Event* event);
 
     void printEvent(Event* event);
+
+    SharedData* parent;
 };
 
 //send to server by client

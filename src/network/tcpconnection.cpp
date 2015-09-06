@@ -88,39 +88,42 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
                 event = new PositionEvent;
                 break;
             }
+            case SPEED_CHANGE_TYPE:
+            {
+                event = new SpeedChangeEvent;
+                break;
+            }
         }
-
 
         if(event != nullptr)
         {
             if(event->bufferSize() > size - index)
             {
                 std::cout << "NIE ROZPOZNANO, current frame" << parent->getCurrentFrame() << std::endl;
-                std::cout << "event->bufferSize() != size" << event->bufferSize() << " " << size<< std::endl;
+                std::cout << "event->bufferSize() != size" << event->bufferSize() << " " << size - index << std::endl;
             }
             else
             {
                 event->setByteArray(buffer);
 
-                if(event->type == EventType::POSITION_TYPE)
-                {
-                    std::cout << "type: " << reinterpret_cast<PositionEvent*>(event)->obj << " id: " << ((PositionEvent*)(event))->obj_id.l_value << std::endl;
-                    printHex(buffer, event->bufferSize());
-                }
+//                if(event->type == EventType::POSITION_TYPE)
+//                {
+                    std::cout << "type: " << (int)event->type << std::endl;
+//                    printHex(buffer, event->bufferSize());
+//                }
 
                 EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->received_events.addEvent(event);
+                    parent->shared_data->received_events_queue.push(event);
                 LeaveCriticalSection(parent->critical_section);
             }
             index += event->bufferSize();
         }
         else
         {
-            std::cout << "Nie rozpoznano EVENTU: " << (int)event_type << " , current frame" << parent->getCurrentFrame() << " index: " << index << " size: " << size << std::endl;
+            std::cout << "Nie rozpoznano EVENTU: " << (int)event_type << " , current frame " << parent->getCurrentFrame() << " index: " << index << " size: " << size << std::endl;
             break;
         }
     }while(index < size);
-
 }
 
 void TCPConnection::getLongData(LongData &event_index, LongData &events_count, char *buffer)
@@ -150,12 +153,12 @@ void TCPConnection::printHex(char *data, int size)
 void TCPConnection::initialize(InitEvent* event)
 {
     EnterCriticalSection(parent->critical_section);
-        parent->shared_data->setCurrentFrameNumber(event->current_frame.l_value);
+//        parent->shared_data->setCurrentFrameNumber(event->current_frame.l_value);
         parent->shared_data->player_id = event->player_id.l_value;
     LeaveCriticalSection(parent->critical_section);
 
     EnterCriticalSection(parent->critical_section);
-        parent->shared_data->clearReceiveEvents(-1);
+//        parent->shared_data->clearReceiveEvents(-1);
         parent->shared_data->transmit_events.events.clear();
     LeaveCriticalSection(parent->critical_section);
 

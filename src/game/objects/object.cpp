@@ -17,7 +17,6 @@ Object::Object()
     m_current_frame = 0;
 
     ++Object::next_object_id;
-
     object_id = Object::next_object_id;
 }
 
@@ -46,6 +45,9 @@ Object::Object(double x, double y, SpriteType type)
     collision_rect.y = pos_y;
     collision_rect.h = m_sprite->rect.h;
     collision_rect.w = m_sprite->rect.w;
+
+    ++Object::next_object_id;
+    object_id = Object::next_object_id;
 }
 
 Object::Object(double x, double y, const SpriteData *sprite)
@@ -73,6 +75,9 @@ Object::Object(double x, double y, const SpriteData *sprite)
     collision_rect.y = pos_y;
     collision_rect.h = m_sprite->rect.h;
     collision_rect.w = m_sprite->rect.w;
+
+    ++Object::next_object_id;
+    object_id = Object::next_object_id;
 }
 
 Object::~Object()

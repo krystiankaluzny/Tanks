@@ -8,6 +8,7 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdlib.h>
+#include "myqueue.h"
 
 class SharedData
 {
@@ -16,11 +17,13 @@ public:
     /**
      * Kolejka eventów do wysłania na server.
      */
+    MyQueue<Event*> received_events_queue;
+
     TransmitEvents transmit_events;
     /**
      * Eventy odebrane z servera
      */
-    ReceivedEvents received_events;
+//    ReceivedEvents received_events;
     /**
      * Status sieci: server, klient lub wyłączony
      */
@@ -51,21 +54,21 @@ public:
      * Usuwanie eventów z wybranej ramki.
      * @param frame -1 oznacza usunięcie wszystkiego
      */
-    void clearReceiveEvents(unsigned long frame);
+//    void clearReceiveEvents(unsigned long frame);
 
     /**
      * Usuwanie eventów z obecnej ramki
      */
-    void clearCurrentEvents();
+//    void clearCurrentEvents();
     /**
      * Ustawienie obecnej ramki gry w SharedData oraz w ReceivedEvents.
      * @param current_frame
      */
-    void setCurrentFrameNumber(unsigned long current_frame);
+//    void setCurrentFrameNumber(unsigned long current_frame);
 
-    void incrementFrameNumber();
+//    void incrementFrameNumber();
 
-    void newEvent(Event* event);
+//    void newEvent(Event* event);
 
 };
 

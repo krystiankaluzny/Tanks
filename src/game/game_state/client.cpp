@@ -100,14 +100,19 @@ void Client::eventProcess(SDL_Event *ev)
     }
 }
 
-void Client::eventProcess(EventsWrapper &ev)
+void Client::eventProcess()
 {
     SOCKET player_socket;
-    std::vector<Event*> events = ev.events;
-
-    for(Event* e : events)
+    bool is_empty = true;
+    Event* e = nullptr;
+    EnterCriticalSection(parent->critical_section);
+        is_empty = parent->shared_data->received_events_queue.empty();
+    LeaveCriticalSection(parent->critical_section);
+    while(!is_empty)
     {
-//        std::cout << "Client eventProcess TYPE: " << e->type << std::endl;
+        EnterCriticalSection(parent->critical_section);
+            e = parent->shared_data->received_events_queue.pop();
+        LeaveCriticalSection(parent->critical_section);
         switch (e->type)
         {
         case EventType::PLAYER_ID_TYPE:
@@ -137,6 +142,10 @@ void Client::eventProcess(EventsWrapper &ev)
         default:
             break;
         }
+
+        EnterCriticalSection(parent->critical_section);
+            is_empty = parent->shared_data->received_events_queue.empty();
+        LeaveCriticalSection(parent->critical_section);
     }
 }
 
@@ -165,7 +174,7 @@ void Client::sendName()
     sprintf(player->name, "Nowy %d", player->frame_number.l_value);
 
     EnterCriticalSection(parent->critical_section);
-        parent->shared_data->newEvent(player);
+        parent->shared_data->transmit_events.addEvent(player);
     LeaveCriticalSection(parent->critical_section);
 }
 

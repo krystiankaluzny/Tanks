@@ -105,19 +105,13 @@ void Game::networkEvent()
 {
     if(!isNetworkRunning()) return;
 
-    EventsWrapper events;
-    unsigned long current_frame = getCurrentFrame();
-    EnterCriticalSection(critical_section);
-        events = shared_data->received_events.frame_events[current_frame];
-    LeaveCriticalSection(critical_section);
-
-    m_game_state->eventProcess(events);
+    m_game_state->eventProcess();
 }
 
 void Game::mainLoop()
 {
     double FPS;
-    Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 15;
+    Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 17;
     time1 = SDL_GetTicks();
     while(is_running)
     {
@@ -138,30 +132,34 @@ void Game::mainLoop()
         m_game_state->update(AppConfig::game_speed);
         m_game_state->draw();
 
-        SDL_Delay(delay);
+//        SDL_Delay(delay);
 
         //FPS
+
         fps_time += dt;
         fps_count++;
         if(fps_time > 200)
         {
+//            std::cout << "GAME: FPS: " << AppConfig::fps << " cur " << FPS << " delay: " << delay << " dt: " << dt << std::endl;
+//            long current = getCurrentFrame();
+//            std::cout << "current: " << current << std::endl;
             FPS = (double)fps_count / fps_time * 1000;
-            if(FPS > 60) delay++;
+            if(FPS > AppConfig::fps) delay++;
             else if(delay > 0) delay--;
             fps_time = 0; fps_count = 0;
         }
 
-        NetworkState state;
-        EnterCriticalSection(critical_section);
-            shared_data->incrementFrameNumber();
-            state = shared_data->network_state;
-        LeaveCriticalSection(critical_section);
+//        NetworkState state;
+//        EnterCriticalSection(critical_section);
+//            shared_data->incrementFrameNumber();
+//            state = shared_data->network_state;
+//        LeaveCriticalSection(critical_section);
 
 //        if(state != NetworkState::NONE)
 //        {
 //            std::cout << "Current frame: " << getCurrentFrame() << std::endl;
 //        }
-        Sleep( 0 ); // reszta czasu dla drugiego wątku
+        Sleep(delay); // reszta czasu dla drugiego wątku
     }
 }
 

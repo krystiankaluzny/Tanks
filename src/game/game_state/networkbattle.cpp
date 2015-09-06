@@ -376,13 +376,19 @@ void NetworkBattle::update(Uint32 dt)
     }
 }
 
-void NetworkBattle::eventProcess(EventsWrapper &ev)
+void NetworkBattle::eventProcess()
 {
     SOCKET player_socket;
-    std::vector<Event*> events = ev.events;
-
-    for(Event* e : events)
+    bool is_empty = true;
+    Event* e = nullptr;
+    EnterCriticalSection(parent->critical_section);
+        is_empty = parent->shared_data->received_events_queue.empty();
+    LeaveCriticalSection(parent->critical_section);
+    while(!is_empty)
     {
+        EnterCriticalSection(parent->critical_section);
+            e = parent->shared_data->received_events_queue.pop();
+        LeaveCriticalSection(parent->critical_section);
         switch (e->type)
         {
         case EventType::GENERATE_EVENT_TYPE:
@@ -493,7 +499,6 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
         }
         case EventType::POSITION_TYPE:
         {
-            std::cout << "Pos type " << std::endl;
 
             PositionEvent* pos = (PositionEvent*)e;
             switch(pos->obj)
@@ -501,15 +506,12 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
                 case PositionEvent::PosObj::TANK:
                 {
                     bool found = false;
-                    std::cout << "dupa" << std::endl;
                     for(Player* p : m_players)
                     {
                         if(p->object_id == pos->obj_id.l_value)
                         {
-                            cout << "P Before" << " posX: " << p->pos_x << " posY: " << p->pos_y << endl;
-                            p->pos_x = pos->pos_x.d_value + 20;
-                            p->pos_y = pos->pos_y.d_value + 50;
-                            cout << "P After" << " posX: " << p->pos_x << " posY: " << p->pos_y << endl;
+                            p->pos_x = pos->pos_x.d_value;
+                            p->pos_y = pos->pos_y.d_value;
                             found = true;
                             break;
                         }
@@ -521,19 +523,16 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
                         {
                             if(e->object_id == pos->obj_id.l_value)
                             {
-                                cout << "E Before" << " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
                                 e->pos_x = pos->pos_x.d_value;
-                                e->pos_y = pos->pos_y.d_value + 23;
-                                cout << "E After" << " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
+                                e->pos_y = pos->pos_y.d_value;
                                 found = true;
                                 break;
                             }
                         }
                     }
-                    if(found)
-                        std::cout << "Pos type found" << std::endl;
-                    else
+                    if(!found)
                         std::cout << "Pos type NOT found" << std::endl;
+
                     break;
                 }
             default:
@@ -541,10 +540,18 @@ void NetworkBattle::eventProcess(EventsWrapper &ev)
             }
             break;
         }
+        case EventType::SPEED_CHANGE_TYPE:
+        {
+            break;
+        }
         default:
             cout << "Nieznany event" << std::endl;
             break;
         }
+
+        EnterCriticalSection(parent->critical_section);
+            is_empty = parent->shared_data->received_events_queue.empty();
+        LeaveCriticalSection(parent->critical_section);
     }
 }
 
@@ -576,7 +583,7 @@ void NetworkBattle::eventProcess(SDL_Event *ev)
             pause->id_tank.l_value = 0;
 
             EnterCriticalSection(parent->critical_section);
-                parent->shared_data->newEvent(pause);
+                parent->shared_data->transmit_events.addEvent(pause);
             LeaveCriticalSection(parent->critical_section);
 
             break;
@@ -1086,7 +1093,7 @@ void NetworkBattle::createSeeds()
 //    cout << "Seeds " << gen_rand->seed1.l_value << " " << gen_rand->seed2.l_value << " " << gen_rand->seed3.l_value << std::endl;
 
     EnterCriticalSection(parent->critical_section);
-        parent->shared_data->newEvent(gen_rand);
+        parent->shared_data->transmit_events.addEvent(gen_rand);
     LeaveCriticalSection(parent->critical_section);
 }
 

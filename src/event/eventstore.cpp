@@ -1,4 +1,7 @@
 #include "eventstore.h"
+#include "../shareddata.h"
+#include "../appconfig.h"
+
 #include <algorithm>
 
 ReceivedEvents::ReceivedEvents()
@@ -39,7 +42,6 @@ void ReceivedEvents::addEvent(Event *event)
 //    printEvent(event);
     if(event->frame_number.l_value <= current_frame)
     {
-        std::cout << "Za pozno: event frame:" << event->frame_number.l_value << " current frame: " << current_frame << std::endl;
         return;
     }
 

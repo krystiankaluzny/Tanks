@@ -142,6 +142,10 @@ public:
      * Czas co jaki są pobierane nazwy graczy w trybie czekania na grę.
      */
     static unsigned send_players_names_time;
+
+    static unsigned sending_events_offset;
+
+    static unsigned fps;
 };
 
 #endif // APPCONFIG_H

@@ -116,9 +116,12 @@ void ClientTCP::sendData()
     for(Event* e : transmit_events)
     {
         buf = e->getByteArray();
-//        std::cout << "CLIENT send " << current << std::endl;
-//        printHex(buf, e->bufferSize());
         send(sockets[0], buf , e->bufferSize(), 0);
+
+        EnterCriticalSection(parent->critical_section);
+            parent->shared_data->received_events_queue.push(e);
+        LeaveCriticalSection(parent->critical_section);
+
         delete[] buf;
     }
 

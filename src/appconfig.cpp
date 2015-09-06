@@ -53,4 +53,6 @@ bool AppConfig::show_enemy_target = false;
 Uint32 AppConfig::game_speed = 15;
 unsigned AppConfig::get_players_names_time = 500;
 unsigned AppConfig::send_players_names_time = 700;
+unsigned AppConfig::sending_events_offset = 3;
+unsigned AppConfig::fps = 60;
 

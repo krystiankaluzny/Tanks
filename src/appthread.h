@@ -26,12 +26,12 @@ public:
      * Zapisanie eventu do kolejki, która ma zostać wysłana na server.
      * @param event
      */
-    void saveEvent(Event* event);
+//    void saveEvent(Event* event);
 
     /**
      * Ustawienie flagi wysłania eventów na server.
      */
-    void sendEventQueue();
+//    void sendEventQueue();
     /**
      * Czy gra jest w sieci.
      * @return
@@ -68,16 +68,18 @@ public:
         return player_id;
     }
 
-    void sendObjectPosition(Object* obj, PositionEvent::PosObj obj_type)
+    void sendObjectPosition(Object* obj, PositionEvent::PosObj obj_type, bool fast = false)
     {
         PositionEvent* pos = new PositionEvent;
-        pos->frame_number.l_value = getCurrentFrame() + pos->priority;
-        pos->obj = obj_type;
+        pos->frame_number.l_value = getCurrentFrame() + (fast ? 1 : pos->priority);
+        pos->obj = PositionEvent::PosObj::TANK; //obj_type;
+        pos->obj_id.l_value = obj->object_id;
         pos->pos_x.d_value = obj->pos_x;
         pos->pos_y.d_value = obj->pos_y;
-        EnterCriticalSection(critical_section);
-            shared_data->newEvent(pos);
-        LeaveCriticalSection(critical_section);
+
+            EnterCriticalSection(critical_section);
+                shared_data->transmit_events.addEvent(pos);
+            LeaveCriticalSection(critical_section);
     }
 };
 
