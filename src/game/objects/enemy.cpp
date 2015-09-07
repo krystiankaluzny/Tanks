@@ -123,6 +123,7 @@ void Enemy::update(Uint32 dt)
     m_fire_time += dt;
     if(m_direction_time > m_keep_direction_time)
     {
+//        cout << "Enemy Obj id: " << object_id << endl;
         m_direction_time = 0;
         m_keep_direction_time = rand() % 800 + 100;
 
@@ -171,22 +172,12 @@ void Enemy::update(Uint32 dt)
         }
     }
 
-    if(parent == nullptr) return;
-
-    if(parent != nullptr && key_event != nullptr)
+    if(m_speed_time > m_try_to_go_time)
     {
-        EnterCriticalSection(parent->critical_section);
-            parent->shared_data->transmit_events.addEvent(key_event);
-        LeaveCriticalSection(parent->critical_section);
+        m_speed_time = 0;
+        m_try_to_go_time = 300;
+        speed = default_speed;
     }
-
-//    if(m_speed_time > m_try_to_go_time)
-//    {
-//        m_speed_time = 0;
-//        m_try_to_go_time = rand() % 300;
-//        speed = default_speed;
-//    }
-//    std::cout << "Enemy::update 6" << std::endl;
 
     if(m_fire_time > m_reload_time)
     {
@@ -301,7 +292,15 @@ void Enemy::update(Uint32 dt)
     }
 
     stop = false;
-//    std::cout << "Enemy::update END" << std::endl;
+
+    if(parent == nullptr) return;
+
+    if(parent != nullptr && key_event != nullptr)
+    {
+        EnterCriticalSection(parent->critical_section);
+            parent->shared_data->transmit_events.addEvent(key_event);
+        LeaveCriticalSection(parent->critical_section);
+    }
 }
 
 void Enemy::destroy()

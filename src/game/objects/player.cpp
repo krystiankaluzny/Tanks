@@ -59,11 +59,6 @@ void Player::update(Uint32 dt)
         }
 
         KeyEvent* key_event = nullptr;
-//        if(move_next)
-//        {
-//            setDirection(next_direction);
-//            speed = default_speed;
-//        }
 
         if(key_state[player_keys.up])
         {
@@ -143,9 +138,6 @@ void Player::update(Uint32 dt)
         }
     }
 
-//    Tank::update(dt);
-
-    move_next = false;
 
     m_fire_time += dt;
 

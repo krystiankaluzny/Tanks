@@ -223,7 +223,7 @@ void NetworkBattle::update(Uint32 dt)
 
         //Sprawdzenie kolizji czołgów z poziomem
         for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
-        for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
+//        for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
 
         //nadanie celów przeciwników
         int min_metric; // 2 * 26 * 16
@@ -443,6 +443,7 @@ void NetworkBattle::eventProcess()
             key_num++;
 //            cout << "KEY_EVENT_TYPE frame: " << parent->getCurrentFrame() << " Key num: " << key_num << std::endl;
             KeyEvent* key =(KeyEvent*)e;
+//            cout << "key obj id: " << key->id_tank.l_value << endl;
 //            cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << m_players.at(0)->pos_x << " posY: " << m_players.at(0)->pos_y << endl;
             switch(key->key_type)
             {
@@ -453,12 +454,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
-                        p->move_next = true;
-//                        p->next_direction = D_UP;
                         p->setDirection(D_UP);
+                        p->stop = false;
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
+                        p->stop = true;
                         found = true;
                         break;
                     }
@@ -469,15 +470,22 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_UP);
                             e->speed = e->default_speed;
                             e->stop = false;
+//                            cout << "Enemy before: "<< " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
                             e->move();
+//                            cout << "Enemy after: "<< " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
+                            found = true;
                             break;
                         }
                     }
+                }
+                if(!found)
+                {
+                    cout << "NIE znaleziono obiektu UP!!!!" << endl;
                 }
                 break;
             }
@@ -488,12 +496,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
-                        p->move_next = true;
-//                        p->next_direction = D_DOWN;
                         p->setDirection(D_DOWN);
+                        p->stop = false;
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
+                        p->stop = true;
                         found = true;
                         break;
                     }
@@ -504,15 +512,20 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_DOWN);
                             e->speed = e->default_speed;
                             e->stop = false;
                             e->move();
+                            found = true;
                             break;
                         }
                     }
+                }
+                if(!found)
+                {
+                    cout << "NIE znaleziono obiektu DOWN!!!!" << endl;
                 }
                 break;
             }
@@ -523,12 +536,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
-                        p->move_next = true;
-//                        p->next_direction = D_LEFT;
                         p->setDirection(D_LEFT);
+                        p->stop = false;
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
+                        p->stop = true;
                         found = true;
                         break;
                     }
@@ -539,14 +552,19 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_LEFT);
                             e->speed = e->default_speed;
                             e->move();
+                            found = true;
                             break;
                         }
                     }
+                }
+                if(!found)
+                {
+                    cout << "NIE znaleziono obiektu LEFT!!!!" << endl;
                 }
                 break;
             }
@@ -557,12 +575,12 @@ void NetworkBattle::eventProcess()
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
-                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
-                        p->move_next = true;
-//                        p->next_direction = D_RIGHT;
                         p->setDirection(D_RIGHT);
+                        p->stop = false;
+                        checkCollisionTankWithLevel(p, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
+                        p->stop = true;
                         found = true;
                         break;
                     }
@@ -573,15 +591,20 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_RIGHT);
                             e->speed = e->default_speed;
                             e->stop = false;
                             e->move();
+                            found = true;
                             break;
                         }
                     }
+                }
+                if(!found)
+                {
+                    cout << "NIE znaleziono obiektu RIGHT!!!!" << endl;
                 }
                 break;
             }
@@ -604,9 +627,14 @@ void NetworkBattle::eventProcess()
                         if(e->object_id == key->id_tank.l_value)
                         {
                             e->fire();
+                            found = true;
                             break;
                         }
                     }
+                }
+                if(!found)
+                {
+                    cout << "NIE znaleziono obiektu FIRE!!!!" << endl;
                 }
                 break;
             }
@@ -793,7 +821,20 @@ bool NetworkBattle::finished() const
 
 GameState* NetworkBattle::nextState()
 {
-    if(m_game_over || m_enemy_to_kill <= 0)
+    if(m_enemy_to_kill <= 0)
+    {
+        m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){m_killed_players.push_back(p); return true;}), m_players.end());
+        for(auto player : m_killed_players)
+        {
+            player->to_erase = false;
+            if(player->lives_count == 0 && !m_game_over) player->lives_count = 2;
+            else player->lives_count++;
+            player->respawn();
+            player->setFlag(TSF_MENU);
+        }
+        return new NetworkBattle(parent, m_killed_players, m_current_level);
+    }
+    else if(m_game_over)
     {
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){m_killed_players.push_back(p); return true;}), m_players.end());
         Scores* scores = new Scores(parent, m_killed_players, m_current_level, m_game_over);

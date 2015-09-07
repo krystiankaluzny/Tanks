@@ -227,7 +227,7 @@ void ServerTCP::broadcast(char *buf, int size)
     for(int i = 1; i < sockets.size(); i++)
     {
 
-        cout << " Type send " << (int)buf[0] << endl;
+//        cout << " Type send " << (int)buf[0] << endl;
         send(sockets[i], buf , size, 0);
         send_counter++;
     }

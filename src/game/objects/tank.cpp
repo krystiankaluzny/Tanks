@@ -70,10 +70,10 @@ void Tank::update(Uint32 dt)
              state = parent->shared_data->network_state;
         LeaveCriticalSection(parent->critical_section);
     }
-    if(state == NetworkState::NONE)
-    {
-        move();
-    }
+    move();
+//    if(state == NetworkState::NONE)
+//    {
+//    }
 
     if(testFlag(TSF_ON_ICE) && m_slip_time > 0)
     {
@@ -366,9 +366,10 @@ void Tank::move()
     double dt = AppConfig::game_speed;
     if(testFlag(TSF_LIFE))
     {
+//        std::cout << "move stop " << stop << std::endl;
         if(!stop && !testFlag(TSF_FROZEN))
         {
-            std::cout << " stop " << speed << std::endl;
+//            std::cout << "speed " << speed << std::endl;
 
             switch (direction)
             {

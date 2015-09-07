@@ -112,7 +112,7 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
 
 //                if(event->type == EventType::POSITION_TYPE)
 //                {
-                    std::cout << "type: " << (int)event->type << std::endl;
+//                    std::cout << "type: " << (int)event->type << std::endl;
 //                    printHex(buffer, event->bufferSize());
 //                }
 
