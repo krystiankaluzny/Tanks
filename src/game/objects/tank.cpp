@@ -260,7 +260,7 @@ void Tank::setDirection(Direction d)
             LeaveCriticalSection(parent->critical_section);
         }
 
-        if(object_id == parent->getPlayerId() && state != NetworkState::NONE)
+        if(state != NetworkState::NONE && object_id == parent->getPlayerId())
         {
             parent->sendObjectPosition(this, PositionEvent::PosObj::TANK);
         }

@@ -146,7 +146,7 @@ void ServerTCP::sendData()
 
         delete[] buf;
 
-        std::cout << "send_counter: " << (int)send_counter << std::endl;
+//        std::cout << "send_counter: " << (int)send_counter << std::endl;
     }
     //czyszczenie
     EnterCriticalSection(parent->critical_section);

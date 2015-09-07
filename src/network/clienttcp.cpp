@@ -118,7 +118,7 @@ void ClientTCP::sendData()
         buf = e->getByteArray();
         send(sockets[0], buf , e->bufferSize(), 0);
         send_counter++;
-        std::cout << "send_counter: " << (int)send_counter << std::endl;
+//        std::cout << "send_counter: " << (int)send_counter << std::endl;
 
         EnterCriticalSection(parent->critical_section);
             parent->shared_data->received_events_queue.push(e);

@@ -129,7 +129,7 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
         }
     }while(index < size);
 
-    std::cout << "read_counter: " << (int)read_counter << std::endl;
+//    std::cout << "read_counter: " << (int)read_counter << std::endl;
 }
 
 void TCPConnection::getLongData(LongData &event_index, LongData &events_count, char *buffer)

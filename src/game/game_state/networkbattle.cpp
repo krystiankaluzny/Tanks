@@ -399,23 +399,23 @@ void NetworkBattle::eventProcess()
             GenerateEvent* gen = (GenerateEvent*)e;
             if(gen->obj_type == GenerateEvent::ObjType::ENEMY)
             {
-                std::cout << "START CREATE Enemy" << std::endl;
-                Enemy* enemy = new Enemy(gen->pos_x.d_value, gen->pos_y.d_value, ST_TANK_A
-                                         /*static_cast<SpriteType>(gen->spec_type)*/);
-                std::cout << "START CREATE Enemy 2" << std::endl;
+//                std::cout << "START CREATE Enemy" << std::endl;
+                Enemy* enemy = new Enemy(gen->pos_x.d_value, gen->pos_y.d_value, /*ST_TANK_A*/
+                                         static_cast<SpriteType>(gen->spec_type));
+//                std::cout << "START CREATE Enemy 2" << std::endl;
                 enemy->setParent(parent);
-                std::cout << "START CREATE Enemy 3" << std::endl;
+//                std::cout << "START CREATE Enemy 3" << std::endl;
                 enemy->lives_count = gen->lives.l_value;
-                std::cout << "START CREATE Enemy 4" << std::endl;
+//                std::cout << "START CREATE Enemy 4" << std::endl;
                 if(gen->bonus == GenerateEvent::Bonus::YES)
                 {
                     enemy->setFlag(TSF_BONUS);
                 }
-                std::cout << "START CREATE Enemy 5" << std::endl;
+//                std::cout << "START CREATE Enemy 5" << std::endl;
                 enemy->object_id = gen->obj_id.l_value;
-                std::cout << "START CREATE Enemy 6" << std::endl;
+//                std::cout << "START CREATE Enemy 6" << std::endl;
                 m_enemies.push_back(enemy);
-                std::cout << "START CREATE Enemy" << std::endl;
+//                std::cout << "START CREATE Enemy" << std::endl;
             }
             else
             {
@@ -455,7 +455,7 @@ void NetworkBattle::eventProcess()
             {
             case KeyEvent::KeyType::UP:
             {
-
+                bool found = false;
                 for(Player* p : m_players)
                 {
                     if(p->object_id == key->id_tank.l_value)
@@ -466,13 +466,30 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_UP);
                         p->speed = p->default_speed;
                         p->move();
+                        found = true;
                         break;
+                    }
+                }
+                if(!found)
+                {
+                    for(Enemy* e : m_enemies)
+                    {
+                        if(e->object_id == key->id_tank.l_value)
+                        {
+                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+                            //                        p->next_direction = D_UP;
+                            e->setDirection(D_UP);
+                            e->speed = e->default_speed;
+                            e->move();
+                            break;
+                        }
                     }
                 }
                 break;
             }
             case KeyEvent::KeyType::DOWN:
             {
+                bool found = false;
                 for(Player* p : m_players)
                 {
                     if(p->object_id == key->id_tank.l_value)
@@ -483,13 +500,30 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_DOWN);
                         p->speed = p->default_speed;
                         p->move();
+                        found = true;
                         break;
+                    }
+                }
+                if(!found)
+                {
+                    for(Enemy* e : m_enemies)
+                    {
+                        if(e->object_id == key->id_tank.l_value)
+                        {
+                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+                            //                        p->next_direction = D_UP;
+                            e->setDirection(D_DOWN);
+                            e->speed = e->default_speed;
+                            e->move();
+                            break;
+                        }
                     }
                 }
                 break;
             }
             case KeyEvent::KeyType::LEFT:
             {
+                bool found = false;
                 for(Player* p : m_players)
                 {
                     if(p->object_id == key->id_tank.l_value)
@@ -500,13 +534,30 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_LEFT);
                         p->speed = p->default_speed;
                         p->move();
+                        found = true;
                         break;
+                    }
+                }
+                if(!found)
+                {
+                    for(Enemy* e : m_enemies)
+                    {
+                        if(e->object_id == key->id_tank.l_value)
+                        {
+                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+                            //                        p->next_direction = D_UP;
+                            e->setDirection(D_LEFT);
+                            e->speed = e->default_speed;
+                            e->move();
+                            break;
+                        }
                     }
                 }
                 break;
             }
             case KeyEvent::KeyType::RIGHT:
             {
+                bool found = false;
                 for(Player* p : m_players)
                 {
                     if(p->object_id == key->id_tank.l_value)
@@ -517,19 +568,48 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_RIGHT);
                         p->speed = p->default_speed;
                         p->move();
+                        found = true;
                         break;
+                    }
+                }
+                if(!found)
+                {
+                    for(Enemy* e : m_enemies)
+                    {
+                        if(e->object_id == key->id_tank.l_value)
+                        {
+                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
+                            //                        p->next_direction = D_UP;
+                            e->setDirection(D_RIGHT);
+                            e->speed = e->default_speed;
+                            e->move();
+                            break;
+                        }
                     }
                 }
                 break;
             }
             case KeyEvent::KeyType::FIRE:
             {
+                bool found = false;
                 for(Player* p : m_players)
                 {
                     if(p->object_id == key->id_tank.l_value)
                     {
                         p->fire();
+                        found = true;
                         break;
+                    }
+                }
+                if(!found)
+                {
+                    for(Enemy* e : m_enemies)
+                    {
+                        if(e->object_id == key->id_tank.l_value)
+                        {
+                            e->fire();
+                            break;
+                        }
                     }
                 }
                 break;
@@ -1214,6 +1294,7 @@ void NetworkBattle::generateEnemy()
         float p = static_cast<float>(rand()) / RAND_MAX;
         SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_level + 0.09265) ? ST_TANK_D : rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A);
         Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(m_enemy_respown_position).x, AppConfig::enemy_starting_point.at(m_enemy_respown_position).y, type);
+        e->setParent(parent);
         m_enemy_respown_position++;
         if(m_enemy_respown_position >= AppConfig::enemy_starting_point.size()) m_enemy_respown_position = 0;
 
@@ -1244,7 +1325,6 @@ void NetworkBattle::generateEnemy()
     }
     else
     {
-        std::cout << "START GEN Enemy" << std::endl;
         GenerateEvent* gen_ev = new GenerateEvent;
         float p = static_cast<float>(rand()) / RAND_MAX;
         gen_ev->spec_type = static_cast<GenerateEvent::SpecType>(p < (0.00735 * m_current_level + 0.09265) ?
@@ -1291,8 +1371,6 @@ void NetworkBattle::generateEnemy()
         EnterCriticalSection(parent->critical_section);
             parent->shared_data->transmit_events.addEvent(gen_ev);
         LeaveCriticalSection(parent->critical_section);
-
-        std::cout << "STOP GEN Enemy" << std::endl;
     }
 
 }

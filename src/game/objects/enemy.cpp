@@ -118,15 +118,6 @@ void Enemy::update(Uint32 dt)
 
     KeyEvent* key_event = nullptr;
 
-    if(state == NetworkState::NONE)
-    {
-        setDirection(D_RIGHT);
-    }
-    else
-    {
-        key_event = new_key(KeyEvent::KeyType::RIGHT);
-    }
-
     m_direction_time += dt;
     m_speed_time += dt;
     m_fire_time += dt;
@@ -152,7 +143,6 @@ void Enemy::update(Uint32 dt)
                 }
                 else
                 {
-                    key_event = new_key(KeyEvent::KeyType::RIGHT);
                     key_event = new_key(p < 0.7 ? (dx < 0 ? KeyEvent::KeyType::LEFT : KeyEvent::KeyType::RIGHT) : (dy < 0 ? KeyEvent::KeyType::UP : KeyEvent::KeyType::DOWN));
                 }
             }
@@ -164,7 +154,6 @@ void Enemy::update(Uint32 dt)
                 }
                 else
                 {
-                    key_event = new_key(KeyEvent::KeyType::RIGHT);
                     key_event = new_key(p < 0.7 ? (dy < 0 ? KeyEvent::KeyType::UP : KeyEvent::KeyType::DOWN) : (dx < 0 ? KeyEvent::KeyType::LEFT : KeyEvent::KeyType::RIGHT));
                 }
             }
@@ -182,9 +171,10 @@ void Enemy::update(Uint32 dt)
         }
     }
 
-    if(key_event != nullptr)
+    if(parent == nullptr) return;
+
+    if(parent != nullptr && key_event != nullptr)
     {
-        std::cout << "key_event != nullptr "<< std::endl;
         EnterCriticalSection(parent->critical_section);
             parent->shared_data->transmit_events.addEvent(key_event);
         LeaveCriticalSection(parent->critical_section);
@@ -196,6 +186,7 @@ void Enemy::update(Uint32 dt)
 //        m_try_to_go_time = rand() % 300;
 //        speed = default_speed;
 //    }
+//    std::cout << "Enemy::update 6" << std::endl;
 
     if(m_fire_time > m_reload_time)
     {
@@ -310,6 +301,7 @@ void Enemy::update(Uint32 dt)
     }
 
     stop = false;
+//    std::cout << "Enemy::update END" << std::endl;
 }
 
 void Enemy::destroy()
