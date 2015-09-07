@@ -368,10 +368,8 @@ void Tank::move()
     {
         if(!stop && !testFlag(TSF_FROZEN))
         {
-            if(speed != 0.0 && parent != nullptr)
-            {
-//                cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << pos_x << " posY: " << pos_y << " speed: " << speed << " dt: " << dt << endl;
-            }
+            std::cout << " stop " << speed << std::endl;
+
             switch (direction)
             {
             case D_UP:

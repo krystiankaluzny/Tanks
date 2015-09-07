@@ -399,23 +399,16 @@ void NetworkBattle::eventProcess()
             GenerateEvent* gen = (GenerateEvent*)e;
             if(gen->obj_type == GenerateEvent::ObjType::ENEMY)
             {
-//                std::cout << "START CREATE Enemy" << std::endl;
                 Enemy* enemy = new Enemy(gen->pos_x.d_value, gen->pos_y.d_value, /*ST_TANK_A*/
                                          static_cast<SpriteType>(gen->spec_type));
-//                std::cout << "START CREATE Enemy 2" << std::endl;
                 enemy->setParent(parent);
-//                std::cout << "START CREATE Enemy 3" << std::endl;
                 enemy->lives_count = gen->lives.l_value;
-//                std::cout << "START CREATE Enemy 4" << std::endl;
                 if(gen->bonus == GenerateEvent::Bonus::YES)
                 {
                     enemy->setFlag(TSF_BONUS);
                 }
-//                std::cout << "START CREATE Enemy 5" << std::endl;
                 enemy->object_id = gen->obj_id.l_value;
-//                std::cout << "START CREATE Enemy 6" << std::endl;
                 m_enemies.push_back(enemy);
-//                std::cout << "START CREATE Enemy" << std::endl;
             }
             else
             {
@@ -480,6 +473,7 @@ void NetworkBattle::eventProcess()
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_UP);
                             e->speed = e->default_speed;
+                            e->stop = false;
                             e->move();
                             break;
                         }
@@ -514,6 +508,7 @@ void NetworkBattle::eventProcess()
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_DOWN);
                             e->speed = e->default_speed;
+                            e->stop = false;
                             e->move();
                             break;
                         }
@@ -582,6 +577,7 @@ void NetworkBattle::eventProcess()
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_RIGHT);
                             e->speed = e->default_speed;
+                            e->stop = false;
                             e->move();
                             break;
                         }
@@ -1387,7 +1383,7 @@ void NetworkBattle::generateBonus()
 
     if(state == NetworkState::CLIENT_INITIALIZED) return;
 
-    Object* b = new Object(0, 0, SpriteType::ST_BONUS_BOAT);
+    Bonus* b = new Bonus(0, 0, static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
     SDL_Rect intersect_rect;
     do
     {
@@ -1397,7 +1393,12 @@ void NetworkBattle::generateBonus()
         intersect_rect = intersectRect(&b->collision_rect, &m_eagle->collision_rect);
     }while(intersect_rect.w > 0 && intersect_rect.h > 0);
 
-//    m_bonuses.push_back(b);
+
+    if(state == NetworkState::NONE)
+    {
+        m_bonuses.push_back(b);
+        return;
+    }
 
     GenerateEvent* gen_ev = new GenerateEvent;
     gen_ev->pos_x.d_value = b->pos_x;
