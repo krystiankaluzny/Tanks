@@ -1,5 +1,8 @@
 #include "enemy.h"
 #include "../../appconfig.h"
+#include "../../event/event.h"
+#include "../../appthread.h"
+
 #include <stdlib.h>
 #include <ctime>
 #include <iostream>
@@ -80,9 +83,6 @@ void Enemy::draw()
 
 void Enemy::update(Uint32 dt)
 {
-    //TODO usunąć
-    return;
-
     if(to_erase) return;
     Tank::update(dt);
 
@@ -97,6 +97,35 @@ void Enemy::update(Uint32 dt)
         src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
 
     if(testFlag(TSF_FROZEN)) return;
+
+    NetworkState state = NetworkState::NONE;
+    if(parent != nullptr)
+    {
+        EnterCriticalSection(parent->critical_section);
+             state = parent->shared_data->network_state;
+        LeaveCriticalSection(parent->critical_section);
+    }
+
+    if(state == NetworkState::CLIENT_INITIALIZED) return;
+
+    auto new_key = [&](KeyEvent::KeyType key_type)->KeyEvent*
+    {
+        KeyEvent* key = new KeyEvent;
+        key->key_type = key_type;
+        key->id_tank.l_value = object_id;
+        return key;
+    };
+
+    KeyEvent* key_event = nullptr;
+
+    if(state == NetworkState::NONE)
+    {
+        setDirection(D_RIGHT);
+    }
+    else
+    {
+        key_event = new_key(KeyEvent::KeyType::RIGHT);
+    }
 
     m_direction_time += dt;
     m_speed_time += dt;
@@ -116,19 +145,58 @@ void Enemy::update(Uint32 dt)
             p = static_cast<float>(rand()) / RAND_MAX;
 
             if(abs(dx) > abs(dy))
-                setDirection(p < 0.7 ? (dx < 0 ? D_LEFT : D_RIGHT) : (dy < 0 ? D_UP : D_DOWN));
+            {
+                if(state == NetworkState::NONE)
+                {
+                    setDirection(p < 0.7 ? (dx < 0 ? D_LEFT : D_RIGHT) : (dy < 0 ? D_UP : D_DOWN));
+                }
+                else
+                {
+                    key_event = new_key(KeyEvent::KeyType::RIGHT);
+                    key_event = new_key(p < 0.7 ? (dx < 0 ? KeyEvent::KeyType::LEFT : KeyEvent::KeyType::RIGHT) : (dy < 0 ? KeyEvent::KeyType::UP : KeyEvent::KeyType::DOWN));
+                }
+            }
             else
-                setDirection(p < 0.7 ? (dy < 0 ? D_UP : D_DOWN) : (dx < 0 ? D_LEFT : D_RIGHT));
+            {
+                if(state == NetworkState::NONE)
+                {
+                    setDirection(p < 0.7 ? (dy < 0 ? D_UP : D_DOWN) : (dx < 0 ? D_LEFT : D_RIGHT));
+                }
+                else
+                {
+                    key_event = new_key(KeyEvent::KeyType::RIGHT);
+                    key_event = new_key(p < 0.7 ? (dy < 0 ? KeyEvent::KeyType::UP : KeyEvent::KeyType::DOWN) : (dx < 0 ? KeyEvent::KeyType::LEFT : KeyEvent::KeyType::RIGHT));
+                }
+            }
         }
         else
-            setDirection(static_cast<Direction>(rand() % 4));
+        {
+            if(state == NetworkState::NONE)
+            {
+                setDirection(static_cast<Direction>(rand() % 4));
+            }
+            else
+            {
+                key_event = new_key(static_cast<KeyEvent::KeyType>(rand() % 4));
+            }
+        }
     }
-    if(m_speed_time > m_try_to_go_time)
+
+    if(key_event != nullptr)
     {
-        m_speed_time = 0;
-        m_try_to_go_time = rand() % 300;
-        speed = default_speed;
+        std::cout << "key_event != nullptr "<< std::endl;
+        EnterCriticalSection(parent->critical_section);
+            parent->shared_data->transmit_events.addEvent(key_event);
+        LeaveCriticalSection(parent->critical_section);
     }
+
+//    if(m_speed_time > m_try_to_go_time)
+//    {
+//        m_speed_time = 0;
+//        m_try_to_go_time = rand() % 300;
+//        speed = default_speed;
+//    }
+
     if(m_fire_time > m_reload_time)
     {
         m_fire_time = 0;
@@ -143,28 +211,101 @@ void Enemy::update(Uint32 dt)
                 switch (direction)
                 {
                 case D_UP:
-                    if(dy < 0 && abs(dx) < dest_rect.w) fire();
+                    if(dy < 0 && abs(dx) < dest_rect.w)
+                    {
+                        if(state == NetworkState::NONE)
+                        {
+                            fire();
+                        }
+                        else
+                        {
+                            key_event = new_key(KeyEvent::KeyType::FIRE);
+                            EnterCriticalSection(parent->critical_section);
+                                parent->shared_data->transmit_events.addEvent(key_event);
+                            LeaveCriticalSection(parent->critical_section);
+                        }
+                    }
+
                     break;
                 case D_RIGHT:
-                    if(dx > 0 && abs(dy) < dest_rect.h) fire();
+                    if(dx > 0 && abs(dy) < dest_rect.h)
+                    {
+                        if(state == NetworkState::NONE)
+                        {
+                            fire();
+                        }
+                        else
+                        {
+                            key_event = new_key(KeyEvent::KeyType::FIRE);
+                            EnterCriticalSection(parent->critical_section);
+                                parent->shared_data->transmit_events.addEvent(key_event);
+                            LeaveCriticalSection(parent->critical_section);
+                        }
+                    }
                     break;
                 case D_DOWN:
-                    if(dy > 0 && abs(dx) < dest_rect.w) fire();
+                    if(dy > 0 && abs(dx) < dest_rect.w)
+                    {
+                        if(state == NetworkState::NONE)
+                        {
+                            fire();
+                        }
+                        else
+                        {
+                            key_event = new_key(KeyEvent::KeyType::FIRE);
+                            EnterCriticalSection(parent->critical_section);
+                                parent->shared_data->transmit_events.addEvent(key_event);
+                            LeaveCriticalSection(parent->critical_section);
+                        }
+                    }
                     break;
                 case D_LEFT:
-                    if(dx < 0 && abs(dy) < dest_rect.h) fire();
+                    if(dx < 0 && abs(dy) < dest_rect.h)
+                    {
+                        if(state == NetworkState::NONE)
+                        {
+                            fire();
+                        }
+                        else
+                        {
+                            key_event = new_key(KeyEvent::KeyType::FIRE);
+                            EnterCriticalSection(parent->critical_section);
+                                parent->shared_data->transmit_events.addEvent(key_event);
+                            LeaveCriticalSection(parent->critical_section);
+                        }
+                    }
                     break;
                 }
         }
         else if(type == ST_TANK_D)
         {
             m_reload_time = rand() % 800;
-            fire();
+            if(state == NetworkState::NONE)
+            {
+                fire();
+            }
+            else
+            {
+                key_event = new_key(KeyEvent::KeyType::FIRE);
+                EnterCriticalSection(parent->critical_section);
+                    parent->shared_data->transmit_events.addEvent(key_event);
+                LeaveCriticalSection(parent->critical_section);
+            }
         }
         else
         {
             m_reload_time = rand() % 1000;
-            fire();
+            if(state == NetworkState::NONE)
+            {
+                fire();
+            }
+            else
+            {
+                key_event = new_key(KeyEvent::KeyType::FIRE);
+                EnterCriticalSection(parent->critical_section);
+                    parent->shared_data->transmit_events.addEvent(key_event);
+                LeaveCriticalSection(parent->critical_section);
+            }
         }
     }
 

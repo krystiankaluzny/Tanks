@@ -91,7 +91,7 @@ char *KeyEvent::getByteArray()
 
 //================================================
 
-GenerateEvent::GenerateEvent() : Event(GENERATE_EVENT_TYPE, 14)
+GenerateEvent::GenerateEvent() : Event(GENERATE_EVENT_TYPE, 12 + 2 * sizeof(double))
 {
 }
 
@@ -103,22 +103,29 @@ void GenerateEvent::setByteArray(char *buffer)
 //    frame_number.c_value[1] = buffer[index++];
 //    frame_number.c_value[2] = buffer[index++];
 //    frame_number.c_value[3] = buffer[index++];
-    index++;    //no sepc type
 
-    seed1.c_value[0] = buffer[index++];
-    seed1.c_value[1] = buffer[index++];
-    seed1.c_value[2] = buffer[index++];
-    seed1.c_value[3] = buffer[index++];
+    obj_type = static_cast<GenerateEvent::ObjType>(buffer[index++]);
+    spec_type = static_cast<GenerateEvent::SpecType>(buffer[index++]);
+    bonus = static_cast<GenerateEvent::Bonus>(buffer[index++]);
 
-    seed2.c_value[0] = buffer[index++];
-    seed2.c_value[1] = buffer[index++];
-    seed2.c_value[2] = buffer[index++];
-    seed2.c_value[3] = buffer[index++];
+    for(int i = 0; i < 4; i++)
+    {
+        obj_id.c_value[i] = buffer[index++];
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        lives.c_value[i] = buffer[index++];
+    }
 
-    seed3.c_value[0] = buffer[index++];
-    seed3.c_value[1] = buffer[index++];
-    seed3.c_value[2] = buffer[index++];
-    seed3.c_value[3] = buffer[index++];
+    for(int i = 0; i < sizeof(double); i++)
+    {
+        pos_x.c_value[i] = buffer[index++];
+    }
+
+    for(int i = 0; i < sizeof(double); i++)
+    {
+        pos_y.c_value[i] = buffer[index++];
+    }
 }
 
 char *GenerateEvent::getByteArray()
@@ -131,22 +138,28 @@ char *GenerateEvent::getByteArray()
 //    buffer[index++] = frame_number.c_value[2];
 //    buffer[index++] = frame_number.c_value[3];
 
-    buffer[index++] = 0;
+    buffer[index++] = obj_type;
+    buffer[index++] = spec_type;
+    buffer[index++] = bonus;
 
-    buffer[index++] = seed1.c_value[0];
-    buffer[index++] = seed1.c_value[1];
-    buffer[index++] = seed1.c_value[2];
-    buffer[index++] = seed1.c_value[3];
+    for(int i = 0; i < 4; i++)
+    {
+        buffer[index++] = obj_id.c_value[i];
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        buffer[index++] = lives.c_value[i];
+    }
 
-    buffer[index++] = seed2.c_value[0];
-    buffer[index++] = seed2.c_value[1];
-    buffer[index++] = seed2.c_value[2];
-    buffer[index++] = seed2.c_value[3];
+    for(int i = 0; i < sizeof(double); i++)
+    {
+        buffer[index++] = pos_x.c_value[i];
+    }
 
-    buffer[index++] = seed3.c_value[0];
-    buffer[index++] = seed3.c_value[1];
-    buffer[index++] = seed3.c_value[2];
-    buffer[index++] = seed3.c_value[3];
+    for(int i = 0; i < sizeof(double); i++)
+    {
+        buffer[index++] = pos_y.c_value[i];
+    }
 
     return buffer;
 }
@@ -328,8 +341,6 @@ char *StartGameEvent::getByteArray()
 
     return buffer;
 }
-
-
 
 
 PositionEvent::PositionEvent() : Event(POSITION_TYPE, 6 + 2 * sizeof(double), 1)

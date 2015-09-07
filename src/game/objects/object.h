@@ -80,6 +80,7 @@ public:
 
     unsigned long object_id;
 
+    static unsigned long next_object_id;
 protected:
     /**
      * Funkcja zwraca prostokąt przesunięty o wielokrotności rozmiaru prostokąta rect.
@@ -103,7 +104,6 @@ protected:
      */
     int m_current_frame;
 
-    static unsigned long next_object_id;
 
     AppThread* parent;
 };

@@ -397,8 +397,34 @@ void NetworkBattle::eventProcess()
         case EventType::GENERATE_EVENT_TYPE:
         {
             GenerateEvent* gen = (GenerateEvent*)e;
-            random_seed = gen->seed1.l_value;
-            srand(random_seed);
+            if(gen->obj_type == GenerateEvent::ObjType::ENEMY)
+            {
+                std::cout << "START CREATE Enemy" << std::endl;
+                Enemy* enemy = new Enemy(gen->pos_x.d_value, gen->pos_y.d_value, ST_TANK_A
+                                         /*static_cast<SpriteType>(gen->spec_type)*/);
+                std::cout << "START CREATE Enemy 2" << std::endl;
+                enemy->setParent(parent);
+                std::cout << "START CREATE Enemy 3" << std::endl;
+                enemy->lives_count = gen->lives.l_value;
+                std::cout << "START CREATE Enemy 4" << std::endl;
+                if(gen->bonus == GenerateEvent::Bonus::YES)
+                {
+                    enemy->setFlag(TSF_BONUS);
+                }
+                std::cout << "START CREATE Enemy 5" << std::endl;
+                enemy->object_id = gen->obj_id.l_value;
+                std::cout << "START CREATE Enemy 6" << std::endl;
+                m_enemies.push_back(enemy);
+                std::cout << "START CREATE Enemy" << std::endl;
+            }
+            else
+            {
+                Bonus* bonus = new Bonus(gen->pos_x.d_value, gen->pos_y.d_value,
+                                         static_cast<SpriteType>(gen->spec_type - (int)GenerateEvent::SpecType::BONUS_GRANATE + (int) SpriteType::ST_BONUS_GRANATE));
+                bonus->setParent(parent);
+                bonus->object_id = gen->obj_id.l_value;
+                m_bonuses.push_back(bonus);
+            }
             break;
         }
         case EventType::PLAYER_ID_TYPE:
@@ -1103,22 +1129,6 @@ void NetworkBattle::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
     }
 }
 
-void NetworkBattle::createSeeds()
-{
-//    srand(parent->getCurrentFrame());
-    GenerateEvent* gen_rand = new GenerateEvent;
-//    gen_rand->frame_number.l_value = parent->getCurrentFrame() + gen_rand->priority;
-    gen_rand->seed1.l_value = time(0);
-    gen_rand->seed2.l_value = time(0);
-    gen_rand->seed3.l_value = time(0);
-
-//    cout << "Seeds " << gen_rand->seed1.l_value << " " << gen_rand->seed2.l_value << " " << gen_rand->seed3.l_value << std::endl;
-
-    EnterCriticalSection(parent->critical_section);
-        parent->shared_data->transmit_events.addEvent(gen_rand);
-    LeaveCriticalSection(parent->critical_section);
-}
-
 void NetworkBattle::nextLevel()
 {
     m_current_level++;
@@ -1189,41 +1199,117 @@ void NetworkBattle::nextLevel()
 
 void NetworkBattle::generateEnemy()
 {
-    float p = static_cast<float>(rand()) / RAND_MAX;
-    SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_level + 0.09265) ? ST_TANK_D : rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A);
-    Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(m_enemy_respown_position).x, AppConfig::enemy_starting_point.at(m_enemy_respown_position).y, type);
-    m_enemy_respown_position++;
-    if(m_enemy_respown_position >= AppConfig::enemy_starting_point.size()) m_enemy_respown_position = 0;
-
-    double a, b, c;
-    if(m_current_level <= 17)
+    NetworkState state = NetworkState::NONE;
+    if(parent != nullptr)
     {
-        a = -0.040625 * m_current_level + 0.940625;
-        b = -0.028125 * m_current_level + 0.978125;
-        c = -0.014375 * m_current_level + 0.994375;
+        EnterCriticalSection(parent->critical_section);
+             state = parent->shared_data->network_state;
+        LeaveCriticalSection(parent->critical_section);
+    }
+
+    if(state == NetworkState::CLIENT_INITIALIZED) return;
+
+    if(state == NetworkState::NONE)
+    {
+        float p = static_cast<float>(rand()) / RAND_MAX;
+        SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_level + 0.09265) ? ST_TANK_D : rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A);
+        Enemy* e = new Enemy(AppConfig::enemy_starting_point.at(m_enemy_respown_position).x, AppConfig::enemy_starting_point.at(m_enemy_respown_position).y, type);
+        m_enemy_respown_position++;
+        if(m_enemy_respown_position >= AppConfig::enemy_starting_point.size()) m_enemy_respown_position = 0;
+
+        double a, b, c;
+        if(m_current_level <= 17)
+        {
+            a = -0.040625 * m_current_level + 0.940625;
+            b = -0.028125 * m_current_level + 0.978125;
+            c = -0.014375 * m_current_level + 0.994375;
+        }
+        else
+        {
+            a = -0.012778 * m_current_level + 0.467222;
+            b = -0.025000 * m_current_level + 0.925000;
+            c = -0.036111 * m_current_level + 1.363889;
+        }
+
+        p = static_cast<float>(rand()) / RAND_MAX;
+        if(p < a) e->lives_count = 1;
+        else if(p < b) e->lives_count = 2;
+        else if(p < c) e->lives_count = 3;
+        else e->lives_count = 4;
+
+        p = static_cast<float>(rand()) / RAND_MAX;
+        if(p < 0.12) e->setFlag(TSF_BONUS);
+
+        m_enemies.push_back(e);
     }
     else
     {
-        a = -0.012778 * m_current_level + 0.467222;
-        b = -0.025000 * m_current_level + 0.925000;
-        c = -0.036111 * m_current_level + 1.363889;
+        std::cout << "START GEN Enemy" << std::endl;
+        GenerateEvent* gen_ev = new GenerateEvent;
+        float p = static_cast<float>(rand()) / RAND_MAX;
+        gen_ev->spec_type = static_cast<GenerateEvent::SpecType>(p < (0.00735 * m_current_level + 0.09265) ?
+                                                                                GenerateEvent::SpecType::D : rand() % (GenerateEvent::SpecType::C - GenerateEvent::SpecType::A + 1) + GenerateEvent::SpecType::A);
+        gen_ev->pos_x.d_value = AppConfig::enemy_starting_point.at(m_enemy_respown_position).x;
+        gen_ev->pos_y.d_value = AppConfig::enemy_starting_point.at(m_enemy_respown_position).y;
+
+        m_enemy_respown_position++;
+        if(m_enemy_respown_position >= AppConfig::enemy_starting_point.size()) m_enemy_respown_position = 0;
+
+        double a, b, c;
+        if(m_current_level <= 17)
+        {
+            a = -0.040625 * m_current_level + 0.940625;
+            b = -0.028125 * m_current_level + 0.978125;
+            c = -0.014375 * m_current_level + 0.994375;
+        }
+        else
+        {
+            a = -0.012778 * m_current_level + 0.467222;
+            b = -0.025000 * m_current_level + 0.925000;
+            c = -0.036111 * m_current_level + 1.363889;
+        }
+
+        int lives;
+        p = static_cast<float>(rand()) / RAND_MAX;
+        if(p < a) lives = 1;
+        else if(p < b) lives = 2;
+        else if(p < c) lives = 3;
+        else lives = 4;
+
+        gen_ev->lives.l_value = lives;
+
+        p = static_cast<float>(rand()) / RAND_MAX;
+        if(p < 0.12)
+        {
+            gen_ev->bonus = GenerateEvent::Bonus::YES;
+        }
+        else
+        {
+            gen_ev->bonus = GenerateEvent::Bonus::NO;
+        }
+        gen_ev->obj_id.l_value = Object::next_object_id++;
+        EnterCriticalSection(parent->critical_section);
+            parent->shared_data->transmit_events.addEvent(gen_ev);
+        LeaveCriticalSection(parent->critical_section);
+
+        std::cout << "STOP GEN Enemy" << std::endl;
     }
 
-    p = static_cast<float>(rand()) / RAND_MAX;
-    if(p < a) e->lives_count = 1;
-    else if(p < b) e->lives_count = 2;
-    else if(p < c) e->lives_count = 3;
-    else e->lives_count = 4;
-
-    p = static_cast<float>(rand()) / RAND_MAX;
-    if(p < 0.12) e->setFlag(TSF_BONUS);
-
-    m_enemies.push_back(e);
 }
 
 void NetworkBattle::generateBonus()
 {
-    Bonus* b = new Bonus(0, 0, static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
+    NetworkState state = NetworkState::NONE;
+    if(parent != nullptr)
+    {
+        EnterCriticalSection(parent->critical_section);
+             state = parent->shared_data->network_state;
+        LeaveCriticalSection(parent->critical_section);
+    }
+
+    if(state == NetworkState::CLIENT_INITIALIZED) return;
+
+    Object* b = new Object(0, 0, SpriteType::ST_BONUS_BOAT);
     SDL_Rect intersect_rect;
     do
     {
@@ -1233,5 +1319,15 @@ void NetworkBattle::generateBonus()
         intersect_rect = intersectRect(&b->collision_rect, &m_eagle->collision_rect);
     }while(intersect_rect.w > 0 && intersect_rect.h > 0);
 
-    m_bonuses.push_back(b);
+//    m_bonuses.push_back(b);
+
+    GenerateEvent* gen_ev = new GenerateEvent;
+    gen_ev->pos_x.d_value = b->pos_x;
+    gen_ev->pos_y.d_value = b->pos_y;
+    gen_ev->spec_type = static_cast<GenerateEvent::SpecType>(rand() % (GenerateEvent::SpecType::BONUS_BOAT - GenerateEvent::SpecType::BONUS_GRANATE + 1) + GenerateEvent::SpecType::BONUS_GRANATE);
+    gen_ev->obj_id.l_value = Object::next_object_id++;
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->transmit_events.addEvent(gen_ev);
+    LeaveCriticalSection(parent->critical_section);
 }

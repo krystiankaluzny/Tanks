@@ -79,11 +79,38 @@ public:
 class GenerateEvent : public Event
 {
 public:
+    enum ObjType
+    {
+        ENEMY,
+        BONUS
+    };
+    enum SpecType
+    {
+        A, B, C, D,
+        BONUS_GRANATE,
+        BONUS_HELMET,
+        BONUS_CLOCK,
+        BONUS_SHOVEL,
+        BONUS_TANK,
+        BONUS_STAR,
+        BONUS_GUN,
+        BONUS_BOAT,
+    };
+    enum Bonus
+    {
+        YES,
+        NO
+    };
+
     GenerateEvent();
 
-    LongData seed1; //4 byte
-    LongData seed2; //4 byte
-    LongData seed3; //4 byte
+    ObjType obj_type; //1 byte spec
+    SpecType spec_type; // 1 byte spec
+    Bonus bonus; // 1 byte spec
+    LongData obj_id;  //4 byte
+    LongData lives;  //4 byte
+    DoubleData pos_x; //8 byte
+    DoubleData pos_y; //8 byte
 
     void setByteArray(char *buffer);
     char* getByteArray();
