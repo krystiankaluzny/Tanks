@@ -293,8 +293,6 @@ void Enemy::update(Uint32 dt)
 
     stop = false;
 
-    if(parent == nullptr) return;
-
     if(parent != nullptr && key_event != nullptr)
     {
         EnterCriticalSection(parent->critical_section);

@@ -473,10 +473,10 @@ void NetworkBattle::eventProcess()
 //                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_UP);
-                            e->speed = e->default_speed;
-                            e->stop = false;
+//                            e->speed = e->default_speed;
+//                            e->stop = false;
 //                            cout << "Enemy before: "<< " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
-                            e->move();
+//                            e->move();
 //                            cout << "Enemy after: "<< " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
                             found = true;
                             break;
@@ -515,9 +515,9 @@ void NetworkBattle::eventProcess()
 //                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_DOWN);
-                            e->speed = e->default_speed;
-                            e->stop = false;
-                            e->move();
+//                            e->speed = e->default_speed;
+//                            e->stop = false;
+//                            e->move();
                             found = true;
                             break;
                         }
@@ -555,8 +555,8 @@ void NetworkBattle::eventProcess()
 //                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_LEFT);
-                            e->speed = e->default_speed;
-                            e->move();
+//                            e->speed = e->default_speed;
+//                            e->move();
                             found = true;
                             break;
                         }
@@ -594,9 +594,9 @@ void NetworkBattle::eventProcess()
 //                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
                             //                        p->next_direction = D_UP;
                             e->setDirection(D_RIGHT);
-                            e->speed = e->default_speed;
-                            e->stop = false;
-                            e->move();
+//                            e->speed = e->default_speed;
+//                            e->stop = false;
+//                            e->move();
                             found = true;
                             break;
                         }

@@ -133,8 +133,6 @@ void Tank::update(Uint32 dt)
         }
     }
 
-    speed = 0.0;
-
     // Obsługa pocisku
     for(auto bullet : bullets) bullet->update(dt);
     bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet*b){if(b->to_erase) {delete b; return true;} return false;}), bullets.end());
@@ -154,18 +152,18 @@ Bullet* Tank::fire()
         {
         case D_UP:
             bullet->pos_x += (dest_rect.w - bullet->dest_rect.w) / 2;
-            bullet->pos_y -= bullet->dest_rect.h - 4;
+            bullet->pos_y -= bullet->dest_rect.h - 6;
             break;
         case D_RIGHT:
-            bullet->pos_x += dest_rect.w - 4;
+            bullet->pos_x += dest_rect.w - 6;
             bullet->pos_y += (dest_rect.h - bullet->dest_rect.h) / 2;
             break;
         case D_DOWN:
             bullet->pos_x += (dest_rect.w - bullet->dest_rect.w) / 2;
-            bullet->pos_y += dest_rect.h - 4;
+            bullet->pos_y += dest_rect.h - 6;
             break;
         case D_LEFT:
-            bullet->pos_x -= bullet->dest_rect.w - 4;
+            bullet->pos_x -= bullet->dest_rect.w - 6;
             bullet->pos_y += (dest_rect.h - bullet->dest_rect.h) / 2;
             break;
         }
@@ -260,7 +258,7 @@ void Tank::setDirection(Direction d)
             LeaveCriticalSection(parent->critical_section);
         }
 
-        if(state != NetworkState::NONE && object_id == parent->getPlayerId())
+        if((state != NetworkState::NONE && object_id == parent->getPlayerId()) || (state != NetworkState::SERVER && (type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)))
         {
             parent->sendObjectPosition(this, PositionEvent::PosObj::TANK);
         }
@@ -362,14 +360,28 @@ bool Tank::testFlag(TankStateFlag flag)
 
 void Tank::move()
 {
+    if(type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)
+    {
+       cout << "POJEBALO " << object_id << endl;
+    }
+
     if(to_erase) return;
     double dt = AppConfig::game_speed;
     if(testFlag(TSF_LIFE))
     {
 //        std::cout << "move stop " << stop << std::endl;
+        if(type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)
+        {
+           cout << "POJEBALO2 " << object_id << endl;
+        }
         if(!stop && !testFlag(TSF_FROZEN))
         {
-//            std::cout << "speed " << speed << std::endl;
+            if(type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)
+            {
+               cout << "POJEBALO3 " << object_id << endl;
+               std::cout << "speed " << speed << std::endl;
+               speed = default_speed;
+            }
 
             switch (direction)
             {
