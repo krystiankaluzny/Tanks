@@ -46,6 +46,7 @@ SpriteConfig::SpriteConfig()
 
 const SpriteData* SpriteConfig::getSpriteData(SpriteType st) const
 {
+    if(st >= ST_SIZE || st < ST_TANK_A) return &m_configs.at(ST_TANK_A);
     return &m_configs.at(st);
 }
 

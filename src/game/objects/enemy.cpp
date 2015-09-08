@@ -106,7 +106,11 @@ void Enemy::update(Uint32 dt)
         LeaveCriticalSection(parent->critical_section);
     }
 
-    if(state == NetworkState::CLIENT_INITIALIZED) return;
+    if(state == NetworkState::CLIENT_INITIALIZED)
+    {
+        stop = false;
+        return;
+    }
 
     auto new_key = [&](KeyEvent::KeyType key_type)->KeyEvent*
     {

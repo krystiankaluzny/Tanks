@@ -9,7 +9,7 @@ Object::Object()
 {
     pos_x = 0.0;
     pos_y = 0.0;
-    type = ST_NONE;
+    type = ST_SIZE;
     to_erase = false;
     m_sprite = nullptr;
     parent = nullptr;

@@ -258,7 +258,7 @@ void Tank::setDirection(Direction d)
             LeaveCriticalSection(parent->critical_section);
         }
 
-        if((state != NetworkState::NONE && object_id == parent->getPlayerId()) || (state != NetworkState::SERVER && (type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)))
+        if((state != NetworkState::NONE && object_id == parent->getPlayerId()) || (state == NetworkState::SERVER && (type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)))
         {
             parent->sendObjectPosition(this, PositionEvent::PosObj::TANK);
         }
@@ -360,26 +360,17 @@ bool Tank::testFlag(TankStateFlag flag)
 
 void Tank::move()
 {
-    if(type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)
-    {
-       cout << "POJEBALO " << object_id << endl;
-    }
 
     if(to_erase) return;
     double dt = AppConfig::game_speed;
     if(testFlag(TSF_LIFE))
     {
-//        std::cout << "move stop " << stop << std::endl;
-        if(type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)
-        {
-           cout << "POJEBALO2 " << object_id << endl;
-        }
         if(!stop && !testFlag(TSF_FROZEN))
         {
             if(type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)
             {
-               cout << "POJEBALO3 " << object_id << endl;
-               std::cout << "speed " << speed << std::endl;
+//               cout << "POJEBALO3 " << object_id << endl;
+//               std::cout << "speed " << speed << std::endl;
                speed = default_speed;
             }
 
@@ -398,6 +389,10 @@ void Tank::move()
                 pos_x -= speed * dt;
                 break;
             }
+        }
+        else
+        {
+//            cout << "Stop " << object_id << endl;
         }
 
         dest_rect.x = pos_x;

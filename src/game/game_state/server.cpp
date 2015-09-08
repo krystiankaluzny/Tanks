@@ -13,6 +13,11 @@ Server::Server(Game *parent) : GameState(parent)
     m_finished = false;
     m_get_names_time = 0;
     m_send_names_time = 0;
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->player_name.clear();
+    LeaveCriticalSection(parent->critical_section);
+
     setNetworkState(NetworkState::SERVER);
 
     m_menu_texts.push_back("Start Game");

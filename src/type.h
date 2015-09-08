@@ -44,7 +44,7 @@ enum SpriteType
 
     ST_TANKS_LOGO,
 
-    ST_NONE
+    ST_SIZE
 };
 
 enum TankStateFlag

@@ -1096,6 +1096,7 @@ void NetworkBattle::checkCollisionBulletWithLevel(Bullet* bullet)
 
 void NetworkBattle::checkCollisionBulletWithBush(Bullet *bullet)
 {
+    return; //nie sprawdzamy buszu
     if(bullet == nullptr) return;
     if(bullet->collide) return;
     if(!bullet->increased_damage) return;
