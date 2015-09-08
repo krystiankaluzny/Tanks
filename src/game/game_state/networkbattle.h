@@ -65,7 +65,6 @@ public:
      * @param ev - wskaźnik na unię SDL_Event przechowującą typ i parametry różnych zdarzeń, w tym zdarzeń klawiatury
      */
     void eventProcess(SDL_Event *ev);
-
     /**
      * Obsługa eventów, które przyszły przez sieć.
      * @param events
@@ -268,6 +267,18 @@ private:
     int random_seed;
 
     int key_num;
+
+    int m_sending_row;
+
+    int m_sending_level_time;
+
+    int m_sending_tanks_pos_time;
+
+    int m_sending_player_pos_time;
+
+    int m_generate_tank_id;
+
+    int m_generate_bonus_id;
 };
 
 

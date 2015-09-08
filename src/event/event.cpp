@@ -91,11 +91,11 @@ char *KeyEvent::getByteArray()
 
 //================================================
 
-GenerateEvent::GenerateEvent() : Event(GENERATE_EVENT_TYPE, 12 + 2 * sizeof(double))
+GenerateTankEvent::GenerateTankEvent() : Event(GENERATE_TANK_EVENT_TYPE, 19)
 {
 }
 
-void GenerateEvent::setByteArray(char *buffer)
+void GenerateTankEvent::setByteArray(char *buffer)
 {
     int index = 1;
 
@@ -104,9 +104,8 @@ void GenerateEvent::setByteArray(char *buffer)
 //    frame_number.c_value[2] = buffer[index++];
 //    frame_number.c_value[3] = buffer[index++];
 
-    obj_type = static_cast<GenerateEvent::ObjType>(buffer[index++]);
-    spec_type = static_cast<GenerateEvent::SpecType>(buffer[index++]);
-    bonus = static_cast<GenerateEvent::Bonus>(buffer[index++]);
+    tank_type = static_cast<GenerateTankEvent::TankType>(buffer[index++]);
+    bonus = static_cast<GenerateTankEvent::Bonus>(buffer[index++]);
 
     for(int i = 0; i < 4; i++)
     {
@@ -117,18 +116,18 @@ void GenerateEvent::setByteArray(char *buffer)
         lives.c_value[i] = buffer[index++];
     }
 
-    for(int i = 0; i < sizeof(double); i++)
+    for(int i = 0; i < 4; i++)
     {
         pos_x.c_value[i] = buffer[index++];
     }
 
-    for(int i = 0; i < sizeof(double); i++)
+    for(int i = 0; i < 4; i++)
     {
         pos_y.c_value[i] = buffer[index++];
     }
 }
 
-char *GenerateEvent::getByteArray()
+char *GenerateTankEvent::getByteArray()
 {
     char* buffer = new char[event_datagram_size];
     int index = 0;
@@ -138,8 +137,7 @@ char *GenerateEvent::getByteArray()
 //    buffer[index++] = frame_number.c_value[2];
 //    buffer[index++] = frame_number.c_value[3];
 
-    buffer[index++] = obj_type;
-    buffer[index++] = spec_type;
+    buffer[index++] = tank_type;
     buffer[index++] = bonus;
 
     for(int i = 0; i < 4; i++)
@@ -151,19 +149,18 @@ char *GenerateEvent::getByteArray()
         buffer[index++] = lives.c_value[i];
     }
 
-    for(int i = 0; i < sizeof(double); i++)
+    for(int i = 0; i < 4; i++)
     {
         buffer[index++] = pos_x.c_value[i];
     }
 
-    for(int i = 0; i < sizeof(double); i++)
+    for(int i = 0; i < 4; i++)
     {
         buffer[index++] = pos_y.c_value[i];
     }
 
     return buffer;
 }
-
 
 PlayerNameEvent::PlayerNameEvent() : Event(PLAYER_ID_TYPE, 21)
 {
@@ -214,7 +211,6 @@ char *PlayerNameEvent::getByteArray()
 
     return buffer;
 }
-
 
 InitEvent::InitEvent() : Event(INIT_EVENT_TYPE, 10)
 {
@@ -268,7 +264,6 @@ char *InitEvent::getByteArray()
     return buffer;
 }
 
-
 DisconnectEvent::DisconnectEvent() : Event(DISCONNECT_EVENT_TYPE, 6)
 {
 
@@ -310,7 +305,6 @@ char *DisconnectEvent::getByteArray()
     return buffer;
 }
 
-
 StartGameEvent::StartGameEvent() : Event(START_GAME_TYPE, 2, 30)
 {
 
@@ -341,7 +335,6 @@ char *StartGameEvent::getByteArray()
 
     return buffer;
 }
-
 
 PositionEvent::PositionEvent() : Event(POSITION_TYPE, 6 + 2 * sizeof(double), 1)
 {
@@ -405,7 +398,6 @@ char *PositionEvent::getByteArray()
     return buffer;
 }
 
-
 SpeedChangeEvent::SpeedChangeEvent() : Event(SPEED_CHANGE_TYPE, 2, 3)
 {
 
@@ -433,6 +425,97 @@ char *SpeedChangeEvent::getByteArray()
 //    buffer[index++] = frame_number.c_value[3];
 
     buffer[index++] = speed_change_type;
+
+    return buffer;
+}
+
+GenerateBonusEvent::GenerateBonusEvent() : Event(GENERATE_BONUS_EVENT_TYPE, 14)
+{
+}
+
+void GenerateBonusEvent::setByteArray(char *buffer)
+{
+    int index = 1;
+
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
+
+    bonus = static_cast<GenerateBonusEvent::BonusType>(buffer[index++]);
+
+    for(int i = 0; i < 4; i++)
+    {
+        obj_id.c_value[i] = buffer[index++];
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        pos_x.c_value[i] = buffer[index++];
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        pos_y.c_value[i] = buffer[index++];
+    }
+}
+
+char *GenerateBonusEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size];
+    int index = 0;
+    buffer[index++] = type;
+
+    buffer[index++] = bonus;
+
+    for(int i = 0; i < 4; i++)
+    {
+        buffer[index++] = obj_id.c_value[i];
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        buffer[index++] = pos_x.c_value[i];
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        buffer[index++] = pos_y.c_value[i];
+    }
+
+    return buffer;
+}
+
+LevelStateEvent::LevelStateEvent() : Event(LEVEL_STATE_TYPE, 6)
+{
+
+}
+
+void LevelStateEvent::setByteArray(char *buffer)
+{
+    int index = 1;
+
+//    frame_number.c_value[0] = buffer[index++];
+//    frame_number.c_value[1] = buffer[index++];
+//    frame_number.c_value[2] = buffer[index++];
+//    frame_number.c_value[3] = buffer[index++];
+
+    levelType = static_cast<LevelStateEvent::LevelType>(buffer[index++]);
+
+    pos_r = buffer[index++];
+    pos_c = buffer[index++];
+    brick_collision_count = buffer[index++];
+    brick_state_code = buffer[index++];
+}
+
+char *LevelStateEvent::getByteArray()
+{
+    char* buffer = new char[event_datagram_size];
+    int index = 0;
+    buffer[index++] = type;
+
+    buffer[index++] = levelType;
+
+    buffer[index++] = pos_r;
+    buffer[index++] = pos_c;
+    buffer[index++] = brick_collision_count;
+    buffer[index++] = brick_state_code;
 
     return buffer;
 }

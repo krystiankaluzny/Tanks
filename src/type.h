@@ -3,7 +3,7 @@
 
 enum SpriteType
 {
-    ST_TANK_A,
+    ST_TANK_A = 0,
     ST_TANK_B,
     ST_TANK_C,
     ST_TANK_D,

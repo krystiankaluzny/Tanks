@@ -7,13 +7,15 @@ enum EventType
 {
     NONE_EVENT_TYPE,
     KEY_EVENT_TYPE,
-    GENERATE_EVENT_TYPE,
+    GENERATE_TANK_EVENT_TYPE,
+    GENERATE_BONUS_EVENT_TYPE,
     PLAYER_ID_TYPE,
     INIT_EVENT_TYPE,
     DISCONNECT_EVENT_TYPE,
     START_GAME_TYPE,
     POSITION_TYPE,
-    SPEED_CHANGE_TYPE
+    SPEED_CHANGE_TYPE,
+    LEVEL_STATE_TYPE
 };
 
 union LongData
@@ -76,25 +78,12 @@ public:
     char* getByteArray();
 };
 
-class GenerateEvent : public Event
+class GenerateTankEvent : public Event
 {
 public:
-    enum ObjType
+    enum TankType
     {
-        ENEMY,
-        BONUS
-    };
-    enum SpecType
-    {
-        A, B, C, D,
-        BONUS_GRANATE,
-        BONUS_HELMET,
-        BONUS_CLOCK,
-        BONUS_SHOVEL,
-        BONUS_TANK,
-        BONUS_STAR,
-        BONUS_GUN,
-        BONUS_BOAT,
+        A = 0, B, C, D,
     };
     enum Bonus
     {
@@ -102,15 +91,40 @@ public:
         NO
     };
 
-    GenerateEvent();
+    GenerateTankEvent();
 
-    ObjType obj_type; //1 byte spec
-    SpecType spec_type; // 1 byte spec
+    TankType tank_type; // 1 byte spec
     Bonus bonus; // 1 byte spec
     LongData obj_id;  //4 byte
     LongData lives;  //4 byte
-    DoubleData pos_x; //8 byte
-    DoubleData pos_y; //8 byte
+    LongData pos_x; //4 byte
+    LongData pos_y; //4 byte
+
+    void setByteArray(char *buffer);
+    char* getByteArray();
+};
+
+class GenerateBonusEvent : public Event
+{
+public:
+    enum BonusType
+    {
+        BONUS_GRANATE = 0,
+        BONUS_HELMET,
+        BONUS_CLOCK,
+        BONUS_SHOVEL,
+        BONUS_TANK,
+        BONUS_STAR,
+        BONUS_GUN,
+        BONUS_BOAT
+    };
+
+    GenerateBonusEvent();
+
+    BonusType bonus; // 1 byte spec
+    LongData obj_id;  //4 byte
+    LongData pos_x; //4 byte
+    LongData pos_y; //4 byte
 
     void setByteArray(char *buffer);
     char* getByteArray();
@@ -186,6 +200,27 @@ public:
     SpeedChangeEvent();
 
     SpeedChangeType speed_change_type;
+    void setByteArray(char *buffer);
+    char* getByteArray();
+};
+
+class LevelStateEvent : public Event
+{
+public:
+    enum LevelType
+    {
+        BRICK,
+        STONE,
+        NONE
+    };
+    LevelStateEvent();
+
+    LevelType levelType; //1 byte
+    unsigned char pos_r; //1 byte //row
+    unsigned char pos_c; //1 byte //column
+    unsigned char brick_collision_count; //1 byte
+    unsigned char brick_state_code; //1 byte
+
     void setByteArray(char *buffer);
     char* getByteArray();
 };

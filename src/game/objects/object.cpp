@@ -3,7 +3,7 @@
 #include <iostream>
 #include <algorithm>
 
-unsigned long Object::next_object_id = 3000;
+unsigned long Object::next_object_id = 4000;
 
 Object::Object()
 {

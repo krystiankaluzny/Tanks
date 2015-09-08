@@ -14,6 +14,8 @@ Server::Server(Game *parent) : GameState(parent)
     m_get_names_time = 0;
     m_send_names_time = 0;
 
+    cout << "clear names" << std::endl;
+
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->player_name.clear();
     LeaveCriticalSection(parent->critical_section);

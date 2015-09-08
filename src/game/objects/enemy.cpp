@@ -192,8 +192,22 @@ void Enemy::update(Uint32 dt)
             int dx = target_position.x - (dest_rect.x + dest_rect.w / 2);
             int dy = target_position.y - (dest_rect.y + dest_rect.h / 2);
 
-            if(stop) fire();
+            if(stop)
+            {
+                if(state == NetworkState::NONE)
+                {
+                    fire();
+                }
+                else
+                {
+                    key_event = new_key(KeyEvent::KeyType::FIRE);
+                    EnterCriticalSection(parent->critical_section);
+                        parent->shared_data->transmit_events.addEvent(key_event);
+                    LeaveCriticalSection(parent->critical_section);
+                }
+            }
             else
+            {
                 switch (direction)
                 {
                 case D_UP:
@@ -262,8 +276,9 @@ void Enemy::update(Uint32 dt)
                     }
                     break;
                 }
+            }
         }
-        else if(type == ST_TANK_D)
+        else if(type == ST_TANK_A)
         {
             m_reload_time = rand() % 800;
             if(state == NetworkState::NONE)

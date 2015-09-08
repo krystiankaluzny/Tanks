@@ -26,6 +26,11 @@ NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
+    m_sending_row = 0;
+    m_sending_level_time = 0;
+    m_sending_tanks_pos_time = 0;
+    m_sending_player_pos_time = 0;
+    m_generate_tank_id = 1000;
 
     EnterCriticalSection(parent->critical_section);
         m_player_name = parent->shared_data->player_name;
@@ -48,6 +53,11 @@ NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
+    m_sending_row = 0;
+    m_sending_level_time = 0;
+    m_sending_tanks_pos_time = 0;
+    m_sending_player_pos_time = 0;
+    m_generate_tank_id = 1000;
 
     EnterCriticalSection(parent->critical_section);
         m_player_name = parent->shared_data->player_name;
@@ -77,6 +87,11 @@ NetworkBattle::NetworkBattle(Game *parent, std::vector<Player *> players, int pr
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
+    m_sending_row = 0;
+    m_sending_level_time = 0;
+    m_sending_tanks_pos_time = 0;
+    m_sending_player_pos_time = 0;
+    m_generate_tank_id = 1000;
 
     EnterCriticalSection(parent->critical_section);
         m_player_name = parent->shared_data->player_name;
@@ -373,6 +388,93 @@ void NetworkBattle::update(Uint32 dt)
     if(state == NetworkState::SERVER)
     {
 //        createSeeds();
+
+        m_sending_level_time++;
+        m_sending_tanks_pos_time++;
+        m_sending_player_pos_time++;
+
+        if(m_sending_level_time > 100)
+        {
+            m_sending_level_time = 0;
+            LevelStateEvent* lev_state;
+            Object* lev;
+            for(int i = 0; i < m_level_columns_count ; i++)
+            {
+                lev = m_level.at(m_sending_row).at(i);
+                if(lev == nullptr)
+                {
+                    lev_state = new LevelStateEvent;
+                    lev_state->levelType = LevelStateEvent::LevelType::NONE;
+                    lev_state->pos_r = m_sending_row;
+                    lev_state->pos_c = i;
+                    EnterCriticalSection(parent->critical_section);
+                        parent->shared_data->transmit_events.addEvent(lev_state);
+                    LeaveCriticalSection(parent->critical_section);
+                }
+                else if(lev->type == ST_BRICK_WALL)
+                {
+                    Brick* brick = (Brick*)lev;
+                    lev_state = new LevelStateEvent;
+                    lev_state->levelType = LevelStateEvent::LevelType::BRICK;
+                    lev_state->brick_collision_count = brick->m_collision_count;
+                    lev_state->brick_state_code = brick->m_state_code;
+                    lev_state->pos_r = m_sending_row;
+                    lev_state->pos_c = i;
+                    EnterCriticalSection(parent->critical_section);
+                        parent->shared_data->transmit_events.addEvent(lev_state);
+                    LeaveCriticalSection(parent->critical_section);
+                }
+                else if(lev->type == ST_STONE_WALL)
+                {
+                    lev_state = new LevelStateEvent;
+                    lev_state->levelType = LevelStateEvent::LevelType::STONE;
+                    lev_state->pos_r = m_sending_row;
+                    lev_state->pos_c = i;
+                    EnterCriticalSection(parent->critical_section);
+                        parent->shared_data->transmit_events.addEvent(lev_state);
+                    LeaveCriticalSection(parent->critical_section);
+                }
+            }
+        }
+        m_sending_row++;
+        if(m_sending_row >= m_level_rows_count) m_sending_row = 0;
+
+        if(m_sending_tanks_pos_time > 120)
+        {
+            m_sending_tanks_pos_time = 0;
+            PositionEvent* pos;
+            for(auto e : m_enemies)
+            {
+                pos = new PositionEvent;
+                pos->obj = PositionEvent::PosObj::TANK;
+                pos->obj_id.l_value = e->object_id;
+                pos->pos_x.d_value = e->pos_x;
+                pos->pos_y.d_value = e->pos_y;
+
+                EnterCriticalSection(parent->critical_section);
+                    parent->shared_data->transmit_events.addEvent(pos);
+                LeaveCriticalSection(parent->critical_section);
+            }
+        }
+
+        if(m_sending_player_pos_time > 170)
+        {
+            m_sending_player_pos_time = 0;
+            PositionEvent* pos;
+            for(auto e : m_enemies)
+            {
+                pos = new PositionEvent;
+                pos->obj = PositionEvent::PosObj::TANK;
+                pos->obj_id.l_value = e->object_id;
+                pos->pos_x.d_value = e->pos_x;
+                pos->pos_y.d_value = e->pos_y;
+
+                EnterCriticalSection(parent->critical_section);
+                parent->shared_data->transmit_events.addEvent(pos);
+                LeaveCriticalSection(parent->critical_section);
+            }
+            m_sending_tanks_pos_time = 0;
+        }
     }
 }
 
@@ -394,30 +496,32 @@ void NetworkBattle::eventProcess()
         LeaveCriticalSection(parent->critical_section);
         switch (e->type)
         {
-        case EventType::GENERATE_EVENT_TYPE:
+        case EventType::GENERATE_TANK_EVENT_TYPE:
         {
-            GenerateEvent* gen = (GenerateEvent*)e;
-            if(gen->obj_type == GenerateEvent::ObjType::ENEMY)
+            GenerateTankEvent* gen = (GenerateTankEvent*)e;
+            std::cout<< "To Generate tank type: " << gen->tank_type << std::endl;
+            Enemy* enemy = new Enemy(gen->pos_x.l_value, gen->pos_y.l_value, /*ST_TANK_A*/
+                                     static_cast<SpriteType>(gen->tank_type));
+            enemy->setParent(parent);
+            enemy->lives_count = gen->lives.l_value;
+            if(gen->bonus == GenerateTankEvent::Bonus::YES)
             {
-                Enemy* enemy = new Enemy(gen->pos_x.d_value, gen->pos_y.d_value, /*ST_TANK_A*/
-                                         static_cast<SpriteType>(gen->spec_type));
-                enemy->setParent(parent);
-                enemy->lives_count = gen->lives.l_value;
-                if(gen->bonus == GenerateEvent::Bonus::YES)
-                {
-                    enemy->setFlag(TSF_BONUS);
-                }
-                enemy->object_id = gen->obj_id.l_value;
-                m_enemies.push_back(enemy);
+                enemy->setFlag(TSF_BONUS);
             }
-            else
-            {
-                Bonus* bonus = new Bonus(gen->pos_x.d_value, gen->pos_y.d_value,
-                                         static_cast<SpriteType>(gen->spec_type - (int)GenerateEvent::SpecType::BONUS_GRANATE + (int) SpriteType::ST_BONUS_GRANATE));
-                bonus->setParent(parent);
-                bonus->object_id = gen->obj_id.l_value;
-                m_bonuses.push_back(bonus);
-            }
+            enemy->object_id = gen->obj_id.l_value;
+            m_enemies.push_back(enemy);
+            break;
+        }
+        case EventType::GENERATE_BONUS_EVENT_TYPE:
+        {
+            GenerateBonusEvent* gen = (GenerateBonusEvent*)e;
+            Bonus* bonus = new Bonus(gen->pos_x.l_value, gen->pos_y.l_value,
+                                     static_cast<SpriteType>(gen->bonus - (int)GenerateBonusEvent::BonusType::BONUS_GRANATE + (int) SpriteType::ST_BONUS_GRANATE));
+            bonus->setParent(parent);
+            bonus->object_id = gen->obj_id.l_value;
+
+            m_bonuses.push_back(bonus);
+
             break;
         }
         case EventType::PLAYER_ID_TYPE:
@@ -690,6 +794,40 @@ void NetworkBattle::eventProcess()
         }
         case EventType::SPEED_CHANGE_TYPE:
         {
+            break;
+        }
+        case EventType::LEVEL_STATE_TYPE:
+        {
+            LevelStateEvent* lev = (LevelStateEvent*)e;
+            if(lev->pos_c < m_level_columns_count && lev->pos_r < m_level_rows_count)
+            {
+                switch(lev->levelType)
+                {
+                    case LevelStateEvent::LevelType::BRICK:
+                    {
+                        if(m_level.at(lev->pos_r).at(lev->pos_c) != nullptr)
+                            delete m_level.at(lev->pos_r).at(lev->pos_c);
+                        Brick* b = new Brick(lev->pos_c * AppConfig::tile_rect.w, lev->pos_r * AppConfig::tile_rect.h);
+                        b->m_collision_count = lev->brick_collision_count;
+                        b->m_state_code = lev->brick_state_code;
+                        m_level.at(lev->pos_r).at(lev->pos_c) = b;
+                        break;
+                    }
+                    case LevelStateEvent::LevelType::STONE:
+                    {
+                        if(m_level.at(lev->pos_r).at(lev->pos_c) != nullptr)
+                            delete m_level.at(lev->pos_r).at(lev->pos_c);
+                        m_level.at(lev->pos_r).at(lev->pos_c) = new Object(lev->pos_c * AppConfig::tile_rect.w, lev->pos_r * AppConfig::tile_rect.h, ST_STONE_WALL);
+                        break;
+                    }
+                    case LevelStateEvent::LevelType::NONE:
+                    {
+                        m_level.at(lev->pos_r).at(lev->pos_c) = nullptr;
+                        break;
+                    }
+                }
+            }
+
             break;
         }
         default:
@@ -1363,12 +1501,12 @@ void NetworkBattle::generateEnemy()
     }
     else
     {
-        GenerateEvent* gen_ev = new GenerateEvent;
+        GenerateTankEvent* gen_ev = new GenerateTankEvent;
         float p = static_cast<float>(rand()) / RAND_MAX;
-        gen_ev->spec_type = static_cast<GenerateEvent::SpecType>(p < (0.00735 * m_current_level + 0.09265) ?
-                                                                                GenerateEvent::SpecType::D : rand() % (GenerateEvent::SpecType::C - GenerateEvent::SpecType::A + 1) + GenerateEvent::SpecType::A);
-        gen_ev->pos_x.d_value = AppConfig::enemy_starting_point.at(m_enemy_respown_position).x;
-        gen_ev->pos_y.d_value = AppConfig::enemy_starting_point.at(m_enemy_respown_position).y;
+        gen_ev->tank_type = static_cast<GenerateTankEvent::TankType>(p < (0.00735 * m_current_level + 0.09265) ?
+                                                                                GenerateTankEvent::TankType::D : rand() % (GenerateTankEvent::TankType::C - GenerateTankEvent::TankType::A + 1) + GenerateTankEvent::TankType::A);
+        gen_ev->pos_x.l_value = AppConfig::enemy_starting_point.at(m_enemy_respown_position).x;
+        gen_ev->pos_y.l_value = AppConfig::enemy_starting_point.at(m_enemy_respown_position).y;
 
         m_enemy_respown_position++;
         if(m_enemy_respown_position >= AppConfig::enemy_starting_point.size()) m_enemy_respown_position = 0;
@@ -1399,13 +1537,14 @@ void NetworkBattle::generateEnemy()
         p = static_cast<float>(rand()) / RAND_MAX;
         if(p < 0.12)
         {
-            gen_ev->bonus = GenerateEvent::Bonus::YES;
+            gen_ev->bonus = GenerateTankEvent::Bonus::YES;
         }
         else
         {
-            gen_ev->bonus = GenerateEvent::Bonus::NO;
+            gen_ev->bonus = GenerateTankEvent::Bonus::NO;
         }
-        gen_ev->obj_id.l_value = Object::next_object_id++;
+        std::cout<< "Generate tank type: " << gen_ev->tank_type << std::endl;
+        gen_ev->obj_id.l_value = m_generate_tank_id++;
         EnterCriticalSection(parent->critical_section);
             parent->shared_data->transmit_events.addEvent(gen_ev);
         LeaveCriticalSection(parent->critical_section);
@@ -1442,10 +1581,10 @@ void NetworkBattle::generateBonus()
         return;
     }
 
-    GenerateEvent* gen_ev = new GenerateEvent;
-    gen_ev->pos_x.d_value = b->pos_x;
-    gen_ev->pos_y.d_value = b->pos_y;
-    gen_ev->spec_type = static_cast<GenerateEvent::SpecType>(rand() % (GenerateEvent::SpecType::BONUS_BOAT - GenerateEvent::SpecType::BONUS_GRANATE + 1) + GenerateEvent::SpecType::BONUS_GRANATE);
+    GenerateBonusEvent* gen_ev = new GenerateBonusEvent;
+    gen_ev->pos_x.l_value = b->pos_x;
+    gen_ev->pos_y.l_value = b->pos_y;
+    gen_ev->bonus = static_cast<GenerateBonusEvent::BonusType>(rand() % (GenerateBonusEvent::BonusType::BONUS_BOAT - GenerateBonusEvent::BonusType::BONUS_GRANATE + 1) + GenerateBonusEvent::BonusType::BONUS_GRANATE);
     gen_ev->obj_id.l_value = Object::next_object_id++;
 
     EnterCriticalSection(parent->critical_section);

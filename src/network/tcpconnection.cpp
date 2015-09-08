@@ -16,6 +16,8 @@ void TCPConnection::setParent(Network *parent)
 
 void TCPConnection::setPlayerName(SOCKET player_socket, string player_name)
 {
+    cout << "PLAYER name : " << player_name << std::endl;
+
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->player_name[player_socket] = player_name; //[] - dodaje gracza jeśli nie istaniał, 'at()' tego nie robi
     LeaveCriticalSection(parent->critical_section);
@@ -49,9 +51,14 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
         event_type = buffer[index];
         switch(event_type)
         {
-            case GENERATE_EVENT_TYPE:
+            case GENERATE_TANK_EVENT_TYPE:
             {
-                event = new GenerateEvent;
+                event = new GenerateTankEvent;
+                break;
+            }
+            case GENERATE_BONUS_EVENT_TYPE:
+            {
+                event = new GenerateBonusEvent;
                 break;
             }
             case PLAYER_ID_TYPE:
@@ -95,6 +102,11 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             case SPEED_CHANGE_TYPE:
             {
                 event = new SpeedChangeEvent;
+                break;
+            }
+            case LEVEL_STATE_TYPE:
+            {
+                event = new LevelStateEvent;
                 break;
             }
         }

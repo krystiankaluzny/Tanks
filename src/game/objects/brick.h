@@ -30,7 +30,6 @@ public:
      * @param bullet_direction - kierunek ruchu pocisku
      */
     void bulletHit(Direction bullet_direction);
-private:
     /**
      * Liczba trafień pucisków w murek.
      */
