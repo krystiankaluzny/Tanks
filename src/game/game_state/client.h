@@ -43,17 +43,48 @@ public:
     GameState* nextState();
 
 private:
+    /**
+     * Pobranie imion graczy ze współdzielonych zasobów między wątkami.
+     */
     void getNames();
+    /**
+     * Ustawienie imion graczy ze współdzielonych zasobów między wątkami.
+     */
     void sendName();
 
+    /**
+     * Zawartość menu.
+     */
     std::vector<std::string> m_menu_texts;
+    /**
+     * Nazwa hosta.
+     */
     std::string host;
+    /**
+     * Indeks wybranej opcji menu.
+     */
     int m_menu_index;
+    /**
+     * Wskaźnik na aktualną opcję w menu.
+     */
     Player* m_tank_pointer;
+
+    /**
+     * Czy serwer systartował grę.
+     */
     bool m_start_game;
 
+    /**
+     * Imiona graczy.
+     */
     std::map<SOCKET, std::string> m_player_name;
+    /**
+     * Czas od ostatniego pogrania imion graczy.
+     */
     unsigned m_get_names_time;
+    /**
+     * Czas od ostatniego wysłania imion graczy.
+     */
     unsigned m_send_name_time;
 };
 

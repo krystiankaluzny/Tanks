@@ -218,8 +218,6 @@ public:
     LevelType levelType; //1 byte
     unsigned char pos_r; //1 byte //row
     unsigned char pos_c; //1 byte //column
-//    unsigned char brick_collision_count; //1 byte
-//    unsigned char brick_state_code; //1 byte
 
     void setByteArray(char *buffer);
     char* getByteArray();

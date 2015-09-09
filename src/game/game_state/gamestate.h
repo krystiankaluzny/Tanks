@@ -57,8 +57,15 @@ protected:
      * Zmienna przechowuje informację, czy należy zakończyć bieżący stan gry i przejść do gry lub wyłączyć aplikację.
      */
     bool m_finished;
+    /**
+     * Wątek gry.
+     */
     Game* parent;
 
+    /**
+     * Ustawienie stanu sieci SERVER/CLIENT/NONE
+     * @param state
+     */
     void setNetworkState(NetworkState state)
     {
         EnterCriticalSection(parent->critical_section);

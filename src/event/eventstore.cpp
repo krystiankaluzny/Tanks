@@ -39,19 +39,13 @@ void ReceivedEvents::clearFrameEvents(unsigned long frame)
 
 void ReceivedEvents::addEvent(Event *event)
 {
-////    printEvent(event);
-//    if(event->frame_number.l_value <= current_frame)
-//    {
-//        return;
-//    }
 
-//    frame_events[event->frame_number.l_value].events.push_back(event);
 }
 
 
 void ReceivedEvents::printEvent(Event *event)
 {
-//    std::cout << "Odebrany event Type: " << event->type << " frame: " << event->frame_number.l_value << " current: " <<  current_frame << std::endl;
+    std::cout << "Odebrany event Type: " << event->type << " frame: " << event->frame_number.l_value << " current: " <<  current_frame << std::endl;
 }
 
 

@@ -14,7 +14,6 @@ Client::Client(Game *parent) : GameState(parent)
 
     m_get_names_time = 0;
     m_send_name_time = 0;
-//    setNetworkState(NetworkState::CLIENT);
 
     host = "localhost";
 
