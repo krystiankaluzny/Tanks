@@ -270,6 +270,8 @@ private:
 
     int m_sending_row;
 
+    int m_sending_column;
+
     int m_sending_level_time;
 
     int m_sending_tanks_pos_time;

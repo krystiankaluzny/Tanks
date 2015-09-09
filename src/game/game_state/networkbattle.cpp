@@ -27,6 +27,7 @@ NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
     m_sending_row = 0;
+    m_sending_column = 0;
     m_sending_level_time = 0;
     m_sending_tanks_pos_time = 0;
     m_sending_player_pos_time = 0;
@@ -54,6 +55,7 @@ NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
     m_sending_row = 0;
+    m_sending_column = 0;
     m_sending_level_time = 0;
     m_sending_tanks_pos_time = 0;
     m_sending_player_pos_time = 0;
@@ -88,6 +90,7 @@ NetworkBattle::NetworkBattle(Game *parent, std::vector<Player *> players, int pr
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
     m_sending_row = 0;
+    m_sending_column = 0;
     m_sending_level_time = 0;
     m_sending_tanks_pos_time = 0;
     m_sending_player_pos_time = 0;
@@ -184,197 +187,198 @@ void NetworkBattle::update(Uint32 dt)
     }
     else
     {
-        if(m_pause) return;  // TODO z konfiga
+        if(!m_pause)
+        {
+            std::vector<Player*>::iterator pl1, pl2;
+            std::vector<Enemy*>::iterator en1, en2;
 
-        std::vector<Player*>::iterator pl1, pl2;
-        std::vector<Enemy*>::iterator en1, en2;
-
-        //sprawdzenie kolizji czołgów graczy ze sobą
-        for(pl1 = m_players.begin(); pl1 != m_players.end(); pl1++)
-            for(pl2 = pl1 + 1; pl2 != m_players.end(); pl2++)
-                checkCollisionTwoTanks(*pl1, *pl2, dt);
-
-
-        //sprawdzenie kolizji czołgów przeciwników ze sobą
-        for(en1 = m_enemies.begin(); en1 != m_enemies.end(); en1++)
-             for(en2 = en1 + 1; en2 != m_enemies.end(); en2++)
-                checkCollisionTwoTanks(*en1, *en2, dt);
-
-        //sprawdzenie kolizji kuli z lewelem
-        for(auto enemy : m_enemies)
-            for(auto bullet : enemy->bullets)
-                checkCollisionBulletWithLevel(bullet);
-        for(auto player : m_players)
-            for(auto bullet : player->bullets)
-            {
-                checkCollisionBulletWithLevel(bullet);
-                checkCollisionBulletWithBush(bullet);
-            }
+            //sprawdzenie kolizji czołgów graczy ze sobą
+            for(pl1 = m_players.begin(); pl1 != m_players.end(); pl1++)
+                for(pl2 = pl1 + 1; pl2 != m_players.end(); pl2++)
+                    checkCollisionTwoTanks(*pl1, *pl2, dt);
 
 
-        for(auto player : m_players)
+            //sprawdzenie kolizji czołgów przeciwników ze sobą
+            for(en1 = m_enemies.begin(); en1 != m_enemies.end(); en1++)
+                 for(en2 = en1 + 1; en2 != m_enemies.end(); en2++)
+                    checkCollisionTwoTanks(*en1, *en2, dt);
+
+            //sprawdzenie kolizji kuli z lewelem
+            for(auto enemy : m_enemies)
+                for(auto bullet : enemy->bullets)
+                    checkCollisionBulletWithLevel(bullet);
+            for(auto player : m_players)
+                for(auto bullet : player->bullets)
+                {
+                    checkCollisionBulletWithLevel(bullet);
+                    checkCollisionBulletWithBush(bullet);
+                }
+
+
+            for(auto player : m_players)
+                for(auto enemy : m_enemies)
+                {
+                    //sprawdzenie kolizji czołgów przeciwników z graczami
+                    checkCollisionTwoTanks(player, enemy, dt);
+                    //sprawdzenie kolizji pocisków gracza z przeciwnikiem
+                    checkCollisionPlayerBulletsWithEnemy(player, enemy);
+
+                    //sprawdzenie kolizji pocisku gracza z pociskiem przeciwnika
+                    for(auto bullet1 : player->bullets)
+                         for(auto bullet2 : enemy->bullets)
+                                checkCollisionTwoBullets(bullet1, bullet2);
+                }
+
+            //sprawdzenie kolizji pocisku przeciknika z graczem
+            for(auto enemy : m_enemies)
+                for(auto player : m_players)
+                        checkCollisionEnemyBulletsWithPlayer(enemy, player);
+
+            //sprawdzanie kolizji gracza z bunusem
+            for(auto player : m_players)
+                for(auto bonus : m_bonuses)
+                    checkCollisionPlayerWithBonus(player, bonus);
+
+            //Sprawdzenie kolizji czołgów z poziomem
+            for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
+    //        for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
+
+            //nadanie celów przeciwników
+            int min_metric; // 2 * 26 * 16
+            int metric;
+            SDL_Point target;
             for(auto enemy : m_enemies)
             {
-                //sprawdzenie kolizji czołgów przeciwników z graczami
-                checkCollisionTwoTanks(player, enemy, dt);
-                //sprawdzenie kolizji pocisków gracza z przeciwnikiem
-                checkCollisionPlayerBulletsWithEnemy(player, enemy);
+                min_metric = 832;
+                if(enemy->type == ST_TANK_A || enemy->type == ST_TANK_D)
+                    for(auto player : m_players)
+                    {
+                        metric = fabs(player->dest_rect.x - enemy->dest_rect.x) + fabs(player->dest_rect.y - enemy->dest_rect.y);
+                        if(metric < min_metric)
+                        {
+                            min_metric = metric;
+                            target = {player->dest_rect.x + player->dest_rect.w / 2, player->dest_rect.y + player->dest_rect.h / 2};
+                        }
+                    }
+                metric = fabs(m_eagle->dest_rect.x - enemy->dest_rect.x) + fabs(m_eagle->dest_rect.y - enemy->dest_rect.y);
+                if(metric < min_metric)
+                {
+                    min_metric = metric;
+                    target = {m_eagle->dest_rect.x + m_eagle->dest_rect.w / 2, m_eagle->dest_rect.y + m_eagle->dest_rect.h / 2};
+                }
 
-                //sprawdzenie kolizji pocisku gracza z pociskiem przeciwnika
-                for(auto bullet1 : player->bullets)
-                     for(auto bullet2 : enemy->bullets)
-                            checkCollisionTwoBullets(bullet1, bullet2);
+                enemy->target_position = target;
             }
 
-        //sprawdzenie kolizji pocisku przeciknika z graczem
-        for(auto enemy : m_enemies)
-            for(auto player : m_players)
-                    checkCollisionEnemyBulletsWithPlayer(enemy, player);
+            //Update wszystkich obiektów
+            for(auto enemy : m_enemies) enemy->update(dt);
+            for(auto player : m_players) player->update(dt);
+            for(auto bonus : m_bonuses) bonus->update(dt);
+            m_eagle->update(dt);
 
-        //sprawdzanie kolizji gracza z bunusem
-        for(auto player : m_players)
-            for(auto bonus : m_bonuses)
-                checkCollisionPlayerWithBonus(player, bonus);
+            for(auto row : m_level)
+                for(auto item : row)
+                    if(item != nullptr) item->update(dt);
 
-        //Sprawdzenie kolizji czołgów z poziomem
-        for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
-//        for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
 
-        //nadanie celów przeciwników
-        int min_metric; // 2 * 26 * 16
-        int metric;
-        SDL_Point target;
-        for(auto enemy : m_enemies)
-        {
-            min_metric = 832;
-            if(enemy->type == ST_TANK_A || enemy->type == ST_TANK_D)
-                for(auto player : m_players)
+            for(auto bush : m_bushes) bush->update(dt);
+
+            //usunięcie niepotrzebnych elementów
+            m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
+            m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
+            m_bonuses.erase(std::remove_if(m_bonuses.begin(), m_bonuses.end(), [](Bonus*b){if(b->to_erase) {delete b; return true;} return false;}), m_bonuses.end());
+            m_bushes.erase(std::remove_if(m_bushes.begin(), m_bushes.end(), [](Object*b){if(b->to_erase) {delete b; return true;} return false;}), m_bushes.end());
+
+            //dodanie nowego przeciwnika
+            m_enemy_redy_time += dt;
+            if(m_enemies.size() < (AppConfig::enemy_max_count_on_map < m_enemy_to_kill ? AppConfig::enemy_max_count_on_map : m_enemy_to_kill) && m_enemy_redy_time > AppConfig::enemy_redy_time)
+            {
+                m_enemy_redy_time = 0;
+                generateEnemy();
+            }
+
+            if(m_enemies.empty() && m_enemy_to_kill <= 0)
+            {
+                m_level_end_time += dt;
+                if(m_level_end_time > AppConfig::level_end_time)
+                    m_finished = true;
+            }
+
+            if(m_players.empty() && !m_game_over)
+            {
+                m_eagle->destroy();
+                m_game_over_position = AppConfig::map_rect.h;
+                m_game_over = true;
+            }
+
+            if(m_game_over)
+            {
+                if(m_game_over_position < 10) m_finished = true;
+                else m_game_over_position -= AppConfig::game_over_entry_speed * dt;
+            }
+
+            if(m_protect_eagle)
+            {
+                m_protect_eagle_time += dt;
+                if(m_protect_eagle_time > AppConfig::protect_eagle_time)
                 {
-                    metric = fabs(player->dest_rect.x - enemy->dest_rect.x) + fabs(player->dest_rect.y - enemy->dest_rect.y);
-                    if(metric < min_metric)
+                    m_protect_eagle = false;
+                    m_protect_eagle_time = 0;
+                    for(int i = 0; i < 3; i++)
                     {
-                        min_metric = metric;
-                        target = {player->dest_rect.x + player->dest_rect.w / 2, player->dest_rect.y + player->dest_rect.h / 2};
+                        if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
+                            delete m_level.at(m_level_rows_count - i - 1).at(11);
+                        m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
+
+                        if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
+                            delete m_level.at(m_level_rows_count - i - 1).at(14);
+                        m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h);
+                    }
+                    for(int i = 12; i < 14; i++)
+                    {
+                        if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
+                            delete m_level.at(m_level_rows_count - 3).at(i);
+                        m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
                     }
                 }
-            metric = fabs(m_eagle->dest_rect.x - enemy->dest_rect.x) + fabs(m_eagle->dest_rect.y - enemy->dest_rect.y);
-            if(metric < min_metric)
-            {
-                min_metric = metric;
-                target = {m_eagle->dest_rect.x + m_eagle->dest_rect.w / 2, m_eagle->dest_rect.y + m_eagle->dest_rect.h / 2};
-            }
 
-            enemy->target_position = target;
-        }
-
-        //Update wszystkich obiektów
-        for(auto enemy : m_enemies) enemy->update(dt);
-        for(auto player : m_players) player->update(dt);
-        for(auto bonus : m_bonuses) bonus->update(dt);
-        m_eagle->update(dt);
-
-        for(auto row : m_level)
-            for(auto item : row)
-                if(item != nullptr) item->update(dt);
-
-
-        for(auto bush : m_bushes) bush->update(dt);
-
-        //usunięcie niepotrzebnych elementów
-        m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
-        m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
-        m_bonuses.erase(std::remove_if(m_bonuses.begin(), m_bonuses.end(), [](Bonus*b){if(b->to_erase) {delete b; return true;} return false;}), m_bonuses.end());
-        m_bushes.erase(std::remove_if(m_bushes.begin(), m_bushes.end(), [](Object*b){if(b->to_erase) {delete b; return true;} return false;}), m_bushes.end());
-
-        //dodanie nowego przeciwnika
-        m_enemy_redy_time += dt;
-        if(m_enemies.size() < (AppConfig::enemy_max_count_on_map < m_enemy_to_kill ? AppConfig::enemy_max_count_on_map : m_enemy_to_kill) && m_enemy_redy_time > AppConfig::enemy_redy_time)
-        {
-            m_enemy_redy_time = 0;
-            generateEnemy();
-        }
-
-        if(m_enemies.empty() && m_enemy_to_kill <= 0)
-        {
-            m_level_end_time += dt;
-            if(m_level_end_time > AppConfig::level_end_time)
-                m_finished = true;
-        }
-
-        if(m_players.empty() && !m_game_over)
-        {
-            m_eagle->destroy();
-            m_game_over_position = AppConfig::map_rect.h;
-            m_game_over = true;
-        }
-
-        if(m_game_over)
-        {
-            if(m_game_over_position < 10) m_finished = true;
-            else m_game_over_position -= AppConfig::game_over_entry_speed * dt;
-        }
-
-        if(m_protect_eagle)
-        {
-            m_protect_eagle_time += dt;
-            if(m_protect_eagle_time > AppConfig::protect_eagle_time)
-            {
-                m_protect_eagle = false;
-                m_protect_eagle_time = 0;
-                for(int i = 0; i < 3; i++)
+                if(m_protect_eagle && m_protect_eagle_time > AppConfig::protect_eagle_time / 4 * 3 && m_protect_eagle_time / AppConfig::bonus_blink_time % 2)
                 {
-                    if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
-                        delete m_level.at(m_level_rows_count - i - 1).at(11);
-                    m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
+                    for(int i = 0; i < 3; i++)
+                    {
+                        if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
+                            delete m_level.at(m_level_rows_count - i - 1).at(11);
+                        m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
 
-                    if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
-                        delete m_level.at(m_level_rows_count - i - 1).at(14);
-                    m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h);
+                        if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
+                            delete m_level.at(m_level_rows_count - i - 1).at(14);
+                        m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h);
+                    }
+                    for(int i = 12; i < 14; i++)
+                    {
+                        if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
+                            delete m_level.at(m_level_rows_count - 3).at(i);
+                        m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
+                    }
                 }
-                for(int i = 12; i < 14; i++)
+                else if(m_protect_eagle)
                 {
-                    if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
-                        delete m_level.at(m_level_rows_count - 3).at(i);
-                    m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
-                }
-            }
+                    for(int i = 0; i < 3; i++)
+                    {
+                        if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
+                            delete m_level.at(m_level_rows_count - i - 1).at(11);
+                        m_level.at(m_level_rows_count - i - 1).at(11) = new Object(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
 
-            if(m_protect_eagle && m_protect_eagle_time > AppConfig::protect_eagle_time / 4 * 3 && m_protect_eagle_time / AppConfig::bonus_blink_time % 2)
-            {
-                for(int i = 0; i < 3; i++)
-                {
-                    if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
-                        delete m_level.at(m_level_rows_count - i - 1).at(11);
-                    m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
-
-                    if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
-                        delete m_level.at(m_level_rows_count - i - 1).at(14);
-                    m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h);
-                }
-                for(int i = 12; i < 14; i++)
-                {
-                    if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
-                        delete m_level.at(m_level_rows_count - 3).at(i);
-                    m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
-                }
-            }
-            else if(m_protect_eagle)
-            {
-                for(int i = 0; i < 3; i++)
-                {
-                    if(m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
-                        delete m_level.at(m_level_rows_count - i - 1).at(11);
-                    m_level.at(m_level_rows_count - i - 1).at(11) = new Object(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
-
-                    if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
-                        delete m_level.at(m_level_rows_count - i - 1).at(14);
-                    m_level.at(m_level_rows_count - i - 1).at(14) = new Object(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h, ST_STONE_WALL);
-                }
-                for(int i = 12; i < 14; i++)
-                {
-                    if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
-                        delete m_level.at(m_level_rows_count - 3).at(i);
-                    m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                        if(m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
+                            delete m_level.at(m_level_rows_count - i - 1).at(14);
+                        m_level.at(m_level_rows_count - i - 1).at(14) = new Object(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1)  * AppConfig::tile_rect.h, ST_STONE_WALL);
+                    }
+                    for(int i = 12; i < 14; i++)
+                    {
+                        if(m_level.at(m_level_rows_count - 3).at(i) != nullptr)
+                            delete m_level.at(m_level_rows_count - 3).at(i);
+                        m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                    }
                 }
             }
         }
@@ -389,92 +393,94 @@ void NetworkBattle::update(Uint32 dt)
     {
 //        createSeeds();
 
-        m_sending_level_time++;
-        m_sending_tanks_pos_time++;
-        m_sending_player_pos_time++;
+        m_sending_level_time += dt;
+        m_sending_tanks_pos_time += dt;
+        m_sending_player_pos_time += dt;
 
-        if(m_sending_level_time > 100)
+//        if(m_sending_level_time > 50)
+//        {
+//            m_sending_level_time = 0;
+//            LevelStateEvent* lev_state;
+//            Object* lev;
+//            lev = m_level.at(m_sending_row).at(m_sending_column);
+//            if(lev == nullptr)
+//            {
+//                lev_state = new LevelStateEvent;
+//                lev_state->levelType = LevelStateEvent::LevelType::NONE;
+//                lev_state->pos_r = m_sending_row;
+//                lev_state->pos_c = m_sending_column;
+//                EnterCriticalSection(parent->critical_section);
+//                    parent->shared_data->transmit_events.addEvent(lev_state);
+//                LeaveCriticalSection(parent->critical_section);
+//            }
+//            else if(lev->type == ST_BRICK_WALL)
+//            {
+//                lev_state = new LevelStateEvent;
+//                lev_state->levelType = LevelStateEvent::LevelType::BRICK;
+//                lev_state->pos_r = m_sending_row;
+//                lev_state->pos_c = m_sending_column;
+//                EnterCriticalSection(parent->critical_section);
+//                    parent->shared_data->transmit_events.addEvent(lev_state);
+//                LeaveCriticalSection(parent->critical_section);
+//            }
+//            else if(lev->type == ST_STONE_WALL)
+//            {
+//                lev_state = new LevelStateEvent;
+//                lev_state->levelType = LevelStateEvent::LevelType::STONE;
+//                lev_state->pos_r = m_sending_row;
+//                lev_state->pos_c = m_sending_column;
+//                EnterCriticalSection(parent->critical_section);
+//                    parent->shared_data->transmit_events.addEvent(lev_state);
+//                LeaveCriticalSection(parent->critical_section);
+//            }
+//        }
+        m_sending_column++;
+        if(m_sending_column >= m_level_columns_count)
         {
-            m_sending_level_time = 0;
-            LevelStateEvent* lev_state;
-            Object* lev;
-            for(int i = 0; i < m_level_columns_count ; i++)
-            {
-                lev = m_level.at(m_sending_row).at(i);
-                if(lev == nullptr)
-                {
-                    lev_state = new LevelStateEvent;
-                    lev_state->levelType = LevelStateEvent::LevelType::NONE;
-                    lev_state->pos_r = m_sending_row;
-                    lev_state->pos_c = i;
-                    EnterCriticalSection(parent->critical_section);
-                        parent->shared_data->transmit_events.addEvent(lev_state);
-                    LeaveCriticalSection(parent->critical_section);
-                }
-                else if(lev->type == ST_BRICK_WALL)
-                {
-                    Brick* brick = (Brick*)lev;
-                    lev_state = new LevelStateEvent;
-                    lev_state->levelType = LevelStateEvent::LevelType::BRICK;
-                    lev_state->brick_collision_count = brick->m_collision_count;
-                    lev_state->brick_state_code = brick->m_state_code;
-                    lev_state->pos_r = m_sending_row;
-                    lev_state->pos_c = i;
-                    EnterCriticalSection(parent->critical_section);
-                        parent->shared_data->transmit_events.addEvent(lev_state);
-                    LeaveCriticalSection(parent->critical_section);
-                }
-                else if(lev->type == ST_STONE_WALL)
-                {
-                    lev_state = new LevelStateEvent;
-                    lev_state->levelType = LevelStateEvent::LevelType::STONE;
-                    lev_state->pos_r = m_sending_row;
-                    lev_state->pos_c = i;
-                    EnterCriticalSection(parent->critical_section);
-                        parent->shared_data->transmit_events.addEvent(lev_state);
-                    LeaveCriticalSection(parent->critical_section);
-                }
-            }
+            m_sending_column = 0;
+            m_sending_row++;
         }
-        m_sending_row++;
-        if(m_sending_row >= m_level_rows_count) m_sending_row = 0;
-
-        if(m_sending_tanks_pos_time > 120)
+        if(m_sending_row >= m_level_rows_count)
         {
-            m_sending_tanks_pos_time = 0;
-            PositionEvent* pos;
-            for(auto e : m_enemies)
-            {
-                pos = new PositionEvent;
-                pos->obj = PositionEvent::PosObj::TANK;
-                pos->obj_id.l_value = e->object_id;
-                pos->pos_x.d_value = e->pos_x;
-                pos->pos_y.d_value = e->pos_y;
-
-                EnterCriticalSection(parent->critical_section);
-                    parent->shared_data->transmit_events.addEvent(pos);
-                LeaveCriticalSection(parent->critical_section);
-            }
+            m_sending_row = 0;
         }
 
-        if(m_sending_player_pos_time > 170)
-        {
-            m_sending_player_pos_time = 0;
-            PositionEvent* pos;
-            for(auto e : m_enemies)
-            {
-                pos = new PositionEvent;
-                pos->obj = PositionEvent::PosObj::TANK;
-                pos->obj_id.l_value = e->object_id;
-                pos->pos_x.d_value = e->pos_x;
-                pos->pos_y.d_value = e->pos_y;
+//        if(m_sending_tanks_pos_time > 620)
+//        {
+//            m_sending_tanks_pos_time = 0;
+//            PositionEvent* pos;
+//            for(auto e : m_enemies)
+//            {
+//                pos = new PositionEvent;
+//                pos->obj = PositionEvent::PosObj::TANK;
+//                pos->obj_id.l_value = e->object_id;
+//                pos->pos_x.d_value = e->pos_x;
+//                pos->pos_y.d_value = e->pos_y;
 
-                EnterCriticalSection(parent->critical_section);
-                parent->shared_data->transmit_events.addEvent(pos);
-                LeaveCriticalSection(parent->critical_section);
-            }
-            m_sending_tanks_pos_time = 0;
-        }
+//                EnterCriticalSection(parent->critical_section);
+//                    parent->shared_data->transmit_events.addEvent(pos);
+//                LeaveCriticalSection(parent->critical_section);
+//            }
+//        }
+
+//        if(m_sending_player_pos_time > 570)
+//        {
+//            m_sending_player_pos_time = 0;
+//            PositionEvent* pos;
+//            for(auto e : m_players)
+//            {
+//                pos = new PositionEvent;
+//                pos->obj = PositionEvent::PosObj::TANK;
+//                pos->obj_id.l_value = e->object_id;
+//                pos->pos_x.d_value = e->pos_x;
+//                pos->pos_y.d_value = e->pos_y;
+
+//                EnterCriticalSection(parent->critical_section);
+//                parent->shared_data->transmit_events.addEvent(pos);
+//                LeaveCriticalSection(parent->critical_section);
+//            }
+//            m_sending_tanks_pos_time = 0;
+//        }
     }
 }
 
@@ -753,43 +759,72 @@ void NetworkBattle::eventProcess()
         case EventType::POSITION_TYPE:
         {
             PositionEvent* pos = (PositionEvent*)e;
-            switch(pos->obj)
+
+            bool found = false;
+            for(Player* p : m_players)
             {
-                case PositionEvent::PosObj::TANK:
+                if(p->object_id == pos->obj_id.l_value)
                 {
-                    bool found = false;
-                    for(Player* p : m_players)
-                    {
-                        if(p->object_id == pos->obj_id.l_value)
-                        {
-                            p->pos_x = pos->pos_x.d_value;
-                            p->pos_y = pos->pos_y.d_value;
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if(!found)
-                    {
-                        for(Enemy* e : m_enemies)
-                        {
-                            if(e->object_id == pos->obj_id.l_value)
-                            {
-                                e->pos_x = pos->pos_x.d_value;
-                                e->pos_y = pos->pos_y.d_value;
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-                    if(!found)
-                        std::cout << "Pos type NOT found" << std::endl;
-
+                    p->pos_x = pos->pos_x.d_value;
+                    p->pos_y = pos->pos_y.d_value;
+                    found = true;
                     break;
                 }
-            default:
-                std::cout << "Unknown POSITION_TYPE " << (int) pos->obj << std::endl;
             }
+
+            if(!found)
+            {
+                for(Enemy* e : m_enemies)
+                {
+                    if(e->object_id == pos->obj_id.l_value)
+                    {
+                        e->pos_x = pos->pos_x.d_value;
+                        e->pos_y = pos->pos_y.d_value;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if(!found)
+                std::cout << "Pos type NOT found" << std::endl;
+
+//            switch(pos->obj)
+//            {
+//                case PositionEvent::PosObj::TANK:
+//                {
+//                    bool found = false;
+//                    for(Player* p : m_players)
+//                    {
+//                        if(p->object_id == pos->obj_id.l_value)
+//                        {
+//                            p->pos_x = pos->pos_x.d_value;
+//                            p->pos_y = pos->pos_y.d_value;
+//                            found = true;
+//                            break;
+//                        }
+//                    }
+
+//                    if(!found)
+//                    {
+//                        for(Enemy* e : m_enemies)
+//                        {
+//                            if(e->object_id == pos->obj_id.l_value)
+//                            {
+//                                e->pos_x = pos->pos_x.d_value;
+//                                e->pos_y = pos->pos_y.d_value;
+//                                found = true;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    if(!found)
+//                        std::cout << "Pos type NOT found" << std::endl;
+
+//                    break;
+//                }
+//            default:
+//                std::cout << "Unknown POSITION_TYPE " << (int) pos->obj << std::endl;
+//            }
             break;
         }
         case EventType::SPEED_CHANGE_TYPE:
@@ -808,8 +843,6 @@ void NetworkBattle::eventProcess()
                         if(m_level.at(lev->pos_r).at(lev->pos_c) != nullptr)
                             delete m_level.at(lev->pos_r).at(lev->pos_c);
                         Brick* b = new Brick(lev->pos_c * AppConfig::tile_rect.w, lev->pos_r * AppConfig::tile_rect.h);
-                        b->m_collision_count = lev->brick_collision_count;
-                        b->m_state_code = lev->brick_state_code;
                         m_level.at(lev->pos_r).at(lev->pos_c) = b;
                         break;
                     }
@@ -822,8 +855,14 @@ void NetworkBattle::eventProcess()
                     }
                     case LevelStateEvent::LevelType::NONE:
                     {
+                        if(m_level.at(lev->pos_r).at(lev->pos_c) != nullptr)
+                            delete m_level.at(lev->pos_r).at(lev->pos_c);
                         m_level.at(lev->pos_r).at(lev->pos_c) = nullptr;
                         break;
+                    }
+                    default:
+                    {
+                        std::cout << "LevelStateEvent nie znany" << std::endl;
                     }
                 }
             }
@@ -1201,13 +1240,8 @@ void NetworkBattle::checkCollisionBulletWithLevel(Bullet* bullet)
                 }
                 else if(o->type == ST_BRICK_WALL)
                 {
-                    Brick* brick = dynamic_cast<Brick*>(o);
-                    brick->bulletHit(bullet->direction);
-                    if(brick->to_erase)
-                    {
-                        delete brick;
-                        m_level.at(i).at(j) = nullptr;
-                    }
+                    delete o;
+                    m_level.at(i).at(j) = nullptr;
                 }
                 bullet->destroy();
             }
@@ -1424,11 +1458,15 @@ void NetworkBattle::nextLevel()
             vector<SOCKET> v;
             for(map<SOCKET,std::string>::iterator it = m_player_name.begin(); it != m_player_name.end(); ++it)
             {
-              v.push_back(it->first);
+                if(it->second == "Player 1")
+                {
+                    p1->object_id = it->first;
+                }
+                else
+                {
+                    p2->object_id = it->first;
+                }
             }
-
-            p1->object_id = v[0];
-            p2->object_id = v[1];
 
             m_players.push_back(p1);
             m_players.push_back(p2);

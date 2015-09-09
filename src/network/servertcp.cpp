@@ -135,19 +135,30 @@ void ServerTCP::sendData()
         transmit_events = parent->shared_data->transmit_events.events;
     LeaveCriticalSection(parent->critical_section);
 
+    int sum_size = 0;
     for(Event* e : transmit_events)
     {
         buf = e->getByteArray();
+
+//        for(int i = 0; i < e->bufferSize(); i++)
+//        {
+//            buffer[sum_size++] = buf[i];
+//        }
+
+
         broadcast(buf, e->bufferSize());
 
         EnterCriticalSection(parent->critical_section);
             parent->shared_data->received_events_queue.push(e);
         LeaveCriticalSection(parent->critical_section);
 
+        Sleep(1);
         delete[] buf;
-
-//        std::cout << "send_counter: " << (int)send_counter << std::endl;
     }
+//    if(sum_size)
+//    {
+//        broadcast(buffer, sum_size);
+//    }
     //czyszczenie
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->transmit_events.events.clear();
@@ -212,7 +223,6 @@ void ServerTCP::closeSocket(int socket_index)
 
 void ServerTCP::readSocket(int socket_index)
 {
-    char buffer[50];
     int size = recv(sockets[socket_index], buffer, sizeof(buffer), 0); //odczytanie danych i zapis do bufora
 
     if(size != SOCKET_ERROR && size >= 6)

@@ -36,7 +36,8 @@ protected:
     Network* parent;
 
     const int wait_for_event_time = 10; //ms
-    const u_short PORT = 3782;
+    const u_short PORT = 4782;
+    char buffer[500];
 
     std::vector<SOCKET> sockets; //pierwszy socket jest socketem serwera jeśli włączono serwer
     std::vector<WSAEVENT> sockets_event;

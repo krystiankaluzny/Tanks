@@ -67,9 +67,9 @@ void Network::run()
         }
         else
         {
-            Sleep(7);
+            Sleep(5);
         }
-        Sleep( 0 ); // reszta czasu dla drugiego wątku
+        Sleep(0); // reszta czasu dla drugiego wątku
     }
 }
 

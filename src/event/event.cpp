@@ -411,7 +411,7 @@ void SpeedChangeEvent::setByteArray(char *buffer)
 //    frame_number.c_value[1] = buffer[index++];
 //    frame_number.c_value[2] = buffer[index++];
 //    frame_number.c_value[3] = buffer[index++];
-    speed_change_type = static_cast<SpeedChangeType>(buffer[index++]);    //no sepc type
+    speed_change_type = static_cast<SpeedChangeType>(buffer[index++]);
 }
 
 char *SpeedChangeEvent::getByteArray()
@@ -482,7 +482,7 @@ char *GenerateBonusEvent::getByteArray()
     return buffer;
 }
 
-LevelStateEvent::LevelStateEvent() : Event(LEVEL_STATE_TYPE, 6)
+LevelStateEvent::LevelStateEvent() : Event(LEVEL_STATE_TYPE, 4)
 {
 
 }
@@ -500,8 +500,6 @@ void LevelStateEvent::setByteArray(char *buffer)
 
     pos_r = buffer[index++];
     pos_c = buffer[index++];
-    brick_collision_count = buffer[index++];
-    brick_state_code = buffer[index++];
 }
 
 char *LevelStateEvent::getByteArray()
@@ -514,8 +512,6 @@ char *LevelStateEvent::getByteArray()
 
     buffer[index++] = pos_r;
     buffer[index++] = pos_c;
-    buffer[index++] = brick_collision_count;
-    buffer[index++] = brick_state_code;
 
     return buffer;
 }

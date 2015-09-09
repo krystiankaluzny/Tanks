@@ -27,6 +27,8 @@ Menu::Menu(Game *parent) : GameState(parent)
     m_tank_pointer->clearFlag(TSF_SHIELD);
     m_tank_pointer->setFlag(TSF_MENU);
     m_finished = false;
+
+    setNetworkState(NetworkState::NONE);
 }
 
 Menu::~Menu()
