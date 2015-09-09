@@ -162,9 +162,6 @@ private:
      * @param bonus
      */
     void checkCollisionPlayerWithBonus(Player* player, Bonus* bonus);
-
-    void createSeeds();
-
     /**
      * Liczaba kolumn siatki mapy.
      */
@@ -262,25 +259,15 @@ private:
      */
     int m_enemy_respown_position;
 
+    /**
+     * Nazwy graczy podpiętych pod dane sockety
+     */
     std::map<SOCKET, std::string> m_player_name;
 
-    int random_seed;
-
-    int key_num;
-
-    int m_sending_row;
-
-    int m_sending_column;
-
-    int m_sending_level_time;
-
-    int m_sending_tanks_pos_time;
-
-    int m_sending_player_pos_time;
-
+    /**
+     * Identyfikator kolejnego wrogiego czołgu
+     */
     int m_generate_tank_id;
-
-    int m_generate_bonus_id;
 };
 
 

@@ -28,7 +28,7 @@ Menu::Menu(Game *parent) : GameState(parent)
     m_tank_pointer->setFlag(TSF_MENU);
     m_finished = false;
 
-    setNetworkState(NetworkState::NONE);
+    setNetworkState(NetworkState::NONE); //wyłączenie SERWERA / KLIENTA
 }
 
 Menu::~Menu()

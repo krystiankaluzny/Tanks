@@ -45,7 +45,7 @@ void ReceivedEvents::addEvent(Event *event)
 
 void ReceivedEvents::printEvent(Event *event)
 {
-    std::cout << "Odebrany event Type: " << event->type << " frame: " << event->frame_number.l_value << " current: " <<  current_frame << std::endl;
+//    std::cout << "Odebrany event Type: " << event->type << " frame: " << event->frame_number.l_value << " current: " <<  current_frame << std::endl;
 }
 
 

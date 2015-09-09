@@ -13,8 +13,6 @@
 
 NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
 {
-    key_num = 0;
-
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
@@ -26,11 +24,6 @@ NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
-    m_sending_row = 0;
-    m_sending_column = 0;
-    m_sending_level_time = 0;
-    m_sending_tanks_pos_time = 0;
-    m_sending_player_pos_time = 0;
     m_generate_tank_id = 1000;
 
     EnterCriticalSection(parent->critical_section);
@@ -42,8 +35,6 @@ NetworkBattle::NetworkBattle(Game *parent) : GameState(parent)
 
 NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent)
 {
-    key_num = 0;
-
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = 0;
@@ -54,11 +45,6 @@ NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
-    m_sending_row = 0;
-    m_sending_column = 0;
-    m_sending_level_time = 0;
-    m_sending_tanks_pos_time = 0;
-    m_sending_player_pos_time = 0;
     m_generate_tank_id = 1000;
 
     EnterCriticalSection(parent->critical_section);
@@ -70,8 +56,6 @@ NetworkBattle::NetworkBattle(Game* parent, int players_count) : GameState(parent
 
 NetworkBattle::NetworkBattle(Game *parent, std::vector<Player *> players, int previous_level) : GameState(parent)
 {
-    key_num = 0;
-
     m_level_columns_count = 0;
     m_level_rows_count = 0;
     m_current_level = previous_level;
@@ -89,11 +73,6 @@ NetworkBattle::NetworkBattle(Game *parent, std::vector<Player *> players, int pr
     m_protect_eagle = false;
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
-    m_sending_row = 0;
-    m_sending_column = 0;
-    m_sending_level_time = 0;
-    m_sending_tanks_pos_time = 0;
-    m_sending_player_pos_time = 0;
     m_generate_tank_id = 1000;
 
     EnterCriticalSection(parent->critical_section);
@@ -395,100 +374,6 @@ void NetworkBattle::update(Uint32 dt)
     EnterCriticalSection(parent->critical_section);
         state = parent->shared_data->network_state;
     LeaveCriticalSection(parent->critical_section);
-
-    if(state == NetworkState::SERVER)
-    {
-//        createSeeds();
-
-        m_sending_level_time += dt;
-        m_sending_tanks_pos_time += dt;
-        m_sending_player_pos_time += dt;
-
-//        if(m_sending_level_time > 50)
-//        {
-//            m_sending_level_time = 0;
-//            LevelStateEvent* lev_state;
-//            Object* lev;
-//            lev = m_level.at(m_sending_row).at(m_sending_column);
-//            if(lev == nullptr)
-//            {
-//                lev_state = new LevelStateEvent;
-//                lev_state->levelType = LevelStateEvent::LevelType::NONE;
-//                lev_state->pos_r = m_sending_row;
-//                lev_state->pos_c = m_sending_column;
-//                EnterCriticalSection(parent->critical_section);
-//                    parent->shared_data->transmit_events.addEvent(lev_state);
-//                LeaveCriticalSection(parent->critical_section);
-//            }
-//            else if(lev->type == ST_BRICK_WALL)
-//            {
-//                lev_state = new LevelStateEvent;
-//                lev_state->levelType = LevelStateEvent::LevelType::BRICK;
-//                lev_state->pos_r = m_sending_row;
-//                lev_state->pos_c = m_sending_column;
-//                EnterCriticalSection(parent->critical_section);
-//                    parent->shared_data->transmit_events.addEvent(lev_state);
-//                LeaveCriticalSection(parent->critical_section);
-//            }
-//            else if(lev->type == ST_STONE_WALL)
-//            {
-//                lev_state = new LevelStateEvent;
-//                lev_state->levelType = LevelStateEvent::LevelType::STONE;
-//                lev_state->pos_r = m_sending_row;
-//                lev_state->pos_c = m_sending_column;
-//                EnterCriticalSection(parent->critical_section);
-//                    parent->shared_data->transmit_events.addEvent(lev_state);
-//                LeaveCriticalSection(parent->critical_section);
-//            }
-//        }
-        m_sending_column++;
-        if(m_sending_column >= m_level_columns_count)
-        {
-            m_sending_column = 0;
-            m_sending_row++;
-        }
-        if(m_sending_row >= m_level_rows_count)
-        {
-            m_sending_row = 0;
-        }
-
-//        if(m_sending_tanks_pos_time > 620)
-//        {
-//            m_sending_tanks_pos_time = 0;
-//            PositionEvent* pos;
-//            for(auto e : m_enemies)
-//            {
-//                pos = new PositionEvent;
-//                pos->obj = PositionEvent::PosObj::TANK;
-//                pos->obj_id.l_value = e->object_id;
-//                pos->pos_x.d_value = e->pos_x;
-//                pos->pos_y.d_value = e->pos_y;
-
-//                EnterCriticalSection(parent->critical_section);
-//                    parent->shared_data->transmit_events.addEvent(pos);
-//                LeaveCriticalSection(parent->critical_section);
-//            }
-//        }
-
-//        if(m_sending_player_pos_time > 570)
-//        {
-//            m_sending_player_pos_time = 0;
-//            PositionEvent* pos;
-//            for(auto e : m_players)
-//            {
-//                pos = new PositionEvent;
-//                pos->obj = PositionEvent::PosObj::TANK;
-//                pos->obj_id.l_value = e->object_id;
-//                pos->pos_x.d_value = e->pos_x;
-//                pos->pos_y.d_value = e->pos_y;
-
-//                EnterCriticalSection(parent->critical_section);
-//                parent->shared_data->transmit_events.addEvent(pos);
-//                LeaveCriticalSection(parent->critical_section);
-//            }
-//            m_sending_tanks_pos_time = 0;
-//        }
-    }
 }
 
 void NetworkBattle::eventProcess()
@@ -570,11 +455,7 @@ void NetworkBattle::eventProcess()
         }
         case EventType::KEY_EVENT_TYPE:
         {
-            key_num++;
-//            cout << "KEY_EVENT_TYPE frame: " << parent->getCurrentFrame() << " Key num: " << key_num << std::endl;
             KeyEvent* key =(KeyEvent*)e;
-//            cout << "key obj id: " << key->id_tank.l_value << endl;
-//            cout << "Player1 curr: " << parent->getCurrentFrame()  << " posX: " << m_players.at(0)->pos_x << " posY: " << m_players.at(0)->pos_y << endl;
             switch(key->key_type)
             {
             case KeyEvent::KeyType::UP:
