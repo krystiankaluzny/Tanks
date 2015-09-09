@@ -108,43 +108,17 @@ void ServerTCP::run()
 
 void ServerTCP::sendData()
 {
-//    EnterCriticalSection(parent->critical_section);
-//        events = parent->shared_data->received_events.frame_events[last_send_frame_events];
-//    LeaveCriticalSection(parent->critical_section);
-
     char* buf;
 
-//    int events_count = events.events.size();
-//    for(int i = 0; i < events_count; ++i)
-//    {
-//        e = events.events[i];
-//        buf = e->getByteArray();
-////        std::cout <<"SERVER send " << i << " Frame to send " << current_frame + 10 << " frame event " << e->frame_number.l_value << std::endl;
-
-//        if(e->type == EventType::POSITION_TYPE)
-//        {
-//            printHex(buf, e->bufferSize());
-//        }
-//        broadcast(buf, e->bufferSize());
-
-//        delete[] buf;
-//    }
 
     std::vector<Event*> transmit_events;
     EnterCriticalSection(parent->critical_section);
         transmit_events = parent->shared_data->transmit_events.events;
     LeaveCriticalSection(parent->critical_section);
 
-    int sum_size = 0;
     for(Event* e : transmit_events)
     {
         buf = e->getByteArray();
-
-//        for(int i = 0; i < e->bufferSize(); i++)
-//        {
-//            buffer[sum_size++] = buf[i];
-//        }
-
 
         broadcast(buf, e->bufferSize());
 
@@ -155,10 +129,7 @@ void ServerTCP::sendData()
         Sleep(1);
         delete[] buf;
     }
-//    if(sum_size)
-//    {
-//        broadcast(buffer, sum_size);
-//    }
+
     //czyszczenie
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->transmit_events.events.clear();
@@ -226,7 +197,6 @@ void ServerTCP::readSocket(int socket_index)
 
     if(size != SOCKET_ERROR && size >= 6)
     {
-//        cout << " Cos idzie z " << sockets[socket_index] << endl;
         addEventFromBuffer(buffer, size);
     }
 }
@@ -235,10 +205,7 @@ void ServerTCP::broadcast(char *buf, int size)
 {
     for(int i = 1; i < sockets.size(); i++)
     {
-
-//        cout << " Type send " << (int)buf[0] << endl;
         send(sockets[i], buf , size, 0);
-        send_counter++;
     }
 }
 

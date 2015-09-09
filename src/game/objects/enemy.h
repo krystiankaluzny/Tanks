@@ -55,7 +55,6 @@ private:
      * Czas jazdy w danym kirunku. Czas po jakim nastąpi zmiana kierunku.
      */
     Uint32 m_keep_direction_time;
-
     /**
      * Czas od ostatniej próby wznowienia jazdy
      */

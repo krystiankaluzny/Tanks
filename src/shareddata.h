@@ -19,11 +19,10 @@ public:
      */
     MyQueue<Event*> received_events_queue;
 
-    TransmitEvents transmit_events;
     /**
-     * Eventy odebrane z servera
+     * Tablica zdarzeń do wysłania
      */
-//    ReceivedEvents received_events;
+    TransmitEvents transmit_events;
     /**
      * Status sieci: server, klient lub wyłączony
      */
@@ -46,31 +45,20 @@ public:
      */
     unsigned long current_frame_number;
 
+    /**
+     * Identyfikator gracza
+     */
     unsigned long player_id;
 
+    /**
+     * Zbiór nazw graczy przypisanych socketom
+     */
     std::map<SOCKET, std::string> player_name;
 
+    /**
+     * Nazwa lub ip serwera.
+     */
     std::string host_name;
-
-    /**
-     * Usuwanie eventów z wybranej ramki.
-     * @param frame -1 oznacza usunięcie wszystkiego
-     */
-//    void clearReceiveEvents(unsigned long frame);
-
-    /**
-     * Usuwanie eventów z obecnej ramki
-     */
-//    void clearCurrentEvents();
-    /**
-     * Ustawienie obecnej ramki gry w SharedData oraz w ReceivedEvents.
-     * @param current_frame
-     */
-//    void setCurrentFrameNumber(unsigned long current_frame);
-
-//    void incrementFrameNumber();
-
-//    void newEvent(Event* event);
 
 };
 

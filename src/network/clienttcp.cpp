@@ -129,9 +129,7 @@ void ClientTCP::sendData()
 {
     //zdjęcie z kolejki odpowiednich eventów
     std::vector<Event*> transmit_events;
-    long current = parent->getCurrentFrame();
     EnterCriticalSection(parent->critical_section);
-//        send_events = parent->shared_data->send_events;
         transmit_events = parent->shared_data->transmit_events.events;
     LeaveCriticalSection(parent->critical_section);
 
@@ -141,8 +139,6 @@ void ClientTCP::sendData()
     {
         buf = e->getByteArray();
         send(sockets[0], buf , e->bufferSize(), 0);
-        send_counter++;
-//        std::cout << "send_counter: " << (int)send_counter << std::endl;
 
         EnterCriticalSection(parent->critical_section);
             parent->shared_data->received_events_queue.push(e);

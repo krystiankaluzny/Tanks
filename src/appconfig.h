@@ -142,9 +142,13 @@ public:
      * Czas co jaki są pobierane nazwy graczy w trybie czekania na grę.
      */
     static unsigned send_players_names_time;
-
+    /**
+     * Jakiś offset wysyłania eventów.
+     */
     static unsigned sending_events_offset;
-
+    /**
+     * Zadana wartość FPS.
+     */
     static unsigned fps;
 };
 

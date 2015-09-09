@@ -17,26 +17,54 @@ public:
     ServerTCP();
     ~ServerTCP();
 
+    /**
+     * Pętla główna serwera.
+     */
     void run();
+    /**
+     * Inicjalizacja serwera
+     * @return
+     */
     bool init();
+    /**
+     * Zamknięcie serwera
+     */
     void close();
+    /**
+     * Wysłanie danych
+     */
     void sendData();
+    /**
+     * Odbiór danych.
+     */
     void readData();
 
 private:
 
-    //akceptowanie prośby od klienta o połączenie (dodanie nowego socketu)
+    /*
+     * Aceptowanie prośby od klienta o połączenie (dodanie nowego socketu)
+     */
     void acceptSocket();
-    //zamknięcie socketu
+    /*
+     * Zamknięcie socketu
+     */
     void closeSocket(int socket_index);
-    //odczyt ramki z socketu
+    /*
+     * Ddczyt ramki danych z socketu
+     */
     void readSocket(int socket_index);
 
+    /**
+     * Wusłanie ramki danych do wszystkich dołączonych klientów.
+     * @param buf
+     * @param size
+     */
     void broadcast(char* buf, int size);
+    /**
+     * Wysłanie ramki inicjalizującej do wybranego klienta
+     * @param s
+     */
     void sendInit(SOCKET s);
-
-    unsigned long last_send_frame_events;
-
 };
 
 #endif // SERVERTCP_H

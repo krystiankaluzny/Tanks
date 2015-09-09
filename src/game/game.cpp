@@ -140,25 +140,12 @@ void Game::mainLoop()
         fps_count++;
         if(fps_time > 200)
         {
-//            std::cout << "GAME: FPS: " << AppConfig::fps << " cur " << FPS << " delay: " << delay << " dt: " << dt << std::endl;
-//            long current = getCurrentFrame();
-//            std::cout << "current: " << current << std::endl;
             FPS = (double)fps_count / fps_time * 1000;
             if(FPS > AppConfig::fps) delay++;
             else if(delay > 0) delay--;
             fps_time = 0; fps_count = 0;
         }
 
-//        NetworkState state;
-//        EnterCriticalSection(critical_section);
-//            shared_data->incrementFrameNumber();
-//            state = shared_data->network_state;
-//        LeaveCriticalSection(critical_section);
-
-//        if(state != NetworkState::NONE)
-//        {
-//            std::cout << "Current frame: " << getCurrentFrame() << std::endl;
-//        }
         Sleep(delay); // reszta czasu dla drugiego wątku
     }
 }

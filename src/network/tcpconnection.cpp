@@ -5,8 +5,6 @@
 
 TCPConnection::TCPConnection()
 {
-    send_counter = 0;
-    read_counter = 0;
 }
 
 void TCPConnection::setParent(Network *parent)
@@ -42,11 +40,8 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
     int index = 0;
     char event_type;
     Event* event;
-
-//    printHex(buffer, size);
     do
     {
-        read_counter++;
         event = nullptr;
         event_type = buffer[index];
         switch(event_type)
@@ -122,12 +117,6 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             {
                 event->setByteArray(buffer);
 
-//                if(event->type == EventType::POSITION_TYPE)
-//                {
-//                    std::cout << "type: " << (int)event->type << std::endl;
-//                    printHex(buffer, event->bufferSize());
-//                }
-
                 EnterCriticalSection(parent->critical_section);
                     parent->shared_data->received_events_queue.push(event);
                 LeaveCriticalSection(parent->critical_section);
@@ -140,23 +129,8 @@ void TCPConnection::addEventFromBuffer(char *buffer, int size)
             break;
         }
     }while(index < size);
-
-//    std::cout << "read_counter: " << (int)read_counter << std::endl;
 }
 
-void TCPConnection::getLongData(LongData &event_index, LongData &events_count, char *buffer)
-{
-    int index = 0;
-    event_index.c_value[0] = buffer[index++];
-    event_index.c_value[1] = buffer[index++];
-    event_index.c_value[2] = buffer[index++];
-    event_index.c_value[3] = buffer[index++];
-
-    events_count.c_value[0] = buffer[index++];
-    events_count.c_value[1] = buffer[index++];
-    events_count.c_value[2] = buffer[index++];
-    events_count.c_value[3] = buffer[index++];
-}
 
 void TCPConnection::printHex(char *data, int size)
 {
@@ -171,12 +145,10 @@ void TCPConnection::printHex(char *data, int size)
 void TCPConnection::initialize(InitEvent* event)
 {
     EnterCriticalSection(parent->critical_section);
-//        parent->shared_data->setCurrentFrameNumber(event->current_frame.l_value);
         parent->shared_data->player_id = event->player_id.l_value;
     LeaveCriticalSection(parent->critical_section);
 
     EnterCriticalSection(parent->critical_section);
-//        parent->shared_data->clearReceiveEvents(-1);
         parent->shared_data->transmit_events.events.clear();
     LeaveCriticalSection(parent->critical_section);
 

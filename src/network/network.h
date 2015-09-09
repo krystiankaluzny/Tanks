@@ -16,9 +16,21 @@ public:
     void run();
 
 private:
+    /**
+     * Zmienna przechowująca czy wątek sieci działa, czy ma być zakończony.
+     */
     bool is_running;
+    /**
+     * Aktualny stan sieci: klient, serwer lub wyłączony
+     */
     NetworkState state;
+    /**
+     * Obiekt serwera gry.
+     */
     ServerTCP server;
+    /**
+     * Obiekt klienta gry.
+     */
     ClientTCP client;
 };
 

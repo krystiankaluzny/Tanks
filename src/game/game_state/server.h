@@ -48,7 +48,14 @@ public:
     GameState* nextState();
 
 private:
+    /**
+     * Pobranie imion graczy ze współdzielonych danych
+     */
     void getNames();
+
+    /**
+     * Wysłanie imion do klientów
+     */
     void sendNames();
     /**
      * Kontener przechowujący wszystkie napisy jakie pojawiają się w menu.
@@ -58,11 +65,25 @@ private:
      * Indeks wybranej pozycji menu.
      */
     int m_menu_index;
+    /**
+     * Wskaźnik menu w postaci czołgu
+     */
     Player* m_tank_pointer;
+    /**
+     * Czy wystartować grę.
+     */
     bool m_start_game;
-
+    /**
+     * Imiona graczy
+     */
     std::map<SOCKET, std::string> m_player_name;
+    /**
+     *  Czas od ostatniego pobrania imion
+     */
     unsigned m_get_names_time;
+    /**
+     * Czas od ostatniego wysłania imion
+     */
     unsigned m_send_names_time;
 };
 

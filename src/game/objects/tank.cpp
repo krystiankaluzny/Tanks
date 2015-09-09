@@ -70,10 +70,7 @@ void Tank::update(Uint32 dt)
              state = parent->shared_data->network_state;
         LeaveCriticalSection(parent->critical_section);
     }
-    move();
-//    if(state == NetworkState::NONE)
-//    {
-//    }
+    move(); //przesunięcie
 
     if(testFlag(TSF_ON_ICE) && m_slip_time > 0)
     {
@@ -369,8 +366,6 @@ void Tank::move()
         {
             if(type >= SpriteType::ST_TANK_A && type <= SpriteType::ST_TANK_D)
             {
-//               cout << "POJEBALO3 " << object_id << endl;
-//               std::cout << "speed " << speed << std::endl;
                speed = default_speed;
             }
 
@@ -389,10 +384,6 @@ void Tank::move()
                 pos_x -= speed * dt;
                 break;
             }
-        }
-        else
-        {
-//            cout << "Stop " << object_id << endl;
         }
 
         dest_rect.x = pos_x;

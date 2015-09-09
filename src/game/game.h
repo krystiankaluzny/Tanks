@@ -24,12 +24,25 @@ private:
      */
     void eventProces();
 
+    /**
+     * Funkcja obsługująca eventy przychodzące przez sieć.
+     */
     void networkEvent();
 
+    /**
+     * Pętla główna programu
+     */
     void mainLoop();
 
+    /**
+     * Inicjalizacja biblioteki SDL2.
+     * @return
+     */
     bool initSDL();
 
+    /**
+     * Zwalnianie zasobów.
+     */
     void quitSDL();
 
 private:    

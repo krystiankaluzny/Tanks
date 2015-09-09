@@ -1,6 +1,5 @@
 #ifndef APPTHREAD
 #define APPTHREAD
-#include "scopelock.h"
 #include "event/eventstore.h"
 #include "shareddata.h"
 #include "game/objects/object.h"
@@ -21,17 +20,6 @@ public:
      * Uruchomienie działania wątku.
      */
     virtual void run() = 0;
-
-    /**
-     * Zapisanie eventu do kolejki, która ma zostać wysłana na server.
-     * @param event
-     */
-//    void saveEvent(Event* event);
-
-    /**
-     * Ustawienie flagi wysłania eventów na server.
-     */
-//    void sendEventQueue();
     /**
      * Czy gra jest w sieci.
      * @return
@@ -48,6 +36,10 @@ public:
      */
     CRITICAL_SECTION* critical_section;
 
+    /**
+     * Pobranie obecnej ramki gry.
+     * @return
+     */
     unsigned long getCurrentFrame()
     {
         unsigned long frame;
@@ -58,6 +50,10 @@ public:
         return frame;
     }
 
+    /**
+     * Pobranie identyfikatora klienta.
+     * @return
+     */
     unsigned long getPlayerId()
     {
         unsigned long player_id;
@@ -68,6 +64,12 @@ public:
         return player_id;
     }
 
+    /**
+     * Wysyłanie pozycji danego obiektu
+     * @param obj
+     * @param obj_type
+     * @param fast
+     */
     void sendObjectPosition(Object* obj, PositionEvent::PosObj obj_type, bool fast = false)
     {
         PositionEvent* pos = new PositionEvent;
@@ -76,9 +78,9 @@ public:
         pos->pos_x.d_value = obj->pos_x;
         pos->pos_y.d_value = obj->pos_y;
 
-            EnterCriticalSection(critical_section);
-                shared_data->transmit_events.addEvent(pos);
-            LeaveCriticalSection(critical_section);
+        EnterCriticalSection(critical_section);
+            shared_data->transmit_events.addEvent(pos);
+        LeaveCriticalSection(critical_section);
     }
 };
 

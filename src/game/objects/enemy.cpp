@@ -127,7 +127,6 @@ void Enemy::update(Uint32 dt)
     m_fire_time += dt;
     if(m_direction_time > m_keep_direction_time)
     {
-//        cout << "Enemy Obj id: " << object_id << endl;
         m_direction_time = 0;
         m_keep_direction_time = rand() % 800 + 100;
 
@@ -323,7 +322,6 @@ void Enemy::update(Uint32 dt)
 void Enemy::destroy()
 {
     lives_count--;
-//    clearFlag(TSF_BONUS); //możliwe jednokrotne wypadnięcie bonusu
     if(lives_count <= 0)
     {
         lives_count = 0;

@@ -116,7 +116,6 @@ void Player::update(Uint32 dt)
 
         if(key_event != nullptr)
         {
-//            std::cout << "key_event != nullptr "<< std::endl;
             EnterCriticalSection(parent->critical_section);
                 parent->shared_data->transmit_events.addEvent(key_event);
             LeaveCriticalSection(parent->critical_section);

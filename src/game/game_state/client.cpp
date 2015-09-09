@@ -25,7 +25,7 @@ Client::Client(Game *parent) : GameState(parent)
     m_tank_pointer = new Player(0, 0 , ST_PLAYER_1);
     m_tank_pointer->direction = D_RIGHT;
     m_tank_pointer->pos_x = 80;
-    m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+    m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 270;
     m_tank_pointer->setFlag(TSF_LIFE);
     m_tank_pointer->update(0);
     m_tank_pointer->clearFlag(TSF_LIFE);
@@ -89,7 +89,7 @@ void Client::draw()
     SDL_Point text_start;
     for(auto text : m_menu_texts)
     {
-        text_start = { 125, (i + 1) * 32 + 300};
+        text_start = { 125, (i + 1) * 32 + 280};
         if(i == 0)
         {
             text += host;
@@ -148,7 +148,7 @@ void Client::eventProcess(SDL_Event *ev)
             if(m_menu_index < 0)
                 m_menu_index = m_menu_texts.size() - 1;
 
-            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 270;
         }
         else if(key == SDLK_DOWN)
         {
@@ -156,7 +156,7 @@ void Client::eventProcess(SDL_Event *ev)
             if(m_menu_index >= m_menu_texts.size())
                 m_menu_index = 0;
 
-            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 270;
         }
         else if(key == SDLK_SPACE || key == SDLK_RETURN)
         {

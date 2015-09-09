@@ -11,6 +11,9 @@ class App
 {
 public:
     App();
+    /**
+     * Pętla główna całego programu
+     */
     void run();
 };
 

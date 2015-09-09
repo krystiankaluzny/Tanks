@@ -2,15 +2,26 @@
 #define MYQUEUE_H
 #include <queue>
 
+/**
+ * Kolejka zdarzeń
+ */
 template < typename T >
 class MyQueue
 {
 public:
     MyQueue(){}
+    /**
+     * Dodanie do kolejki
+     * @param obj
+     */
     void push(T obj)
     {
         m_queue.push(obj);
     }
+    /**
+     * Zdjęcie z kolejki
+     * @return
+     */
     T& pop()
     {
         T& obj = m_queue.front();
@@ -23,6 +34,9 @@ public:
     }
 
 private:
+    /**
+     * Kolejka standardowa
+     */
     std::queue<T> m_queue;
 };
 

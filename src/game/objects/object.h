@@ -31,6 +31,7 @@ public:
      * @param sprite - animacja obiektu danego typu
      */
     Object(double x, double y, const SpriteData* sprite);
+
     virtual ~Object();
 
     /**
@@ -43,6 +44,10 @@ public:
      */
     virtual void update(Uint32 dt);
 
+    /**
+     * Ustawienie rodzica.
+     * @param parent
+     */
     void setParent(AppThread* parent);
 
     /**
@@ -73,11 +78,9 @@ public:
      * Dokładna pozycja pionowa obiektu.
      */
     double pos_y;
-
     /**
      * Identyfikator obiektu
      */
-
     unsigned long object_id;
 
     static unsigned long next_object_id;
