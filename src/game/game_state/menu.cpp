@@ -14,7 +14,7 @@ Menu::Menu(Game *parent) : GameState(parent)
     m_menu_texts.push_back("1 Player");
     m_menu_texts.push_back("2 Players");
     m_menu_texts.push_back("Create Server");
-    m_menu_texts.push_back("Join game");
+    m_menu_texts.push_back("Join Game");
     m_menu_texts.push_back("Exit");
     m_menu_index = 0;
     m_tank_pointer = new Player(0, 0 , ST_PLAYER_1);

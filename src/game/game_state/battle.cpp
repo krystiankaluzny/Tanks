@@ -883,7 +883,7 @@ void Battle::nextLevel()
         else
         {
             Player* p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1);
-            p1->player_keys = AppConfig::player_keys.at(0);
+            p1->player_keys = AppConfig::player_keys.at(2);
             m_players.push_back(p1);
         }
     }

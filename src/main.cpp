@@ -8,8 +8,8 @@
  * Gracz drugi (zielony) porusza się klawiszamie @a W, @a S, @a A, @a D, oraz strzela @a Lewym @a Controlem.
  * Rozgrywkę można zatrzymać i ponownie wznowić przyciskiem @a Enter.
  * @author Krystian Kałużny
- * @date 12.05.215
- * @version 1.0.1
+ * @date 09.09.2015
+ * @version 1.0.2
  * @par Kontakt:
  * @a k.kaluzny141@gmail.com
 */
