@@ -378,7 +378,6 @@ void NetworkBattle::update(Uint32 dt)
 
 void NetworkBattle::eventProcess()
 {
-//    std::cout << "eventProcess 1" << std::endl;
     int event_count = 0;
     SOCKET player_socket;
     bool is_empty = true;
@@ -483,14 +482,7 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
-                            //                        p->next_direction = D_UP;
                             e->setDirection(D_UP);
-//                            e->speed = e->default_speed;
-//                            e->stop = false;
-//                            cout << "Enemy before: "<< " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
-//                            e->move();
-//                            cout << "Enemy after: "<< " posX: " << e->pos_x << " posY: " << e->pos_y << endl;
                             found = true;
                             break;
                         }
@@ -527,12 +519,7 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
-                            //                        p->next_direction = D_UP;
                             e->setDirection(D_DOWN);
-//                            e->speed = e->default_speed;
-//                            e->stop = false;
-//                            e->move();
                             found = true;
                             break;
                         }
@@ -569,11 +556,7 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
-                            //                        p->next_direction = D_UP;
                             e->setDirection(D_LEFT);
-//                            e->speed = e->default_speed;
-//                            e->move();
                             found = true;
                             break;
                         }
@@ -610,12 +593,7 @@ void NetworkBattle::eventProcess()
                     {
                         if(e->object_id == key->id_tank.l_value)
                         {
-//                            checkCollisionTankWithLevel(e, AppConfig::game_speed);
-                            //                        p->next_direction = D_UP;
                             e->setDirection(D_RIGHT);
-//                            e->speed = e->default_speed;
-//                            e->stop = false;
-//                            e->move();
                             found = true;
                             break;
                         }
@@ -696,44 +674,6 @@ void NetworkBattle::eventProcess()
             }
             if(!found)
                 std::cout << "Pos type NOT found" << std::endl;
-
-//            switch(pos->obj)
-//            {
-//                case PositionEvent::PosObj::TANK:
-//                {
-//                    bool found = false;
-//                    for(Player* p : m_players)
-//                    {
-//                        if(p->object_id == pos->obj_id.l_value)
-//                        {
-//                            p->pos_x = pos->pos_x.d_value;
-//                            p->pos_y = pos->pos_y.d_value;
-//                            found = true;
-//                            break;
-//                        }
-//                    }
-
-//                    if(!found)
-//                    {
-//                        for(Enemy* e : m_enemies)
-//                        {
-//                            if(e->object_id == pos->obj_id.l_value)
-//                            {
-//                                e->pos_x = pos->pos_x.d_value;
-//                                e->pos_y = pos->pos_y.d_value;
-//                                found = true;
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    if(!found)
-//                        std::cout << "Pos type NOT found" << std::endl;
-
-//                    break;
-//                }
-//            default:
-//                std::cout << "Unknown POSITION_TYPE " << (int) pos->obj << std::endl;
-//            }
             break;
         }
         case EventType::SPEED_CHANGE_TYPE:
@@ -788,9 +728,6 @@ void NetworkBattle::eventProcess()
             is_empty = parent->shared_data->received_events_queue.empty();
         LeaveCriticalSection(parent->critical_section);
     }
-//    std::cout << "eventProcess 2" << std::endl;
-//    if(event_count)
-//        std::cout << "event_count: " << (int)event_count << std::endl;
 }
 
 void NetworkBattle::eventProcess(SDL_Event *ev)
@@ -799,15 +736,6 @@ void NetworkBattle::eventProcess(SDL_Event *ev)
     {
         switch(ev->key.keysym.sym)
         {
-//        case SDLK_n:
-//            m_enemy_to_kill = 0;
-//            m_finished = true;
-//            break;
-//        case SDLK_b:
-//            m_enemy_to_kill = 0;
-//            m_current_level -= 2;
-//            m_finished = true;
-//            break;
         case SDLK_t:
         {
             AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
@@ -817,7 +745,6 @@ void NetworkBattle::eventProcess(SDL_Event *ev)
         {
             KeyEvent* pause = new KeyEvent;
             pause->key_type = KeyEvent::KeyType::PAUSE;
-//            pause->frame_number.l_value = parent->getCurrentFrame() + pause->priority;
             pause->id_tank.l_value = 0;
 
             EnterCriticalSection(parent->critical_section);
@@ -1141,7 +1068,6 @@ void NetworkBattle::checkCollisionBulletWithLevel(Bullet* bullet)
 
             if(intersect_rect.w > 0 && intersect_rect.h > 0)
             {
-                //TODO emit bullet collision
                 if(bullet->increased_damage)
                 {
                     delete o;
