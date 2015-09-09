@@ -50,6 +50,7 @@ public:
 
     std::map<SOCKET, std::string> player_name;
 
+    std::string host_name;
     /**
      * Usuwanie eventów z wybranej ramki.
      * @param frame -1 oznacza usunięcie wszystkiego

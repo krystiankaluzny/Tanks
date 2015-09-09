@@ -6,6 +6,7 @@ SharedData::SharedData()
     run_app = true;
     send_events = false;
     current_frame_number = 0;
+    host_name = "localhost";
 //    received_events.parent = this;
 }
 

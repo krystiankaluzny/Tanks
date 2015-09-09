@@ -17,6 +17,7 @@ public:
     void close();
     void sendData();
     void readData();
+    string hostName;
 };
 
 #endif // CLENTTCP_H

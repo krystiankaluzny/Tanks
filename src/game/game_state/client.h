@@ -2,11 +2,14 @@
 #define CLIENT_H
 
 #include "gamestate.h"
+#include "../objects/player.h"
 
 class Client : public GameState
 {
 public:
     Client(Game* parent);
+
+    ~Client();
 
     /**
      * Funkcja zwraca @a true po określonym czasie wyświetlania ekranu punktów.
@@ -43,11 +46,15 @@ private:
     void getNames();
     void sendName();
 
+    std::vector<std::string> m_menu_texts;
+    std::string host;
+    int m_menu_index;
+    Player* m_tank_pointer;
+    bool m_start_game;
 
     std::map<SOCKET, std::string> m_player_name;
     unsigned m_get_names_time;
     unsigned m_send_name_time;
-    bool m_start_game;
 };
 
 #endif // CLIENT_H

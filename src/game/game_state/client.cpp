@@ -14,9 +14,33 @@ Client::Client(Game *parent) : GameState(parent)
 
     m_get_names_time = 0;
     m_send_name_time = 0;
-    setNetworkState(NetworkState::CLIENT);
+//    setNetworkState(NetworkState::CLIENT);
+
+    host = "localhost";
+
+    m_menu_texts.push_back("Host: ");
+    m_menu_texts.push_back("Join");
+    m_menu_texts.push_back("Exit");
+    m_menu_index = 0;
+
+    m_tank_pointer = new Player(0, 0 , ST_PLAYER_1);
+    m_tank_pointer->direction = D_RIGHT;
+    m_tank_pointer->pos_x = 80;
+    m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+    m_tank_pointer->setFlag(TSF_LIFE);
+    m_tank_pointer->update(0);
+    m_tank_pointer->clearFlag(TSF_LIFE);
+    m_tank_pointer->clearFlag(TSF_SHIELD);
+    m_tank_pointer->setFlag(TSF_MENU);
+
     m_start_game = false;
 }
+
+Client::~Client()
+{
+    delete m_tank_pointer;
+}
+
 
 bool Client::finished() const
 {
@@ -61,6 +85,23 @@ void Client::draw()
         i++;
     }
 
+    //menu
+    i = 0;
+    SDL_Point text_start;
+    for(auto text : m_menu_texts)
+    {
+        text_start = { 125, (i + 1) * 32 + 300};
+        if(i == 0)
+        {
+            text += host;
+        }
+
+        i++;
+        renderer->drawText(&text_start, text, {255, 255, 255, 255}, 2);
+    }
+
+    m_tank_pointer->draw();
+
     renderer->flush();
 }
 
@@ -87,15 +128,65 @@ void Client::update(Uint32 dt)
             m_send_name_time = 0;
         }
     }
+
+    m_tank_pointer->speed = m_tank_pointer->default_speed;
+    m_tank_pointer->stop = true;
+    m_tank_pointer->update(dt);
 }
 
 void Client::eventProcess(SDL_Event *ev)
 {
     if(ev->type == SDL_KEYDOWN)
     {
-        if(ev->key.keysym.sym == SDLK_ESCAPE)
+        SDL_Keycode key = ev->key.keysym.sym;
+        if(key == SDLK_ESCAPE)
         {
             m_finished = true;
+        }
+        else if(key == SDLK_UP)
+        {
+            m_menu_index--;
+            if(m_menu_index < 0)
+                m_menu_index = m_menu_texts.size() - 1;
+
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+        }
+        else if(key == SDLK_DOWN)
+        {
+            m_menu_index++;
+            if(m_menu_index >= m_menu_texts.size())
+                m_menu_index = 0;
+
+            m_tank_pointer->pos_y = (m_menu_index + 1) * 32 + 290;
+        }
+        else if(key == SDLK_SPACE || key == SDLK_RETURN)
+        {
+            if(m_menu_index == 1)
+            {
+                EnterCriticalSection(parent->critical_section);
+                    parent->shared_data->host_name = host;
+                LeaveCriticalSection(parent->critical_section);
+                setNetworkState(NetworkState::CLIENT);
+            }
+            else if(m_menu_index == 2)
+            {
+                m_finished = true;
+            }
+        }
+        if(m_menu_index == 0)
+        {
+            if(key == SDLK_BACKSPACE)
+            {
+                host = host.substr(0,host.length()-1);
+            }
+            else if(key == SDLK_DELETE)
+            {
+                host = "";
+            }
+            else if(key >= SDLK_a && key <= SDLK_z || key == SDLK_PERIOD || key >= SDLK_0 && key <= SDLK_9)
+            {
+                host += (char)(key);
+            }
         }
     }
 }

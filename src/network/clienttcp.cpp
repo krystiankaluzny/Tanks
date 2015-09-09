@@ -25,9 +25,12 @@ bool ClientTCP::init()
         WSACleanup();
         return false;
     }
+    EnterCriticalSection(parent->critical_section);
+        hostName = parent->shared_data->host_name;
+    LeaveCriticalSection(parent->critical_section);
 
     PHOSTENT host;
-    if((host = gethostbyname("tank"))==NULL)
+    if((host = gethostbyname("tank")) == NULL)
     {
         closesocket(client_socket);
         WSACleanup();
@@ -37,11 +40,23 @@ bool ClientTCP::init()
     SOCKADDR_IN server_address;
     ZeroMemory(&server_address, sizeof(server_address));
     server_address.sin_family = AF_INET;
-    server_address.sin_addr.s_addr = *((u_long*)host->h_addr); //adres IP4 servera
     server_address.sin_port = htons(PORT); //numer potu
 
-    char *hostname = new char[128];
-    gethostname(hostname,128);
+    if(inet_addr(hostName.c_str()) == INADDR_NONE)
+    {
+        PHOSTENT host;
+        if((host = gethostbyname("tank")) == NULL)
+        {
+            closesocket(client_socket);
+            WSACleanup();
+            return false;
+        }
+        server_address.sin_addr.s_addr = *((u_long*)host->h_addr); //adres IP4 servera
+    }
+    else
+    {
+        server_address.sin_addr.s_addr = inet_addr(hostName.c_str());
+    }
 
     cout << inet_ntoa(server_address.sin_addr) << endl;
 
@@ -82,6 +97,8 @@ void ClientTCP::run()
         else if(network_events.lNetworkEvents & FD_CLOSE)
         {
             close();
+
+            Sleep(20);
             EnterCriticalSection(parent->critical_section);
                 parent->shared_data->network_state = NetworkState::NONE;
             LeaveCriticalSection(parent->critical_section);
@@ -96,6 +113,13 @@ void ClientTCP::close()
     sockets_event.erase(sockets_event.begin());
 
     clearNames();   //usuwanie wszystkich graczy z listy w shared data, żeby przy kolejnej próbie łączenia lista była pusta
+
+    DisconnectEvent* event = new DisconnectEvent;
+    event->player_id.l_value = sockets[0];
+
+    EnterCriticalSection(parent->critical_section);
+        parent->shared_data->received_events_queue.push(event);
+    LeaveCriticalSection(parent->critical_section);
 
     closesocket(sockets[0]);
     sockets.erase(sockets.begin());

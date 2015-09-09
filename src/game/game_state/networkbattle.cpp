@@ -301,7 +301,14 @@ void NetworkBattle::update(Uint32 dt)
             {
                 m_level_end_time += dt;
                 if(m_level_end_time > AppConfig::level_end_time)
+                {
+                    StartGameEvent* start_game = new StartGameEvent;
+                    EnterCriticalSection(parent->critical_section);
+                        parent->shared_data->transmit_events.addEvent(start_game);
+                    LeaveCriticalSection(parent->critical_section);
+
                     m_finished = true;
+                }
             }
 
             if(m_players.empty() && !m_game_over)
@@ -539,13 +546,26 @@ void NetworkBattle::eventProcess()
             LeaveCriticalSection(parent->critical_section);
             break;
         }
+        case EventType::START_GAME_TYPE:
+        {
+            if(m_enemy_to_kill < 15)
+            {
+                m_enemy_to_kill = 0;
+                m_finished = true;
+            }
+            break;
+        }
         case EventType::DISCONNECT_EVENT_TYPE:
         {
+            std::cout << "DISCONNECT " << std::endl;
+
             DisconnectEvent* d = (DisconnectEvent*)e;
             player_socket = d->player_id.l_value;
             EnterCriticalSection(parent->critical_section);
                 parent->shared_data->player_name.erase(player_socket);
             LeaveCriticalSection(parent->critical_section);
+            m_game_over = true;
+            m_finished = true;
             break;
         }
         case EventType::KEY_EVENT_TYPE:
@@ -567,6 +587,8 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_UP);
                         p->stop = false;
                         checkCollisionTankWithLevel(p, AppConfig::game_speed);
+                        for(auto enemy : m_enemies)
+                            checkCollisionTwoTanks(p, enemy, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
                         p->stop = true;
@@ -609,6 +631,8 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_DOWN);
                         p->stop = false;
                         checkCollisionTankWithLevel(p, AppConfig::game_speed);
+                        for(auto enemy : m_enemies)
+                            checkCollisionTwoTanks(p, enemy, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
                         p->stop = true;
@@ -649,6 +673,8 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_LEFT);
                         p->stop = false;
                         checkCollisionTankWithLevel(p, AppConfig::game_speed);
+                        for(auto enemy : m_enemies)
+                            checkCollisionTwoTanks(p, enemy, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
                         p->stop = true;
@@ -688,6 +714,8 @@ void NetworkBattle::eventProcess()
                         p->setDirection(D_RIGHT);
                         p->stop = false;
                         checkCollisionTankWithLevel(p, AppConfig::game_speed);
+                        for(auto enemy : m_enemies)
+                            checkCollisionTwoTanks(p, enemy, AppConfig::game_speed);
                         p->speed = p->default_speed;
                         p->move();
                         p->stop = true;

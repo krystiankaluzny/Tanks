@@ -14,8 +14,6 @@ Server::Server(Game *parent) : GameState(parent)
     m_get_names_time = 0;
     m_send_names_time = 0;
 
-    cout << "clear names" << std::endl;
-
     EnterCriticalSection(parent->critical_section);
         parent->shared_data->player_name.clear();
     LeaveCriticalSection(parent->critical_section);
@@ -145,8 +143,6 @@ void Server::eventProcess(SDL_Event *ev)
             {
                 StartGameEvent* start_game = new StartGameEvent;
                 EnterCriticalSection(parent->critical_section);
-//                    parent->shared_data->transmit_events(start_game);
-                    parent->shared_data->transmit_events.addEvent(start_game);
                     parent->shared_data->transmit_events.addEvent(start_game);
                 LeaveCriticalSection(parent->critical_section);
             }

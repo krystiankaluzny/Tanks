@@ -206,8 +206,7 @@ void ServerTCP::closeSocket(int socket_index)
     WSACloseEvent(sockets_event[socket_index]);
     sockets_event.erase(sockets_event.begin() + socket_index);
 
-    //removePlayerName(sockets[socket_index]);    //usuwanie gracza z shared data player_name
-
+    removePlayerName(sockets[socket_index]);    //usuwanie gracza z shared data player_name
 
     DisconnectEvent* event = new DisconnectEvent;
     event->player_id.l_value = sockets[socket_index];

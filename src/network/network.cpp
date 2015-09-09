@@ -36,6 +36,7 @@ void Network::run()
             else if(state == NetworkState::CLIENT || state == NetworkState::CLIENT_INITIALIZED)
             {
                 std::cout << "CLIENT close " << state << " " << new_state << std::endl;
+
                 client.close();
             }
 
@@ -67,7 +68,7 @@ void Network::run()
         }
         else
         {
-            Sleep(5);
+            Sleep(10);
         }
         Sleep(0); // reszta czasu dla drugiego wątku
     }
