@@ -153,7 +153,7 @@ void Enemy::update(Uint32 dt)
                     break;
                 }
         }
-        else if(type == ST_TANK_D)
+        else if(type == ST_TANK_C)
         {
             m_reload_time = rand() % 800;
             fire();

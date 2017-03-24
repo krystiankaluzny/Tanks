@@ -16,7 +16,7 @@ SpriteConfig::SpriteConfig()
     insert(ST_BUSH, 928, 192, 16, 16, 1, 200, false);
     insert(ST_ICE, 928, 208, 16, 16, 1, 200, false);
 
-    insert(ST_BONUS_GRANATE, 896, 0, 32, 32, 1, 200, false);
+    insert(ST_BONUS_GRENADE, 896, 0, 32, 32, 1, 200, false);
     insert(ST_BONUS_HELMET, 896, 32, 32, 32, 1, 200, false);
     insert(ST_BONUS_CLOCK, 896, 64, 32, 32, 1, 200, false);
     insert(ST_BONUS_SHOVEL, 896, 96, 32, 32, 1, 200, false);

@@ -791,7 +791,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
     {
         player->score += 300;
 
-        if(bonus->type == ST_BONUS_GRANATE)
+        if(bonus->type == ST_BONUS_GRENADE)
         {
             for(auto enemy : m_enemies)
             {
@@ -924,7 +924,7 @@ void Game::generateEnemy()
 
 void Game::generateBonus()
 {
-    Bonus* b = new Bonus(0, 0, static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRANATE + 1) + ST_BONUS_GRANATE));
+    Bonus* b = new Bonus(0, 0, static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRENADE + 1) + ST_BONUS_GRENADE));
     SDL_Rect intersect_rect;
     do
     {

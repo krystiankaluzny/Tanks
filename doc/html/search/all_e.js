@@ -22,7 +22,7 @@ var searchData=
   ['st_5fboat_5fp2',['ST_BOAT_P2',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aaabbdb6abd2a2fe3024fab71332524413',1,'type.h']]],
   ['st_5fbonus_5fboat',['ST_BONUS_BOAT',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa00d674898aa8be62872ea44129b26b03',1,'type.h']]],
   ['st_5fbonus_5fclock',['ST_BONUS_CLOCK',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa53ce361b7bc7f2823eea899a3ea0c07a',1,'type.h']]],
-  ['st_5fbonus_5fgranate',['ST_BONUS_GRANATE',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa0d86bb52f082eddbce9b16a74c4ea3ee',1,'type.h']]],
+  ['st_5fbonus_5fgranate',['ST_BONUS_GRENADE',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa0d86bb52f082eddbce9b16a74c4ea3ee',1,'type.h']]],
   ['st_5fbonus_5fgun',['ST_BONUS_GUN',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa4f60eb41f4c42401094c3833c77bb092',1,'type.h']]],
   ['st_5fbonus_5fhelmet',['ST_BONUS_HELMET',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa204c7be060f098ee2cd48e8dfed60714',1,'type.h']]],
   ['st_5fbonus_5fshovel',['ST_BONUS_SHOVEL',['../type_8h.html#ac6fa10729dffeb6a192492f13c25e31aa418008992a11bb747133f81e25054953',1,'type.h']]],

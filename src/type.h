@@ -17,7 +17,7 @@ enum SpriteType
     ST_BUSH,
     ST_ICE,
 
-    ST_BONUS_GRANATE,
+    ST_BONUS_GRENADE,
     ST_BONUS_HELMET,
     ST_BONUS_CLOCK,
     ST_BONUS_SHOVEL,
