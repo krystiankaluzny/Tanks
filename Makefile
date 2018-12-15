@@ -2,6 +2,7 @@
 
 BUILD = build
 BIN = $(BUILD)/bin
+RESOURCES = resources
 # CC = C:\MinGW\bin\mingw32-g++.exe
 CC = g++
 CFLAGS = -c -Wall -std=c++11
@@ -21,7 +22,7 @@ OBJS = $(patsubst src/%.cpp,build/%.o,$(SOURCES))
 
 vpath %.cpp $(SRC_DIRS)
 
-all: print checkdirs compile resources
+all: print checkdirs compile copy_resources
 
 print:
 	@echo MODULES $(MODULES)
@@ -41,8 +42,10 @@ compile: $(OBJS)
 build/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $< -o $@
 
-resources:
-	@echo "resources"
+copy_resources:
+	cp $(RESOURCES)/font/prstartk.ttf $(BIN)
+	cp $(RESOURCES)/png/texture.png $(BIN)
+	cp -R $(RESOURCES)/levels $(BIN)
 
 clean:
-	@rm -rf $(BUILD_DIRS)
+	rm -rf $(BUILD_DIRS)
