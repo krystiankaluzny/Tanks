@@ -1,35 +1,44 @@
-# requremanets libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev
+PROJECT_NAME = tanks
 
 BUILD = build
 BIN = $(BUILD)/bin
-RESOURCES = resources
-# CC = C:\MinGW\bin\mingw32-g++.exe
-CC = g++
+RESOURCES_DIR = resources
+
+ifeq ($(OS),Windows_NT) 
+    CC = mingw32-g++.exe
+    INCLUDEPATH = 
+    LFLAGS = -mwindows -O
+    LIBS = -L$(RESOURCES_DIR)/SDL/i686-w64-mingw32/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+    RESOURCES = SDL/i686-w64-mingw32/bin/*.dll dll/*.dll font/prstartk.ttf png/texture.png levels
+else
+    CC = g++
+    INCLUDEPATH = -ISDL/i686-w64-mingw32/include
+    LFLAGS = -O
+    LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+    RESOURCES = font/prstartk.ttf png/texture.png levels
+endif
+
 CFLAGS = -c -Wall -std=c++11
-# INCLUDEPATH = -ISDL/i686-w64-mingw32/include
-# LFLAGS = -mwindows -O
-LFLAGS = -O
-# LIBS = -LSDL/i686-w64-mingw32/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
-LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
-PROJECT_NAME = tanks
 
 MODULES = engine app_state objects
 SRC_DIRS = src $(addprefix src/,$(MODULES))
-BUILD_DIRS = $(BUILD) $(BIN) $(addprefix build/,$(MODULES))
+BUILD_DIRS = $(BUILD) $(BIN) $(addprefix $(BUILD)/,$(MODULES))
 
 SOURCES = $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.cpp))
-OBJS = $(patsubst src/%.cpp,build/%.o,$(SOURCES))
+OBJS = $(patsubst src/%.cpp,$(BUILD)/%.o,$(SOURCES))
 
 vpath %.cpp $(SRC_DIRS)
 
-all: print checkdirs compile copy_resources
+all: print $(BUILD_DIRS) $(RESOURCES) compile
 
 print:
-	@echo MODULES $(MODULES)
-	@echo SRC_DIRS $(SRC_DIRS)
-	@echo BUILD_DIRS $(BUILD_DIRS)
-	@echo SOURCES $(SOURCES)
-	@echo OBJS $(OBJS)
+	@echo OS: $(OS)
+	@echo MODULES: $(MODULES)
+	@echo SRC_DIRS: $(SRC_DIRS)
+	@echo BUILD_DIRS: $(BUILD_DIRS)
+	@echo SOURCES: $(SOURCES)
+	@echo OBJS: $(OBJS)
+	@echo 
 
 checkdirs: $(BUILD_DIRS)
 
@@ -42,10 +51,8 @@ compile: $(OBJS)
 build/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $< -o $@
 
-copy_resources:
-	cp $(RESOURCES)/font/prstartk.ttf $(BIN)
-	cp $(RESOURCES)/png/texture.png $(BIN)
-	cp -R $(RESOURCES)/levels $(BIN)
+$(RESOURCES):
+	cp -R $(RESOURCES_DIR)/$@ $(BIN)
 
 clean:
 	rm -rf $(BUILD_DIRS)
