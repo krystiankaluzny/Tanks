@@ -3,8 +3,8 @@
 Implementation of Battle City / Tank 1990.
 Game was written in C++11 and SDL2 2D graphic library.
 
-![Start menu](img/start.png)
-![Stage one](img/stage_1.png)
+![Start menu](resources/img/start.png)
+![Stage one](resources/img/stage_1.png)
 
 ## Controls:
 
@@ -26,22 +26,22 @@ If enemy blinks, each hit create new bonus item on a map.
 
 ### Enemy types
 
- - ![Enemy A](img/enemy_a.png) A:
+ - ![Enemy A](resources/img/enemy_a.png) A:
     - target: closest player or eagle; 
     - speed: normal: 
     - behaviour: 80% to move towards the target, 20% to move in random direction,
     - constantly fires in movement direction
- - ![Enemy B](img/enemy_b.png) B: 
+ - ![Enemy B](resources/img/enemy_b.png) B: 
     - target: eagle; 
     - speed: 1.3 * normal; 
     - behaviour: 50% to move towards the target, 50% to move in random direction, 
     - constantly fires in movement direction
- - ![Enemy C](img/enemy_c.png) C: 
+ - ![Enemy C](resources/img/enemy_c.png) C: 
     - target: eagle; 
     - speed: normal;
     - behaviour: 50% to move towards the target, 50% to move in random direction, 
     - constantly fires in movement direction
- - ![Enemy D](img/enemy_d.png) D:
+ - ![Enemy D](resources/img/enemy_d.png) D:
     - target: closest player or eagle;
     - speed: normal;
     - behaviour: 50% to move towards the target, 50% to move in random direction,
@@ -50,11 +50,35 @@ If enemy blinks, each hit create new bonus item on a map.
 
 ## Bonus items
 
- - ![Bonus grenade](img/bonus_grenade.png) Grenade: all enemies are destroyed
- - ![Bonus helmet](img/bonus_helmet.png) Helmet: active player shield for 10 seconds
- - ![Bonus clock](img/bonus_clock.png) Clock: freeze all enemies for 8 seconds
- - ![Bonus shovel](img/bonus_shovel.png) Shovel: create stone wall around eagle for 15 seconds
- - ![Bonus tank](img/bonus_tank.png) Tank: increase player lives count 
- - ![Bonus star](img/bonus_star.png) Star: increase player speed, each next one increase max bullets count
- - ![Bonus gun](img/bonus_gun.png) Gun: same as three starts
- - ![Bonus boat](img/bonus_boat.png) Boat: allows to move on the water
+ - ![Bonus grenade](resources/img/bonus_grenade.png) Grenade: all enemies are destroyed
+ - ![Bonus helmet](resources/img/bonus_helmet.png) Helmet: active player shield for 10 seconds
+ - ![Bonus clock](resources/img/bonus_clock.png) Clock: freeze all enemies for 8 seconds
+ - ![Bonus shovel](resources/img/bonus_shovel.png) Shovel: create stone wall around eagle for 15 seconds
+ - ![Bonus tank](resources/img/bonus_tank.png) Tank: increase player lives count 
+ - ![Bonus star](resources/img/bonus_star.png) Star: increase player speed, each next one increase max bullets count
+ - ![Bonus gun](resources/img/bonus_gun.png) Gun: same as three starts
+ - ![Bonus boat](resources/img/bonus_boat.png) Boat: allows to move on the water
+
+## Build
+
+### Linux
+
+#### Requirements
+
+ - make
+ - libsdl2-dev
+ - libsdl2-ttf-dev
+ - libsdl2-image-dev
+
+On Debian based systems you can run (**apt** can by replaced with **apt-get** or **aptitude**):
+
+`sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev` 
+
+#### Compilation
+
+In the project directory call:
+
+`make clean install`
+
+As a result **build** directory shoudl be created.
+In build/**bin** there will be **tanks** binary file with all necessary resources files.
