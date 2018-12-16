@@ -55,7 +55,7 @@ $(RESOURCES):
 	cp -R $(RESOURCES_DIR)/$@ $(BIN)
 
 clean:
-	rm -rf $(BUILD_DIRS)
+	rm -rf $(BUILD)
 	rm -rf doc
 
 doc:

@@ -80,10 +80,14 @@ On Debian based systems you can run (**apt** can by replaced with **apt-get** or
 
 In the project directory call:
 
-`make clean install`
+`make clean all`
 
 As a result **build** directory shoudl be created.
-In build/**bin** there will be **tanks** binary file with all necessary resources files.
+In build/**bin** there will be **Tanks** binary file with all necessary resources files.
+
+Run to play:
+
+`cd build/bin && ./Tanks`
 
 #### Documentation in Polish
 
