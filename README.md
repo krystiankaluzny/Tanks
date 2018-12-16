@@ -83,9 +83,10 @@ In the project directory call:
 `make clean all`
 
 As a result **build** directory shoudl be created.
-In build/**bin** there will be **Tanks** binary file with all necessary resources files.
+In **build/bin** there will be **Tanks** binary file with all necessary resources files.
 
-Run to play:
+The Tanks has to be run from bin directory otherwise you got black screen.
+Have fun.
 
 `cd build/bin && ./Tanks`
 
