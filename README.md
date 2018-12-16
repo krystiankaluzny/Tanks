@@ -69,6 +69,8 @@ If enemy blinks, each hit create new bonus item on a map.
  - libsdl2-dev
  - libsdl2-ttf-dev
  - libsdl2-image-dev
+ - doxygen-gui - _for docs generation (optional)_
+ - doxygen - _for docs generation (optional)_
 
 On Debian based systems you can run (**apt** can by replaced with **apt-get** or **aptitude**):
 
@@ -82,3 +84,9 @@ In the project directory call:
 
 As a result **build** directory shoudl be created.
 In build/**bin** there will be **tanks** binary file with all necessary resources files.
+
+#### Documentation in Polish
+
+In the project directory call:
+
+`make doc`

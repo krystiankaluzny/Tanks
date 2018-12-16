@@ -1,4 +1,4 @@
-PROJECT_NAME = tanks
+PROJECT_NAME = Tanks
 
 BUILD = build
 BIN = $(BUILD)/bin
@@ -56,3 +56,8 @@ $(RESOURCES):
 
 clean:
 	rm -rf $(BUILD_DIRS)
+	rm -rf doc
+
+doc:
+	doxywizard Doxyfile
+	doxygen
