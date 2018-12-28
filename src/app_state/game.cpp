@@ -10,6 +10,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <cmath>
 
 Game::Game()
 {

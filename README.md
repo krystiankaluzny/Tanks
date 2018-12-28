@@ -78,7 +78,7 @@ On Debian based systems you can run (**apt** can by replaced with **apt-get** or
 
 #### Compilation
 
-In the project directory call:
+In the project directory run:
 
 `make clean all`
 
@@ -92,6 +92,29 @@ Have fun.
 
 #### Documentation in Polish
 
-In the project directory call:
+In the project directory run:
 
 `make doc`
+
+### Windows
+
+#### Requirements
+
+ - MinGW
+ - mingw32-base-bin
+ - mingw32-gcc-g++-bin
+ - MINGW_HOME environment variable pointing to MinGW directory (eg. C:\MinGW)
+ - MinGW bin directory added to **Path** environment variable (eg. C:\MinGW\in)
+ - GitBash or any similar package proviging **cp** and **rm** commands
+
+#### Compilation
+
+In the project directory run GitBash and run:
+
+`mingw32-make.exe clean all`
+
+As a result **build** directory shoudl be created.
+In **build/bin** there will be **Tanks.exe** binary file with all necessary resources files.
+Have fun.
+
+`cd build/bin && ./Tanks.exe`
