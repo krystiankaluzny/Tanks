@@ -82,7 +82,7 @@ In the project directory run:
 
 `make clean all`
 
-As a result **build** directory shoudl be created.
+As a result **build** directory should be created.
 In **build/bin** there will be **Tanks** binary file with all necessary resources files.
 
 The Tanks has to be run from bin directory otherwise you got black screen.
@@ -104,8 +104,8 @@ In the project directory run:
  - mingw32-base-bin
  - mingw32-gcc-g++-bin
  - MINGW_HOME environment variable pointing to MinGW directory (eg. C:\MinGW)
- - MinGW bin directory added to **Path** environment variable (eg. C:\MinGW\in)
- - GitBash or any similar package proviging **cp** and **rm** commands
+ - MinGW bin directory added to **Path** environment variable (eg. C:\MinGW\bin)
+ - GitBash or any similar package providing **cp** and **rm** commands
 
 #### Compilation
 
@@ -113,7 +113,7 @@ In the project directory run GitBash and run:
 
 `mingw32-make.exe clean all`
 
-As a result **build** directory shoudl be created.
+As a result **build** directory should be created.
 In **build/bin** there will be **Tanks.exe** binary file with all necessary resources files.
 Have fun.
 
