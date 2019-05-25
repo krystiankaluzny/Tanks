@@ -59,6 +59,19 @@ If enemy blinks, each hit create new bonus item on a map.
  - ![Bonus gun](resources/img/bonus_gun.png) Gun: same as three starts
  - ![Bonus boat](resources/img/bonus_boat.png) Boat: allows to move on the water
 
+## Levels
+
+Levels are plain text files in that are located in **levels** directory.
+Each level is a two dimensional array with 26 rows and 26 columns.
+Each field in the array should be one of following elements:
+
+ - **.** Empty field
+ - **#** ![Brick wall](resources/img/brick.png) Brick wall: it can be destroyed with two bullets or one if you collect three Stars or Gun
+ - **@** ![Stone wall](resources/img/stone.png) Stone wall: it can be destroyed only if you collect three Stars or Gun bonus
+ - **%** ![Bush](resources/img/bush.png) Bush: it can be erased only if you collect three Stars or Gun bonus
+ - **~** ![Water](resources/img/water.png) Water: it is natural obstacle unless you collect Boat bonus
+ - **-** ![Ice](resources/img/ice.png) Ice: tanks are slipping on it
+
 ## Build
 
 ### Linux
