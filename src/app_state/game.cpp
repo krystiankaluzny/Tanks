@@ -124,7 +124,7 @@ void Game::draw()
         }
         //numer mapy
         src = engine.getSpriteConfig()->getSpriteData(ST_STAGE_STATUS)->rect;
-        dst = {AppConfig::status_rect.x + 8, 185 + (m_players.size() + m_killed_players.size()) * 18, src.w, src.h};
+        dst = {AppConfig::status_rect.x + 8, static_cast<int>(185 + (m_players.size() + m_killed_players.size()) * 18), src.w, src.h};
         p_dst = {dst.x + 10, dst.y + 26};
         renderer->drawObject(&src, &dst);
         renderer->drawText(&p_dst, Engine::intToString(m_current_level), {0, 0, 0, 255}, 2);
