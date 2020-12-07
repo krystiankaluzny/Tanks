@@ -14,7 +14,7 @@ SDL_Rect AppConfig::tile_rect = {0, 0, 16, 16};
     #define P2_FIRE_KEY SDL_SCANCODE_LALT
 #else
     #define P1_FIRE_KEY SDL_SCANCODE_RCTRL
-    #define P2_FIRE_KEY SDL_SCANCODE_RCTRL
+    #define P2_FIRE_KEY SDL_SCANCODE_LCTRL
 #endif
 
 vector<SDL_Point> AppConfig::player_starting_point =
