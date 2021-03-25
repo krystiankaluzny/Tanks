@@ -98,7 +98,7 @@ On Debian based systems you can run (**apt** can by replaced with **apt-get** or
  - sdl2_ttf
  - sdl2_image
 
-`brew install sdl2 sdl_ttf sdl2_image`
+`brew install sdl2 sdl2_ttf sdl2_image`
 
 #### Compilation
 
