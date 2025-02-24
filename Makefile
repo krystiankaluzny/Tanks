@@ -13,13 +13,35 @@ ifeq ($(OS),Windows_NT)
 	APP_RESOURCES = SDL/i686-w64-mingw32/bin/*.dll dll/*.dll font/prstartk.ttf png/texture.png levels
 	RESOURCES = $(APP_RESOURCES) mingw_resources
 else
-	CC = g++
-	INCLUDEPATH =
-	LFLAGS = -O
-	CFLAGS = -c -Wall -std=c++11
-	LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
-	APP_RESOURCES = font/prstartk.ttf png/texture.png levels
-	RESOURCES = $(APP_RESOURCES)
+	UNAME_S := $(shell uname -s)
+	UNAME_M := $(shell uname -m)
+
+	ifeq ($(UNAME_S),Darwin)
+		ifeq ($(UNAME_M),arm64)
+			# Mac M1 (Apple Silicon)
+			CC = g++
+			INCLUDEPATH = -I/opt/homebrew/include
+			LIBSPATH = -L/opt/homebrew/lib
+		else
+			# Mac x86_64 (Intel)
+			CC = g++
+			INCLUDEPATH = -I/usr/local/include
+			LIBSPATH = -L/usr/local/lib
+		endif
+		LFLAGS = -O
+		CFLAGS = -c -Wall -std=c++11
+		LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+		APP_RESOURCES = font/prstartk.ttf png/texture.png levels
+		RESOURCES = $(APP_RESOURCES)
+	else
+		CC = g++
+		INCLUDEPATH =
+		LFLAGS = -O
+		CFLAGS = -c -Wall -std=c++11
+		LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
+		APP_RESOURCES = font/prstartk.ttf png/texture.png levels
+		RESOURCES = $(APP_RESOURCES)
+	endif
 endif
 
 
