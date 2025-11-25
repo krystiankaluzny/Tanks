@@ -18,10 +18,7 @@ public:
      * uaktualnia obecny stan aplikacji, rysuje obiety na ekranie.
      */
     void run();
-    /**
-     * Funkcja obsługująca zdarzenia czekające w kolejce.
-     */
-    void eventProces();
+
 private:
     /**
      * Zmienna podtrzymująca działanie pętli głównej programu.
@@ -30,11 +27,16 @@ private:
     /**
      * Aktualny stan aplikacji.
      */
-    AppState* m_app_state;
+    AppState *m_app_state;
     /**
      * Obiekt okna aplikacji.
      */
-    SDL_Window* m_window;
+    SDL_Window *m_window;
+
+    /**
+    * Funkcja obsługująca zdarzenia czekające w kolejce.
+    */
+    void eventProces();
 };
 
 #endif // APP_H

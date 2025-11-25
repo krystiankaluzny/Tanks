@@ -6,6 +6,7 @@
 
 #include <ctime>
 #include <iostream>
+#include <random>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -16,6 +17,8 @@
 App::App()
 {
     m_window = nullptr;
+    m_app_state = nullptr;
+    is_running = false;
 }
 
 App::~App()
@@ -39,7 +42,8 @@ void App::run()
         if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return;
         if(TTF_Init() == -1) return;
 
-        srand(time(NULL)); //inicjowanie generatora pseudolosowego
+        std::random_device dev;
+        srand(dev());
 
         Engine& engine = Engine::getEngine();
         engine.initModules();
@@ -48,14 +52,14 @@ void App::run()
 
         m_app_state = new Menu;
 
-        double FPS;
-        Uint32 time1, time2, dt, fps_time = 0, fps_count = 0, delay = 15;
-        time1 = SDL_GetTicks();
+        Uint32 fps_time = 0, fps_count = 0, delay = 15;
+        Uint32 currentTime = SDL_GetTicks();
+        Uint32 previousTime = currentTime;
         while(is_running)
         {
-            time2 = SDL_GetTicks();
-            dt = time2 - time1;
-            time1 = time2;
+            currentTime = SDL_GetTicks();
+            Uint32 deltaTime = currentTime - previousTime;
+            previousTime = currentTime;
 
             if(m_app_state->finished())
             {
@@ -67,17 +71,17 @@ void App::run()
 
             eventProces();
 
-            m_app_state->update(dt);
+            m_app_state->update(deltaTime);
             m_app_state->draw();
 
             SDL_Delay(delay);
 
             //FPS
-            fps_time += dt; fps_count++;
+            fps_time += deltaTime; fps_count++;
             if(fps_time > 200)
             {
-                FPS = (double)fps_count / fps_time * 1000;
-                if(FPS > 60) delay++;
+                const double fps = static_cast<double>(fps_count) / fps_time * 1000;
+                if(fps > 60) delay++;
                 else if(delay > 0) delay--;
                 fps_time = 0; fps_count = 0;
             }
@@ -116,7 +120,9 @@ void App::eventProces()
                                                             (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
             }
         }
-
-        m_app_state->eventProcess(&event);
+        else
+        {
+            m_app_state->eventProcess(&event);
+        }
     }
 }

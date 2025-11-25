@@ -16,36 +16,36 @@ Game was written in C++11 and SDL2 2D graphic library.
  - Show targets of enemies: t
 
 ## Enemies
-Each enemy may fire only one bullet in the same time.
-If bullet hits target, brick or stage border and explodes then enemy may fire next one.
+Each enemy may fire only one bullet at the same time.
+If bullet hits a target, a brick or a stage border and explodes then the enemy may fire next one bullet.
 Enemies may have one of four different armour levels. Each level have a different colour.
-After bullet hit armour level decrease.
-If the armour level falls to zero, then enemy is destroyed.
+When a player bullet hits an enemy, it's armor level decrease
+If the armour level falls to zero, then enemy will be destroyed.
 
 If enemy blinks, each hit create new bonus item on a map.
 
 ### Enemy types
 
- - ![Enemy A](resources/img/enemy_a.png) A:
+ - ![Enemy A](resources/img/enemy_a.png) A type:
     - target: closest player or eagle; 
-    - speed: normal: 
-    - behaviour: 80% to move towards the target, 20% to move in random direction,
-    - constantly fires in movement direction
- - ![Enemy B](resources/img/enemy_b.png) B: 
+    - speed: base;
+    - behaviour: 80% chance to move towards the target, 20% chance to move in random direction, 
+      constantly fires in movement direction
+ - ![Enemy B](resources/img/enemy_b.png) B type: 
     - target: eagle; 
-    - speed: 1.3 * normal; 
-    - behaviour: 50% to move towards the target, 50% to move in random direction, 
-    - constantly fires in movement direction
- - ![Enemy C](resources/img/enemy_c.png) C: 
+    - speed: 1.3 * base; 
+    - behaviour: 50% chance to move towards the target, 50% chance to move in random direction,
+      constantly fires in movement direction
+ - ![Enemy C](resources/img/enemy_c.png) C type: 
     - target: eagle; 
-    - speed: normal;
-    - behaviour: 50% to move towards the target, 50% to move in random direction, 
-    - constantly fires in movement direction
- - ![Enemy D](resources/img/enemy_d.png) D:
+    - speed: base;
+    - behaviour: 50% chance to move towards the target, 50% chance to move in random direction, 
+      constantly fires in movement direction
+ - ![Enemy D](resources/img/enemy_d.png) D type:
     - target: closest player or eagle;
-    - speed: normal;
-    - behaviour: 50% to move towards the target, 50% to move in random direction,
-    - fires if target is in front of
+    - speed: base;
+    - behaviour: 50% chance to move towards the target, 50% chance to move in random direction,
+      fires if target is in front of
 
 
 ## Bonus items
@@ -55,14 +55,14 @@ If enemy blinks, each hit create new bonus item on a map.
  - ![Bonus clock](resources/img/bonus_clock.png) Clock: freeze all enemies for 8 seconds
  - ![Bonus shovel](resources/img/bonus_shovel.png) Shovel: create stone wall around eagle for 15 seconds
  - ![Bonus tank](resources/img/bonus_tank.png) Tank: increase player lives count 
- - ![Bonus star](resources/img/bonus_star.png) Star: increase player speed, each next one increase max bullets count
+ - ![Bonus star](resources/img/bonus_star.png) Star: increase player speed, each next one increases max bullets count
  - ![Bonus gun](resources/img/bonus_gun.png) Gun: same as three starts
  - ![Bonus boat](resources/img/bonus_boat.png) Boat: allows to move on the water
 
 ## Levels
 
-Levels are plain text files in that are located in **levels** directory.
-Each level is a two dimensional array with 26 rows and 26 columns.
+Levels are plain text files located in **levels** directory.
+Each level is a two-dimensional array with 26 rows and 26 columns.
 Each field in the array should be one of following elements:
 
  - **.** Empty field
