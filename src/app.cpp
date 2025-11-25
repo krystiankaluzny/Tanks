@@ -120,6 +120,10 @@ void App::eventProces()
                                                             (float)AppConfig::windows_rect.h / AppConfig::map_rect.h);
             }
         }
+        else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F11)
+        {
+            Engine::getEngine().getRenderer()->toggleFullscreen(m_window);
+        }
         else
         {
             m_app_state->eventProcess(&event);

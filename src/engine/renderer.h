@@ -60,6 +60,9 @@ public:
      */
     void drawRect(const SDL_Rect* rect, SDL_Color rect_color, bool fill = false);
 
+    void toggleFullscreen(SDL_Window* window);
+
+
 private:
     /**
      * Wskaźnik na obiekt związany z buforem okna.
@@ -85,6 +88,8 @@ private:
      * Czcionka o rozmiarze 10.
      */
     TTF_Font* m_font3;
+
+    bool m_fullscreen;
 };
 
 #endif // RENDERER_H

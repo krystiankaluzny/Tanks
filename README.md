@@ -14,6 +14,7 @@ Game was written in C++11 and SDL2 2D graphic library.
  - Jump to next stage: n
  - Jump to previous stage: b
  - Show targets of enemies: t
+ - Fullscreen: F11
 
 ## Enemies
 Each enemy may fire only one bullet at the same time.
