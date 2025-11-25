@@ -128,3 +128,12 @@ void Renderer::drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill)
     else
         SDL_RenderDrawRects(m_renderer, rect, 1);
 }
+
+void Renderer::toggleFullscreen(SDL_Window* window) {
+    m_fullscreen = !m_fullscreen;
+
+    if (m_fullscreen)
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    else
+        SDL_SetWindowFullscreen(window, 0);
+}
