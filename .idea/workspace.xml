@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
+  </component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="Tanks" targetName="compile" />
+      <config projectName="Tanks" targetName="levels" />
+      <config projectName="Tanks" targetName="print" />
+      <config projectName="Tanks" targetName="build" />
+      <config projectName="Tanks" targetName="all" />
+      <config projectName="Tanks" targetName="doc" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7337776e-0ca3-42b3-bf59-ac5eae8b189c" name="Changes" comment="Add fullscreen support&#10;&#10;Issue #14">
+      <change afterPath="$PROJECT_DIR$/src/data/data.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/event.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/event.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app_state/appstate.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app_state/game.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app_state/game.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app_state/menu.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app_state/menu.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app_state/scores.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/app_state/scores.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/appconfig.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/appconfig.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/appconfig.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/appconfig.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/appconfig.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/engine/engine.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/engine/engine.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/engine/renderer.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/engine/renderer.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/engine/spriteconfig.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/engine/spriteconfig.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/main.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/main.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/main.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/bonus.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/bonus.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/brick.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/brick.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/bullet.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/bullet.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/eagle.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/eagle.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/enemy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/enemy.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/object.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/object.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/player.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/player.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/tank.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/ogcc/sources/obywatel/Tanks/src/objects/tank.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file:///usr/include/SDL2/SDL_events.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/SDL2/SDL_image.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/SDL2/SDL_keycode.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/SDL2/SDL_rect.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/SDL2/SDL_render.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/SDL2/SDL_ttf.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/SDL2/SDL_video.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/c++/13/bits/basic_string.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/c++/13/bits/random.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/stdlib.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/time.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/include/x86_64-linux-gnu/SDL2/begin_code.h" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MakefileLocalSettings">
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="Tanks" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="Tanks" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2025" />
+    <option name="minorVersion" value="2.4" />
+    <option name="productBranch" value="Classic" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="35ynYrnnKzeiD0sbfcKrJKneObF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "sdl__encapsulation",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Native Application.all">
+    <configuration name="all" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Tanks" TARGET_NAME="all" CONFIG_NAME="all" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="build" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Tanks" TARGET_NAME="build" CONFIG_NAME="build" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="compile" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Tanks" TARGET_NAME="compile" CONFIG_NAME="compile" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="doc" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Tanks" TARGET_NAME="doc" CONFIG_NAME="doc" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="levels" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Tanks" TARGET_NAME="levels" CONFIG_NAME="levels" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="print" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Tanks" TARGET_NAME="print" CONFIG_NAME="print" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Native Application.all" />
+      <item itemvalue="Native Application.build" />
+      <item itemvalue="Native Application.compile" />
+      <item itemvalue="Native Application.doc" />
+      <item itemvalue="Native Application.levels" />
+      <item itemvalue="Native Application.print" />
+    </list>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7337776e-0ca3-42b3-bf59-ac5eae8b189c" name="Changes" comment="" />
+      <created>1764091252768</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764091252768</updated>
+      <workItem from="1764091262370" duration="9803000" />
+    </task>
+    <task id="LOCAL-00001" summary="Minor changes">
+      <option name="closed" value="true" />
+      <created>1764099693829</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1764099693829</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add fullscreen support&#10;&#10;Issue #14">
+      <option name="closed" value="true" />
+      <created>1764100734850</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764100734851</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Minor changes" />
+    <MESSAGE value="Add fullscreen support&#10;&#10;Issue #14" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add fullscreen support&#10;&#10;Issue #14" />
+  </component>
+</project>
