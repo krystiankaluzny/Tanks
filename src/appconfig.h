@@ -3,7 +3,6 @@
 
 #include "objects/player.h"
 #include <iostream>
-#include <SDL2/SDL_rect.h>
 #include <vector>
 
 using namespace std;
@@ -33,27 +32,27 @@ public:
     /**
      * Wymiary planszy gry.
      */
-    static SDL_Rect map_rect;
+    static Rect map_rect;
     /**
      * Wymiari i położneie względem planszy obszaru statusu gry.
      */
-    static SDL_Rect status_rect;
+    static Rect status_rect;
     /**
      * Rozmiar okna aplikacji.
      */
-    static SDL_Rect windows_rect;
+    static Rect windows_rect;
     /**
      * Rozmiar komórki na planszy.
      */
-    static SDL_Rect tile_rect;
+    static Rect tile_rect;
     /**
      * Dwie pozycje początkowe graczy.
      */
-    static vector<SDL_Point> player_starting_point;
+    static vector<Point> player_starting_point;
     /**
      * Trzy pozycjie początkowe wrogów.
      */
-    static vector<SDL_Point> enemy_starting_point;
+    static vector<Point> enemy_starting_point;
     /**
      * Sterowanie czołgami graczy.
      */

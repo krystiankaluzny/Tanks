@@ -51,7 +51,7 @@ public:
      * @param dt - przewidywany czas wyliczania następnej klatki
      * @return następny prostokąt kolizji
      */
-    SDL_Rect nextCollisionRect(Uint32 dt);
+    Rect nextCollisionRect(Uint32 dt);
     /**
      * Funkcja ustawia następny kierunek ruchu z uwzględnieniem poślizgu na lodzie. Podczas zmiany kierunku następuje dopasowanie czołgu do wielokrotności wymiarów komórki planszy @a AppConfig::tile_rect.
      * @param d - nowy kierunek
@@ -61,7 +61,7 @@ public:
      * Funkcja zatrzymuje czołg.
      * @param intersect_rect - obszar kolizji
      */
-    void collide(SDL_Rect &intersect_rect);
+    void collide(Rect &intersect_rect);
     /**
      * Funkcja odpowiada za wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu.
      */

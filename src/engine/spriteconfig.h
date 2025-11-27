@@ -2,6 +2,7 @@
 #define SPRITECONFIG_H
 
 #include "../type.h"
+#include "data/data.h"
 #include <map>
 #include <SDL2/SDL.h>
 
@@ -18,7 +19,7 @@ struct SpriteData
     /**
      * Pozycja i wymiary pierwszej klatki animacji
      */
-    SDL_Rect rect;
+    Rect rect;
     /**
      * Liczba klatek w animacji.
      */

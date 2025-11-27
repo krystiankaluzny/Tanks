@@ -1,4 +1,5 @@
 #include "eagle.h"
+#include "../engine/data/data.h"
 
 Eagle::Eagle()
     : Object(0, 0, ST_EAGLE)
@@ -26,7 +27,7 @@ void Eagle::update(Uint32 dt)
                 type = ST_FLAG;
                 update(0);
             }
-            src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
+            src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame);
         }
     }
     else
@@ -39,7 +40,7 @@ void Eagle::destroy()
 
     m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_DESTROY_EAGLE);
     type = ST_DESTROY_EAGLE;
-    src_rect = moveRect(m_sprite->rect, 0, 0);
+    src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, 0);
 
     dest_rect.x = pos_x + (dest_rect.w - m_sprite->rect.w)/2;
     dest_rect.y = pos_y + (dest_rect.h - m_sprite->rect.h)/2;

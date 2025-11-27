@@ -2,7 +2,7 @@
 #define RENDERER_H
 
 #include <string>
-#include "../data/data.h"
+#include "data/data.h"
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_pixels.h>
 
@@ -44,14 +44,6 @@ public:
      */
     virtual void drawObject(const Rect *texture_src, const Rect *window_dest) = 0;
 
-    // Backwards-compatible overloads that accept SDL types and map to project Rect.
-    inline void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)
-    {
-        if(texture_src == nullptr || window_dest == nullptr) return;
-        Rect t = { texture_src->x, texture_src->y, texture_src->w, texture_src->h };
-        Rect w = { window_dest->x, window_dest->y, window_dest->w, window_dest->h };
-        drawObject(&t, &w);
-    }
     /**
      * Ustawienie skali wyświetlanego bufora, tak aby miał zachowane proporcje planszy oraz aby był umiejscowiony w środku okna aplikacji.
      * @param xs - skala pozioma jako stosunek szerokości okna do szerokości mapy
@@ -68,22 +60,6 @@ public:
      */
     virtual void drawText(const Point* start, std::string text, SDL_Color text_color, int font_size = 1) = 0;
 
-    // Handle nullptr case for Point
-    virtual void drawText(std::nullptr_t start, std::string text, SDL_Color text_color, int font_size = 1)
-    {
-        drawText(static_cast<const Point*>(nullptr), text, text_color, font_size);
-    }
-
-    inline void drawText(const SDL_Point* start, std::string text, SDL_Color text_color, int font_size = 1)
-    {
-        if(start == nullptr)
-        {
-            drawText(static_cast<const Point*>(nullptr), text, text_color, font_size);
-            return;
-        }
-        Point p = { start->x, start->y };
-        drawText(&p, text, text_color, font_size);
-    }
     /**
      * Funkcja rysująca prostokątk w buforze okna.
      * @param rect - położneie prostokątku na planszy
@@ -92,12 +68,6 @@ public:
      */
     virtual void drawRect(const Rect* rect, SDL_Color rect_color, bool fill = false) = 0;
 
-    inline void drawRect(const SDL_Rect* rect, SDL_Color rect_color, bool fill = false)
-    {
-        if(rect == nullptr) return;
-        Rect r = { rect->x, rect->y, rect->w, rect->h };
-        drawRect(&r, rect_color, fill);
-    }
 
     virtual void toggleFullscreen(SDL_Window* window) = 0;
 

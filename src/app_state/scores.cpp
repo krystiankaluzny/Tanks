@@ -1,5 +1,6 @@
 #include "scores.h"
 #include "../engine/engine.h"
+#include "../engine/data/data.h"
 #include "../appconfig.h"
 #include "game.h"
 #include "menu.h"
@@ -43,8 +44,8 @@ void Scores::draw()
     renderer->drawRect(&AppConfig::map_rect, {0, 0, 0, 255}, true);
     renderer->drawRect(&AppConfig::status_rect, {0, 0, 0, 255}, true);
 
-    SDL_Point p_dst;
-    SDL_Rect dst;
+    Point p_dst;
+    Rect dst;
 
     p_dst = {-1, 10};
     renderer->drawText(&p_dst, std::string("STAGE ") + Engine::intToString(m_level), {255, 255, 220, 255}, 1);

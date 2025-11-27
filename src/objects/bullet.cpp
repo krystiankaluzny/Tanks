@@ -1,5 +1,6 @@
 #include "bullet.h"
 #include "../appconfig.h"
+#include "../engine/data/data.h"
 
 Bullet::Bullet()
     : Object(0, 0, ST_BULLET)
@@ -39,7 +40,7 @@ void Bullet::update(Uint32 dt)
             break;
         }
 
-        src_rect = moveRect(m_sprite->rect, direction, 0);
+        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, direction, 0);
         Object::update(dt);
     }
     else
@@ -54,7 +55,7 @@ void Bullet::update(Uint32 dt)
                 if(m_current_frame >= m_sprite->frames_count)
                     to_erase = true;
 
-                src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
+                src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame);
             }
         }
     }

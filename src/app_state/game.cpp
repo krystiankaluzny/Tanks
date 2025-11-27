@@ -1,5 +1,6 @@
 #include "game.h"
 #include "../engine/engine.h"
+#include "../engine/data/data.h"
 #include "../appconfig.h"
 #include "menu.h"
 #include "scores.h"
@@ -96,16 +97,17 @@ void Game::draw()
 
         if(m_game_over)
         {
-            SDL_Point pos;
+            Point pos;
             pos.x = -1;
             pos.y = m_game_over_position;
             renderer->drawText(&pos, AppConfig::game_over_text, {255, 10, 10, 255});
         }
 
         //===========Status gry===========
-        SDL_Rect src = engine.getSpriteConfig()->getSpriteData(ST_LEFT_ENEMY)->rect;
-        SDL_Rect dst;
-        SDL_Point p_dst;
+        Rect src_rect = engine.getSpriteConfig()->getSpriteData(ST_LEFT_ENEMY)->rect;
+        Rect src = {src_rect.x, src_rect.y, src_rect.w, src_rect.h};
+        Rect dst;
+        Point p_dst;
         //wrogowie do zabicia
         for(int i = 0; i < m_enemy_to_kill; i++)
         {
@@ -123,7 +125,8 @@ void Game::draw()
             renderer->drawText(&p_dst, Engine::intToString(player->lives_count), {0, 0, 0, 255}, 3);
         }
         //numer mapy
-        src = engine.getSpriteConfig()->getSpriteData(ST_STAGE_STATUS)->rect;
+        src_rect = engine.getSpriteConfig()->getSpriteData(ST_STAGE_STATUS)->rect;
+        src = {src_rect.x, src_rect.y, src_rect.w, src_rect.h};
         dst = {AppConfig::status_rect.x + 8, static_cast<int>(185 + (m_players.size() + m_killed_players.size()) * 18), src.w, src.h};
         p_dst = {dst.x + 10, dst.y + 26};
         renderer->drawObject(&src, &dst);
@@ -208,7 +211,7 @@ void Game::update(Uint32 dt)
         //nadanie celów przeciwników
         int min_metric; // 2 * 26 * 16
         int metric;
-        SDL_Point target;
+        Point target;
         for(auto enemy : m_enemies)
         {
             min_metric = 832;
@@ -485,7 +488,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     int row_start, row_end;
     int column_start, column_end;
 
-    SDL_Rect pr, *lr;
+    Rect pr, *lr;
     Object* o;
 
     //========================kolizja z elementami mapy========================
@@ -522,7 +525,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     if(row_end >= m_level_rows_count) row_end = m_level_rows_count - 1;
 
     pr = tank->nextCollisionRect(dt);
-    SDL_Rect intersect_rect;
+    Rect intersect_rect;
 
 
     for(int i = row_start; i <= row_end; i++)
@@ -551,7 +554,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
         }
 
     //========================kolizja z granicami mapy========================
-    SDL_Rect outside_map_rect;
+    Rect outside_map_rect;
     //prostokąt po lewej stronie mapy
     outside_map_rect.x = -AppConfig::tile_rect.w;
     outside_map_rect.y = -AppConfig::tile_rect.h;
@@ -597,9 +600,9 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
 
 void Game::checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt)
 {
-    SDL_Rect cr1 = tank1->nextCollisionRect(dt);
-    SDL_Rect cr2 = tank2->nextCollisionRect(dt);
-    SDL_Rect intersect_rect = intersectRect(&cr1, &cr2);
+    Rect cr1 = tank1->nextCollisionRect(dt);
+    Rect cr2 = tank2->nextCollisionRect(dt);
+    Rect intersect_rect = intersectRect(&cr1, &cr2);
 
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
     {
@@ -616,8 +619,8 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
     int row_start, row_end;
     int column_start, column_end;
 
-    SDL_Rect* br, *lr;
-    SDL_Rect intersect_rect;
+    Rect* br, *lr;
+    Rect intersect_rect;
     Object* o;
 
     //========================kolizja z elementami mapy========================
@@ -707,8 +710,8 @@ void Game::checkCollisionBulletWithBush(Bullet *bullet)
     if(bullet->collide) return;
     if(!bullet->increased_damage) return;
 
-    SDL_Rect* br, *lr;
-    SDL_Rect intersect_rect;
+    Rect* br, *lr;
+    Rect intersect_rect;
     br = &bullet->collision_rect;
 
     for(auto bush : m_bushes)
@@ -729,7 +732,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 {
     if(player->to_erase || enemy->to_erase) return;
     if(enemy->testFlag(TSF_DESTROYED)) return;
-    SDL_Rect intersect_rect;
+    Rect intersect_rect;
 
     for(auto bullet : player->bullets)
     {
@@ -753,7 +756,7 @@ void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
 {
     if(enemy->to_erase || player->to_erase) return;
     if(player->testFlag(TSF_DESTROYED)) return;
-    SDL_Rect intersect_rect;
+    Rect intersect_rect;
 
     for(auto bullet : enemy->bullets)
     {
@@ -774,7 +777,7 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
     if(bullet1 == nullptr || bullet2 == nullptr) return;
     if(bullet1->to_erase || bullet2->to_erase) return;
 
-    SDL_Rect intersect_rect = intersectRect(&bullet1->collision_rect, &bullet2->collision_rect);
+    Rect intersect_rect = intersectRect(&bullet1->collision_rect, &bullet2->collision_rect);
 
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
     {
@@ -787,7 +790,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
 {
     if(player->to_erase || bonus->to_erase) return;
 
-    SDL_Rect intersect_rect = intersectRect(&player->collision_rect, &bonus->collision_rect);
+    Rect intersect_rect = intersectRect(&player->collision_rect, &bonus->collision_rect);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
     {
         player->score += 300;
@@ -926,7 +929,7 @@ void Game::generateEnemy()
 void Game::generateBonus()
 {
     Bonus* b = new Bonus(0, 0, static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRENADE + 1) + ST_BONUS_GRENADE));
-    SDL_Rect intersect_rect;
+    Rect intersect_rect;
     do
     {
         b->pos_x = rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 1 *  AppConfig::tile_rect.w);

@@ -198,11 +198,11 @@ Bullet* Tank::fire()
     return nullptr;
 }
 
-SDL_Rect Tank::nextCollisionRect(Uint32 dt)
+Rect Tank::nextCollisionRect(Uint32 dt)
 {
     if(speed == 0) return collision_rect;
 
-    SDL_Rect r;
+    Rect r;
     int a = 1;
     switch (direction)
     {
@@ -264,7 +264,7 @@ void Tank::setDirection(Direction d)
     }
 }
 
-void Tank::collide(SDL_Rect &intersect_rect)
+void Tank::collide(Rect &intersect_rect)
 {
     if(intersect_rect.w > intersect_rect.h) // kolizja od góry lub dołu
     {

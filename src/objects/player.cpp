@@ -1,6 +1,5 @@
 #include "player.h"
 #include "../appconfig.h"
-#include <SDL2/SDL.h>
 #include <iostream>
 
 Player::Player()
@@ -73,9 +72,9 @@ void Player::update(Uint32 dt)
     m_fire_time += dt;
 
     if(testFlag(TSF_LIFE))
-        src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame + 2 * star_count);
+        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame + 2 * star_count);
     else
-        src_rect = moveRect(m_sprite->rect, 0, m_current_frame + 2 * star_count);
+        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame + 2 * star_count);
 
     stop = false;
 }

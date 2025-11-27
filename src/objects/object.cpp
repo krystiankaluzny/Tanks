@@ -1,5 +1,4 @@
 #include "object.h"
-#include <SDL2/SDL.h>
 #include <iostream>
 #include <algorithm>
 
@@ -108,9 +107,9 @@ void Object::update(Uint32 dt)
     }
 }
 
-SDL_Rect Object::moveRect(const SDL_Rect &rect, int x, int y)
+Rect Object::moveRect(const Rect &rect, int x, int y)
 {
-    SDL_Rect r;
+    Rect r;
     r.x = rect.x + x*rect.w;
     r.y = rect.y + y*rect.h;
     r.w = rect.w;
@@ -120,9 +119,9 @@ SDL_Rect Object::moveRect(const SDL_Rect &rect, int x, int y)
 }
 
 
-SDL_Rect intersectRect(SDL_Rect *rect1, SDL_Rect *rect2)
+Rect intersectRect(Rect *rect1, Rect *rect2)
 {
-    SDL_Rect intersect_rect;
+    Rect intersect_rect;
     intersect_rect.x = std::max(rect1->x, rect2->x);
     intersect_rect.y = std::max(rect1->y, rect2->y);
     intersect_rect.w = std::min(rect1->x + rect1->w, rect2->x + rect2->w) - intersect_rect.x;

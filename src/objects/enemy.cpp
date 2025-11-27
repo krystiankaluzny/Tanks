@@ -70,7 +70,7 @@ void Enemy::draw()
         if(type == ST_TANK_B) c = {0, 0, 250, 255};
         if(type == ST_TANK_C) c = {0, 255, 0, 250};
         if(type == ST_TANK_D) c = {250, 0, 255, 250};
-        SDL_Rect r = {min(target_position.x, dest_rect.x + dest_rect.w / 2), dest_rect.y + dest_rect.h / 2, abs(target_position.x - (dest_rect.x + dest_rect.w / 2)), 1};
+        Rect r = {min(target_position.x, dest_rect.x + dest_rect.w / 2), dest_rect.y + dest_rect.h / 2, abs(target_position.x - (dest_rect.x + dest_rect.w / 2)), 1};
         Engine::getEngine().getRenderer()->drawRect(&r, c,  true);
         r = {target_position.x, min(target_position.y, dest_rect.y + dest_rect.h / 2), 1, abs(target_position.y - (dest_rect.y + dest_rect.h / 2))};
         Engine::getEngine().getRenderer()->drawRect(&r, c, true);
@@ -86,12 +86,12 @@ void Enemy::update(Uint32 dt)
     if(testFlag(TSF_LIFE))
     {
         if(testFlag(TSF_BONUS))
-            src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction) - 4, m_current_frame);
+            src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, (testFlag(TSF_ON_ICE) ? new_direction : direction) - 4, m_current_frame);
         else
-            src_rect = moveRect(m_sprite->rect, (testFlag(TSF_ON_ICE) ? new_direction : direction) + (lives_count -1) * 4, m_current_frame);
+            src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, (testFlag(TSF_ON_ICE) ? new_direction : direction) + (lives_count -1) * 4, m_current_frame);
     }
     else
-        src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
+        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame);
 
     if(testFlag(TSF_FROZEN)) return;
 

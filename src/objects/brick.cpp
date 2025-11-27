@@ -1,5 +1,6 @@
 #include "brick.h"
 #include <iostream>
+#include "../engine/data/data.h"
 
 Brick::Brick()
     : Object(0, 0, ST_BRICK_WALL)
@@ -105,5 +106,5 @@ void Brick::bulletHit(Direction bullet_direction)
         break;
     }
 
-    src_rect = moveRect(m_sprite->rect, 0, m_state_code);
+    src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_state_code);
 }

@@ -4,10 +4,10 @@ string AppConfig::texture_path = "texture.png";
 string AppConfig::levels_path = "levels/";
 string AppConfig::font_name = "prstartk.ttf";
 string AppConfig::game_over_text = "GAME OVER";
-SDL_Rect AppConfig::map_rect = {0, 0, 26*16, 26*16};
-SDL_Rect AppConfig::status_rect = {26*16, 0, 3*16, AppConfig::map_rect.h};
-SDL_Rect AppConfig::windows_rect = {0, 0, AppConfig::map_rect.w + AppConfig::status_rect.w, AppConfig::map_rect.h};
-SDL_Rect AppConfig::tile_rect = {0, 0, 16, 16};
+Rect AppConfig::map_rect = {0, 0, 26*16, 26*16};
+Rect AppConfig::status_rect = {26*16, 0, 3*16, AppConfig::map_rect.h};
+Rect AppConfig::windows_rect = {0, 0, AppConfig::map_rect.w + AppConfig::status_rect.w, AppConfig::map_rect.h};
+Rect AppConfig::tile_rect = {0, 0, 16, 16};
 // Macbook default keyboard does not has a right ctrl key
 #if defined(__APPLE__) && defined(__MACH__)
     #define P1_FIRE_KEY SDL_SCANCODE_RALT
@@ -17,16 +17,16 @@ SDL_Rect AppConfig::tile_rect = {0, 0, 16, 16};
     #define P2_FIRE_KEY SDL_SCANCODE_LCTRL
 #endif
 
-vector<SDL_Point> AppConfig::player_starting_point =
+vector<Point> AppConfig::player_starting_point =
 []{
-    vector<SDL_Point> v;
+    vector<Point> v;
     v.push_back({128, 384});
     v.push_back({256, 384});
     return v;
 }();
-vector<SDL_Point> AppConfig::enemy_starting_point =
+vector<Point> AppConfig::enemy_starting_point =
 []{
-    vector<SDL_Point> v;
+    vector<Point> v;
     v.push_back({1, 1});
     v.push_back({192, 1});
     v.push_back({384, 1});

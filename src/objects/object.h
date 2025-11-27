@@ -2,6 +2,7 @@
 #define OBJECT_H
 
 #include "../engine/engine.h"
+#include "../engine/data/data.h"
 
 /**
  * @brief
@@ -47,15 +48,15 @@ public:
     /**
      * Prostokąt kolizji; może być mniejszy niż wymiary dest_rect.
      */
-    SDL_Rect collision_rect;
+    Rect collision_rect;
     /**
      * Pozycja docelowa obiektu na ekranie.
      */
-    SDL_Rect dest_rect;
+    Rect dest_rect;
     /**
      * Pozycja na teksturze aktualnie wyświetlanej klatki.
      */
-    SDL_Rect src_rect;
+    Rect src_rect;
     /**
      * Typ obiektu.
      */
@@ -77,7 +78,7 @@ protected:
      * @param y - przesunięcie pionowe
      * @return przesunięty prostokąt
      */
-    SDL_Rect moveRect(const SDL_Rect &rect, int x, int y);
+    Rect moveRect(const Rect &rect, int x, int y);
 
     /**
      * Animacja odpowiadająca danemu typowi obiektu.
@@ -99,6 +100,6 @@ protected:
  * @param rect2
  * @return część wspólną, jeśli rect1 i rect2 nie mają części wspólnej prostokąt wyjściowy będzie miał ujemne wymiary
  */
-SDL_Rect intersectRect(SDL_Rect* rect1, SDL_Rect* rect2);
+Rect intersectRect(Rect* rect1, Rect* rect2);
 
 #endif // OBJECT_H

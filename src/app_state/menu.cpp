@@ -40,11 +40,11 @@ void Menu::draw()
 
     //LOGO
     const SpriteData* logo = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_TANKS_LOGO);
-    SDL_Rect dst = {(AppConfig::map_rect.w + AppConfig::status_rect.w - logo->rect.w)/2, 50, logo->rect.w, logo->rect.h};
+    Rect dst = {(AppConfig::map_rect.w + AppConfig::status_rect.w - logo->rect.w)/2, 50, logo->rect.w, logo->rect.h};
     renderer->drawObject(&logo->rect, &dst);
 
     int i = 0;
-    SDL_Point text_start;
+    Point text_start;
     for(auto text : m_menu_texts)
     {
         text_start = { 180, (i + 1) * 32 + 120};

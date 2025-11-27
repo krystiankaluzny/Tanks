@@ -44,7 +44,7 @@ public:
     /**
      * Pozycja do jakiej kieruje się czołg przeciwnika.
      */
-    SDL_Point target_position;
+    Point target_position;
 
 private:
     /**
