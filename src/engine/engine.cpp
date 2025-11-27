@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "sdl/sdl_renderer.h"
 
 
 Engine::Engine()
@@ -31,7 +32,7 @@ std::string Engine::intToString(int num)
 
 void Engine::initModules()
 {
-    m_renderer = new Renderer;
+    m_renderer = new SDLRenderer;
     m_sprite_config = new SpriteConfig;
 }
 

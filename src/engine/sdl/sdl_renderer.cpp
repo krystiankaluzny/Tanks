@@ -1,19 +1,20 @@
-#include "renderer.h"
-#include "../appconfig.h"
-#include <SDL2/SDL.h>
+#include "sdl_renderer.h"
+#include "../../appconfig.h"
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <algorithm>
 
-Renderer::Renderer()
+SDLRenderer::SDLRenderer()
 {
     m_texture = nullptr;
     m_renderer = nullptr;
     m_text_texture = nullptr;
     m_font1 = nullptr;
     m_font2 = nullptr;
+    m_font3 = nullptr;
 }
 
-Renderer::~Renderer()
+SDLRenderer::~SDLRenderer()
 {
     if(m_renderer != nullptr)
         SDL_DestroyRenderer(m_renderer);
@@ -29,7 +30,7 @@ Renderer::~Renderer()
         TTF_CloseFont(m_font3);
 }
 
-void Renderer::loadTexture(SDL_Window* window)
+void SDLRenderer::loadTexture(SDL_Window* window)
 {
     SDL_Surface* surface = nullptr;
     m_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -43,32 +44,32 @@ void Renderer::loadTexture(SDL_Window* window)
     SDL_FreeSurface(surface);
 }
 
-void Renderer::loadFont()
+void SDLRenderer::loadFont()
 {
     m_font1 = TTF_OpenFont(AppConfig::font_name.c_str(), 28);
     m_font2 = TTF_OpenFont(AppConfig::font_name.c_str(), 14);
     m_font3 = TTF_OpenFont(AppConfig::font_name.c_str(), 10);
 }
 
-void Renderer::clear()
+void SDLRenderer::clear()
 {
     SDL_SetRenderDrawColor(m_renderer, 110, 110, 110, 255);
     SDL_RenderClear(m_renderer); //czyścimy tylny bufor
 }
 
-void Renderer::flush()
+void SDLRenderer::flush()
 {
     SDL_RenderPresent(m_renderer); //zamieniamy bufory
 }
 
-void Renderer::drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)
+void SDLRenderer::drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)
 {
     SDL_RenderCopy(m_renderer, m_texture, texture_src, window_dest); //rysujemy na tylnim buforze
 }
 
-void Renderer::setScale(float xs, float ys)
+void SDLRenderer::setScale(float xs, float ys)
 {
-    float scale = min(xs, ys);
+    float scale = std::min(xs, ys);
     if(scale < 0.1) return;
 
     SDL_Rect viewport;
@@ -83,7 +84,7 @@ void Renderer::setScale(float xs, float ys)
     SDL_RenderSetViewport(m_renderer, &viewport);
 }
 
-void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_color, int font_size)
+void SDLRenderer::drawText(const SDL_Point* start, std::string text, SDL_Color text_color, int font_size)
 {
     if(m_font1 == nullptr || m_font2 == nullptr || m_font3 == nullptr) return;
     if(m_text_texture != nullptr)
@@ -119,7 +120,7 @@ void Renderer::drawText(const SDL_Point* start, string text, SDL_Color text_colo
     SDL_RenderCopy(m_renderer, m_text_texture, NULL, &window_dest);
 }
 
-void Renderer::drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill)
+void SDLRenderer::drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill)
 {
     SDL_SetRenderDrawColor(m_renderer, rect_color.r, rect_color.g, rect_color.b, rect_color.a);
 
@@ -129,7 +130,7 @@ void Renderer::drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill)
         SDL_RenderDrawRects(m_renderer, rect, 1);
 }
 
-void Renderer::toggleFullscreen(SDL_Window* window) {
+void SDLRenderer::toggleFullscreen(SDL_Window* window) {
     m_fullscreen = !m_fullscreen;
 
     if (m_fullscreen)

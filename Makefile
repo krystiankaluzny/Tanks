@@ -45,7 +45,7 @@ else
 endif
 
 
-MODULES = engine app_state objects
+MODULES = engine engine/sdl app_state objects
 SRC_DIRS = src $(addprefix src/,$(MODULES))
 BUILD_DIRS = $(BUILD) $(BIN) $(addprefix $(BUILD)/,$(MODULES))
 
