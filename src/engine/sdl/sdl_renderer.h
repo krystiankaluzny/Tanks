@@ -15,10 +15,10 @@ public:
     void loadFont() override;
     void clear() override;
     void flush() override;
-    void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest) override;
+    void drawObject(const Rect *texture_src, const Rect *window_dest) override;
     void setScale(float xs, float ys) override;
-    void drawText(const SDL_Point* start, std::string text, SDL_Color text_color, int font_size = 1) override;
-    void drawRect(const SDL_Rect* rect, SDL_Color rect_color, bool fill = false) override;
+    void drawText(const Point* start, std::string text, SDL_Color text_color, int font_size = 1) override;
+    void drawRect(const Rect* rect, SDL_Color rect_color, bool fill = false) override;
     void toggleFullscreen(SDL_Window* window) override;
 
 private:

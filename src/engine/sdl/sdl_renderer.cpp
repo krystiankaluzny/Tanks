@@ -62,9 +62,12 @@ void SDLRenderer::flush()
     SDL_RenderPresent(m_renderer); //zamieniamy bufory
 }
 
-void SDLRenderer::drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest)
+void SDLRenderer::drawObject(const Rect *texture_src, const Rect *window_dest)
 {
-    SDL_RenderCopy(m_renderer, m_texture, texture_src, window_dest); //rysujemy na tylnim buforze
+    if(texture_src == nullptr || window_dest == nullptr) return;
+    SDL_Rect t = { texture_src->x, texture_src->y, texture_src->w, texture_src->h };
+    SDL_Rect w = { window_dest->x, window_dest->y, window_dest->w, window_dest->h };
+    SDL_RenderCopy(m_renderer, m_texture, &t, &w); //rysujemy na tylnim buforze
 }
 
 void SDLRenderer::setScale(float xs, float ys)
@@ -84,7 +87,7 @@ void SDLRenderer::setScale(float xs, float ys)
     SDL_RenderSetViewport(m_renderer, &viewport);
 }
 
-void SDLRenderer::drawText(const SDL_Point* start, std::string text, SDL_Color text_color, int font_size)
+void SDLRenderer::drawText(const Point* start, std::string text, SDL_Color text_color, int font_size)
 {
     if(m_font1 == nullptr || m_font2 == nullptr || m_font3 == nullptr) return;
     if(m_text_texture != nullptr)
@@ -120,14 +123,16 @@ void SDLRenderer::drawText(const SDL_Point* start, std::string text, SDL_Color t
     SDL_RenderCopy(m_renderer, m_text_texture, NULL, &window_dest);
 }
 
-void SDLRenderer::drawRect(const SDL_Rect *rect, SDL_Color rect_color, bool fill)
+void SDLRenderer::drawRect(const Rect* rect, SDL_Color rect_color, bool fill)
 {
+    if(rect == nullptr) return;
+    SDL_Rect r = { rect->x, rect->y, rect->w, rect->h };
     SDL_SetRenderDrawColor(m_renderer, rect_color.r, rect_color.g, rect_color.b, rect_color.a);
 
     if(fill)
-        SDL_RenderFillRect(m_renderer, rect);
+        SDL_RenderFillRect(m_renderer, &r);
     else
-        SDL_RenderDrawRects(m_renderer, rect, 1);
+        SDL_RenderDrawRects(m_renderer, &r, 1);
 }
 
 void SDLRenderer::toggleFullscreen(SDL_Window* window) {
