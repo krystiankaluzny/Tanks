@@ -1,5 +1,6 @@
 PROJECT_NAME = Tanks
 
+SRC = src
 BUILD = build
 BIN = $(BUILD)/bin
 RESOURCES_DIR = resources
@@ -46,11 +47,12 @@ endif
 
 
 MODULES = engine engine/sdl app_state objects
-SRC_DIRS = src $(addprefix src/,$(MODULES))
-BUILD_DIRS = $(BUILD) $(BIN) $(addprefix $(BUILD)/,$(MODULES))
+SRC_SUBDIRS = $(shell cd $(SRC) && find * -type d)
+SRC_DIRS = $(SRC) $(addprefix $(SRC)/,$(SRC_SUBDIRS))
+BUILD_DIRS = $(BUILD) $(BIN) $(addprefix $(BUILD)/,$(SRC_SUBDIRS))
 
 SOURCES = $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.cpp))
-OBJS = $(patsubst src/%.cpp,$(BUILD)/%.o,$(SOURCES))
+OBJS = $(patsubst $(SRC)/%.cpp,$(BUILD)/%.o,$(SOURCES))
 
 vpath %.cpp $(SRC_DIRS)
 
@@ -59,7 +61,8 @@ all: print $(BUILD_DIRS) $(RESOURCES) compile
 print:
 	@echo
 	@echo OS: $(OS)
-	@echo MODULES: $(MODULES)
+	@echo SRC: $(SRC)
+	@echo SRC_SUBDIRS: $(SRC_SUBDIRS)
 	@echo SRC_DIRS: $(SRC_DIRS)
 	@echo BUILD_DIRS: $(BUILD_DIRS)
 	@echo SOURCES: $(SOURCES)
@@ -77,7 +80,7 @@ $(BUILD_DIRS):
 compile: $(OBJS)
 	$(CC) $(OBJS) $(INCLUDEPATH) $(LIBSPATH) $(LIBS) $(LFLAGS) -o $(BIN)/$(PROJECT_NAME)
 
-build/%.o: src/%.cpp
+build/%.o: $(SRC)/%.cpp
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $< -o $@
 
 $(APP_RESOURCES):
