@@ -1,8 +1,20 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#include "data/event.h"
 #include "renderer.h"
 #include "spriteconfig.h"
+#include <functional>
+
+enum class ProcessingResult
+{
+    STOP,
+    CONTINUE
+};
+
+typedef std::function<ProcessingResult (Event&)> HandleEventFunc;
+typedef std::function<ProcessingResult (int)> UpdateStateFunc;
+typedef std::function<ProcessingResult (Renderer&)> DrawFunc;
 
 /**
  * @brief Klasa łączy elementy związane z działaniem programu.
@@ -11,6 +23,8 @@ class Engine
 {
 public:
     Engine();
+
+    virtual void startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw) = 0;
 
     /**
      * @return statyczną instancję obiektu @a Engine
