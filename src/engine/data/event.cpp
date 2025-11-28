@@ -1,5 +1,6 @@
 
 #include "event.h"
+#include "keycode.h"
 
 class QuitEvent : public Event
 {
@@ -11,15 +12,21 @@ QuitEvent::QuitEvent() : Event(EventType::QUIT)
 {
 }
 
-class KeyDownEvent : public Event
+class KeyboardEvent : public Event
 {
 private:
-    /* data */
+    KeyCode keyCode;
+    unsigned int keyMods;
+
 public:
-    KeyDownEvent();
+    KeyboardEvent();
+
+
+    KeyCode getKeyCode() const { return keyCode; }
+    bool testKeyMod(KeyMod keyMod) const { return keyMods & static_cast<unsigned int>(keyMod); }
 };
 
-KeyDownEvent::KeyDownEvent() : Event(EventType::KEYDOWN)
+KeyboardEvent::KeyboardEvent() : Event(EventType::KEYDOWN)
 {
 }
 
