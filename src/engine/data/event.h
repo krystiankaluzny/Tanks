@@ -1,26 +1,57 @@
 #ifndef TANKS_EVENT_H
 #define TANKS_EVENT_H
 
+#include "keycode.h"
+
 enum EventType
 {
-    KEYDOWN,
-    WINDOWEVENT,
+    UNKNOWN,
+    KEYBOARD,
+    WINDOW,
     QUIT
 };
 
 class Event
 {
-    public:
-        EventType type;
+public:
+    EventType type;
 
-    protected:
-        Event(EventType type);
+protected:
+    Event(EventType type)
+    {
+        this->type = type;
+    }
 };
 
-
-Event::Event(EventType ctype)
+class UnknownEvent : public Event
 {
-    type = ctype;
+public:
+    UnknownEvent() : Event(EventType::UNKNOWN) {};
 };
 
-#endif //TANKS_EVENT_H
+class QuitEvent : public Event
+{
+public:
+    QuitEvent() : Event(EventType::QUIT) {};
+};
+
+class KeyboardEvent : public Event
+{
+private:
+    KeyCode keyCode;
+    unsigned int keyMods;
+
+public:
+    KeyboardEvent() : Event(EventType::KEYBOARD) {};
+
+    KeyCode getKeyCode() const { return keyCode; }
+    bool testKeyMod(KeyMod keyMod) const { return keyMods & static_cast<unsigned int>(keyMod); }
+};
+
+class WindowEvent : public Event
+{
+public:
+    WindowEvent() : Event(EventType::WINDOW) {};
+};
+
+#endif // TANKS_EVENT_H

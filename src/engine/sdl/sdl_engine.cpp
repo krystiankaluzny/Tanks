@@ -5,10 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-
-SDLEngine::SDLEngine()
-{
-}
+#include <iostream>
 
 SDLEngine::~SDLEngine()
 {
@@ -32,15 +29,18 @@ void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updat
 {
     is_main_loop_running = true;
 
-    if(SDL_Init(SDL_INIT_VIDEO) == 0)
+    if (SDL_Init(SDL_INIT_VIDEO) == 0)
     {
-        m_window = SDL_CreateWindow("TANKS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                    AppConfig::windows_rect.w, AppConfig::windows_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        m_window = SDL_CreateWindow(m_config.window_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                    m_config.window_rect.w, m_config.window_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
-        if(m_window == nullptr) return;
+        if (m_window == nullptr)
+            return;
 
-        if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) return;
-        if(TTF_Init() == -1) return;
+        if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+            return;
+        if (TTF_Init() == -1)
+            return;
 
         std::random_device dev;
         srand(dev());
@@ -49,31 +49,45 @@ void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updat
         m_renderer->loadTexture(m_window);
         m_renderer->loadFont();
 
-
-
         Uint32 probe_time = 0, frames_count = 0, delay = 15;
         Uint32 current_time = SDL_GetTicks();
         Uint32 previous_time = current_time;
-        while(is_main_loop_running)
+        while (is_main_loop_running)
         {
             current_time = SDL_GetTicks();
             Uint32 delta_time = current_time - previous_time;
             previous_time = current_time;
 
-            handleEvent();
-            updateState(delta_time);
-            draw();
+            if (handleEvents(handleEvent) == ProcessingResult::STOP)
+            {
+                is_main_loop_running = false;
+                break;
+            }
+
+            if (updateState(delta_time) == ProcessingResult::STOP)
+            {
+                is_main_loop_running = false;
+                break;
+            }
+
+            if (draw(*m_renderer) == ProcessingResult::STOP)
+            {
+                is_main_loop_running = false;
+                break;
+            }
 
             SDL_Delay(delay);
 
-            //FPS
+            // FPS
             probe_time += delta_time;
             frames_count++;
-            if(probe_time > 200)
+            if (probe_time > 200)
             {
                 const double fps = static_cast<double>(frames_count) / probe_time * 1000;
-                if(fps > 60) delay++;
-                else if(delay > 0) delay--;
+                if (fps > 60)
+                    delay++;
+                else if (delay > 0)
+                    delay--;
                 probe_time = 0;
                 frames_count = 0;
             }
@@ -87,5 +101,56 @@ void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updat
         IMG_Quit();
         SDL_Quit();
     }
-    
+}
+
+ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        Event e = mapEvent(event);
+        if (event.type == SDL_QUIT)
+        {
+            return ProcessingResult::STOP;
+        }
+        else
+        {
+            if (handleEvent(e) == ProcessingResult::STOP)
+            {
+                return ProcessingResult::STOP;
+            }
+        }
+    }
+    return ProcessingResult::CONTINUE;
+}
+
+Event SDLEngine::mapEvent(const SDL_Event &sdl_event)
+{
+    switch (sdl_event.type)
+    {
+    case SDL_KEYDOWN:
+        return KeyboardEvent();
+    case SDL_WINDOWEVENT:
+        return WindowEvent();
+    case SDL_QUIT:
+        return QuitEvent();
+    default:
+        return UnknownEvent();
+    }
+    return UnknownEvent();
+}
+
+void SDLEngine::setConfig(SDLEngineConfig config)
+{
+    m_config = config;
+}
+
+Renderer *SDLEngine::getRenderer() const
+{
+    return m_renderer;
+}
+
+SpriteConfig *SDLEngine::getSpriteConfig() const
+{
+    return m_sprite_config;
 }

@@ -1,17 +1,15 @@
 #include "engine.h"
-#include "sdl/sdl_renderer.h"
 
+Engine* Engine::engine_instance = nullptr;
 
-Engine::Engine()
+void Engine::setEngine(Engine* engine)
 {
-    m_renderer = nullptr;
-    m_sprite_config = nullptr;
+    Engine::engine_instance = engine;
 }
 
 Engine &Engine::getEngine()
 {
-    static Engine engine;
-    return engine;
+    return *Engine::engine_instance;
 }
 
 std::string Engine::intToString(int num)
@@ -28,28 +26,4 @@ std::string Engine::intToString(int num)
     for(; num; num /= 10) buf = "0123456789abcdef"[num % 10] + buf;
     if(negative) buf = "-" + buf;
     return buf;
-}
-
-void Engine::initModules()
-{
-    m_renderer = new SDLRenderer;
-    m_sprite_config = new SpriteConfig;
-}
-
-void Engine::destroyModules()
-{
-    delete m_renderer;
-    m_renderer = nullptr;
-    delete m_sprite_config;
-    m_sprite_config = nullptr;
-}
-
-Renderer *Engine::getRenderer() const
-{
-    return m_renderer;
-}
-
-SpriteConfig *Engine::getSpriteConfig() const
-{
-    return m_sprite_config;
 }

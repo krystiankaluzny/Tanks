@@ -1,6 +1,7 @@
 #ifndef APP_H
 #define APP_H
 
+#include "engine/engine.h"
 #include "app_state/appstate.h"
 
 /**
@@ -28,15 +29,15 @@ private:
      * Aktualny stan aplikacji.
      */
     AppState *m_app_state;
-    /**
-     * Obiekt okna aplikacji.
-     */
-    SDL_Window *m_window;
 
     /**
     * Funkcja obsługująca zdarzenia czekające w kolejce.
     */
     void eventProces();
+
+    ProcessingResult handleEvent(const Event &event);
+    ProcessingResult updateState(Uint32 delta_time);
+    ProcessingResult draw(Renderer &renderer);
 };
 
 #endif // APP_H
