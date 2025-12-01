@@ -7,11 +7,6 @@ void Engine::setEngine(Engine* engine)
     Engine::engine_instance = engine;
 }
 
-Engine &Engine::getEngine()
-{
-    return *Engine::engine_instance;
-}
-
 std::string Engine::intToString(int num)
 {
     if(num == 0) return "0";
