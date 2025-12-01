@@ -17,14 +17,13 @@ private:
 
     SDL_Window *m_window;
     SDLRenderer *m_renderer;
-    SpriteConfig *m_sprite_config;
     SDLEngineConfig m_config;
 
     void initModules();
     void destroyModules();
 
     ProcessingResult handleEvents(HandleEventFunc handleEvent);
-    ProcessingResult handleInternalEvents(Event event);
+    ProcessingResult handleInternalEvents(const Event& event);
 
 public:
     ~SDLEngine();
@@ -33,7 +32,6 @@ public:
     void setConfig(SDLEngineConfig config);
 
     Renderer *getRenderer() const override;
-    SpriteConfig *getSpriteConfig() const override;
 };
 
 #endif // SDL_ENGINE_H

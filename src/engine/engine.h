@@ -3,7 +3,6 @@
 
 #include "data/event.h"
 #include "renderer.h"
-#include "spriteconfig.h"
 #include <functional>
 
 enum class ProcessingResult
@@ -12,7 +11,7 @@ enum class ProcessingResult
     CONTINUE
 };
 
-typedef std::function<ProcessingResult (Event&)> HandleEventFunc;
+typedef std::function<ProcessingResult (const Event&)> HandleEventFunc;
 typedef std::function<ProcessingResult (int)> UpdateStateFunc;
 typedef std::function<ProcessingResult (Renderer&)> DrawFunc;
 
@@ -34,8 +33,6 @@ public:
     static std::string intToString(int num);
 
     virtual Renderer* getRenderer() const = 0;
-    virtual SpriteConfig* getSpriteConfig() const = 0;
-
 };
 
 #endif // ENGINE_H

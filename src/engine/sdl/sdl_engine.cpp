@@ -15,15 +15,12 @@ SDLEngine::~SDLEngine()
 void SDLEngine::initModules()
 {
     m_renderer = new SDLRenderer(m_config.initial_window_size);
-    m_sprite_config = new SpriteConfig;
 }
 
 void SDLEngine::destroyModules()
 {
     delete m_renderer;
     m_renderer = nullptr;
-    delete m_sprite_config;
-    m_sprite_config = nullptr;
 }
 
 void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw)
@@ -130,11 +127,11 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
     return ProcessingResult::CONTINUE;
 }
 
-ProcessingResult SDLEngine::handleInternalEvents(Event event)
+ProcessingResult SDLEngine::handleInternalEvents(const Event& event)
 {
     if (event.type == Event::WINDOW)
     {
-        WindowEvent we = static_cast<WindowEvent &>(event);
+        const WindowEvent& we = static_cast<const WindowEvent &>(event);
         if (we.type == WindowEvent::RESIZED ||
             we.type == WindowEvent::MAXIMIZED ||
             we.type == WindowEvent::RESTORED ||
@@ -145,7 +142,7 @@ ProcessingResult SDLEngine::handleInternalEvents(Event event)
     }
     else if (event.type == Event::KEYBOARD)
     {
-        KeyboardEvent ke = static_cast<KeyboardEvent &>(event);
+        const KeyboardEvent& ke = static_cast<const KeyboardEvent &>(event);
         if (ke.getKeyCode() == KeyCode::KEY_F11)
         {
             m_renderer->toggleFullscreen(m_window);
@@ -163,9 +160,4 @@ void SDLEngine::setConfig(SDLEngineConfig config)
 Renderer *SDLEngine::getRenderer() const
 {
     return m_renderer;
-}
-
-SpriteConfig *SDLEngine::getSpriteConfig() const
-{
-    return m_sprite_config;
 }
