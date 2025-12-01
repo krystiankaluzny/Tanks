@@ -45,13 +45,6 @@ public:
     virtual void drawObject(const Rect *texture_src, const Rect *window_dest) = 0;
 
     /**
-     * Ustawienie skali wyświetlanego bufora, tak aby miał zachowane proporcje planszy oraz aby był umiejscowiony w środku okna aplikacji.
-     * @param xs - skala pozioma jako stosunek szerokości okna do szerokości mapy
-     * @param ys - skala pionowa jako stosunek wysokości okna do wysokości mapy
-     * @see AppConfig::map_rect
-     */
-    virtual void setScale(float xs, float ys) = 0;
-    /**
      * Rysowanie tekstu w buforze okna w wybranej pozycji początkowej.
      * @param start - położenie punktu początkowego rysowanego tekstu; ujemna wartości którejś ze wspołrzędnych skutkuje wyśrodkowaniem napisu w tej osi
      * @param text - rysowany tekst
@@ -67,10 +60,6 @@ public:
      * @param fill - zmienna mówiącza czy prostokąt ma być zamalowany
      */
     virtual void drawRect(const Rect* rect, SDL_Color rect_color, bool fill = false) = 0;
-
-
-    virtual void toggleFullscreen(SDL_Window* window) = 0;
-
 
 private:
     // Concrete implementations may keep their own SDL-specific members.

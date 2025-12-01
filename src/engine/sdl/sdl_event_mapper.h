@@ -1,6 +1,7 @@
 #ifndef SDL_EVENT_MAPPER_H
 #define SDL_EVENT_MAPPER_H
 
+#include "../data/data.h"
 #include "../data/event.h"
 #include <SDL2/SDL.h>
 
@@ -244,41 +245,42 @@ WindowEvent mapSDLEventToWindowEvent(const SDL_Event &sdl_event)
     int data1 = sdl_window_event.data1;
     int data2 = sdl_window_event.data2;
 
+    Size window_size = {data1, data2};
     switch (sdl_window_event.event)
     {
     case SDL_WINDOWEVENT_SHOWN:
-        return WindowEvent(WindowEvent::SHOWN, data1, data2);
+        return WindowEvent(WindowEvent::SHOWN, window_size);
     case SDL_WINDOWEVENT_HIDDEN:
-        return WindowEvent(WindowEvent::HIDDEN, data1, data2);
+        return WindowEvent(WindowEvent::HIDDEN, window_size);
     case SDL_WINDOWEVENT_EXPOSED:
-        return WindowEvent(WindowEvent::EXPOSED, data1, data2);
+        return WindowEvent(WindowEvent::EXPOSED, window_size);
     case SDL_WINDOWEVENT_MOVED:
-        return WindowEvent(WindowEvent::MOVED, data1, data2);
+        return WindowEvent(WindowEvent::MOVED, window_size);
     case SDL_WINDOWEVENT_RESIZED:
-        return WindowEvent(WindowEvent::RESIZED, data1, data2);
+        return WindowEvent(WindowEvent::RESIZED, window_size);
     case SDL_WINDOWEVENT_SIZE_CHANGED:
-        return WindowEvent(WindowEvent::SIZE_CHANGED, data1, data2);
+        return WindowEvent(WindowEvent::SIZE_CHANGED, window_size);
     case SDL_WINDOWEVENT_MINIMIZED:
-        return WindowEvent(WindowEvent::MINIMIZED, data1, data2);
+        return WindowEvent(WindowEvent::MINIMIZED, window_size);
     case SDL_WINDOWEVENT_MAXIMIZED:
-        return WindowEvent(WindowEvent::MAXIMIZED, data1, data2);
+        return WindowEvent(WindowEvent::MAXIMIZED, window_size);
     case SDL_WINDOWEVENT_RESTORED:
-        return WindowEvent(WindowEvent::RESTORED, data1, data2);
+        return WindowEvent(WindowEvent::RESTORED, window_size);
     case SDL_WINDOWEVENT_ENTER:
-        return WindowEvent(WindowEvent::ENTER, data1, data2);
+        return WindowEvent(WindowEvent::ENTER, window_size);
     case SDL_WINDOWEVENT_LEAVE:
-        return WindowEvent(WindowEvent::LEAVE, data1, data2);
+        return WindowEvent(WindowEvent::LEAVE, window_size);
     case SDL_WINDOWEVENT_FOCUS_GAINED:
-        return WindowEvent(WindowEvent::FOCUS_GAINED, data1, data2);
+        return WindowEvent(WindowEvent::FOCUS_GAINED, window_size);
     case SDL_WINDOWEVENT_FOCUS_LOST:
-        return WindowEvent(WindowEvent::FOCUS_LOST, data1, data2);
+        return WindowEvent(WindowEvent::FOCUS_LOST, window_size);
     case SDL_WINDOWEVENT_CLOSE:
-        return WindowEvent(WindowEvent::CLOSE, data1, data2);
+        return WindowEvent(WindowEvent::CLOSE, window_size);
     default:
-        return WindowEvent(WindowEvent::UNKNOWN, data1, data2);
+        return WindowEvent(WindowEvent::UNKNOWN, window_size);
     }
 
-    return WindowEvent(WindowEvent::UNKNOWN, data1, data2);
+    return WindowEvent(WindowEvent::UNKNOWN, window_size);
 }
 
 Event mapSDLEventToEngineEvent(const SDL_Event &sdl_event)

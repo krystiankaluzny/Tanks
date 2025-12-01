@@ -14,7 +14,7 @@ SDLEngine::~SDLEngine()
 
 void SDLEngine::initModules()
 {
-    m_renderer = new SDLRenderer;
+    m_renderer = new SDLRenderer(m_config.initial_window_size);
     m_sprite_config = new SpriteConfig;
 }
 
@@ -33,7 +33,7 @@ void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updat
     if (SDL_Init(SDL_INIT_VIDEO) == 0)
     {
         m_window = SDL_CreateWindow(m_config.window_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                    m_config.window_rect.w, m_config.window_rect.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                                    m_config.initial_window_size.w, m_config.initial_window_size.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
         if (m_window == nullptr)
             return;
@@ -109,13 +109,18 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        Event e = mapEvent(event);
+        Event e = mapSDLEventToEngineEvent(event);
+
         if (event.type == SDL_QUIT)
         {
             return ProcessingResult::STOP;
         }
         else
         {
+            if (handleInternalEvents(e) == ProcessingResult::STOP)
+            {
+                return ProcessingResult::STOP;
+            }
             if (handleEvent(e) == ProcessingResult::STOP)
             {
                 return ProcessingResult::STOP;
@@ -125,9 +130,29 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
     return ProcessingResult::CONTINUE;
 }
 
-Event SDLEngine::mapEvent(const SDL_Event &sdl_event)
+ProcessingResult SDLEngine::handleInternalEvents(Event event)
 {
-    return mapSDLEventToEngineEvent(sdl_event);
+    if (event.type == Event::WINDOW)
+    {
+        WindowEvent we = static_cast<WindowEvent &>(event);
+        if (we.type == WindowEvent::RESIZED ||
+            we.type == WindowEvent::MAXIMIZED ||
+            we.type == WindowEvent::RESTORED ||
+            we.type == WindowEvent::SHOWN)
+        {
+            m_renderer->setViewportForWindowSize(we.window_size);
+        }
+    }
+    else if (event.type == Event::KEYBOARD)
+    {
+        KeyboardEvent ke = static_cast<KeyboardEvent &>(event);
+        if (ke.getKeyCode() == KeyCode::KEY_F11)
+        {
+            m_renderer->toggleFullscreen(m_window);
+        }
+    }
+
+    return ProcessingResult::CONTINUE;
 }
 
 void SDLEngine::setConfig(SDLEngineConfig config)

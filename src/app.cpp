@@ -32,7 +32,7 @@ void App::run()
 
     SDLEngine sdl_engine;
 
-    sdl_engine.setConfig({"Tanks", AppConfig::windows_rect});
+    sdl_engine.setConfig({"Tanks", Size{AppConfig::windows_rect.w, AppConfig::windows_rect.h}});
     Engine::setEngine(&sdl_engine);
 
     Engine &engine = Engine::getEngine();
@@ -53,14 +53,14 @@ ProcessingResult App::handleEvent(const Event &event)
     // m_app_state->eventProcess();
     // if (m_app_state->finished())
     // {
-        // AppState *next_state = m_app_state->nextState();
-        // delete m_app_state;
-        // m_app_state = next_state;
-        // if (m_app_state == nullptr)
-        // {
-        //     is_running = false;
-        //     return ProcessingResult::STOP;
-        // }
+    // AppState *next_state = m_app_state->nextState();
+    // delete m_app_state;
+    // m_app_state = next_state;
+    // if (m_app_state == nullptr)
+    // {
+    //     is_running = false;
+    //     return ProcessingResult::STOP;
+    // }
     // }
     return ProcessingResult::CONTINUE;
 }

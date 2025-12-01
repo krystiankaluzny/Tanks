@@ -4,7 +4,8 @@
 #include <iostream>
 #include <algorithm>
 
-SDLRenderer::SDLRenderer()
+SDLRenderer::SDLRenderer(Size viewport_base_size)
+    : m_viewport_base_size(viewport_base_size)
 {
     m_texture = nullptr;
     m_renderer = nullptr;
@@ -70,22 +71,29 @@ void SDLRenderer::drawObject(const Rect *texture_src, const Rect *window_dest)
     SDL_RenderCopy(m_renderer, m_texture, &t, &w); //rysujemy na tylnim buforze
 }
 
-void SDLRenderer::setScale(float xs, float ys)
+void SDLRenderer::setViewportForWindowSize(Size window_size)
 {
-    float scale = std::min(xs, ys);
+    int width = window_size.w;
+    int height = window_size.h;
+
+    if(width <= 0 || height <= 0) return;
+
+    // Calculate the scale to maintain aspect ratio
+    float scale = std::min(width / (float)m_viewport_base_size.w, height / (float)m_viewport_base_size.h);
     if(scale < 0.1) return;
 
     SDL_Rect viewport;
-    viewport.x = ((float)AppConfig::windows_rect.w / scale - (AppConfig::map_rect.w + AppConfig::status_rect.w)) / 2.0;
-    viewport.y = ((float)AppConfig::windows_rect.h / scale - AppConfig::map_rect.h) / 2.0;
+    viewport.x = (width / scale - m_viewport_base_size.w) / 2.0;
+    viewport.y = (height / scale - m_viewport_base_size.h) / 2.0;
     if(viewport.x < 0) viewport.x = 0;
     if(viewport.y < 0) viewport.y = 0;
-    viewport.w = AppConfig::map_rect.w + AppConfig::status_rect.w;
-    viewport.h = AppConfig::map_rect.h;
+    viewport.w = m_viewport_base_size.w;
+    viewport.h = m_viewport_base_size.h;
 
     SDL_RenderSetScale(m_renderer, scale, scale);
     SDL_RenderSetViewport(m_renderer, &viewport);
 }
+
 
 void SDLRenderer::drawText(const Point* start, std::string text, SDL_Color text_color, int font_size)
 {

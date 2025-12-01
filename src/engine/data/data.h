@@ -14,4 +14,9 @@ struct Rect
     int w, h;
 };
 
+struct Size
+{
+    int w, h;
+};
+
 #endif //TANKS_DATA_H

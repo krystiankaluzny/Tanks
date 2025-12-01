@@ -7,7 +7,7 @@
 struct SDLEngineConfig
 {
     std::string window_title;
-    Rect window_rect;
+    Size initial_window_size;
 };
 
 class SDLEngine : public Engine
@@ -16,7 +16,7 @@ private:
     bool is_main_loop_running = false;
 
     SDL_Window *m_window;
-    Renderer *m_renderer;
+    SDLRenderer *m_renderer;
     SpriteConfig *m_sprite_config;
     SDLEngineConfig m_config;
 
@@ -24,7 +24,7 @@ private:
     void destroyModules();
 
     ProcessingResult handleEvents(HandleEventFunc handleEvent);
-    Event mapEvent(const SDL_Event &sdl_event);
+    ProcessingResult handleInternalEvents(Event event);
 
 public:
     ~SDLEngine();

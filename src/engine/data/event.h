@@ -70,12 +70,11 @@ public:
         UNKNOWN
     };
 
-    WindowEvent(WindowEventType type, int width, int height)
-        : Event(EventType::WINDOW), type(type), width(width), height(height) {};
+    WindowEvent(WindowEventType type, Size window_size)
+        : Event(EventType::WINDOW), type(type), window_size(window_size) {};
 
     WindowEventType type;
-    int width;
-    int height;
+    Size window_size;
 };
 
 #endif // TANKS_EVENT_H

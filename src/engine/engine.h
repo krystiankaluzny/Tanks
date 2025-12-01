@@ -26,7 +26,6 @@ public:
     static Engine* engine_instance;
 
     static void setEngine(Engine* engine);
-    static Engine& getEngine(); //silnik może być dostępny w każdym module korzystając jedynie z przestrzeni nazw a nie wskaźnika
     /**
      * Funkcja zamienia podaną wartość liczbową na tekst.
      * @param num - liczba całkowita
