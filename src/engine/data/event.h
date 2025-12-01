@@ -3,17 +3,16 @@
 
 #include "keycode.h"
 
-enum EventType
-{
-    UNKNOWN,
-    KEYBOARD,
-    WINDOW,
-    QUIT
-};
-
 class Event
 {
 public:
+    enum EventType
+    {
+        UNKNOWN,
+        KEYBOARD,
+        WINDOW,
+        QUIT
+    };
     EventType type;
 
 protected:
@@ -42,7 +41,8 @@ private:
     unsigned int keyMods;
 
 public:
-    KeyboardEvent() : Event(EventType::KEYBOARD) {};
+    KeyboardEvent(KeyCode keyCode, unsigned int keyMods)
+        : Event(EventType::KEYBOARD), keyCode(keyCode), keyMods(keyMods) {};
 
     KeyCode getKeyCode() const { return keyCode; }
     bool testKeyMod(KeyMod keyMod) const { return keyMods & static_cast<unsigned int>(keyMod); }
@@ -51,7 +51,31 @@ public:
 class WindowEvent : public Event
 {
 public:
-    WindowEvent() : Event(EventType::WINDOW) {};
+    enum WindowEventType
+    {
+        SHOWN,
+        HIDDEN,
+        EXPOSED,
+        MOVED,
+        RESIZED,
+        SIZE_CHANGED,
+        MINIMIZED,
+        MAXIMIZED,
+        RESTORED,
+        ENTER,
+        LEAVE,
+        FOCUS_GAINED,
+        FOCUS_LOST,
+        CLOSE,
+        UNKNOWN
+    };
+
+    WindowEvent(WindowEventType type, int width, int height)
+        : Event(EventType::WINDOW), type(type), width(width), height(height) {};
+
+    WindowEventType type;
+    int width;
+    int height;
 };
 
 #endif // TANKS_EVENT_H

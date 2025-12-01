@@ -1,7 +1,7 @@
 #ifndef ENGINE_DATA_KEYCODE_H
 #define ENGINE_DATA_KEYCODE_H
 
-enum class KeyCode {
+enum KeyCode {
     // Special keys
     KEY_UNKNOWN = 0,
     KEY_RETURN = 13,
@@ -80,25 +80,25 @@ enum class KeyCode {
 };
 
 
-enum class KeyMod {
-    KMOD_NONE = 0x0000,
-    KMOD_LSHIFT = 0x0001,
-    KMOD_RSHIFT = 0x0002,
-    KMOD_LCTRL = 0x0040,
-    KMOD_RCTRL = 0x0080,
-    KMOD_LALT = 0x0100,
-    KMOD_RALT = 0x0200,
-    KMOD_LGUI = 0x0400,
-    KMOD_RGUI = 0x0800,
-    KMOD_NUM = 0x1000,
-    KMOD_CAPS = 0x2000,
-    KMOD_MODE = 0x4000,
-    KMOD_SCROLL = 0x8000,
+enum KeyMod {
+    MOD_NONE = 0x0000,
+    MOD_LSHIFT = 0x0001,
+    MOD_RSHIFT = 0x0002,
+    MOD_LCTRL = 0x0040,
+    MOD_RCTRL = 0x0080,
+    MOD_LALT = 0x0100,
+    MOD_RALT = 0x0200,
+    MOD_LGUI = 0x0400,
+    MOD_RGUI = 0x0800,
+    MOD_NUM = 0x1000,
+    MOD_CAPS = 0x2000,
+    MOD_MODE = 0x4000,
+    MOD_SCROLL = 0x8000,
 
-    KMOD_CTRL = KMOD_LCTRL | KMOD_RCTRL,
-    KMOD_SHIFT = KMOD_LSHIFT | KMOD_RSHIFT,
-    KMOD_ALT = KMOD_LALT | KMOD_RALT,
-    KMOD_GUI = KMOD_LGUI | KMOD_RGUI
+    MOD_CTRL = MOD_LCTRL | MOD_RCTRL,
+    MOD_SHIFT = MOD_LSHIFT | MOD_RSHIFT,
+    MOD_ALT = MOD_LALT | MOD_RALT,
+    MOD_GUI = MOD_LGUI | MOD_RGUI
 };
 
 

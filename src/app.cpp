@@ -13,7 +13,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-
 App::App()
 {
     m_app_state = nullptr;
@@ -33,23 +32,12 @@ void App::run()
 
     SDLEngine sdl_engine;
 
-    sdl_engine.setConfig({ "Tanks", AppConfig::windows_rect });
+    sdl_engine.setConfig({"Tanks", AppConfig::windows_rect});
     Engine::setEngine(&sdl_engine);
-
 
     Engine &engine = Engine::getEngine();
 
-
-    Renderer *renderer = engine.getRenderer();
-    // engine.startMainLoop();
-
-        // engine.startMainLoop(
-        // [](const Event &event)
-        // { return ProcessingResult::CONTINUE; },
-        // [](Uint32 dt)
-        // { return ProcessingResult::CONTINUE; },
-        // [](Renderer &renderer)
-        // { return ProcessingResult::CONTINUE; });
+    m_app_state = new Menu();
 
     engine.startMainLoop(
         [&](const Event &event)
@@ -62,16 +50,31 @@ void App::run()
 
 ProcessingResult App::handleEvent(const Event &event)
 {
+    // m_app_state->eventProcess();
+    // if (m_app_state->finished())
+    // {
+        // AppState *next_state = m_app_state->nextState();
+        // delete m_app_state;
+        // m_app_state = next_state;
+        // if (m_app_state == nullptr)
+        // {
+        //     is_running = false;
+        //     return ProcessingResult::STOP;
+        // }
+    // }
     return ProcessingResult::CONTINUE;
 }
 
 ProcessingResult App::updateState(Uint32 delta_time)
 {
+    // m_app_state->update(delta_time);
+
     return ProcessingResult::CONTINUE;
 }
 
 ProcessingResult App::draw(Renderer &renderer)
 {
+    // m_app_state->draw();
     return ProcessingResult::CONTINUE;
 }
 

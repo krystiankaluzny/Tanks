@@ -1,4 +1,5 @@
 #include "sdl_engine.h"
+#include "sdl_event_mapper.h"
 
 #include <random>
 #include <stdlib.h>
@@ -126,18 +127,7 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
 
 Event SDLEngine::mapEvent(const SDL_Event &sdl_event)
 {
-    switch (sdl_event.type)
-    {
-    case SDL_KEYDOWN:
-        return KeyboardEvent();
-    case SDL_WINDOWEVENT:
-        return WindowEvent();
-    case SDL_QUIT:
-        return QuitEvent();
-    default:
-        return UnknownEvent();
-    }
-    return UnknownEvent();
+    return mapSDLEventToEngineEvent(sdl_event);
 }
 
 void SDLEngine::setConfig(SDLEngineConfig config)
