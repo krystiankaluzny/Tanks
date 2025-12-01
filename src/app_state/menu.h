@@ -8,59 +8,50 @@
 #include <string>
 /**
  * @brief
- * Klasa wyboru trybu gry: 1 gracz czy 2 graczy lub wyjścia. Klasa jest pierwszym stanem aplikacji, pojawia się zaraz po uruchomieniu programu i pozwala na przejście do stanu gry (klasa Game).
+ * A state for selecting the game mode: 1 player or 2 players mode or to exit.
+ * This state is the first state of the application, appearing immediately after program startup and allowing transition to the game state.
  */
 class Menu : public AppState
 {
 public:
     Menu();
     ~Menu();
+
     /**
-     * Funkcja sprawdzająca czy należy zakończyć stan menu i przejści do kolejnego stanu gry.
-     * @return @a true jeżeli została wybrana, któraś z opcji menu lub został wciśnięty kalwisz Esc, @a false w przeciwnym wypadku
+     * Function draws the game logo, menu texts, and the selected menu item indicator in the shape of a tank.
      */
-    bool finished() const;
+    void draw(Renderer &renderer);
+
     /**
-     * Funkcja rysuje logo gry, napisy menu i wskaźnik wybranej pozycji w kształcie czołgu.
-     */
-    void draw();
-    /**
-     * Funkcja odpowiada za animację wskaźnika w postaci czołgu.
-     * @param dt - czas od ostatniej animacji
-     * @see Tank::update(Uint32 dt)
+     * Function updates the tank pointer animation.
+     * @param dt - time since the last function call, used for animation update
      */
     void update(Uint32 dt);
+
     /**
-     * Funkcja odpowiada na reakcję na klawisze:
-     * @li Strzałka w górę i w dół - zmiana wybranej pozycji menu
-     * @li Enter i Spacja - zatwierdzenie obecnej pozycji menu
-     * @li Esc - wyjście z programu
-     * @param ev -  wskaźnik na unię SDL_Event przechowującą typ i parametry różnych zdarzeń
+     * Function responds to key presses:
+     * @li Up and Down arrows - change the selected menu item
+     * @li Enter and Space - confirm the current menu item
+     * @li Esc - exit the application
+     * @param event - reference to an Event object containing the type and parameters of various events
      */
-    void eventProcess(SDL_Event* ev);
+    void eventProcess(const Event &event);
+
     /**
-     * Pzejście do gry w wybranym trybie lub wyjście z aplikacji.
-     * @return @a nullptr jeżli wybrano "Exit" lub wciśnięto Esc, w przeciwnym wypadku funkcja zwraca wskaźnik na Game
+     * Transition to the game in the selected mode or exit the application.
+     * @return nullptr if "Exit" was selected or Esc was pressed, a Game in the selected mode, oterhwise, the function should return this Menu instance.
      */
-    AppState* nextState();
+    AppState *nextState();
 
 private:
-    /**
-     * Kontener przechowujący wszystkie napisy jakie pojawiają się w menu.
-     */
-    std::vector<std::string> m_menu_texts;
-    /**
-     * Indeks wybranej pozycji menu.
-     */
-    int m_menu_index;
-    /**
-     * Zmienna odpowiadająca za wskaźnik w postaci czołgu.
-     */
-    Player* m_tank_pointer;
-    /**
-     * Zmienna przechowuje informację, czy należy zakończyć bieżący stan gry i przejść do gry lub wyłączyć aplikację.
-     */
+    std::vector<std::string> m_menu_items;
+    int m_current_menu_index;
+    Player *m_tank_menu_pointer;
     bool m_finished;
+
+    int m_menu_item_height;
+    Point m_first_menu_item_offset;
+    Point m_tank_menu_pointer_offset;
 };
 
 #endif // MENU_H
