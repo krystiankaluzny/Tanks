@@ -17,7 +17,7 @@ private:
 
     ProcessingResult handleEvent(const Event &event);
     ProcessingResult updateState(Uint32 delta_time);
-    ProcessingResult draw(const Renderer &renderer);
+    ProcessingResult draw(Renderer &renderer);
 };
 
 #endif // APP_H

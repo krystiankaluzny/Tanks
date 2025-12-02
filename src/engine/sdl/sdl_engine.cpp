@@ -106,7 +106,12 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        Event e = mapSDLEventToEngineEvent(event);
+        Event* e = mapSDLEventToEngineEvent(event);
+
+        if(e->type() == Event::KEYBOARD)
+        {
+            const KeyboardEvent& ke = static_cast<const KeyboardEvent &>(*e);
+        }
 
         if (event.type == SDL_QUIT)
         {
@@ -114,15 +119,17 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
         }
         else
         {
-            if (handleInternalEvents(e) == ProcessingResult::STOP)
+            if (handleInternalEvents(*e) == ProcessingResult::STOP)
             {
                 return ProcessingResult::STOP;
             }
-            if (handleEvent(e) == ProcessingResult::STOP)
+            if (handleEvent(*e) == ProcessingResult::STOP)
             {
                 return ProcessingResult::STOP;
             }
         }
+
+        delete e;
     }
     return ProcessingResult::CONTINUE;
 }

@@ -359,28 +359,40 @@ void Game::eventProcess(const Event &event)
     if (event.type() == Event::KEYBOARD)
     {
         const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
-        switch (event_key.keyCode())
+        if (event_key.isPressed(KEY_N))
         {
-        case KEY_N:
             m_enemy_to_kill = 0;
             m_finished = true;
-            break;
-        case KEY_B:
+        }
+        else if (event_key.isPressed(KEY_B))
+        {
             m_enemy_to_kill = 0;
             m_current_level -= 2;
             m_finished = true;
-            break;
-        case KEY_T:
-            AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
-            break;
-        case KEY_RETURN:
-            m_pause = !m_pause;
-            break;
-        case KEY_ESCAPE:
+        }
+        else if (event_key.isPressed(KEY_B))
+        {
+            m_enemy_to_kill = 0;
+            m_current_level -= 2;
             m_finished = true;
-            break;
-        default:
-            break;
+        }
+        else if (event_key.isPressed(KEY_T))
+        {
+            AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
+        }
+        else if (event_key.isPressed(KEY_RETURN))
+        {
+            m_pause = !m_pause;
+        }
+        else if (event_key.isPressed(KEY_ESCAPE))
+        {
+            m_finished = true;
+        }
+
+        if(!m_pause)
+        {
+            for (auto player : m_players)
+                player->handleKeyboardEvent(event_key);
         }
     }
 }
@@ -462,7 +474,7 @@ void Game::loadLevel(std::string path)
 
 AppState *Game::nextState()
 {
-    if(!m_finished)
+    if (!m_finished)
         return this;
 
     if (m_game_over || m_enemy_to_kill <= 0)

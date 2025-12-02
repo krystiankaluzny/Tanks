@@ -5,7 +5,7 @@
 #include "../data/event.h"
 #include <SDL2/SDL.h>
 
-KeyboardEvent mapSDLEventToKeyboardEvent(const SDL_Event &sdl_event, KeyboardEvent::KeyState key_state)
+KeyboardEvent *mapSDLEventToKeyboardEvent(const SDL_Event &sdl_event, KeyboardEvent::KeyState key_state)
 {
     SDL_Keysym keysym = sdl_event.key.keysym;
     KeyCode keycode;
@@ -236,54 +236,69 @@ KeyboardEvent mapSDLEventToKeyboardEvent(const SDL_Event &sdl_event, KeyboardEve
     if (keysym.mod & KMOD_SCROLL)
         keymods |= KeyMod::MOD_SCROLL;
 
-    return KeyboardEvent(keycode, key_state, keymods);
+    return new KeyboardEvent(keycode, key_state, keymods);
 }
 
-WindowEvent mapSDLEventToWindowEvent(const SDL_Event &sdl_event)
+WindowEvent *mapSDLEventToWindowEvent(const SDL_Event &sdl_event)
 {
     SDL_WindowEvent sdl_window_event = sdl_event.window;
     int data1 = sdl_window_event.data1;
     int data2 = sdl_window_event.data2;
 
+    WindowEvent::WindowEventType type;
     Size window_size = {data1, data2};
     switch (sdl_window_event.event)
     {
     case SDL_WINDOWEVENT_SHOWN:
-        return WindowEvent(WindowEvent::SHOWN, window_size);
+        type = WindowEvent::SHOWN;
+        break;
     case SDL_WINDOWEVENT_HIDDEN:
-        return WindowEvent(WindowEvent::HIDDEN, window_size);
+        type = WindowEvent::HIDDEN;
+        break;
     case SDL_WINDOWEVENT_EXPOSED:
-        return WindowEvent(WindowEvent::EXPOSED, window_size);
+        type = WindowEvent::EXPOSED;
+        break;
     case SDL_WINDOWEVENT_MOVED:
-        return WindowEvent(WindowEvent::MOVED, window_size);
+        type = WindowEvent::MOVED;
+        break;
     case SDL_WINDOWEVENT_RESIZED:
-        return WindowEvent(WindowEvent::RESIZED, window_size);
+        type = WindowEvent::RESIZED;
+        break;
     case SDL_WINDOWEVENT_SIZE_CHANGED:
-        return WindowEvent(WindowEvent::SIZE_CHANGED, window_size);
+        type = WindowEvent::SIZE_CHANGED;
+        break;
     case SDL_WINDOWEVENT_MINIMIZED:
-        return WindowEvent(WindowEvent::MINIMIZED, window_size);
+        type = WindowEvent::MINIMIZED;
+        break;
     case SDL_WINDOWEVENT_MAXIMIZED:
-        return WindowEvent(WindowEvent::MAXIMIZED, window_size);
+        type = WindowEvent::MAXIMIZED;
+        break;
     case SDL_WINDOWEVENT_RESTORED:
-        return WindowEvent(WindowEvent::RESTORED, window_size);
+        type = WindowEvent::RESTORED;
+        break;
     case SDL_WINDOWEVENT_ENTER:
-        return WindowEvent(WindowEvent::ENTER, window_size);
+        type = WindowEvent::ENTER;
+        break;
     case SDL_WINDOWEVENT_LEAVE:
-        return WindowEvent(WindowEvent::LEAVE, window_size);
+        type = WindowEvent::LEAVE;
+        break;
     case SDL_WINDOWEVENT_FOCUS_GAINED:
-        return WindowEvent(WindowEvent::FOCUS_GAINED, window_size);
+        type = WindowEvent::FOCUS_GAINED;
+        break;
     case SDL_WINDOWEVENT_FOCUS_LOST:
-        return WindowEvent(WindowEvent::FOCUS_LOST, window_size);
+        type = WindowEvent::FOCUS_LOST;
+        break;
     case SDL_WINDOWEVENT_CLOSE:
-        return WindowEvent(WindowEvent::CLOSE, window_size);
+        type = WindowEvent::CLOSE;
+        break;
     default:
-        return WindowEvent(WindowEvent::UNKNOWN, window_size);
+        type = WindowEvent::UNKNOWN;
     }
 
-    return WindowEvent(WindowEvent::UNKNOWN, window_size);
+    return new WindowEvent(type, window_size);
 }
 
-Event mapSDLEventToEngineEvent(const SDL_Event &sdl_event)
+Event *mapSDLEventToEngineEvent(const SDL_Event &sdl_event)
 {
     switch (sdl_event.type)
     {
@@ -294,11 +309,11 @@ Event mapSDLEventToEngineEvent(const SDL_Event &sdl_event)
     case SDL_WINDOWEVENT:
         return mapSDLEventToWindowEvent(sdl_event);
     case SDL_QUIT:
-        return QuitEvent();
+        return new QuitEvent();
     default:
-        return UnknownEvent();
+        return new UnknownEvent();
     }
-    return UnknownEvent();
+    return new UnknownEvent();
 }
 
 #endif // SDL_EVENT_MAPPER_H

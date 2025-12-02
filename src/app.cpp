@@ -40,7 +40,7 @@ void App::run()
         { return handleEvent(event); },
         [&](Uint32 dt)
         { return updateState(dt); },
-        [&](const Renderer &renderer)
+        [&](Renderer &renderer)
         { return draw(renderer); });
 }
 
@@ -63,13 +63,12 @@ ProcessingResult App::handleEvent(const Event &event)
 
 ProcessingResult App::updateState(Uint32 delta_time)
 {
-    // m_app_state->update(delta_time);
-
+    m_app_state->update(delta_time);
     return ProcessingResult::CONTINUE;
 }
 
-ProcessingResult App::draw(const Renderer &renderer)
+ProcessingResult App::draw(Renderer &renderer)
 {
-    // m_app_state->draw();
+    m_app_state->draw(renderer);
     return ProcessingResult::CONTINUE;
 }
