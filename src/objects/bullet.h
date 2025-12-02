@@ -2,6 +2,7 @@
 #define BULLET_H
 
 #include "object.h"
+#include "../type.h"
 
 /**
  * @brief Klasa zajmująca się pociskami wystrzalanymi przez czołgi.
@@ -24,7 +25,7 @@ public:
      * Aktualizacja położenia pocisku.
      * @param dt - czas od ostatniego wywołania funkcji
      */
-    void update(Uint32 dt);
+    void update(Uint32 dt) override;
     /**
      * Włączenie animacji wybuchu pocisku.
      */

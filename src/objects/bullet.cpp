@@ -40,7 +40,7 @@ void Bullet::update(Uint32 dt)
             break;
         }
 
-        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, direction, 0);
+        src_rect = moveRect(m_sprite->rect, direction, 0);
         Object::update(dt);
     }
     else
@@ -55,7 +55,7 @@ void Bullet::update(Uint32 dt)
                 if(m_current_frame >= m_sprite->frames_count)
                     to_erase = true;
 
-                src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame);
+                src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
             }
         }
     }
@@ -69,7 +69,7 @@ void Bullet::destroy()
     speed = 0;
     m_current_frame = 0;
     m_frame_display_time = 0;
-    m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_DESTROY_BULLET);
+    m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_BULLET);
 
     switch(direction)
     {
