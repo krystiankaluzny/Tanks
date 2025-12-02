@@ -5,7 +5,7 @@
 #include "../data/event.h"
 #include <SDL2/SDL.h>
 
-KeyboardEvent mapSDLEventToKeyboardEvent(const SDL_Event &sdl_event)
+KeyboardEvent mapSDLEventToKeyboardEvent(const SDL_Event &sdl_event, KeyboardEvent::KeyState key_state)
 {
     SDL_Keysym keysym = sdl_event.key.keysym;
     KeyCode keycode;
@@ -236,7 +236,7 @@ KeyboardEvent mapSDLEventToKeyboardEvent(const SDL_Event &sdl_event)
     if (keysym.mod & KMOD_SCROLL)
         keymods |= KeyMod::MOD_SCROLL;
 
-    return KeyboardEvent(keycode, keymods);
+    return KeyboardEvent(keycode, key_state, keymods);
 }
 
 WindowEvent mapSDLEventToWindowEvent(const SDL_Event &sdl_event)
@@ -288,7 +288,9 @@ Event mapSDLEventToEngineEvent(const SDL_Event &sdl_event)
     switch (sdl_event.type)
     {
     case SDL_KEYDOWN:
-        return mapSDLEventToKeyboardEvent(sdl_event);
+        return mapSDLEventToKeyboardEvent(sdl_event, KeyboardEvent::PRESSED);
+    case SDL_KEYUP:
+        return mapSDLEventToKeyboardEvent(sdl_event, KeyboardEvent::RELEASED);
     case SDL_WINDOWEVENT:
         return mapSDLEventToWindowEvent(sdl_event);
     case SDL_QUIT:

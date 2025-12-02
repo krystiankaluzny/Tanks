@@ -129,21 +129,21 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
 
 ProcessingResult SDLEngine::handleInternalEvents(const Event& event)
 {
-    if (event.type == Event::WINDOW)
+    if (event.type() == Event::WINDOW)
     {
         const WindowEvent& we = static_cast<const WindowEvent &>(event);
-        if (we.type == WindowEvent::RESIZED ||
-            we.type == WindowEvent::MAXIMIZED ||
-            we.type == WindowEvent::RESTORED ||
-            we.type == WindowEvent::SHOWN)
+        if (we.windowEventType() == WindowEvent::RESIZED ||
+            we.windowEventType() == WindowEvent::MAXIMIZED ||
+            we.windowEventType() == WindowEvent::RESTORED ||
+            we.windowEventType() == WindowEvent::SHOWN)
         {
-            m_renderer->setViewportForWindowSize(we.window_size);
+            m_renderer->setViewportForWindowSize(we.windowSize());
         }
     }
-    else if (event.type == Event::KEYBOARD)
+    else if (event.type() == Event::KEYBOARD)
     {
         const KeyboardEvent& ke = static_cast<const KeyboardEvent &>(event);
-        if (ke.getKeyCode() == KeyCode::KEY_F11)
+        if (ke.isPressed(KeyCode::KEY_F11))
         {
             m_renderer->toggleFullscreen(m_window);
         }

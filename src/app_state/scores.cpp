@@ -98,11 +98,11 @@ void Scores::update(Uint32 dt)
 
 void Scores::eventProcess(const Event &event)
 {
-    if (event.type == Event::KEYBOARD)
+    if (event.type() == Event::KEYBOARD)
     {
         const KeyboardEvent &ev = static_cast<const KeyboardEvent &>(event);
 
-        if (ev.getKeyCode() == KEY_RETURN)
+        if (ev.isPressed(KeyCode::KEY_RETURN))
         {
             if (m_score_counter > (1 << 30))
                 m_finished = true;

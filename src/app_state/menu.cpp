@@ -40,13 +40,13 @@ void Menu::draw(Renderer &renderer)
 {
     renderer.clear();
 
-    renderer.drawRect(&AppConfig::map_rect, {0, 0, 0, 255}, true);
-    renderer.drawRect(&AppConfig::status_rect, {0, 0, 0, 255}, true);
+    renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 255}, true);
+    renderer.drawRect(AppConfig::status_rect, {0, 0, 0, 255}, true);
 
     // LOGO
     const SpriteData &logo = SpriteConfig::getInstance().getSpriteData(ST_TANKS_LOGO);
     Rect dst = {(AppConfig::map_rect.w + AppConfig::status_rect.w - logo.rect.w) / 2, 50, logo.rect.w, logo.rect.h};
-    renderer.drawObject(&logo.rect, &dst);
+    renderer.drawObject(logo.rect, dst);
 
     int i = 0;
     Point text_start;
@@ -54,10 +54,10 @@ void Menu::draw(Renderer &renderer)
     {
         text_start = {180, (i + 1) * 32 + 120};
         i++;
-        renderer.drawText(&text_start, text, {255, 255, 255, 255}, 2);
+        renderer.drawText(text_start, text, {255, 255, 255, 255}, 2);
     }
 
-    m_tank_menu_pointer->draw();
+    m_tank_menu_pointer->draw(renderer);
 
     renderer.flush();
 }
@@ -71,11 +71,11 @@ void Menu::update(Uint32 dt)
 
 void Menu::eventProcess(const Event &event)
 {
-    if (event.type == Event::KEYBOARD)
+    if (event.type() == Event::KEYBOARD)
     {
         const KeyboardEvent &ev = static_cast<const KeyboardEvent &>(event);
 
-        if (ev.getKeyCode() == KeyCode::KEY_UP)
+        if (ev.isPressed(KeyCode::KEY_UP))
         {
             m_current_menu_index--;
             if (m_current_menu_index < 0)
@@ -83,7 +83,7 @@ void Menu::eventProcess(const Event &event)
 
             m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * 32 + 110;
         }
-        else if (ev.getKeyCode() == KeyCode::KEY_DOWN)
+        else if (ev.isPressed(KeyCode::KEY_DOWN))
         {
             m_current_menu_index++;
             if (m_current_menu_index >= m_menu_items.size())
@@ -91,11 +91,11 @@ void Menu::eventProcess(const Event &event)
 
             m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * 32 + 110;
         }
-        else if (ev.getKeyCode() == KeyCode::KEY_SPACE || ev.getKeyCode() == KeyCode::KEY_RETURN)
+        else if (ev.isPressed(KeyCode::KEY_SPACE) || ev.isPressed(KeyCode::KEY_RETURN))
         {
             m_finished = true;
         }
-        else if (ev.getKeyCode() == KeyCode::KEY_ESCAPE)
+        else if (ev.isPressed(KeyCode::KEY_ESCAPE))
         {
             m_current_menu_index = -1;
             m_finished = true;
