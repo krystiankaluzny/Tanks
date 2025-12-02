@@ -1,7 +1,7 @@
 #ifndef SPRITECONFIG_H
 #define SPRITECONFIG_H
 
-#include "data/data.h"
+#include "engine/data/data.h"
 #include <map>
 
 enum SpriteType

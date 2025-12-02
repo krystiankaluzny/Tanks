@@ -2,6 +2,7 @@
 #define TANKS_EVENT_H
 
 #include "keycode.h"
+#include "data.h"
 
 class Event
 {
