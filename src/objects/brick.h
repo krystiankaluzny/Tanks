@@ -2,6 +2,7 @@
 #define BRICK_H
 
 #include "object.h"
+#include "../type.h"
 
 /**
  * @brief Klasa odpowiedzialna za pojedyńczy kawałek murku.
@@ -24,7 +25,7 @@ public:
      * Funkcja została zaimplementowana aby nie zmieniać collision_rect.
      * @param dt - czas od ostatniego wywołania funkcji.
      */
-    void update(Uint32 dt);
+    void update(Uint32 dt) override;
     /**
      * Funkcja zmieniająca stan murku po trafieniu przez pocisk. Funkcja zmienia collision_rect.
      * @param bullet_direction - kierunek ruchu pocisku
