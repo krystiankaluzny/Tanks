@@ -2,7 +2,7 @@
 #include "../engine/engine.h"
 #include "../engine/data/data.h"
 #include "../appconfig.h"
-#include "game.h"
+#include "game/game.h"
 #include "menu.h"
 
 Scores::Scores(std::vector<Player *> players, int level, bool game_over)

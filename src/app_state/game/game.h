@@ -1,13 +1,13 @@
 #ifndef GAME_H
 #define GAME_H
-#include "appstate.h"
-#include "../objects/object.h"
-#include "../objects/player.h"
-#include "../objects/enemy.h"
-#include "../objects/bullet.h"
-#include "../objects/brick.h"
-#include "../objects/eagle.h"
-#include "../objects/bonus.h"
+#include "../appstate.h"
+#include "../../objects/object.h"
+#include "../../objects/player.h"
+#include "../../objects/enemy.h"
+#include "../../objects/bullet.h"
+#include "../../objects/brick.h"
+#include "../../objects/eagle.h"
+#include "../../objects/bonus.h"
 #include <vector>
 #include <string>
 
@@ -79,6 +79,9 @@ private:
      * @see Game::loadLevel(std::string path)
      */
     void nextLevel();
+
+    void createPlayersIfNeeded();
+    
     /**
      * Tworzenie nowego wroga jeżeli liczba przeciwników na planszy jest mniejsza od 4 przy założeniu, że nie stworzono już wszystkich 20 wrogów na mapie.
      * Funkcja generuje różne poziomy pancerza wrogów w zależności od poziomu; im wyższy numer rundy tym większa szansa, żeby przeciwnik miał czwarty poziom pancerza.

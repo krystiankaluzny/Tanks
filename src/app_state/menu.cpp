@@ -3,7 +3,7 @@
 #include "../engine/renderer.h"
 #include "../appconfig.h"
 #include "../spriteconfig.h"
-#include "../app_state/game.h"
+#include "game/game.h"
 
 #include <iostream>
 

@@ -1,10 +1,10 @@
 #include "game.h"
-#include "../engine/engine.h"
-#include "../engine/data/data.h"
-#include "../appconfig.h"
-#include "../spriteconfig.h"
-#include "menu.h"
-#include "scores.h"
+#include "../menu.h"
+#include "../scores.h"
+#include "../../engine/engine.h"
+#include "../../engine/data/data.h"
+#include "../../appconfig.h"
+#include "../../spriteconfig.h"
 
 #include <stdlib.h>
 #include <ctime>
@@ -26,6 +26,7 @@ Game::Game(int players_count)
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
     nextLevel();
+    createPlayersIfNeeded();
 }
 
 Game::Game(std::vector<Player *> players, int previous_level)
@@ -48,6 +49,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_protect_eagle_time = 0;
     m_enemy_respown_position = 0;
     nextLevel();
+    createPlayersIfNeeded();
 }
 
 Game::~Game()
@@ -942,7 +944,10 @@ void Game::nextLevel()
 
     std::string level_path = AppConfig::levels_path + Engine::intToString(m_current_level);
     loadLevel(level_path);
+}
 
+void Game::createPlayersIfNeeded()
+{
     if (m_players.empty())
     {
         if (m_player_count == 2)
@@ -959,7 +964,6 @@ void Game::nextLevel()
         }
     }
 }
-
 void Game::generateEnemy()
 {
     float p = static_cast<float>(rand()) / RAND_MAX;

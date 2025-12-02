@@ -2,7 +2,6 @@
 #include "appconfig.h"
 #include "engine/engine.h"
 #include "engine/sdl/sdl_engine.h"
-#include "app_state/game.h"
 #include "app_state/menu.h"
 
 #include <ctime>
