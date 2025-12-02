@@ -33,29 +33,29 @@ void Scores::draw(Renderer &renderer)
 {
     renderer.clear();
 
-    renderer.drawRect(&AppConfig::map_rect, {0, 0, 0, 255}, true);
-    renderer.drawRect(&AppConfig::status_rect, {0, 0, 0, 255}, true);
+    renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 255}, true);
+    renderer.drawRect(AppConfig::status_rect, {0, 0, 0, 255}, true);
 
     Point p_dst;
     Rect dst;
 
     p_dst = {-1, 10};
-    renderer.drawText(&p_dst, std::string("STAGE ") + Engine::intToString(m_level), {255, 255, 220, 255}, 1);
+    renderer.drawText(p_dst, std::string("STAGE ") + Engine::intToString(m_level), {255, 255, 220, 255}, 1);
     p_dst = {100, 50};
-    renderer.drawText(&p_dst, std::string("PLAYER"), {255, 255, 255, 255}, 2);
+    renderer.drawText(p_dst, std::string("PLAYER"), {255, 255, 255, 255}, 2);
     p_dst = {270, 50};
-    renderer.drawText(&p_dst, std::string("SCORE"), {255, 255, 255, 255}, 2);
+    renderer.drawText(p_dst, std::string("SCORE"), {255, 255, 255, 255}, 2);
     dst = {75, 75, 300, 2};
-    renderer.drawRect(&dst, {250, 250, 200, 255}, true);
+    renderer.drawRect(dst, {250, 250, 200, 255}, true);
     int i = 0;
     for (auto player : m_players)
     {
         dst = {100, 90 + i * (player->src_rect.h), player->src_rect.w, player->src_rect.h};
-        renderer.drawObject(&player->src_rect, &dst);
+        renderer.drawObject(player->src_rect, dst);
         p_dst = {140, 98 + i * (player->src_rect.h)};
-        renderer.drawText(&p_dst, std::string("x") + Engine::intToString(player->lives_count), {255, 255, 255, 255}, 2);
+        renderer.drawText(p_dst, std::string("x") + Engine::intToString(player->lives_count), {255, 255, 255, 255}, 2);
         p_dst = {270, 98 + i * (player->src_rect.h)};
-        renderer.drawText(&p_dst, (m_score_counter < player->score ? Engine::intToString(m_score_counter) : Engine::intToString(player->score)), {255, 255, 255, 255}, 2);
+        renderer.drawText(p_dst, (m_score_counter < player->score ? Engine::intToString(m_score_counter) : Engine::intToString(player->score)), {255, 255, 255, 255}, 2);
         i++;
     }
 
