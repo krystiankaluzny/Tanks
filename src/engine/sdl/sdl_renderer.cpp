@@ -17,29 +17,29 @@ SDLRenderer::SDLRenderer(Size viewport_base_size)
 
 SDLRenderer::~SDLRenderer()
 {
-    if(m_renderer != nullptr)
+    if (m_renderer != nullptr)
         SDL_DestroyRenderer(m_renderer);
-    if(m_texture != nullptr)
+    if (m_texture != nullptr)
         SDL_DestroyTexture(m_texture);
-    if(m_text_texture != nullptr)
+    if (m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
-    if(m_font1 != nullptr)
+    if (m_font1 != nullptr)
         TTF_CloseFont(m_font1);
-    if(m_font2 != nullptr)
+    if (m_font2 != nullptr)
         TTF_CloseFont(m_font2);
-    if(m_font3 != nullptr)
+    if (m_font3 != nullptr)
         TTF_CloseFont(m_font3);
 }
 
-void SDLRenderer::loadTexture(SDL_Window* window)
+void SDLRenderer::loadTexture(SDL_Window *window)
 {
-    SDL_Surface* surface = nullptr;
+    SDL_Surface *surface = nullptr;
     m_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     surface = IMG_Load(AppConfig::texture_path.c_str());
 
-    //load surface
-    if(surface != nullptr && m_renderer != nullptr)
+    // load surface
+    if (surface != nullptr && m_renderer != nullptr)
         m_texture = SDL_CreateTextureFromSurface(m_renderer, surface);
 
     SDL_FreeSurface(surface);
@@ -55,20 +55,19 @@ void SDLRenderer::loadFont()
 void SDLRenderer::clear()
 {
     SDL_SetRenderDrawColor(m_renderer, 110, 110, 110, 255);
-    SDL_RenderClear(m_renderer); //czyścimy tylny bufor
+    SDL_RenderClear(m_renderer); // czyścimy tylny bufor
 }
 
 void SDLRenderer::flush()
 {
-    SDL_RenderPresent(m_renderer); //zamieniamy bufory
+    SDL_RenderPresent(m_renderer); // zamieniamy bufory
 }
 
-void SDLRenderer::drawObject(const Rect *texture_src, const Rect *window_dest)
+void SDLRenderer::drawObject(const Rect &texture_src, const Rect &window_dest)
 {
-    if(texture_src == nullptr || window_dest == nullptr) return;
-    SDL_Rect t = { texture_src->x, texture_src->y, texture_src->w, texture_src->h };
-    SDL_Rect w = { window_dest->x, window_dest->y, window_dest->w, window_dest->h };
-    SDL_RenderCopy(m_renderer, m_texture, &t, &w); //rysujemy na tylnim buforze
+    SDL_Rect t = {texture_src.x, texture_src.y, texture_src.w, texture_src.h};
+    SDL_Rect w = {window_dest.x, window_dest.y, window_dest.w, window_dest.h};
+    SDL_RenderCopy(m_renderer, m_texture, &t, &w);
 }
 
 void SDLRenderer::setViewportForWindowSize(Size window_size)
@@ -76,17 +75,21 @@ void SDLRenderer::setViewportForWindowSize(Size window_size)
     int width = window_size.w;
     int height = window_size.h;
 
-    if(width <= 0 || height <= 0) return;
+    if (width <= 0 || height <= 0)
+        return;
 
     // Calculate the scale to maintain aspect ratio
     float scale = std::min(width / (float)m_viewport_base_size.w, height / (float)m_viewport_base_size.h);
-    if(scale < 0.1) return;
+    if (scale < 0.1)
+        return;
 
     SDL_Rect viewport;
     viewport.x = (width / scale - m_viewport_base_size.w) / 2.0;
     viewport.y = (height / scale - m_viewport_base_size.h) / 2.0;
-    if(viewport.x < 0) viewport.x = 0;
-    if(viewport.y < 0) viewport.y = 0;
+    if (viewport.x < 0)
+        viewport.x = 0;
+    if (viewport.y < 0)
+        viewport.y = 0;
     viewport.w = m_viewport_base_size.w;
     viewport.h = m_viewport_base_size.h;
 
@@ -94,56 +97,58 @@ void SDLRenderer::setViewportForWindowSize(Size window_size)
     SDL_RenderSetViewport(m_renderer, &viewport);
 }
 
-
-void SDLRenderer::drawText(const Point* start, std::string text, SDL_Color text_color, int font_size)
+void SDLRenderer::drawText(const Point &start, std::string text, Color text_color, int font_size)
 {
-    if(m_font1 == nullptr || m_font2 == nullptr || m_font3 == nullptr) return;
-    if(m_text_texture != nullptr)
+    if (m_font1 == nullptr || m_font2 == nullptr || m_font3 == nullptr)
+        return;
+    if (m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
 
-    SDL_Surface* text_surface = nullptr;
-    if(font_size == 2) text_surface = TTF_RenderText_Solid(m_font2, text.c_str(), text_color);
-    else if(font_size == 3) text_surface = TTF_RenderText_Solid(m_font3, text.c_str(), text_color);
-    else text_surface = TTF_RenderText_Solid(m_font1, text.c_str(), text_color);
-
-    if(text_surface == nullptr) return;
+    SDL_Color sdl_text_color = {static_cast<Uint8>(text_color.r), static_cast<Uint8>(text_color.g), static_cast<Uint8>(text_color.b), static_cast<Uint8>(text_color.a)};
+    SDL_Surface *text_surface = nullptr;
+    if (font_size == 2)
+        text_surface = TTF_RenderText_Solid(m_font2, text.c_str(), sdl_text_color);
+    else if (font_size == 3)
+        text_surface = TTF_RenderText_Solid(m_font3, text.c_str(), sdl_text_color);
+    else
+        text_surface = TTF_RenderText_Solid(m_font1, text.c_str(), sdl_text_color);
+    if (text_surface == nullptr)
+        return;
 
     m_text_texture = SDL_CreateTextureFromSurface(m_renderer, text_surface);
-    if(m_text_texture == nullptr) return;
+    if (m_text_texture == nullptr)
+        return;
 
     SDL_Rect window_dest;
-    if(start == nullptr)
-    {
-        window_dest.x = (AppConfig::map_rect.w + AppConfig::status_rect.w - text_surface->w)/2;
-        window_dest.y = (AppConfig::map_rect.h - text_surface->h)/2;
-    }
+    if (start.x < 0)
+        window_dest.x = (m_viewport_base_size.w - text_surface->w) / 2;
     else
-    {
-        if(start->x < 0) window_dest.x = (AppConfig::map_rect.w + AppConfig::status_rect.w - text_surface->w)/2;
-        else window_dest.x = start->x;
+        window_dest.x = start.x;
 
-        if(start->y < 0) window_dest.y = (AppConfig::map_rect.h - text_surface->h)/2;
-        else window_dest.y = start->y;
-    }
+    if (start.y < 0)
+        window_dest.y = (m_viewport_base_size.h - text_surface->h) / 2;
+    else
+        window_dest.y = start.y;
+
     window_dest.w = text_surface->w;
     window_dest.h = text_surface->h;
 
     SDL_RenderCopy(m_renderer, m_text_texture, NULL, &window_dest);
 }
 
-void SDLRenderer::drawRect(const Rect* rect, SDL_Color rect_color, bool fill)
+void SDLRenderer::drawRect(const Rect &rect, Color rect_color, bool fill)
 {
-    if(rect == nullptr) return;
-    SDL_Rect r = { rect->x, rect->y, rect->w, rect->h };
+    SDL_Rect r = {rect.x, rect.y, rect.w, rect.h};
     SDL_SetRenderDrawColor(m_renderer, rect_color.r, rect_color.g, rect_color.b, rect_color.a);
 
-    if(fill)
+    if (fill)
         SDL_RenderFillRect(m_renderer, &r);
     else
         SDL_RenderDrawRects(m_renderer, &r, 1);
 }
 
-void SDLRenderer::toggleFullscreen(SDL_Window* window) {
+void SDLRenderer::toggleFullscreen(SDL_Window *window)
+{
     m_fullscreen = !m_fullscreen;
 
     if (m_fullscreen)

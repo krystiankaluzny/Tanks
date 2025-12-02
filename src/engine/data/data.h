@@ -19,4 +19,9 @@ struct Size
     int w, h;
 };
 
+struct Color
+{
+    unsigned int r, g, b, a;
+};
+
 #endif //TANKS_DATA_H

@@ -24,7 +24,7 @@ public:
      * Wczytanie tekstury z pliku oraz stworzenie renderera związanego z oknem aplikacji.
      * @param window - wskaźnik na obiekt zawartości okna aplikacji
      */
-    virtual void loadTexture(SDL_Window* window) = 0;
+    virtual void loadTexture(SDL_Window *window) = 0;
     /**
      * Wczytwanie czcionki w trzech różnych rozmiarach.
      */
@@ -42,7 +42,7 @@ public:
      * @param texture_src - źródłowy prostokąt z tekstury
      * @param window_dest - docelowy prostokąt na buforze ekranu
      */
-    virtual void drawObject(const Rect *texture_src, const Rect *window_dest) = 0;
+    virtual void drawObject(const Rect &texture_src, const Rect &window_dest) = 0;
 
     /**
      * Rysowanie tekstu w buforze okna w wybranej pozycji początkowej.
@@ -51,7 +51,7 @@ public:
      * @param text_color - kolory rysowanego tekst
      * @param font_size - numer czcionki za pomocą, której będzi rysoweny tekst; dostępne trzy wartośc: 1, 2, 3
      */
-    virtual void drawText(const Point* start, std::string text, SDL_Color text_color, int font_size = 1) = 0;
+    virtual void drawText(const Point &start, std::string text, Color text_color, int font_size = 1) = 0;
 
     /**
      * Funkcja rysująca prostokątk w buforze okna.
@@ -59,7 +59,7 @@ public:
      * @param rect_color - kolor prostokątku
      * @param fill - zmienna mówiącza czy prostokąt ma być zamalowany
      */
-    virtual void drawRect(const Rect* rect, SDL_Color rect_color, bool fill = false) = 0;
+    virtual void drawRect(const Rect &rect, Color rect_color, bool fill = false) = 0;
 
 private:
     // Concrete implementations may keep their own SDL-specific members.
