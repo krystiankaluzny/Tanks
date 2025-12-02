@@ -3,6 +3,7 @@
 
 #include "../engine/engine.h"
 #include "../engine/data/data.h"
+#include "../spriteconfig.h"
 
 /**
  * @brief
@@ -34,7 +35,7 @@ public:
     /**
      * Rysowanie za pomocą metody @a drawObject z klasy @a Renderer, obiektu z tekstury o współrzędnych src_rect w obszar mapy o wpółrzędnych dest_rect.
      */
-    virtual void draw();
+    virtual void draw(Renderer &renderer);
     /**
      * Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu.
      * @param dt - czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki

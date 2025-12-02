@@ -19,7 +19,7 @@ Object::Object(double x, double y, SpriteType type)
     pos_y = y;
     this->type = type;
     to_erase = false;
-    m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(type);
+    m_sprite = &SpriteConfig::getInstance().getSpriteData(type);
     m_frame_display_time = 0;
     m_current_frame = 0;
 
@@ -69,10 +69,10 @@ Object::~Object()
 {
 }
 
-void Object::draw()
+void Object::draw(Renderer &renderer)
 {
     if(m_sprite == nullptr || to_erase) return;
-    Engine::getEngine().getRenderer()->drawObject(&src_rect, &dest_rect);
+    renderer.drawObject(src_rect, dest_rect);
 }
 
 void Object::update(Uint32 dt)
