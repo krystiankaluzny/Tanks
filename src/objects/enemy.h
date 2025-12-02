@@ -25,12 +25,12 @@ public:
     /**
      * Funkcja rysuje czołg przeciwnika i jeżeli jest ustawiona flaga @a AppConfig::show_enemy_target to rysuję linią łączącą czołg z jego celem.
      */
-    void draw();
+    void draw(Renderer &renderer) override;
     /**
      * Funkcja uaktualnia położenie czołgu oraz decyduje o kirunku i czasie kolejnego wystrzału w zależności od typy wroga.
      * @param dt - czas od ostatniego wywołania funkcji
      */
-    void update(Uint32 dt);
+    void update(Uint32 dt) override;
     /**
      * Zmniejszczenie poziomu pancerza o 1. Jeżeli poziom pancerza dojdze do zera następuje wybuch (zniszczenie) czołgu.
      */

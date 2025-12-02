@@ -60,22 +60,22 @@ Enemy::Enemy(double x, double y, SpriteType type)
     respawn();
 }
 
-void Enemy::draw()
+void Enemy::draw(Renderer &renderer)
 {
     if(to_erase) return;
     if(AppConfig::show_enemy_target)
     {
-        SDL_Color c;
+        Color c;
         if(type == ST_TANK_A) c = {250, 0, 0, 250};
         if(type == ST_TANK_B) c = {0, 0, 250, 255};
         if(type == ST_TANK_C) c = {0, 255, 0, 250};
         if(type == ST_TANK_D) c = {250, 0, 255, 250};
         Rect r = {min(target_position.x, dest_rect.x + dest_rect.w / 2), dest_rect.y + dest_rect.h / 2, abs(target_position.x - (dest_rect.x + dest_rect.w / 2)), 1};
-        Engine::getEngine().getRenderer()->drawRect(&r, c,  true);
+        renderer.drawRect(r, c,  true);
         r = {target_position.x, min(target_position.y, dest_rect.y + dest_rect.h / 2), 1, abs(target_position.y - (dest_rect.y + dest_rect.h / 2))};
-        Engine::getEngine().getRenderer()->drawRect(&r, c, true);
+        renderer.drawRect(r, c, true);
     }
-    Tank::draw();
+    Tank::draw(renderer);
 }
 
 void Enemy::update(Uint32 dt)
