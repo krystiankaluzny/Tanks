@@ -23,7 +23,7 @@ public:
      * Aktualizacja animacji orzełka.
      * @param dt - czas od ostatniego wywołania funkcji
      */
-    void update(Uint32 dt);
+    void update(Uint32 dt) override;
     /**
      * Wywołanie wybuchu orzełka.
      */
