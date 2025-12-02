@@ -34,13 +34,13 @@ public:
      * Funkcja rysuje obrazek czołgu, w razie potrzeby rysuje osłonkę i łódkę.
      * Wywołuje rysowanie pocisków.
      */
-    void draw();
+    void draw(Renderer &renderer) override;
     /**
      * Funkcja odpowiada za zmianę położenia czołgu, uaktualnienie położenia prostokątów dest_rect i collision_rect, położenia osłonek i łodzi, animację czołgu,
      * wywołanie aktualizacji pocisku oraz usuwanie zniszczonych pocisków. Funkcja odlicza czas posiadania osłonki i zamrożenia i wyłącza te flagi.
      * @param dt - czas od ostatniego wywołania funkcji, wykorzystywany przy zmianie animacji
      */
-    void update(Uint32 dt);
+    void update(Uint32 dt) override;
     /**
      * Funkcja odpowiada za stworzenie pocisku jeżeli jeszcze nie stworzono maksymalnej ich ilości.
      * @return wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca @a nullptr

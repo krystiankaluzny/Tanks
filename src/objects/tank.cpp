@@ -45,16 +45,16 @@ Tank::~Tank()
     }
 }
 
-void Tank::draw()
+void Tank::draw(Renderer &renderer)
 {
     if(to_erase) return;
-    Object::draw();
+    Object::draw(renderer);
 
-    if(testFlag(TSF_SHIELD) && m_shield != nullptr) m_shield->draw();
-    if(testFlag(TSF_BOAT) && m_boat != nullptr) m_boat->draw();
+    if(testFlag(TSF_SHIELD) && m_shield != nullptr) m_shield->draw(renderer);
+    if(testFlag(TSF_BOAT) && m_boat != nullptr) m_boat->draw(renderer);
 
     for(auto bullet : bullets)
-        if(bullet != nullptr) bullet->draw();
+        if(bullet != nullptr) bullet->draw(renderer);
 }
 
 void Tank::update(Uint32 dt)
@@ -135,7 +135,7 @@ void Tank::update(Uint32 dt)
                 if(m_sprite->loop) m_current_frame = 0;
                 else if(testFlag(TSF_CREATE))
                 {
-                    m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(type);
+                    m_sprite = &SpriteConfig::getInstance().getSpriteData(type);
                     clearFlag(TSF_CREATE);
                     setFlag(TSF_LIFE);
                     m_current_frame = 0;
@@ -298,7 +298,7 @@ void Tank::destroy()
     direction = D_UP;
     speed = 0;
     m_slip_time = 0;
-    m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_DESTROY_TANK);
+    m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_TANK);
 
     collision_rect.x = 0;
     collision_rect.y = 0;
@@ -359,7 +359,7 @@ bool Tank::testFlag(TankStateFlag flag)
 
 void Tank::respawn()
 {
-    m_sprite = Engine::getEngine().getSpriteConfig()->getSpriteData(ST_CREATE);
+    m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_CREATE);
     speed = 0.0;
     stop = false;
     m_slip_time = 0;
