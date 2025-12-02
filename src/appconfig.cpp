@@ -10,11 +10,11 @@ Rect AppConfig::windows_rect = {0, 0, AppConfig::map_rect.w + AppConfig::status_
 Rect AppConfig::tile_rect = {0, 0, 16, 16};
 // Macbook default keyboard does not has a right ctrl key
 #if defined(__APPLE__) && defined(__MACH__)
-    #define P1_FIRE_KEY SDL_SCANCODE_RALT
-    #define P2_FIRE_KEY SDL_SCANCODE_LALT
+    #define P1_FIRE_KEY KeyCode::KEY_RALT
+    #define P2_FIRE_KEY KeyCode::KEY_LALT
 #else
-    #define P1_FIRE_KEY SDL_SCANCODE_RCTRL
-    #define P2_FIRE_KEY SDL_SCANCODE_LCTRL
+    #define P1_FIRE_KEY KeyCode::KEY_RCTRL
+    #define P2_FIRE_KEY KeyCode::KEY_LCTRL
 #endif
 
 vector<Point> AppConfig::player_starting_point =
@@ -32,11 +32,24 @@ vector<Point> AppConfig::enemy_starting_point =
     v.push_back({384, 1});
     return v;
 }();
-vector<Player::PlayerKeys> AppConfig::player_keys =
+vector<KeyCode> AppConfig::player_1_keys =
 []{
-    vector<Player::PlayerKeys> v;
-    v.emplace_back(SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT, P1_FIRE_KEY);
-    v.push_back({SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D, P2_FIRE_KEY});
+    vector<KeyCode> v;
+    v.push_back(KeyCode::KEY_UP);
+    v.push_back(KeyCode::KEY_DOWN);
+    v.push_back(KeyCode::KEY_LEFT);
+    v.push_back(KeyCode::KEY_RIGHT);
+    v.push_back(P1_FIRE_KEY);
+    return v;
+}();
+vector<KeyCode> AppConfig::player_2_keys =
+[]{
+    vector<KeyCode> v;
+    v.push_back(KeyCode::KEY_W);
+    v.push_back(KeyCode::KEY_S);
+    v.push_back(KeyCode::KEY_A);
+    v.push_back(KeyCode::KEY_D);
+    v.push_back(P2_FIRE_KEY);
     return v;
 }();
 unsigned AppConfig::level_start_time = 2000;

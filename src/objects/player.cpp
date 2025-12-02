@@ -2,20 +2,8 @@
 #include "../appconfig.h"
 #include <iostream>
 
-Player::Player()
-    : Tank(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1)
-{
-    speed = 0;
-    lives_count = 11;
-    m_bullet_max_size = AppConfig::player_bullet_max_size;
-    score = 0;
-    star_count = 0;
-    m_shield = new Object(0, 0, ST_SHIELD);
-    m_shield_time = 0;
-    respawn();
-}
 
-Player::Player(double x, double y, SpriteType type)
+Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys)
     : Tank(x, y, type)
 {
    speed = 0;
@@ -25,33 +13,54 @@ Player::Player(double x, double y, SpriteType type)
    star_count = 0;
    m_shield = new Object(x, y, ST_SHIELD);
    m_shield_time = 0;
+
+   m_key_state_up = {control_keys[0], false};
+   m_key_state_down = {control_keys[1], false};
+   m_key_state_left = {control_keys[2], false};
+   m_key_state_right = {control_keys[3], false};
+   m_key_state_fire = {control_keys[4], false};
+
    respawn();
+}
+
+void Player::handleKeyboardEvent(const KeyboardEvent &ev)
+{
+    KeyboardEvent::KeyState key_state = ev.keyState();
+    if(key_state == KeyboardEvent::PRESSED || key_state == KeyboardEvent::RELEASED)
+    {
+        KeyCode key_code = ev.keyCode();
+        bool pressed = (key_state == KeyboardEvent::PRESSED);
+
+        if(key_code == m_key_state_up.key) m_key_state_up.pressed = pressed;
+        else if(key_code == m_key_state_down.key) m_key_state_down.pressed = pressed;
+        else if(key_code == m_key_state_left.key) m_key_state_left.pressed = pressed;
+        else if(key_code == m_key_state_right.key) m_key_state_right.pressed = pressed;
+        else if(key_code == m_key_state_fire.key) m_key_state_fire.pressed = pressed;
+    }
 }
 
 void Player::update(Uint32 dt)
 {
-    const Uint8 *key_state = SDL_GetKeyboardState(NULL);
-
     Tank::update(dt);
 
-    if(key_state != nullptr && !testFlag(TSF_MENU))
+    if(!testFlag(TSF_MENU))
     {
-        if(key_state[player_keys.up])
+        if(m_key_state_up.pressed)
         {
             setDirection(D_UP);
             speed = default_speed;
         }
-        else if(key_state[player_keys.down])
+        else if(m_key_state_down.pressed)
         {
             setDirection(D_DOWN);
             speed = default_speed;
         }
-        else if(key_state[player_keys.left])
+        else if(m_key_state_left.pressed)
         {
             setDirection(D_LEFT);
             speed = default_speed;
         }
-        else if(key_state[player_keys.right])
+        else if(m_key_state_right.pressed)
         {
             setDirection(D_RIGHT);
             speed = default_speed;
@@ -62,7 +71,7 @@ void Player::update(Uint32 dt)
                 speed = 0.0;
         }
 
-        if(key_state[player_keys.fire] && m_fire_time > AppConfig::player_reload_time)
+        if(m_key_state_fire.pressed && m_fire_time > AppConfig::player_reload_time)
         {
             fire();
             m_fire_time = 0;

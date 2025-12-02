@@ -1,7 +1,8 @@
 #ifndef APPCONFIG_H
 #define APPCONFIG_H
 
-#include "objects/player.h"
+#include "engine/data/data.h"
+#include "engine/data/keycode.h"
 #include <iostream>
 #include <vector>
 
@@ -56,9 +57,11 @@ public:
     /**
      * Sterowanie czołgami graczy.
      */
-    static vector <Player::PlayerKeys> player_keys;
+    static vector<KeyCode> player_1_keys;
+
+    static vector<KeyCode> player_2_keys;
     /**
-     * Czas wyświetlanai numeru rundy przy jej rozpocząciu.
+     * Czas wyświetlanai numeru rundy przy jej rozpoczęciu.
      */
     static unsigned level_start_time;
     /**

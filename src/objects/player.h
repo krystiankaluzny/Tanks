@@ -2,76 +2,43 @@
 #define PLAYER_H
 
 #include "tank.h"
-
+#include <vector>
 /**
  * @brief Klasa odpowiadająca czołgom graczy.
  */
 class Player : public Tank
 {
 public:
-
-    /**
-     * @brief Struktura przechowująca klawiszę odpowiadające sterowaniem czołgiem gracza.
-     */
-    struct PlayerKeys
-    {
-        PlayerKeys(): up(SDL_SCANCODE_UNKNOWN), down(SDL_SCANCODE_UNKNOWN), left(SDL_SCANCODE_UNKNOWN), right(SDL_SCANCODE_UNKNOWN), fire(SDL_SCANCODE_UNKNOWN) {}
-        PlayerKeys(SDL_Scancode u, SDL_Scancode d, SDL_Scancode l, SDL_Scancode r, SDL_Scancode f): up(u), down(d), left(l), right(r), fire(f) {}
-        /**
-         * Klawisz odpowiadający jeździe w górę.
-         */
-        SDL_Scancode up;
-        /**
-         * Klawisz odpowiadający jeździe w dół.
-         */
-        SDL_Scancode down;
-        /**
-         * Klawisz odpowiadający jeździe w lewo.
-         */
-        SDL_Scancode left;
-        /**
-         * Klawisz odpowiadający jeździe w prawo.
-         */
-        SDL_Scancode right;
-        /**
-         * Klawisz odpowiadający wystrzałowi pocisku.
-         */
-        SDL_Scancode fire;
-    };
-
-    /**
-     * Tworzenie gracza w pierwszym z położeń graczy.
-     * @see AppConfig::player_starting_point
-     */
-    Player();
     /**
      * Tworzenie czołgu gracza
      * @param x - pozycja początkowa pozioma
      * @param y - pozycja początkowa pionowa
      * @param type - typ gracza
      */
-    Player(double x, double y, SpriteType type);
+    Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys);
 
+    void handleKeyboardEvent(const KeyboardEvent &ev);
 
     /**
      * Funkcaj odpowiada za zmianę animacji czołgu gracza oraz za sprawdzeni stanu wciśniętych klawiszy i reakcja na te klawisze, które sterują czołgiem gracza.
      * @param dt - czas od ostatwniego wywołania funkcji, wykorzystywany przy zmianie animacji
      */
-    void update(Uint32 dt);
+    void update(Uint32 dt) override;
+
     /**
      * Funkcja odpowiada za odjęcie życia, wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu.
      */
-    void respawn();
+    void respawn() override;
     /**
      * Funkcja odpowiada za włączenie animacji wybuchu czołgu jeżeli czołgu nie miał osłonki, łódki lub trzech gwiazdek.
      */
-    void destroy();
+    void destroy() override;
     /**
      * Funkcja odpowiada za stworzenie pocisku jeżeli jeszcze nie stworzono maksymalnej ich ilości,
      * nadaniu mu większej szybkości jeżeli gracz ma przynajmniej jedną gwiazdkę oraz dodaniu zwiększonych obrażeni jeżeli gracz ma trzy gwiazdki.
      * @return wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca @a nullptr
      */
-    Bullet* fire();
+    Bullet* fire() override;
 
     /**
      * Funkcja zmienia liczbę aktualnie posiadanych gwiazdek. Przy niezerowej liczbie gwiazdek zwiększana jest domyślna prędkość czołgu,
@@ -80,10 +47,6 @@ public:
      */
     void changeStarCountBy(int c);
 
-    /**
-     * Klawiszcze sterujące ruchami aktualngo gracza.
-     */
-    PlayerKeys player_keys;
     /**
      * Aktualnie posiadane punkty przez gracza.
      */
@@ -98,6 +61,17 @@ private:
      * Czas jaki minął od ostatnego wystrzału pocisku.
      */
     Uint32 m_fire_time;
+
+    struct KeyState {
+        KeyCode key;
+        bool pressed;
+    };
+
+    KeyState m_key_state_up;
+    KeyState m_key_state_down;
+    KeyState m_key_state_left;
+    KeyState m_key_state_right;
+    KeyState m_key_state_fire;
 };
 
 #endif // PLAYER_H
