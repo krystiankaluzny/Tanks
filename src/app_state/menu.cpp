@@ -19,7 +19,7 @@ Menu::Menu()
     m_first_menu_item_offset = {180, 120};
     m_tank_menu_pointer_offset = {144, 110};
 
-    m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1);
+    m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1, AppConfig::player_1_keys);
     m_tank_menu_pointer->direction = D_RIGHT;
     m_tank_menu_pointer->pos_x = 144;
     m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * 32 + 112;
