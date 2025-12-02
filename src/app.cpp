@@ -46,6 +46,12 @@ void App::run()
 
 ProcessingResult App::handleEvent(const Event &event)
 {
+    m_app_state->eventProcess(event);
+    return ProcessingResult::CONTINUE;
+}
+
+ProcessingResult App::updateState(Uint32 delta_time)
+{
     AppState *next_state = m_app_state->nextState();
     if (m_app_state != next_state)
     {
@@ -56,13 +62,6 @@ ProcessingResult App::handleEvent(const Event &event)
             return ProcessingResult::STOP;
         }
     }
-
-    m_app_state->eventProcess(event);
-    return ProcessingResult::CONTINUE;
-}
-
-ProcessingResult App::updateState(Uint32 delta_time)
-{
     m_app_state->update(delta_time);
     return ProcessingResult::CONTINUE;
 }

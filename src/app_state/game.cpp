@@ -356,7 +356,7 @@ void Game::update(Uint32 dt)
 
 void Game::eventProcess(const Event &event)
 {
-    if (event.type() == Event::KEYBOARD)
+    if (!m_level_start_screen && event.type() == Event::KEYBOARD)
     {
         const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
         if (event_key.isPressed(KEY_N))
