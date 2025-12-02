@@ -24,13 +24,13 @@ public:
     /**
      * Funkcja rysująca bonus.
      */
-    void draw();
+    void draw(Renderer &renderer) override;
     /**
      * Funkcja uaktualniająca animacje bonusu. Pozwolenie na usunięcie po odpowiednim czasie.
      * Zwiększenie częstotliwości migania jeżeli bonus ma niedługo zostać usunięty.
      * @param dt - czas od ostatniego wywołania funkcji
      */
-    void update(Uint32 dt);
+    void update(Uint32 dt) override;
 private:
     /**
      * Czas od stworzenie bonusu.

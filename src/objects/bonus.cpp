@@ -15,9 +15,9 @@ Bonus::Bonus(double x, double y, SpriteType type)
     m_show = true;
 }
 
-void Bonus::draw()
+void Bonus::draw(Renderer &renderer)
 {
-    if(m_show) Object::draw();
+    if(m_show) Object::draw(renderer);
 }
 
 void Bonus::update(Uint32 dt)
