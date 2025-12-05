@@ -23,11 +23,11 @@ Menu::Menu()
     m_tank_menu_pointer->direction = D_RIGHT;
     m_tank_menu_pointer->pos_x = 144;
     m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * 32 + 112;
-    m_tank_menu_pointer->setFlag(TSF_LIFE);
+    m_tank_menu_pointer->setFlag(Tank::TSF_LIFE);
     m_tank_menu_pointer->update(0);
-    m_tank_menu_pointer->clearFlag(TSF_LIFE);
-    m_tank_menu_pointer->clearFlag(TSF_SHIELD);
-    m_tank_menu_pointer->setFlag(TSF_MENU);
+    m_tank_menu_pointer->clearFlag(Tank::TSF_LIFE);
+    m_tank_menu_pointer->clearFlag(Tank::TSF_SHIELD);
+    m_tank_menu_pointer->setFlag(Tank::TSF_MENU);
     m_finished = false;
 }
 

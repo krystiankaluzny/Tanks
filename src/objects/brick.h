@@ -2,7 +2,7 @@
 #define BRICK_H
 
 #include "object.h"
-#include "../type.h"
+#include "direction.h"
 
 /**
  * @brief Klasa odpowiedzialna za pojedyńczy kawałek murku.

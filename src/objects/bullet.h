@@ -2,7 +2,7 @@
 #define BULLET_H
 
 #include "object.h"
-#include "../type.h"
+#include "direction.h"
 
 /**
  * @brief Klasa zajmująca się pociskami wystrzalanymi przez czołgi.

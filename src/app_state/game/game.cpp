@@ -39,7 +39,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_player_count = m_players.size();
     for (auto player : m_players)
     {
-        player->clearFlag(TSF_MENU);
+        player->clearFlag(Tank::TSF_MENU);
         player->lives_count++;
         player->respawn();
     }
@@ -64,7 +64,7 @@ void Game::draw(Renderer &renderer)
     Point text_centered_pos = {-1, -1};
     if (m_level_start_screen)
     {
-        std::string level_name = "STAGE " + Engine::intToString(m_current_level);
+        std::string level_name = "STAGE " + std::to_string(m_current_level);
         renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, 1);
     }
     else
@@ -113,7 +113,7 @@ void Game::draw(Renderer &renderer)
             p_dst = {dst.x + dst.w + 2, dst.y + 3};
             i++;
             renderer.drawObject(player->src_rect, dst);
-            renderer.drawText(p_dst, Engine::intToString(player->lives_count), {0, 0, 0, 255}, 3);
+            renderer.drawText(p_dst, std::to_string(player->lives_count), {0, 0, 0, 255}, 3);
         }
         // numer mapy
         src_rect = SpriteConfig::getInstance().getSpriteData(ST_STAGE_STATUS).rect;
@@ -121,7 +121,7 @@ void Game::draw(Renderer &renderer)
         dst = {AppConfig::status_rect.x + 8, static_cast<int>(185 + (m_players.size() + m_killed_players.size()) * 18), src.w, src.h};
         p_dst = {dst.x + 10, dst.y + 26};
         renderer.drawObject(src, dst);
-        renderer.drawText(p_dst, Engine::intToString(m_current_level), {0, 0, 0, 255}, 2);
+        renderer.drawText(p_dst, std::to_string(m_current_level), {0, 0, 0, 255}, 2);
 
         if (m_pause)
             renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, 1);
@@ -582,7 +582,7 @@ void Game::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
             o = m_level.at(i).at(j);
             if (o == nullptr)
                 continue;
-            if (tank->testFlag(TSF_BOAT) && o->type == ST_WATER)
+            if (tank->testFlag(Tank::TSF_BOAT) && o->type == ST_WATER)
                 continue;
 
             lr = &o->collision_rect;
@@ -593,7 +593,7 @@ void Game::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
                 if (o->type == ST_ICE)
                 {
                     if (intersect_rect.w > 10 && intersect_rect.h > 10)
-                        tank->setFlag(TSF_ON_ICE);
+                        tank->setFlag(Tank::TSF_ON_ICE);
                     continue;
                 }
                 else
@@ -792,7 +792,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 {
     if (player->to_erase || enemy->to_erase)
         return;
-    if (enemy->testFlag(TSF_DESTROYED))
+    if (enemy->testFlag(Tank::TSF_DESTROYED))
         return;
     Rect intersect_rect;
 
@@ -803,7 +803,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
             intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
             if (intersect_rect.w > 0 && intersect_rect.h > 0)
             {
-                if (enemy->testFlag(TSF_BONUS))
+                if (enemy->testFlag(Tank::TSF_BONUS))
                     generateBonus();
 
                 bullet->destroy();
@@ -820,7 +820,7 @@ void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
 {
     if (enemy->to_erase || player->to_erase)
         return;
-    if (player->testFlag(TSF_DESTROYED))
+    if (player->testFlag(Tank::TSF_DESTROYED))
         return;
     Rect intersect_rect;
 
@@ -879,13 +879,13 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         }
         else if (bonus->type == ST_BONUS_HELMET)
         {
-            player->setFlag(TSF_SHIELD);
+            player->setFlag(Tank::TSF_SHIELD);
         }
         else if (bonus->type == ST_BONUS_CLOCK)
         {
             for (auto enemy : m_enemies)
                 if (!enemy->to_erase)
-                    enemy->setFlag(TSF_FROZEN);
+                    enemy->setFlag(Tank::TSF_FROZEN);
         }
         else if (bonus->type == ST_BONUS_SHOVEL)
         {
@@ -922,7 +922,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         }
         else if (bonus->type == ST_BONUS_BOAT)
         {
-            player->setFlag(TSF_BOAT);
+            player->setFlag(Tank::TSF_BOAT);
         }
         bonus->to_erase = true;
     }
@@ -942,7 +942,7 @@ void Game::nextLevel()
     m_finished = false;
     m_enemy_to_kill = AppConfig::enemy_start_count;
 
-    std::string level_path = AppConfig::levels_path + Engine::intToString(m_current_level);
+    std::string level_path = AppConfig::levels_path + std::to_string(m_current_level);
     loadLevel(level_path);
 }
 
@@ -999,7 +999,7 @@ void Game::generateEnemy()
 
     p = static_cast<float>(rand()) / RAND_MAX;
     if (p < 0.12)
-        e->setFlag(TSF_BONUS);
+        e->setFlag(Tank::TSF_BONUS);
 
     m_enemies.push_back(e);
 }

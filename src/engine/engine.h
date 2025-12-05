@@ -25,12 +25,6 @@ public:
     static Engine* engine_instance;
 
     static void setEngine(Engine* engine);
-    /**
-     * Funkcja zamienia podaną wartość liczbową na tekst.
-     * @param num - liczba całkowita
-     * @return liczbę całkowitą jako tekst
-     */
-    static std::string intToString(int num);
 
     virtual Renderer* getRenderer() const = 0;
 };
