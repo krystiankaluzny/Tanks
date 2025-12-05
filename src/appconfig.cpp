@@ -4,36 +4,42 @@ string AppConfig::texture_path = "texture.png";
 string AppConfig::levels_path = "levels/";
 string AppConfig::font_name = "prstartk.ttf";
 string AppConfig::game_over_text = "GAME OVER";
-Rect AppConfig::map_rect = {0, 0, 26*16, 26*16};
-Rect AppConfig::status_rect = {26*16, 0, 3*16, AppConfig::map_rect.h};
+
+Size AppConfig::tile_size = {16, 16};
+
+Rect AppConfig::map_rect = {0, 0, 26 * tile_size.w, 26 * tile_size.h};
+Rect AppConfig::status_rect = {26 * tile_size.w, 0, 3 * tile_size.w, AppConfig::map_rect.h}; //on the right side of the map
 Rect AppConfig::windows_rect = {0, 0, AppConfig::map_rect.w + AppConfig::status_rect.w, AppConfig::map_rect.h};
-Rect AppConfig::tile_rect = {0, 0, 16, 16};
+
 // Macbook default keyboard does not has a right ctrl key
 #if defined(__APPLE__) && defined(__MACH__)
-    #define P1_FIRE_KEY KeyCode::KEY_RALT
-    #define P2_FIRE_KEY KeyCode::KEY_LALT
+#define P1_FIRE_KEY KeyCode::KEY_RALT
+#define P2_FIRE_KEY KeyCode::KEY_LALT
 #else
-    #define P1_FIRE_KEY KeyCode::KEY_RCTRL
-    #define P2_FIRE_KEY KeyCode::KEY_LCTRL
+#define P1_FIRE_KEY KeyCode::KEY_RCTRL
+#define P2_FIRE_KEY KeyCode::KEY_LCTRL
 #endif
 
 vector<Point> AppConfig::player_starting_point =
-[]{
+    []
+{
     vector<Point> v;
-    v.push_back({128, 384});
-    v.push_back({256, 384});
+    v.push_back({8 * tile_size.w, 24 * tile_size.h});
+    v.push_back({16 * tile_size.w, 24 * tile_size.h});
     return v;
 }();
 vector<Point> AppConfig::enemy_starting_point =
-[]{
+    []
+{
     vector<Point> v;
     v.push_back({1, 1});
-    v.push_back({192, 1});
-    v.push_back({384, 1});
+    v.push_back({12 * tile_size.w, 1});
+    v.push_back({24 * tile_size.w, 1});
     return v;
 }();
 vector<KeyCode> AppConfig::player_1_keys =
-[]{
+    []
+{
     vector<KeyCode> v;
     v.push_back(KeyCode::KEY_UP);
     v.push_back(KeyCode::KEY_DOWN);
@@ -43,7 +49,8 @@ vector<KeyCode> AppConfig::player_1_keys =
     return v;
 }();
 vector<KeyCode> AppConfig::player_2_keys =
-[]{
+    []
+{
     vector<KeyCode> v;
     v.push_back(KeyCode::KEY_W);
     v.push_back(KeyCode::KEY_S);
@@ -52,6 +59,7 @@ vector<KeyCode> AppConfig::player_2_keys =
     v.push_back(P2_FIRE_KEY);
     return v;
 }();
+
 unsigned AppConfig::level_start_time = 2000;
 unsigned AppConfig::slip_time = 380;
 unsigned AppConfig::enemy_start_count = 20;

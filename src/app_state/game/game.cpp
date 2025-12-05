@@ -300,17 +300,17 @@ void Game::update(Uint32 dt)
                 {
                     if (m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
                         delete m_level.at(m_level_rows_count - i - 1).at(11);
-                    m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
+                    m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h);
 
                     if (m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
                         delete m_level.at(m_level_rows_count - i - 1).at(14);
-                    m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
+                    m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h);
                 }
                 for (int i = 12; i < 14; i++)
                 {
                     if (m_level.at(m_level_rows_count - 3).at(i) != nullptr)
                         delete m_level.at(m_level_rows_count - 3).at(i);
-                    m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
+                    m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_size.w, (m_level_rows_count - 3) * AppConfig::tile_size.h);
                 }
             }
 
@@ -320,17 +320,17 @@ void Game::update(Uint32 dt)
                 {
                     if (m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
                         delete m_level.at(m_level_rows_count - i - 1).at(11);
-                    m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
+                    m_level.at(m_level_rows_count - i - 1).at(11) = new Brick(11 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h);
 
                     if (m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
                         delete m_level.at(m_level_rows_count - i - 1).at(14);
-                    m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h);
+                    m_level.at(m_level_rows_count - i - 1).at(14) = new Brick(14 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h);
                 }
                 for (int i = 12; i < 14; i++)
                 {
                     if (m_level.at(m_level_rows_count - 3).at(i) != nullptr)
                         delete m_level.at(m_level_rows_count - 3).at(i);
-                    m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h);
+                    m_level.at(m_level_rows_count - 3).at(i) = new Brick(i * AppConfig::tile_size.w, (m_level_rows_count - 3) * AppConfig::tile_size.h);
                 }
             }
             else if (m_protect_eagle)
@@ -339,17 +339,17 @@ void Game::update(Uint32 dt)
                 {
                     if (m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
                         delete m_level.at(m_level_rows_count - i - 1).at(11);
-                    m_level.at(m_level_rows_count - i - 1).at(11) = new Object(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                    m_level.at(m_level_rows_count - i - 1).at(11) = new Object(11 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h, ST_STONE_WALL);
 
                     if (m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
                         delete m_level.at(m_level_rows_count - i - 1).at(14);
-                    m_level.at(m_level_rows_count - i - 1).at(14) = new Object(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                    m_level.at(m_level_rows_count - i - 1).at(14) = new Object(14 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h, ST_STONE_WALL);
                 }
                 for (int i = 12; i < 14; i++)
                 {
                     if (m_level.at(m_level_rows_count - 3).at(i) != nullptr)
                         delete m_level.at(m_level_rows_count - 3).at(i);
-                    m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                    m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_size.w, (m_level_rows_count - 3) * AppConfig::tile_size.h, ST_STONE_WALL);
                 }
             }
         }
@@ -427,20 +427,20 @@ void Game::loadLevel(std::string path)
                 switch (line.at(i))
                 {
                 case '#':
-                    obj = new Brick(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h);
+                    obj = new Brick(i * AppConfig::tile_size.w, j * AppConfig::tile_size.h);
                     break;
                 case '@':
-                    obj = new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_STONE_WALL);
+                    obj = new Object(i * AppConfig::tile_size.w, j * AppConfig::tile_size.h, ST_STONE_WALL);
                     break;
                 case '%':
-                    m_bushes.push_back(new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_BUSH));
+                    m_bushes.push_back(new Object(i * AppConfig::tile_size.w, j * AppConfig::tile_size.h, ST_BUSH));
                     obj = nullptr;
                     break;
                 case '~':
-                    obj = new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_WATER);
+                    obj = new Object(i * AppConfig::tile_size.w, j * AppConfig::tile_size.h, ST_WATER);
                     break;
                 case '-':
-                    obj = new Object(i * AppConfig::tile_rect.w, j * AppConfig::tile_rect.h, ST_ICE);
+                    obj = new Object(i * AppConfig::tile_size.w, j * AppConfig::tile_size.h, ST_ICE);
                     break;
                 default:
                     obj = nullptr;
@@ -458,7 +458,7 @@ void Game::loadLevel(std::string path)
         m_level_columns_count = 0;
 
     // tworzymy orzełka
-    m_eagle = new Eagle(12 * AppConfig::tile_rect.w, (m_level_rows_count - 2) * AppConfig::tile_rect.h);
+    m_eagle = new Eagle(12 * AppConfig::tile_size.w, (m_level_rows_count - 2) * AppConfig::tile_size.h);
 
     // wyczyszczenie miejsca orzełeka
     for (int i = 12; i < 14 && i < m_level_columns_count; i++)
@@ -538,28 +538,28 @@ void Game::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     switch (tank->direction)
     {
     case D_UP:
-        row_end = tank->collision_rect.y / AppConfig::tile_rect.h;
+        row_end = tank->collision_rect.y / AppConfig::tile_size.h;
         row_start = row_end - 1;
-        column_start = tank->collision_rect.x / AppConfig::tile_rect.w - 1;
-        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_rect.w + 1;
+        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
+        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
         break;
     case D_RIGHT:
-        column_start = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_rect.w;
+        column_start = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w;
         column_end = column_start + 1;
-        row_start = tank->collision_rect.y / AppConfig::tile_rect.h - 1;
-        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_rect.h + 1;
+        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
+        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
         break;
     case D_DOWN:
-        row_start = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_rect.h;
+        row_start = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h;
         row_end = row_start + 1;
-        column_start = tank->collision_rect.x / AppConfig::tile_rect.w - 1;
-        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_rect.w + 1;
+        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
+        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
         break;
     case D_LEFT:
-        column_end = tank->collision_rect.x / AppConfig::tile_rect.w;
+        column_end = tank->collision_rect.x / AppConfig::tile_size.w;
         column_start = column_end - 1;
-        row_start = tank->collision_rect.y / AppConfig::tile_rect.h - 1;
-        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_rect.h + 1;
+        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
+        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
         break;
     }
     if (column_start < 0)
@@ -605,28 +605,28 @@ void Game::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     //========================kolizja z granicami mapy========================
     Rect outside_map_rect;
     // prostokąt po lewej stronie mapy
-    outside_map_rect.x = -AppConfig::tile_rect.w;
-    outside_map_rect.y = -AppConfig::tile_rect.h;
-    outside_map_rect.w = AppConfig::tile_rect.w;
-    outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_rect.h;
+    outside_map_rect.x = -AppConfig::tile_size.w;
+    outside_map_rect.y = -AppConfig::tile_size.h;
+    outside_map_rect.w = AppConfig::tile_size.w;
+    outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_size.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if (intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
 
     // prostokąt po prawej stronie mapy
     outside_map_rect.x = AppConfig::map_rect.w;
-    outside_map_rect.y = -AppConfig::tile_rect.h;
-    outside_map_rect.w = AppConfig::tile_rect.w;
-    outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_rect.h;
+    outside_map_rect.y = -AppConfig::tile_size.h;
+    outside_map_rect.w = AppConfig::tile_size.w;
+    outside_map_rect.h = AppConfig::map_rect.h + 2 * AppConfig::tile_size.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if (intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
 
     // prostokąt po górnej stronie mapy
     outside_map_rect.x = 0;
-    outside_map_rect.y = -AppConfig::tile_rect.h;
+    outside_map_rect.y = -AppConfig::tile_size.h;
     outside_map_rect.w = AppConfig::map_rect.w;
-    outside_map_rect.h = AppConfig::tile_rect.h;
+    outside_map_rect.h = AppConfig::tile_size.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if (intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
@@ -635,7 +635,7 @@ void Game::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     outside_map_rect.x = 0;
     outside_map_rect.y = AppConfig::map_rect.h;
     outside_map_rect.w = AppConfig::map_rect.w;
-    outside_map_rect.h = AppConfig::tile_rect.h;
+    outside_map_rect.h = AppConfig::tile_size.h;
     intersect_rect = intersectRect(&outside_map_rect, &pr);
     if (intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
@@ -677,24 +677,24 @@ void Game::checkCollisionBulletWithLevel(Bullet *bullet)
     switch (bullet->direction)
     {
     case D_UP:
-        row_start = row_end = bullet->collision_rect.y / AppConfig::tile_rect.h;
-        column_start = bullet->collision_rect.x / AppConfig::tile_rect.w;
-        column_end = (bullet->collision_rect.x + bullet->collision_rect.w) / AppConfig::tile_rect.w;
+        row_start = row_end = bullet->collision_rect.y / AppConfig::tile_size.h;
+        column_start = bullet->collision_rect.x / AppConfig::tile_size.w;
+        column_end = (bullet->collision_rect.x + bullet->collision_rect.w) / AppConfig::tile_size.w;
         break;
     case D_RIGHT:
-        column_start = column_end = (bullet->collision_rect.x + bullet->collision_rect.w) / AppConfig::tile_rect.w;
-        row_start = bullet->collision_rect.y / AppConfig::tile_rect.h;
-        row_end = (bullet->collision_rect.y + bullet->collision_rect.h) / AppConfig::tile_rect.h;
+        column_start = column_end = (bullet->collision_rect.x + bullet->collision_rect.w) / AppConfig::tile_size.w;
+        row_start = bullet->collision_rect.y / AppConfig::tile_size.h;
+        row_end = (bullet->collision_rect.y + bullet->collision_rect.h) / AppConfig::tile_size.h;
         break;
     case D_DOWN:
-        row_start = row_end = (bullet->collision_rect.y + bullet->collision_rect.h) / AppConfig::tile_rect.h;
-        column_start = bullet->collision_rect.x / AppConfig::tile_rect.w;
-        column_end = (bullet->collision_rect.x + bullet->collision_rect.w) / AppConfig::tile_rect.w;
+        row_start = row_end = (bullet->collision_rect.y + bullet->collision_rect.h) / AppConfig::tile_size.h;
+        column_start = bullet->collision_rect.x / AppConfig::tile_size.w;
+        column_end = (bullet->collision_rect.x + bullet->collision_rect.w) / AppConfig::tile_size.w;
         break;
     case D_LEFT:
-        column_start = column_end = bullet->collision_rect.x / AppConfig::tile_rect.w;
-        row_start = bullet->collision_rect.y / AppConfig::tile_rect.h;
-        row_end = (bullet->collision_rect.y + bullet->collision_rect.h) / AppConfig::tile_rect.h;
+        column_start = column_end = bullet->collision_rect.x / AppConfig::tile_size.w;
+        row_start = bullet->collision_rect.y / AppConfig::tile_size.h;
+        row_end = (bullet->collision_rect.y + bullet->collision_rect.h) / AppConfig::tile_size.h;
         break;
     }
     if (column_start < 0)
@@ -895,17 +895,17 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
             {
                 if (m_level.at(m_level_rows_count - i - 1).at(11) != nullptr)
                     delete m_level.at(m_level_rows_count - i - 1).at(11);
-                m_level.at(m_level_rows_count - i - 1).at(11) = new Object(11 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                m_level.at(m_level_rows_count - i - 1).at(11) = new Object(11 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h, ST_STONE_WALL);
 
                 if (m_level.at(m_level_rows_count - i - 1).at(14) != nullptr)
                     delete m_level.at(m_level_rows_count - i - 1).at(14);
-                m_level.at(m_level_rows_count - i - 1).at(14) = new Object(14 * AppConfig::tile_rect.w, (m_level_rows_count - i - 1) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                m_level.at(m_level_rows_count - i - 1).at(14) = new Object(14 * AppConfig::tile_size.w, (m_level_rows_count - i - 1) * AppConfig::tile_size.h, ST_STONE_WALL);
             }
             for (int i = 12; i < 14; i++)
             {
                 if (m_level.at(m_level_rows_count - 3).at(i) != nullptr)
                     delete m_level.at(m_level_rows_count - 3).at(i);
-                m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_rect.w, (m_level_rows_count - 3) * AppConfig::tile_rect.h, ST_STONE_WALL);
+                m_level.at(m_level_rows_count - 3).at(i) = new Object(i * AppConfig::tile_size.w, (m_level_rows_count - 3) * AppConfig::tile_size.h, ST_STONE_WALL);
             }
         }
         else if (bonus->type == ST_BONUS_TANK)
@@ -1010,8 +1010,8 @@ void Game::generateBonus()
     Rect intersect_rect;
     do
     {
-        b->pos_x = rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 1 * AppConfig::tile_rect.w);
-        b->pos_y = rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 1 * AppConfig::tile_rect.h);
+        b->pos_x = rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 1 * AppConfig::tile_size.w);
+        b->pos_y = rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 1 * AppConfig::tile_size.h);
         b->update(0);
         intersect_rect = intersectRect(&b->collision_rect, &m_eagle->collision_rect);
     } while (intersect_rect.w > 0 && intersect_rect.h > 0);

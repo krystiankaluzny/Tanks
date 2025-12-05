@@ -30,6 +30,9 @@ public:
      * Tekst wyświetlany po przegranej.
      */
     static string game_over_text;
+
+    static Size tile_size;
+
     /**
      * Wymiary planszy gry.
      */
@@ -42,10 +45,7 @@ public:
      * Rozmiar okna aplikacji.
      */
     static Rect windows_rect;
-    /**
-     * Rozmiar komórki na planszy.
-     */
-    static Rect tile_rect;
+    
     /**
      * Dwie pozycje początkowe graczy.
      */

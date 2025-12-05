@@ -250,15 +250,15 @@ void Tank::setDirection(Direction d)
         {
         case D_UP:
         case D_DOWN:
-            pos_x_tile = ((int)(pos_x / AppConfig::tile_rect.w)) * AppConfig::tile_rect.w;
+            pos_x_tile = ((int)(pos_x / AppConfig::tile_size.w)) * AppConfig::tile_size.w;
             if(pos_x - pos_x_tile < epsilon) pos_x = pos_x_tile;
-            else if(pos_x_tile + AppConfig::tile_rect.w - pos_x < epsilon) pos_x = pos_x_tile + AppConfig::tile_rect.w;
+            else if(pos_x_tile + AppConfig::tile_size.w - pos_x < epsilon) pos_x = pos_x_tile + AppConfig::tile_size.w;
             break;
         case D_RIGHT:
         case D_LEFT:
-            pos_y_tile = ((int)(pos_y / AppConfig::tile_rect.h)) * AppConfig::tile_rect.h;
+            pos_y_tile = ((int)(pos_y / AppConfig::tile_size.h)) * AppConfig::tile_size.h;
             if(pos_y - pos_y_tile < epsilon) pos_y = pos_y_tile;
-            else if(pos_y_tile + AppConfig::tile_rect.h - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_rect.h;
+            else if(pos_y_tile + AppConfig::tile_size.h - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_size.h;
             break;
         }
     }
