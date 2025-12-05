@@ -33,16 +33,11 @@ SDLRenderer::~SDLRenderer()
 
 void SDLRenderer::loadTexture(SDL_Window *window)
 {
-    SDL_Surface *surface = nullptr;
     m_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    surface = IMG_Load(AppConfig::texture_path.c_str());
-
     // load surface
-    if (surface != nullptr && m_renderer != nullptr)
-        m_texture = SDL_CreateTextureFromSurface(m_renderer, surface);
-
-    SDL_FreeSurface(surface);
+    if (m_renderer != nullptr)
+        m_texture = IMG_LoadTexture(m_renderer, AppConfig::texture_path.c_str());
 }
 
 void SDLRenderer::loadFont()
