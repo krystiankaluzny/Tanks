@@ -69,60 +69,20 @@ void Game::draw(Renderer &renderer)
     Point text_centered_pos = {-1, -1};
     if (m_level_start_screen)
     {
-        std::string level_name = "STAGE " + std::to_string(m_current_level);
-        renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, 1);
+        drawLevelStartScreen(renderer);
     }
     else
     {
         renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 0}, true);
-        m_level_environment->drawFirstLayer(renderer);
 
-        for (auto player : m_players)
-            player->draw(renderer);
-        for (auto enemy : m_enemies)
-            enemy->draw(renderer);
-
-        for (auto bonus : m_bonuses)
-            bonus->draw(renderer);
-
-        m_level_environment->drawSecondLayer(renderer);
+        drawObjects(renderer);
 
         if (m_game_over)
         {
-            Point pos;
-            pos.x = -1;
-            pos.y = m_game_over_message_position;
-            renderer.drawText(pos, AppConfig::game_over_text, {255, 10, 10, 255});
+            drawGameOver(renderer);
         }
 
-        //===========Status gry===========
-        Rect src_rect = SpriteConfig::getInstance().getSpriteData(ST_LEFT_ENEMY).rect;
-        Rect src = {src_rect.x, src_rect.y, src_rect.w, src_rect.h};
-        Rect dst;
-        Point p_dst;
-        // wrogowie do zabicia
-        for (int i = 0; i < m_enemy_to_kill; i++)
-        {
-            dst = {AppConfig::status_rect.x + 8 + src.w * (i % 2), 5 + src.h * (i / 2), src.w, src.h};
-            renderer.drawObject(src, dst);
-        }
-        // życia graczy
-        int i = 0;
-        for (auto player : m_players)
-        {
-            dst = {AppConfig::status_rect.x + 5, i * 18 + 180, 16, 16};
-            p_dst = {dst.x + dst.w + 2, dst.y + 3};
-            i++;
-            renderer.drawObject(player->src_rect, dst);
-            renderer.drawText(p_dst, std::to_string(player->lives_count), {0, 0, 0, 255}, 3);
-        }
-        // numer mapy
-        src_rect = SpriteConfig::getInstance().getSpriteData(ST_STAGE_STATUS).rect;
-        src = {src_rect.x, src_rect.y, src_rect.w, src_rect.h};
-        dst = {AppConfig::status_rect.x + 8, static_cast<int>(185 + (m_players.size() + m_killed_players.size()) * 18), src.w, src.h};
-        p_dst = {dst.x + 10, dst.y + 26};
-        renderer.drawObject(src, dst);
-        renderer.drawText(p_dst, std::to_string(m_current_level), {0, 0, 0, 255}, 2);
+        drawGameStatusPanel(renderer);
 
         if (m_pause)
             renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, 1);
@@ -270,6 +230,69 @@ void Game::createPlayersIfNeeded()
             m_players.push_back(p1);
         }
     }
+}
+
+void Game::drawLevelStartScreen(Renderer &renderer)
+{
+
+    Point text_centered_pos = {-1, -1};
+    std::string level_name = "STAGE " + std::to_string(m_current_level);
+    renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, 1);
+}
+void Game::drawObjects(Renderer &renderer)
+{
+    m_level_environment->drawFirstLayer(renderer);
+
+    for (auto player : m_players)
+        player->draw(renderer);
+    for (auto enemy : m_enemies)
+        enemy->draw(renderer);
+
+    for (auto bonus : m_bonuses)
+        bonus->draw(renderer);
+
+    m_level_environment->drawSecondLayer(renderer);
+}
+
+void Game::drawGameOver(Renderer &renderer)
+{
+    Point pos = {-1, m_game_over_message_position};
+    renderer.drawText(pos, AppConfig::game_over_text, {255, 10, 10, 255});
+}
+
+void Game::drawGameStatusPanel(Renderer &renderer)
+{
+    // enemies left to kill
+    Rect enemy_left_src = SpriteConfig::getInstance().getSpriteData(ST_LEFT_ENEMY).rect;
+    for (int i = 0; i < m_enemy_to_kill; i++)
+    {
+        Rect enemy_status_dst = {
+            AppConfig::status_rect.x + 8 + enemy_left_src.w * (i % 2),
+            5 + enemy_left_src.h * (i / 2),
+            enemy_left_src.w,
+            enemy_left_src.h};
+        renderer.drawObject(enemy_left_src, enemy_status_dst);
+    }
+    // players' lives
+    int player_y_offset = (AppConfig::enemy_start_count / 2) * enemy_left_src.h + 20;
+    int i = 0;
+    for (auto player : m_players)
+    {
+        Rect player_status_dst = {AppConfig::status_rect.x + 5, player_y_offset + i * (AppConfig::tile_size.h + 2), AppConfig::tile_size.w, AppConfig::tile_size.h};
+        Point player_lives_dst = {player_status_dst.x + player_status_dst.w + 2, player_status_dst.y + 3};
+        i++;
+        renderer.drawObject(player->src_rect, player_status_dst);
+        renderer.drawText(player_lives_dst, std::to_string(player->lives_count), {0, 0, 0, 255}, 3);
+    }
+    // current level
+    Rect stage_status_src = SpriteConfig::getInstance().getSpriteData(ST_STAGE_STATUS).rect;
+
+    int stage_status_y_offset = player_y_offset + i * ((m_players.size() + m_killed_players.size()) * (AppConfig::tile_size.h + 2) + 10);
+    Rect stage_status_dst = {AppConfig::status_rect.x + 8, stage_status_y_offset, stage_status_src.w, stage_status_src.h};
+    Point stage_number_dst = {stage_status_dst.x + 10, stage_status_dst.y + 26};
+
+    renderer.drawObject(stage_status_src, stage_status_dst);
+    renderer.drawText(stage_number_dst, std::to_string(m_current_level), {0, 0, 0, 255}, 2);
 }
 
 void Game::checkCollisions(Uint32 dt)
@@ -535,7 +558,6 @@ void Game::generateEnemyIfPossible(Uint32 dt)
         return;
 
     m_new_enemy_cooldown = 0;
-
 
     float p = static_cast<float>(rand()) / RAND_MAX;
     // magic numbers to calculate enemy type probabilities

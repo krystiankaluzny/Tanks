@@ -36,8 +36,12 @@ public:
 
 private:
     void clearAll();
-
     void createPlayersIfNeeded();
+
+    void drawLevelStartScreen(Renderer &renderer);
+    void drawObjects(Renderer &renderer);
+    void drawGameOver(Renderer &renderer);
+    void drawGameStatusPanel(Renderer &renderer);
 
     void checkCollisions(Uint32 dt);
     void checkCollisionTwoTanks(Tank *tank1, Tank *tank2, Uint32 dt);
