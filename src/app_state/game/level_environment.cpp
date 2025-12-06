@@ -363,17 +363,17 @@ void LevelEnvironment::loadLevel()
     m_tile_objects.clear();
 
     std::string line;
-    int row_index = 0;
+    size_t row_index = 0;
 
     while (!level_file.eof())
     {
         std::getline(level_file, line);
         std::vector<Object *> row;
-        for (size_t col_index = 0; col_index < line.length() && col_index < (unsigned)AppConfig::map_size.w; col_index++)
+        for (size_t col_index = 0; col_index < line.length() && col_index < (size_t)AppConfig::map_size.w; col_index++)
         {
             // Skip eagle area
-            if (col_index >= m_eagle_tile_rect.x && col_index < m_eagle_tile_rect.x + m_eagle_tile_rect.w &&
-                row_index >= m_eagle_tile_rect.y && row_index < m_eagle_tile_rect.y + m_eagle_tile_rect.h)
+            if (col_index >= (size_t)m_eagle_tile_rect.x && col_index < (size_t)m_eagle_tile_rect.x + (size_t)m_eagle_tile_rect.w &&
+                row_index >= (size_t)m_eagle_tile_rect.y && row_index < (size_t)m_eagle_tile_rect.y + (size_t)m_eagle_tile_rect.h)
             {
                 row.push_back(nullptr);
                 continue;
@@ -405,7 +405,7 @@ void LevelEnvironment::loadLevel()
         m_tile_objects.push_back(row);
         row_index++;
 
-        if (row_index >= AppConfig::map_size.h)
+        if (row_index >= (size_t)AppConfig::map_size.h)
             break;
     }
 
