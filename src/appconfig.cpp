@@ -5,11 +5,12 @@ string AppConfig::levels_path = "levels/";
 string AppConfig::font_name = "prstartk.ttf";
 string AppConfig::game_over_text = "GAME OVER";
 
+Size AppConfig::map_size = {26, 26};
 Size AppConfig::tile_size = {16, 16};
 
-Rect AppConfig::map_rect = {0, 0, 26 * tile_size.w, 26 * tile_size.h};
-Rect AppConfig::status_rect = {26 * tile_size.w, 0, 3 * tile_size.w, AppConfig::map_rect.h}; //on the right side of the map
-Rect AppConfig::windows_rect = {0, 0, AppConfig::map_rect.w + AppConfig::status_rect.w, AppConfig::map_rect.h};
+Rect AppConfig::map_rect = {0, 0, map_size.w * tile_size.w, map_size.h * tile_size.h};
+Rect AppConfig::status_rect = {map_rect.w, 0, 3 * tile_size.w, map_rect.h}; //on the right side of the map
+Rect AppConfig::windows_rect = {0, 0, map_rect.w + status_rect.w, map_rect.h};
 
 // Macbook default keyboard does not has a right ctrl key
 #if defined(__APPLE__) && defined(__MACH__)
@@ -63,7 +64,7 @@ vector<KeyCode> AppConfig::player_2_keys =
 unsigned AppConfig::level_start_time = 2000;
 unsigned AppConfig::slip_time = 380;
 unsigned AppConfig::enemy_start_count = 20;
-unsigned AppConfig::enemy_redy_time = 500;
+unsigned AppConfig::new_enemy_cooldown = 500;
 unsigned AppConfig::player_bullet_max_size = 2;
 unsigned AppConfig::score_show_time = 3000;
 unsigned AppConfig::bonus_show_time = 10000;
@@ -74,7 +75,7 @@ unsigned AppConfig::protect_eagle_time = 15000;
 unsigned AppConfig::bonus_blink_time = 350;
 unsigned AppConfig::player_reload_time = 120;
 int AppConfig::enemy_max_count_on_map = 4;
-double AppConfig::game_over_entry_speed = 0.13;
+double AppConfig::game_over_message_speed = 0.13;
 double AppConfig::tank_default_speed = 0.08;
 double AppConfig::bullet_default_speed = 0.23;
 bool AppConfig::show_enemy_target = false;

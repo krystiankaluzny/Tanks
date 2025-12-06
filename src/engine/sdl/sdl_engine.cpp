@@ -107,12 +107,6 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
     while (SDL_PollEvent(&event))
     {
         Event* e = mapSDLEventToEngineEvent(event);
-
-        if(e->type() == Event::KEYBOARD)
-        {
-            const KeyboardEvent& ke = static_cast<const KeyboardEvent &>(*e);
-        }
-
         if (event.type == SDL_QUIT)
         {
             return ProcessingResult::STOP;

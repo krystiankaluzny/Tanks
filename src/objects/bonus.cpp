@@ -27,7 +27,8 @@ void Bonus::update(Uint32 dt)
     if(m_bonus_show_time > AppConfig::bonus_show_time)
         to_erase = true;
 
-    if(m_bonus_show_time / (m_bonus_show_time < AppConfig::bonus_show_time / 4 * 3 ? AppConfig::bonus_blink_time : AppConfig::bonus_blink_time / 2) % 2)
+    //faster blinking when bonus is about to disappear
+    if(m_bonus_show_time / (m_bonus_show_time < AppConfig::bonus_show_time * 3 / 4 ? AppConfig::bonus_blink_time : AppConfig::bonus_blink_time / 2) % 2)
         m_show = true;
     else m_show = false;
 }

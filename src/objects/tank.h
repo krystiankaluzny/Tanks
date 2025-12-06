@@ -17,13 +17,13 @@ class Tank : public Object
 public:
     enum TankStateFlag
     {
-        TSF_SHIELD = 1 << 1,    
-        TSF_FROZEN = 1 << 2,   
-        TSF_DESTROYED = 1 << 3, 
-        TSF_BOAT = 1 << 4,      
-        TSF_BONUS = 1 << 5,    
-        TSF_ON_ICE = 1 << 6,    
-        TSF_CREATE = 1 << 7,    
+        TSF_SHIELD = 1 << 1,
+        TSF_FROZEN = 1 << 2,
+        TSF_DESTROYED = 1 << 3,
+        TSF_BOAT = 1 << 4,
+        TSF_BONUS = 1 << 5,
+        TSF_ON_ICE = 1 << 6,
+        TSF_CREATE = 1 << 7,
         TSF_LIFE = 1 << 8,
         TSF_MENU = 1 << 9 // dwukrotne przyspieszenie animacji
     };
@@ -98,6 +98,8 @@ public:
      * @return @a true jeżeli flaga jest ustawiona w przeciwnym wypadku @a false
      */
     bool testFlag(TankStateFlag flag);
+
+    Point getCenter() const;
 
     /**
      * Domyślna prędkość danego czołgu. Może być różna dla różnych typów czołgów lub może być zmieniona po wzięcu bonusu przez gracza.

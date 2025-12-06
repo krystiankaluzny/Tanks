@@ -160,3 +160,4 @@ void Player::changeStarCountBy(int c)
     if(star_count > 0) default_speed = AppConfig::tank_default_speed * 1.3;
     else default_speed = AppConfig::tank_default_speed;
 }
+

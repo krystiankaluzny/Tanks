@@ -31,7 +31,8 @@ public:
      */
     static string game_over_text;
 
-    static Size tile_size;
+    static Size map_size; // Number of tiles in the map (width, height)
+    static Size tile_size; // Size of a single tile in pixels
 
     /**
      * Wymiary planszy gry.
@@ -75,7 +76,7 @@ public:
     /**
      * Czas po jakim na mapie może pojawić się nowy przeciwnik w milisekundach.
      */
-    static unsigned enemy_redy_time;
+    static unsigned new_enemy_cooldown;
     /**
      * Domyślna maksymalna liczba pocisków ile gracz może wystrzelić.
      */
@@ -119,7 +120,7 @@ public:
     /**
      * Prędkość poruszania się napsu "GAME OVER".
      */
-    static double game_over_entry_speed;
+    static double game_over_message_speed;
     /**
      * Nominalna prędkość czołgu.
      */

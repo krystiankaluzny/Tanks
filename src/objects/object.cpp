@@ -39,32 +39,6 @@ Object::Object(double x, double y, SpriteType type)
     collision_rect.w = m_sprite->rect.w;
 }
 
-Object::Object(double x, double y, const SpriteData *sprite)
-{
-    pos_x = x;
-    pos_y = y;
-    this->type = type;
-    to_erase = false;
-    m_sprite = sprite;
-    m_frame_display_time = 0;
-    m_current_frame = 0;
-
-    src_rect.x = m_sprite->rect.x;
-    src_rect.y = m_sprite->rect.y;
-    src_rect.h = m_sprite->rect.h;
-    src_rect.w = m_sprite->rect.w;
-
-    dest_rect.x = pos_x;
-    dest_rect.y = pos_y;
-    dest_rect.h = m_sprite->rect.h;
-    dest_rect.w = m_sprite->rect.w;
-
-    collision_rect.x = pos_x;
-    collision_rect.y = pos_y;
-    collision_rect.h = m_sprite->rect.h;
-    collision_rect.w = m_sprite->rect.w;
-}
-
 Object::~Object()
 {
 }

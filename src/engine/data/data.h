@@ -12,6 +12,11 @@ struct Rect
 {
     int x, y;
     int w, h;
+
+    bool isNotEmpty() const
+    {
+        return (w > 0 && h > 0);
+    }
 };
 
 struct Size

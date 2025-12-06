@@ -12,7 +12,7 @@ enum class ProcessingResult
 };
 
 typedef std::function<ProcessingResult (const Event&)> HandleEventFunc;
-typedef std::function<ProcessingResult (int)> UpdateStateFunc;
+typedef std::function<ProcessingResult (Uint32)> UpdateStateFunc;
 typedef std::function<ProcessingResult (Renderer&)> DrawFunc;
 
 class Engine
@@ -21,10 +21,6 @@ public:
     Engine() {};
 
     virtual void startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw) = 0;
-
-    static Engine* engine_instance;
-
-    static void setEngine(Engine* engine);
 
     virtual Renderer* getRenderer() const = 0;
 };

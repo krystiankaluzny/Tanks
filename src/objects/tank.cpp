@@ -376,3 +376,8 @@ void Tank::respawn()
     collision_rect.h = 0;
     collision_rect.w = 0;
 }
+
+Point Tank::getCenter() const
+{
+    return {pos_x + dest_rect.w / 2, pos_y + dest_rect.h / 2};
+}
