@@ -18,7 +18,6 @@ public:
     Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys);
 
     void handleKeyboardEvent(const KeyboardEvent &ev);
-
     /**
      * Funkcaj odpowiada za zmianę animacji czołgu gracza oraz za sprawdzeni stanu wciśniętych klawiszy i reakcja na te klawisze, które sterują czołgiem gracza.
      * @param dt - czas od ostatwniego wywołania funkcji, wykorzystywany przy zmianie animacji
@@ -38,7 +37,7 @@ public:
      * nadaniu mu większej szybkości jeżeli gracz ma przynajmniej jedną gwiazdkę oraz dodaniu zwiększonych obrażeni jeżeli gracz ma trzy gwiazdki.
      * @return wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca @a nullptr
      */
-    Bullet* fire() override;
+    Bullet *fire() override;
 
     /**
      * Funkcja zmienia liczbę aktualnie posiadanych gwiazdek. Przy niezerowej liczbie gwiazdek zwiększana jest domyślna prędkość czołgu,
@@ -47,6 +46,7 @@ public:
      */
     void changeStarCountBy(int c);
 
+    void resetKeyStates();
     /**
      * Aktualnie posiadane punkty przez gracza.
      */
@@ -62,7 +62,8 @@ private:
      */
     Uint32 m_fire_time;
 
-    struct KeyState {
+    struct KeyState
+    {
         KeyCode key;
         bool pressed;
     };

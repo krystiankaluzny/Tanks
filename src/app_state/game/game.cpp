@@ -38,6 +38,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_player_count = m_players.size();
     for (auto player : m_players)
     {
+        player->resetKeyStates();
         player->clearFlag(Tank::TSF_MENU);
         player->lives_count++;
         player->respawn();
@@ -149,6 +150,7 @@ void Game::update(Uint32 dt)
 
         checkCollisions(dt);
         updateObjects(dt);
+        calculateEnemiesTargets();
         generateEnemyIfPossible(dt);
 
         if (m_enemies.empty() && m_enemy_to_kill <= 0)

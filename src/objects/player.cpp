@@ -161,3 +161,12 @@ void Player::changeStarCountBy(int c)
     else default_speed = AppConfig::tank_default_speed;
 }
 
+
+void Player::resetKeyStates()
+{
+    m_key_state_up.pressed = false;
+    m_key_state_down.pressed = false;
+    m_key_state_left.pressed = false;
+    m_key_state_right.pressed = false;
+    m_key_state_fire.pressed = false;
+}
