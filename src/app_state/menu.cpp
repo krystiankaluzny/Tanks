@@ -15,14 +15,14 @@ Menu::Menu()
 
     m_current_menu_index = 0;
 
-    m_menu_item_height = 32;
+    m_menu_item_height = AppConfig::tile_size.h * 2;
     m_first_menu_item_offset = {180, 120};
     m_tank_menu_pointer_offset = {144, 110};
 
     m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1, AppConfig::player_1_keys);
     m_tank_menu_pointer->direction = D_RIGHT;
-    m_tank_menu_pointer->pos_x = 144;
-    m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * 32 + 112;
+    m_tank_menu_pointer->pos_x = m_tank_menu_pointer_offset.x;
+    m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
     m_tank_menu_pointer->setFlag(Tank::TSF_LIFE);
     m_tank_menu_pointer->update(0);
     m_tank_menu_pointer->clearFlag(Tank::TSF_LIFE);
@@ -52,7 +52,7 @@ void Menu::draw(Renderer &renderer)
     Point text_start;
     for (auto text : m_menu_items)
     {
-        text_start = {180, (i + 1) * 32 + 120};
+        text_start = {m_first_menu_item_offset.x, (i + 1) * m_menu_item_height + m_first_menu_item_offset.y};
         i++;
         renderer.drawText(text_start, text, {255, 255, 255, 255}, 2);
     }
@@ -77,19 +77,30 @@ void Menu::eventProcess(const Event &event)
 
         if (ev.isPressed(KeyCode::KEY_UP))
         {
-            m_current_menu_index--;
-            if (m_current_menu_index < 0)
-                m_current_menu_index = m_menu_items.size() - 1;
+            if (m_current_menu_index == 0)
+            {
+                m_current_menu_index = (int)m_menu_items.size() - 1;
+            }
+            else
+            {
+                m_current_menu_index--;
+            }
 
-            m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * 32 + 110;
+            m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
         }
         else if (ev.isPressed(KeyCode::KEY_DOWN))
         {
-            m_current_menu_index++;
-            if (m_current_menu_index >= m_menu_items.size())
-                m_current_menu_index = 0;
 
-            m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * 32 + 110;
+            if (m_current_menu_index >= (int)m_menu_items.size() - 1)
+            {
+                m_current_menu_index = 0;
+            }
+            else
+            {
+                m_current_menu_index++;
+            }
+
+            m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
         }
         else if (ev.isPressed(KeyCode::KEY_SPACE) || ev.isPressed(KeyCode::KEY_RETURN))
         {
@@ -108,7 +119,7 @@ AppState *Menu::nextState()
     if (!m_finished)
         return this;
 
-    if (m_current_menu_index == m_menu_items.size() - 1)
+    if (m_current_menu_index == (int)m_menu_items.size() - 1)
         return nullptr;
     else if (m_current_menu_index == 0)
     {

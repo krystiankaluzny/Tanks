@@ -45,7 +45,7 @@ public:
 
 private:
     std::vector<std::string> m_menu_items;
-    unsigned int m_current_menu_index;
+    int m_current_menu_index;
     Player *m_tank_menu_pointer;
     bool m_finished;
 
