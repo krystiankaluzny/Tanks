@@ -2,14 +2,6 @@
 #include "../appconfig.h"
 #include "../engine/data/data.h"
 
-Bullet::Bullet()
-    : Object(0, 0, ST_BULLET)
-{
-    speed = 0.0;
-    direction = D_UP;
-    increased_damage = false;
-    collide = false;
-}
 
 Bullet::Bullet(double x, double y)
     : Object(x, y, ST_BULLET)
@@ -63,7 +55,7 @@ void Bullet::update(Uint32 dt)
 
 void Bullet::destroy()
 {
-    if(collide) return; //zapogiega wielogrotnmu wywołaniu
+    if(collide) return; 
 
     collide = true;
     speed = 0;

@@ -2,34 +2,28 @@
 #include <iostream>
 #include "../engine/data/data.h"
 
-Brick::Brick()
-    : Object(0, 0, ST_BRICK_WALL)
-{
-    m_collision_count = 0;
-    m_state_code = 0;
-}
 
 Brick::Brick(double x, double y)
     : Object(x, y, ST_BRICK_WALL)
 {
-    m_collision_count = 0;
+    m_bullet_hit_count = 0;
     m_state_code = 0;
 }
 
 void Brick::update(Uint32 dt)
 {
-    //ma nic nie robić (nie zmieniać collision_rect)
+    //do nothing (don't change collision_rect)
 }
 
 void Brick::bulletHit(Direction bullet_direction)
 {
     int bd = bullet_direction;
-    m_collision_count++;
-    if(m_collision_count == 1)
+    m_bullet_hit_count++;
+    if(m_bullet_hit_count == 1)
     {
         m_state_code = bd + 1;
     }
-    else if(m_collision_count == 2)
+    else if(m_bullet_hit_count == 2)
     {
         int sum_square = (m_state_code - 1) * (m_state_code - 1) + bd * bd;
         if(sum_square % 2 == 1)

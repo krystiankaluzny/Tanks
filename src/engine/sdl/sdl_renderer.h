@@ -11,19 +11,20 @@ public:
     SDLRenderer(Size viewport_base_size);
     ~SDLRenderer();
 
-    void loadTexture(SDL_Window *window) override;
-    void loadFont() override;
     void clear() override;
     void flush() override;
     void drawObject(const Rect &texture_src, const Rect &window_dest) override;
     void drawText(const Point &start, std::string text, Color text_color, int font_size = 1) override;
     void drawRect(const Rect &rect, Color rect_color, bool fill = false) override;
 
-    
+
+    void loadTexture(SDL_Window *window);
+    void loadFont();
     void toggleFullscreen(SDL_Window *window);
     void setViewportForWindowSize(Size window_size);
 
 private:
+
     Size m_viewport_base_size;
     SDL_Renderer *m_renderer;
     SDL_Texture *m_texture;

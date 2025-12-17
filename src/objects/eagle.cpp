@@ -1,10 +1,6 @@
 #include "eagle.h"
 #include "../engine/data/data.h"
 
-Eagle::Eagle()
-    : Object(0, 0, ST_EAGLE)
-{
-}
 
 Eagle::Eagle(double x, double y)
     : Object(x, y, ST_EAGLE)

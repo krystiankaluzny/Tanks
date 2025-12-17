@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+
 /**
  * @brief
  * A state for selecting the game mode: 1 player or 2 players mode or to exit.

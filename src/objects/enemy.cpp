@@ -4,33 +4,6 @@
 #include <ctime>
 #include <iostream>
 
-Enemy::Enemy()
-    : Tank(AppConfig::enemy_starting_point.at(0).x, AppConfig::enemy_starting_point.at(0).y, ST_TANK_A)
-{
-    direction = D_DOWN;
-    m_direction_time = 0;
-    m_keep_direction_time = 100;
-
-    m_speed_time = 0;
-    m_try_to_go_time = 100;
-
-    m_fire_time = 0;
-    m_reload_time = 100;
-    lives_count = 1;
-
-    m_bullet_max_size = 1;
-
-    m_frozen_time = 0;
-
-    if(type == ST_TANK_B)
-        default_speed = AppConfig::tank_default_speed * 1.3;
-    else
-        default_speed = AppConfig::tank_default_speed;
-
-    target_position = {-1, -1};
-
-    respawn();
-}
 
 Enemy::Enemy(double x, double y, SpriteType type)
     : Tank(x, y, type)
@@ -78,6 +51,7 @@ void Enemy::draw(Renderer &renderer)
     Tank::draw(renderer);
 }
 
+//TODO coment more
 void Enemy::update(Uint32 dt)
 {
     if(to_erase) return;

@@ -383,7 +383,9 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
                     generateBonus();
 
                 bullet->destroy();
-                enemy->destroy();
+                enemy->destroy(); //TODO rename to hit
+
+                //TODO enemy->isNotAlive()
                 if (enemy->lives_count <= 0)
                     m_enemy_to_kill--;
                 player->score += enemy->scoreForHit();
