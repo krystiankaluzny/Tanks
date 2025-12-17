@@ -12,6 +12,8 @@ public:
     void draw(Renderer &renderer) override;
     void update(Uint32 dt) override;
 
+    Bullet* fire() override;
+
     void hit();
     unsigned scoreForHit();
 

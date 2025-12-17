@@ -2,49 +2,78 @@
 #include "../appconfig.h"
 #include "../engine/data/data.h"
 
-
 Bullet::Bullet(double x, double y)
     : Object(x, y, ST_BULLET)
 {
-    speed = 0.0;
-    direction = D_UP;
-    increased_damage = false;
-    collide = false;
+    m_speed = 0.0;
+    m_direction = D_UP;
+    m_increased_damage = false;
+    m_collide = false;
+}
+
+Bullet::Bullet(Point tank_center, Size tank_size, Direction direction, double speed)
+    : Object(tank_center.x, tank_center.y, ST_BULLET)
+{
+
+    m_speed = speed;
+    m_direction = direction;
+    m_increased_damage = false;
+    m_collide = false;
+
+    switch (direction)
+    {
+    case D_UP:
+        pos_x = tank_center.x - dest_rect.w / 2;
+        pos_y = tank_center.y - tank_size.h / 2 + 4;
+        break;
+    case D_RIGHT:
+        pos_x = tank_center.x + tank_size.w / 2 - 4;
+        pos_y = tank_center.y - dest_rect.h / 2;
+        break;
+    case D_DOWN:
+        pos_x = tank_center.x - dest_rect.w / 2;
+        pos_y = tank_center.y + tank_size.h / 2 - 4;
+        break;
+    case D_LEFT:
+        pos_x = tank_center.x - tank_size.w / 2 + 4;
+        pos_y = tank_center.y - dest_rect.h / 2;
+        break;
+    }
 }
 
 void Bullet::update(Uint32 dt)
 {
-    if(!collide)
+    if (!m_collide)
     {
-        switch (direction)
+        switch (m_direction)
         {
         case D_UP:
-            pos_y -= speed * dt;
+            pos_y -= m_speed * dt;
             break;
         case D_RIGHT:
-            pos_x += speed * dt;
+            pos_x += m_speed * dt;
             break;
         case D_DOWN:
-            pos_y += speed * dt;
+            pos_y += m_speed * dt;
             break;
         case D_LEFT:
-            pos_x -= speed * dt;
+            pos_x -= m_speed * dt;
             break;
         }
 
-        src_rect = moveRect(m_sprite->rect, direction, 0);
+        src_rect = moveRect(m_sprite->rect, m_direction, 0);
         Object::update(dt);
     }
     else
     {
-        if(m_sprite->frames_count > 1)
+        if (m_sprite->frames_count > 1)
         {
             m_frame_display_time += dt;
-            if(m_frame_display_time > m_sprite->frame_duration)
+            if (m_frame_display_time > m_sprite->frame_duration)
             {
                 m_frame_display_time = 0;
                 m_current_frame++;
-                if(m_current_frame >= m_sprite->frames_count)
+                if (m_current_frame >= m_sprite->frames_count)
                     to_erase = true;
 
                 src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
@@ -53,17 +82,28 @@ void Bullet::update(Uint32 dt)
     }
 }
 
+void Bullet::increaseSpeed(double speed_factor)
+{
+    m_speed *= speed_factor;
+}
+
+void Bullet::increaseDamage()
+{
+    m_increased_damage = true;
+}
+
 void Bullet::destroy()
 {
-    if(collide) return; 
+    if (m_collide)
+        return;
 
-    collide = true;
-    speed = 0;
+    m_collide = true;
+    m_speed = 0;
     m_current_frame = 0;
     m_frame_display_time = 0;
     m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_BULLET);
 
-    switch(direction)
+    switch (m_direction)
     {
     case D_UP:
         dest_rect.x = pos_x + (dest_rect.w - m_sprite->rect.w) / 2; // dest_rect.w, dest_rect.h - stary rozmiar pocisku
@@ -90,5 +130,19 @@ void Bullet::destroy()
     src_rect.y = m_sprite->rect.y;
     src_rect.h = m_sprite->rect.h;
     src_rect.w = m_sprite->rect.w;
+}
 
+bool Bullet::isDamageIncreased() const
+{
+    return m_increased_damage;
+}
+
+bool Bullet::isColide() const
+{
+    return m_collide;
+}
+
+Direction Bullet::direction() const
+{
+    return m_direction;
 }

@@ -401,7 +401,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 
     for (auto bullet : player->bullets)
     {
-        if (!bullet->to_erase && !bullet->collide)
+        if (!bullet->to_erase && !bullet->isColide())
         {
             intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
             if (intersect_rect.isNotEmpty())
@@ -430,7 +430,7 @@ void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
 
     for (auto bullet : enemy->bullets)
     {
-        if (!bullet->to_erase && !bullet->collide)
+        if (!bullet->to_erase && !bullet->isColide())
         {
             intersect_rect = intersectRect(&bullet->collision_rect, &player->collision_rect);
             if (intersect_rect.isNotEmpty())

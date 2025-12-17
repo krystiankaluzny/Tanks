@@ -147,35 +147,13 @@ Bullet* Tank::fire()
     if(!testFlag(TSF_ALIVE)) return nullptr;
     if(bullets.size() < m_bullet_max_size)
     {
-        Bullet* bullet = new Bullet(pos_x, pos_y);
-        bullets.push_back(bullet);
+        Point tank_center = getCenter();
+        Size tank_size = {dest_rect.w, dest_rect.h};
 
         Direction tmp_d = (testFlag(TSF_ON_ICE) ? new_direction : direction);
-        switch(tmp_d)
-        {
-        case D_UP:
-            bullet->pos_x += (dest_rect.w - bullet->dest_rect.w) / 2;
-            bullet->pos_y -= bullet->dest_rect.h - 4;
-            break;
-        case D_RIGHT:
-            bullet->pos_x += dest_rect.w - 4;
-            bullet->pos_y += (dest_rect.h - bullet->dest_rect.h) / 2;
-            break;
-        case D_DOWN:
-            bullet->pos_x += (dest_rect.w - bullet->dest_rect.w) / 2;
-            bullet->pos_y += dest_rect.h - 4;
-            break;
-        case D_LEFT:
-            bullet->pos_x -= bullet->dest_rect.w - 4;
-            bullet->pos_y += (dest_rect.h - bullet->dest_rect.h) / 2;
-            break;
-        }
 
-        bullet->direction = tmp_d;
-        if(type == ST_TANK_C)
-            bullet->speed = AppConfig::bullet_default_speed * 1.3;
-        else
-            bullet->speed = AppConfig::bullet_default_speed;
+        Bullet* bullet = new Bullet(tank_center, tank_size, tmp_d, AppConfig::bullet_default_speed);
+        bullets.push_back(bullet);
 
         bullet->update(0); //recaulculate dest_rect
         return bullet;

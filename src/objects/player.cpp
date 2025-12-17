@@ -151,9 +151,9 @@ Bullet *Player::fire()
     if (b != nullptr)
     {
         if (star_count > 0)
-            b->speed = AppConfig::bullet_default_speed * 1.3;
+            b->increaseSpeed(1.3);
         if (star_count == 3)
-            b->increased_damage = true;
+            b->increaseDamage();
     }
     return b;
 }

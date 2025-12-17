@@ -229,7 +229,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
 {
     if (bullet == nullptr)
         return;
-    if (bullet->collide)
+    if (bullet->isColide())
         return;
 
     int row_start, row_end;
@@ -240,7 +240,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     Object *o;
 
     //========================kolizja z elementami mapy========================
-    switch (bullet->direction)
+    switch (bullet->direction())
     {
     case D_UP:
         row_start = row_end = bullet->collision_rect.y / AppConfig::tile_size.h;
@@ -290,7 +290,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
 
             if (intersect_rect.isNotEmpty())
             {
-                if (bullet->increased_damage)
+                if (bullet->isDamageIncreased())
                 {
                     delete o;
                     m_tile_objects.at(i).at(j) = nullptr;
@@ -298,7 +298,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
                 else if (o->type == ST_BRICK_WALL)
                 {
                     Brick *brick = dynamic_cast<Brick *>(o);
-                    brick->bulletHit(bullet->direction);
+                    brick->bulletHit(bullet->direction());
                     if (brick->to_erase)
                     {
                         delete brick;
@@ -320,7 +320,7 @@ bool LevelEnvironment::checkCollisionBulletWithEagle(Bullet *bullet)
 {
     if (bullet == nullptr)
         return false;
-    if (bullet->collide)
+    if (bullet->isColide())
         return false;
 
     Rect *br = &bullet->collision_rect;

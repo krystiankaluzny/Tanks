@@ -34,7 +34,8 @@ Enemy::Enemy(double x, double y, SpriteType type)
 
 void Enemy::draw(Renderer &renderer)
 {
-    if (to_erase) return;
+    if (to_erase)
+        return;
     Tank::draw(renderer);
 }
 
@@ -136,6 +137,17 @@ void Enemy::update(Uint32 dt)
     stop = false;
 }
 
+Bullet *Enemy::fire()
+{
+    Bullet *b = Tank::fire();
+
+    if (b != nullptr && type == ST_TANK_C)
+    {
+        b->increaseSpeed(1.3);
+    }
+
+    return b;
+}
 void Enemy::hit()
 {
     if (lives_count == 1)
@@ -143,7 +155,7 @@ void Enemy::hit()
         lives_count = 0;
         Tank::destroy();
     }
-    else if(lives_count > 1)
+    else if (lives_count > 1)
     {
         //    clearFlag(TSF_BONUS); //możliwe jednokrotne wypadnięcie bonusu
         lives_count--;
