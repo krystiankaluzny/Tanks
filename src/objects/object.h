@@ -43,7 +43,4 @@ protected:
     int m_current_frame;
 };
 
-//TODO move that to rect
-Rect intersectRect(Rect* rect1, Rect* rect2);
-
 #endif // OBJECT_H

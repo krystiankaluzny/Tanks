@@ -341,7 +341,7 @@ void Game::checkCollisions(Uint32 dt)
         for (auto bullet : enemy->bullets)
         {
             m_level_environment->checkCollisionBulletWithLevel(bullet);
-            if (m_level_environment->checkCollisionBulletWithEagle(bullet))
+            if (!m_game_over && m_level_environment->checkCollisionBulletWithEagle(bullet))
             {
                 gameOver();
             }
@@ -353,7 +353,7 @@ void Game::checkCollisions(Uint32 dt)
         for (auto bullet : player->bullets)
         {
             m_level_environment->checkCollisionBulletWithLevel(bullet);
-            if (m_level_environment->checkCollisionBulletWithEagle(bullet))
+            if (!m_game_over && m_level_environment->checkCollisionBulletWithEagle(bullet))
             {
                 gameOver();
             }
@@ -382,7 +382,7 @@ void Game::checkCollisionTwoTanks(Tank *tank1, Tank *tank2, Uint32 dt)
 {
     Rect cr1 = tank1->nextCollisionRect(dt);
     Rect cr2 = tank2->nextCollisionRect(dt);
-    Rect intersect_rect = intersectRect(&cr1, &cr2);
+    Rect intersect_rect = cr1.intersection(cr2);
 
     if (intersect_rect.isNotEmpty())
     {
@@ -403,7 +403,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
     {
         if (!bullet->to_erase && !bullet->isColide())
         {
-            intersect_rect = intersectRect(&bullet->collision_rect, &enemy->collision_rect);
+            intersect_rect = bullet->collision_rect.intersection(enemy->collision_rect);
             if (intersect_rect.isNotEmpty())
             {
                 if (enemy->testFlag(Tank::TSF_BONUS))
@@ -432,7 +432,7 @@ void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
     {
         if (!bullet->to_erase && !bullet->isColide())
         {
-            intersect_rect = intersectRect(&bullet->collision_rect, &player->collision_rect);
+            intersect_rect = bullet->collision_rect.intersection(player->collision_rect);
             if (intersect_rect.isNotEmpty())
             {
                 bullet->destroy();
@@ -449,7 +449,7 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
     if (bullet1->to_erase || bullet2->to_erase)
         return;
 
-    Rect intersect_rect = intersectRect(&bullet1->collision_rect, &bullet2->collision_rect);
+    Rect intersect_rect = bullet1->collision_rect.intersection(bullet2->collision_rect);
 
     if (intersect_rect.isNotEmpty())
     {
@@ -463,7 +463,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
     if (player->to_erase || bonus->to_erase)
         return;
 
-    Rect intersect_rect = intersectRect(&player->collision_rect, &bonus->collision_rect);
+    Rect intersect_rect = player->collision_rect.intersection(bonus->collision_rect);
     if (intersect_rect.isNotEmpty())
     {
         player->score += 300;

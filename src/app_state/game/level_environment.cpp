@@ -129,7 +129,6 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     int row_start, row_end;
     int column_start, column_end;
 
-    Rect pr, *lr;
     Object *o;
 
     // we check the range of tiles based on the tank's direction
@@ -169,9 +168,9 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     if (row_end >= AppConfig::map_size.h)
         row_end = AppConfig::map_size.h - 1;
 
-    pr = tank->nextCollisionRect(dt);
+    Rect pr = tank->nextCollisionRect(dt);
     Rect intersect_rect;
-
+    
     for (int i = row_start; i <= row_end; i++)
     {
         for (int j = column_start; j <= column_end; j++)
@@ -186,9 +185,9 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
             if (tank->testFlag(Tank::TSF_BOAT) && o->type == ST_WATER)
                 continue;
 
-            lr = &o->collision_rect;
+            Rect &lr = o->collision_rect;
 
-            intersect_rect = intersectRect(lr, &pr);
+            intersect_rect = lr.intersection(pr);
             if (intersect_rect.isNotEmpty())
             {
                 if (o->type == ST_ICE)
@@ -204,23 +203,23 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
         }
     }
 
-    intersect_rect = intersectRect(&m_eagle->collision_rect, &pr);
+    intersect_rect = m_eagle->collision_rect.intersection(pr);
     if (intersect_rect.isNotEmpty())
         tank->collide(intersect_rect);
 
-    intersect_rect = intersectRect(&m_map_outside_colision_top_rect, &pr);
+    intersect_rect = m_map_outside_colision_top_rect.intersection(pr);
     if (intersect_rect.isNotEmpty())
         tank->collide(intersect_rect);
 
-    intersect_rect = intersectRect(&m_map_outside_colision_bottom_rect, &pr);
+    intersect_rect = m_map_outside_colision_bottom_rect.intersection(pr);
     if (intersect_rect.isNotEmpty())
         tank->collide(intersect_rect);
 
-    intersect_rect = intersectRect(&m_map_outside_colision_left_rect, &pr);
+    intersect_rect = m_map_outside_colision_left_rect.intersection(pr);
     if (intersect_rect.isNotEmpty())
         tank->collide(intersect_rect);
 
-    intersect_rect = intersectRect(&m_map_outside_colision_right_rect, &pr);
+    intersect_rect = m_map_outside_colision_right_rect.intersection(pr);
     if (intersect_rect.isNotEmpty())
         tank->collide(intersect_rect);
 }
@@ -234,10 +233,6 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
 
     int row_start, row_end;
     int column_start, column_end;
-
-    Rect *br, *lr;
-    Rect intersect_rect;
-    Object *o;
 
     //========================kolizja z elementami mapy========================
     switch (bullet->direction())
@@ -272,7 +267,10 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     if (row_end >= AppConfig::map_size.h)
         row_end = AppConfig::map_size.h - 1;
 
-    br = &bullet->collision_rect;
+    Rect intersect_rect;
+    Object *o;
+
+    Rect &br = bullet->collision_rect;
 
     for (int i = row_start; i <= row_end; i++)
         for (int j = column_start; j <= column_end; j++)
@@ -285,8 +283,8 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
             if (o->type == ST_ICE || o->type == ST_WATER)
                 continue;
 
-            lr = &o->collision_rect;
-            intersect_rect = intersectRect(lr, br);
+            Rect& lr = o->collision_rect;
+            intersect_rect = lr.intersection(br);
 
             if (intersect_rect.isNotEmpty())
             {
@@ -310,7 +308,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
         }
 
     //========================kolizja z granicami mapy========================
-    if (br->x < 0 || br->y < 0 || br->x + br->w > AppConfig::map_rect.w || br->y + br->h > AppConfig::map_rect.h)
+    if (br.x < 0 || br.y < 0 || br.x + br.w > AppConfig::map_rect.w || br.y + br.h > AppConfig::map_rect.h)
     {
         bullet->destroy();
     }
@@ -323,8 +321,7 @@ bool LevelEnvironment::checkCollisionBulletWithEagle(Bullet *bullet)
     if (bullet->isColide())
         return false;
 
-    Rect *br = &bullet->collision_rect;
-    Rect intersect_rect = intersectRect(&m_eagle->collision_rect, br);
+    Rect intersect_rect = m_eagle->collision_rect.intersection(bullet->collision_rect);
     if (intersect_rect.isNotEmpty())
     {
         bullet->destroy();
@@ -336,7 +333,7 @@ bool LevelEnvironment::checkCollisionBulletWithEagle(Bullet *bullet)
 
 bool LevelEnvironment::checkCollisionWithEagle(Rect &rect)
 {
-    Rect intersect_rect = intersectRect(&m_eagle->collision_rect, &rect);
+    Rect intersect_rect = m_eagle->collision_rect.intersection(rect);
     return intersect_rect.isNotEmpty();
 }
 

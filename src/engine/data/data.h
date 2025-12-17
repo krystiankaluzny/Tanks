@@ -2,6 +2,7 @@
 #define ENGINE_DATA_H
 
 #include <stdint.h>
+#include <algorithm>
 
 typedef uint32_t Uint32;
 typedef int32_t Sint32;
@@ -12,7 +13,6 @@ struct Point
     int y;
 };
 
-
 struct Rect
 {
     int x, y;
@@ -21,6 +21,19 @@ struct Rect
     bool isNotEmpty() const
     {
         return (w > 0 && h > 0);
+    }
+
+    Rect intersection(Rect &other)
+    {
+        int intersect_x = std::max(x, other.x);
+        int intersect_y = std::max(y, other.y);
+
+        return Rect{
+            intersect_x,
+            intersect_y,
+            std::min(x + w, other.x + other.w) - intersect_x,
+            std::min(y + h, other.y + other.h) - intersect_y
+        };
     }
 };
 
@@ -34,4 +47,4 @@ struct Color
     unsigned int r, g, b, a;
 };
 
-#endif //TANKS_DATA_H
+#endif // TANKS_DATA_H
