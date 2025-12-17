@@ -20,8 +20,10 @@ public:
         TSF_BOAT = 1 << 4,
         TSF_BONUS = 1 << 5,
         TSF_ON_ICE = 1 << 6,
-        TSF_CREATE = 1 << 7,
-        TSF_LIFE = 1 << 8,
+
+        TSF_CREATING = 1 << 7,
+        TSF_ALIVE = 1 << 8,
+
         TSF_MENU = 1 << 9 // TODO rename 
     };
 
@@ -41,9 +43,10 @@ public:
     virtual void destroy();
     void setFlag(TankStateFlag flag);
     void clearFlag(TankStateFlag flag);
-    bool testFlag(TankStateFlag flag);
+    bool testFlag(TankStateFlag flag) const;
 
     Point getCenter() const;
+    bool isAlive() const;
 
     //TODO make it private or protected
     double default_speed;
@@ -51,6 +54,8 @@ public:
     bool stop;
     Direction direction;
     std::vector<Bullet *> bullets;
+
+    //TODO make it uint
     int lives_count;
 
 protected:

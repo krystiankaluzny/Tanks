@@ -16,7 +16,7 @@
 Game::Game(int players_count)
 {
     m_current_level = 1;
-    m_player_count = players_count;
+    m_players_count = players_count;
     m_pause = false;
     m_level_end_time = 0;
     m_enemy_respown_position = 0;
@@ -26,7 +26,7 @@ Game::Game(int players_count)
     m_level_start_time = 0;
     m_game_over = false;
     m_finished = false;
-    m_enemy_to_kill = AppConfig::enemy_start_count;
+    m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
 
     createPlayersIfNeeded();
 }
@@ -35,7 +35,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
 {
     m_current_level = previous_level + 1;
     m_players = players;
-    m_player_count = m_players.size();
+    m_players_count = m_players.size();
     for (auto player : m_players)
     {
         player->resetKeyStates();
@@ -52,7 +52,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_level_start_time = 0;
     m_game_over = false;
     m_finished = false;
-    m_enemy_to_kill = AppConfig::enemy_start_count;
+    m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
 
     createPlayersIfNeeded();
 }
@@ -113,7 +113,7 @@ void Game::update(Uint32 dt)
         calculateEnemiesTargets();
         generateEnemyIfPossible(dt);
 
-        if (m_enemies.empty() && m_enemy_to_kill <= 0)
+        if (m_enemies.empty() && m_enemies_to_kill_count <= 0)
         {
             m_level_end_time += dt;
             if (m_level_end_time > AppConfig::level_end_time)
@@ -142,18 +142,18 @@ void Game::eventProcess(const Event &event)
         const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
         if (event_key.isPressed(KEY_N))
         {
-            m_enemy_to_kill = 0;
+            m_enemies_to_kill_count = 0;
             m_finished = true;
         }
         else if (event_key.isPressed(KEY_B))
         {
-            m_enemy_to_kill = 0;
+            m_enemies_to_kill_count = 0;
             m_current_level -= 2;
             m_finished = true;
         }
         else if (event_key.isPressed(KEY_B))
         {
-            m_enemy_to_kill = 0;
+            m_enemies_to_kill_count = 0;
             m_current_level -= 2;
             m_finished = true;
         }
@@ -183,7 +183,7 @@ AppState *Game::nextState()
     if (!m_finished)
         return this;
 
-    if (m_game_over || m_enemy_to_kill <= 0)
+    if (m_game_over || m_enemies_to_kill_count <= 0)
     {
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player *p)
                                        {m_killed_players.push_back(p); return true; }),
@@ -217,7 +217,7 @@ void Game::createPlayersIfNeeded()
 {
     if (m_players.empty())
     {
-        if (m_player_count == 2)
+        if (m_players_count == 2)
         {
             Player *p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1, AppConfig::player_1_keys);
             Player *p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2, AppConfig::player_2_keys);
@@ -264,7 +264,7 @@ void Game::drawGameStatusPanel(Renderer &renderer)
 {
     // enemies left to kill
     Rect enemy_left_src = SpriteConfig::getInstance().getSpriteData(ST_LEFT_ENEMY).rect;
-    for (int i = 0; i < m_enemy_to_kill; i++)
+    for (int i = 0; i < m_enemies_to_kill_count; i++)
     {
         Rect enemy_status_dst = {
             AppConfig::status_rect.x + 8 + enemy_left_src.w * (i % 2),
@@ -274,7 +274,7 @@ void Game::drawGameStatusPanel(Renderer &renderer)
         renderer.drawObject(enemy_left_src, enemy_status_dst);
     }
     // players' lives
-    int player_y_offset = (AppConfig::enemy_start_count / 2) * enemy_left_src.h + 20;
+    int player_y_offset = (AppConfig::enemies_to_kill_total_count / 2) * enemy_left_src.h + 20;
     int i = 0;
     for (auto player : m_players)
     {
@@ -383,12 +383,11 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
                     generateBonus();
 
                 bullet->destroy();
-                enemy->destroy(); //TODO rename to hit
-
-                //TODO enemy->isNotAlive()
-                if (enemy->lives_count <= 0)
-                    m_enemy_to_kill--;
+                enemy->hit();
                 player->score += enemy->scoreForHit();
+
+                if (!enemy->isAlive())
+                    m_enemies_to_kill_count--;
             }
         }
     }
@@ -410,7 +409,7 @@ void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
             if (intersect_rect.isNotEmpty())
             {
                 bullet->destroy();
-                player->destroy();
+                player->hit();
             }
         }
     }
@@ -449,9 +448,11 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
                 if (!enemy->to_erase)
                 {
                     player->score += 200;
-                    while (enemy->lives_count > 0)
-                        enemy->destroy();
-                    m_enemy_to_kill--;
+                    while (enemy->isAlive())
+                    {
+                        enemy->hit();
+                    }
+                    m_enemies_to_kill_count--;
                 }
             }
         }
@@ -555,7 +556,7 @@ void Game::calculateEnemiesTargets()
 void Game::generateEnemyIfPossible(Uint32 dt)
 {
     m_new_enemy_cooldown += dt;
-    long unsigned allowed_enemies_count = AppConfig::enemy_max_count_on_map < m_enemy_to_kill ? AppConfig::enemy_max_count_on_map : m_enemy_to_kill;
+    long unsigned allowed_enemies_count = AppConfig::enemies_max_count_on_map < m_enemies_to_kill_count ? AppConfig::enemies_max_count_on_map : m_enemies_to_kill_count;
     if (m_enemies.size() >= allowed_enemies_count || m_new_enemy_cooldown < AppConfig::new_enemy_cooldown)
         return;
 

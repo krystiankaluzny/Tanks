@@ -50,7 +50,6 @@ private:
     void checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2);
     void checkCollisionPlayerWithBonus(Player *player, Bonus *bonus);
 
-
     void updateObjects(Uint32 dt);
 
     void gameOver();
@@ -67,8 +66,8 @@ private:
     std::vector<Bonus *> m_bonuses;
 
     int m_current_level;
-    int m_player_count;
-    int m_enemy_to_kill;
+    int m_players_count;
+    int m_enemies_to_kill_count;
 
     bool m_level_start_screen;
     Uint32 m_level_start_time;

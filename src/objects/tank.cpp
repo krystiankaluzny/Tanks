@@ -48,7 +48,7 @@ void Tank::draw(Renderer &renderer)
 void Tank::update(Uint32 dt)
 {
     if(to_erase) return;
-    if(testFlag(TSF_LIFE))
+    if(testFlag(TSF_ALIVE))
     {
         if(!stop && !testFlag(TSF_FROZEN))
         {
@@ -111,7 +111,7 @@ void Tank::update(Uint32 dt)
         if(m_frozen_time > AppConfig::tank_frozen_time) clearFlag(TSF_FROZEN);
     }
 
-    if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) //brak animacji jeśli czołg nie prógbuje jechać
+    if(m_sprite->frames_count > 1 && (testFlag(TSF_ALIVE) ? speed > 0 : true))
     {
         m_frame_display_time += dt;
         if(m_frame_display_time > (testFlag(TSF_MENU)  ? m_sprite->frame_duration / 2 : m_sprite->frame_duration))
@@ -121,11 +121,11 @@ void Tank::update(Uint32 dt)
             if(m_current_frame >= m_sprite->frames_count)
             {
                 if(m_sprite->loop) m_current_frame = 0;
-                else if(testFlag(TSF_CREATE))
+                else if(testFlag(TSF_CREATING))
                 {
                     m_sprite = &SpriteConfig::getInstance().getSpriteData(type);
-                    clearFlag(TSF_CREATE);
-                    setFlag(TSF_LIFE);
+                    clearFlag(TSF_CREATING);
+                    setFlag(TSF_ALIVE);
                     m_current_frame = 0;
                 }
                 else if(testFlag(TSF_DESTROYED))
@@ -138,18 +138,15 @@ void Tank::update(Uint32 dt)
         }
     }
 
-
-    // Obsługa pocisku
     for(auto bullet : bullets) bullet->update(dt);
     bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet*b){if(b->to_erase) {delete b; return true;} return false;}), bullets.end());
 }
 
 Bullet* Tank::fire()
 {
-    if(!testFlag(TSF_LIFE)) return nullptr;
+    if(!testFlag(TSF_ALIVE)) return nullptr;
     if(bullets.size() < m_bullet_max_size)
     {
-        //podajemy początkową dowolną pozycję, bo nie znamy wymiarów pocisku
         Bullet* bullet = new Bullet(pos_x, pos_y);
         bullets.push_back(bullet);
 
@@ -180,7 +177,7 @@ Bullet* Tank::fire()
         else
             bullet->speed = AppConfig::bullet_default_speed;
 
-        bullet->update(0); //zmiana pozycji dest_rect
+        bullet->update(0); //recaulculate dest_rect
         return bullet;
     }
     return nullptr;
@@ -219,7 +216,7 @@ Rect Tank::nextCollisionRect(Uint32 dt)
 
 void Tank::setDirection(Direction d)
 {
-    if(!(testFlag(TSF_LIFE) || testFlag(TSF_CREATE))) return;
+    if(!(testFlag(TSF_ALIVE) || testFlag(TSF_CREATING))) return;
     if(testFlag(TSF_ON_ICE))
     {
         new_direction = d;
@@ -254,7 +251,7 @@ void Tank::setDirection(Direction d)
 
 void Tank::collide(Rect &intersect_rect)
 {
-    if(intersect_rect.w > intersect_rect.h) // kolizja od góry lub dołu
+    if(intersect_rect.w > intersect_rect.h) // collision on top or bottom
     {
         if((direction == D_UP && intersect_rect.y <= collision_rect.y) ||
                 (direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
@@ -276,7 +273,7 @@ void Tank::collide(Rect &intersect_rect)
 
 void Tank::destroy()
 {
-    if(!testFlag(TSF_LIFE)) return;
+    if(!testFlag(TSF_ALIVE)) return;
 
     stop = true;
     m_flags = TSF_DESTROYED;
@@ -340,11 +337,13 @@ void Tank::clearFlag(TankStateFlag flag)
     m_flags &= ~flag;
 }
 
-bool Tank::testFlag(TankStateFlag flag)
+bool Tank::testFlag(TankStateFlag flag) const
 {
     return (m_flags & flag) == flag;
 }
 
+
+//TODO call it only if tank really needs respawn, not from menu etc
 void Tank::respawn()
 {
     m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_CREATE);
@@ -354,9 +353,9 @@ void Tank::respawn()
 
     clearFlag(TSF_SHIELD);
     clearFlag(TSF_BOAT);
-    m_flags = TSF_LIFE;
+    m_flags = TSF_ALIVE;
     update(0);
-    m_flags = TSF_CREATE; //resetujemy wszystkie inne flagi
+    m_flags = TSF_CREATING; //clear all other flags
 
     //ustawienie porostokąta kolizji po wywołaniu update
     collision_rect.x = 0;
@@ -368,4 +367,9 @@ void Tank::respawn()
 Point Tank::getCenter() const
 {
     return {pos_x + dest_rect.w / 2, pos_y + dest_rect.h / 2};
+}
+
+bool Tank::isAlive() const
+{
+    return testFlag(TSF_ALIVE) && lives_count > 0;
 }

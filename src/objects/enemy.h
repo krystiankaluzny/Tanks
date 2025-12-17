@@ -16,7 +16,7 @@ public:
     void update(Uint32 dt) override;
 
     //TODO rename to hit or something
-    void destroy();
+    void hit();
     unsigned scoreForHit();
 
 

@@ -42,9 +42,9 @@ void SDLRenderer::loadTexture(SDL_Window *window)
 
 void SDLRenderer::loadFont()
 {
-    m_font1 = TTF_OpenFont(AppConfig::font_name.c_str(), 28);
-    m_font2 = TTF_OpenFont(AppConfig::font_name.c_str(), 14);
-    m_font3 = TTF_OpenFont(AppConfig::font_name.c_str(), 10);
+    m_font1 = TTF_OpenFont(AppConfig::font_path.c_str(), 28);
+    m_font2 = TTF_OpenFont(AppConfig::font_path.c_str(), 14);
+    m_font3 = TTF_OpenFont(AppConfig::font_path.c_str(), 10);
 }
 
 void SDLRenderer::clear()

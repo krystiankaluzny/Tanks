@@ -15,8 +15,7 @@ public:
     
     void respawn() override;
 
-    //TODO rename
-    void destroy() override;
+    void hit();
 
     /**
      * @return pointer to a new bullet, or nullptr if for some reason bullet cannot be created

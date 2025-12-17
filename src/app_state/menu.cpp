@@ -23,9 +23,9 @@ Menu::Menu()
     m_tank_menu_pointer->direction = D_RIGHT;
     m_tank_menu_pointer->pos_x = m_tank_menu_pointer_offset.x;
     m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
-    m_tank_menu_pointer->setFlag(Tank::TSF_LIFE);
+    m_tank_menu_pointer->setFlag(Tank::TSF_ALIVE);
     m_tank_menu_pointer->update(0);
-    m_tank_menu_pointer->clearFlag(Tank::TSF_LIFE);
+    m_tank_menu_pointer->clearFlag(Tank::TSF_ALIVE);
     m_tank_menu_pointer->clearFlag(Tank::TSF_SHIELD);
     m_tank_menu_pointer->setFlag(Tank::TSF_MENU);
     m_finished = false;

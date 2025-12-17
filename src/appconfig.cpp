@@ -2,7 +2,7 @@
 
 string AppConfig::texture_path = "texture.png";
 string AppConfig::levels_path = "levels/";
-string AppConfig::font_name = "prstartk.ttf";
+string AppConfig::font_path = "prstartk.ttf";
 string AppConfig::game_over_text = "GAME OVER";
 
 Size AppConfig::map_size = {26, 26};
@@ -63,9 +63,12 @@ vector<KeyCode> AppConfig::player_2_keys =
 
 unsigned AppConfig::level_start_time = 2000;
 unsigned AppConfig::slip_time = 380;
-unsigned AppConfig::enemy_start_count = 20;
+
+unsigned AppConfig::enemies_to_kill_total_count = 20;
+unsigned AppConfig::enemies_max_count_on_map = 4;
+
 unsigned AppConfig::new_enemy_cooldown = 500;
-unsigned AppConfig::player_bullet_max_size = 2;
+unsigned AppConfig::player_bullet_max_count = 2;
 unsigned AppConfig::score_show_time = 3000;
 unsigned AppConfig::bonus_show_time = 10000;
 unsigned AppConfig::tank_shield_time = 10000;
@@ -74,7 +77,7 @@ unsigned AppConfig::level_end_time = 5000;
 unsigned AppConfig::protect_eagle_time = 15000;
 unsigned AppConfig::bonus_blink_time = 350;
 unsigned AppConfig::player_reload_time = 120;
-unsigned AppConfig::enemy_max_count_on_map = 4;
+
 double AppConfig::game_over_message_speed = 0.13;
 double AppConfig::tank_default_speed = 0.08;
 double AppConfig::bullet_default_speed = 0.23;

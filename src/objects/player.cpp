@@ -2,40 +2,44 @@
 #include "../appconfig.h"
 #include <iostream>
 
-
 Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys)
     : Tank(x, y, type)
 {
-   speed = 0;
-   lives_count = 11;
-   m_bullet_max_size = AppConfig::player_bullet_max_size;
-   score = 0;
-   star_count = 0;
-   m_shield = new Object(x, y, ST_SHIELD);
-   m_shield_time = 0;
+    speed = 0;
+    lives_count = 11;
+    m_bullet_max_size = AppConfig::player_bullet_max_count;
+    score = 0;
+    star_count = 0;
+    m_shield = new Object(x, y, ST_SHIELD);
+    m_shield_time = 0;
 
-   m_key_state_up = {control_keys[0], false};
-   m_key_state_down = {control_keys[1], false};
-   m_key_state_left = {control_keys[2], false};
-   m_key_state_right = {control_keys[3], false};
-   m_key_state_fire = {control_keys[4], false};
+    m_key_state_up = {control_keys[0], false};
+    m_key_state_down = {control_keys[1], false};
+    m_key_state_left = {control_keys[2], false};
+    m_key_state_right = {control_keys[3], false};
+    m_key_state_fire = {control_keys[4], false};
 
-   respawn();
+    respawn();
 }
 
 void Player::handleKeyboardEvent(const KeyboardEvent &ev)
 {
     KeyboardEvent::KeyState key_state = ev.keyState();
-    if(key_state == KeyboardEvent::PRESSED || key_state == KeyboardEvent::RELEASED)
+    if (key_state == KeyboardEvent::PRESSED || key_state == KeyboardEvent::RELEASED)
     {
         KeyCode key_code = ev.keyCode();
         bool pressed = (key_state == KeyboardEvent::PRESSED);
 
-        if(key_code == m_key_state_up.key) m_key_state_up.pressed = pressed;
-        else if(key_code == m_key_state_down.key) m_key_state_down.pressed = pressed;
-        else if(key_code == m_key_state_left.key) m_key_state_left.pressed = pressed;
-        else if(key_code == m_key_state_right.key) m_key_state_right.pressed = pressed;
-        else if(key_code == m_key_state_fire.key) m_key_state_fire.pressed = pressed;
+        if (key_code == m_key_state_up.key)
+            m_key_state_up.pressed = pressed;
+        else if (key_code == m_key_state_down.key)
+            m_key_state_down.pressed = pressed;
+        else if (key_code == m_key_state_left.key)
+            m_key_state_left.pressed = pressed;
+        else if (key_code == m_key_state_right.key)
+            m_key_state_right.pressed = pressed;
+        else if (key_code == m_key_state_fire.key)
+            m_key_state_fire.pressed = pressed;
     }
 }
 
@@ -43,35 +47,35 @@ void Player::update(Uint32 dt)
 {
     Tank::update(dt);
 
-    if(!testFlag(TSF_MENU))
+    if (!testFlag(TSF_MENU))
     {
-        if(m_key_state_up.pressed)
+        if (m_key_state_up.pressed)
         {
             setDirection(D_UP);
             speed = default_speed;
         }
-        else if(m_key_state_down.pressed)
+        else if (m_key_state_down.pressed)
         {
             setDirection(D_DOWN);
             speed = default_speed;
         }
-        else if(m_key_state_left.pressed)
+        else if (m_key_state_left.pressed)
         {
             setDirection(D_LEFT);
             speed = default_speed;
         }
-        else if(m_key_state_right.pressed)
+        else if (m_key_state_right.pressed)
         {
             setDirection(D_RIGHT);
             speed = default_speed;
         }
         else
         {
-            if(!testFlag(TSF_ON_ICE) || m_slip_time == 0)
+            if (!testFlag(TSF_ON_ICE) || m_slip_time == 0)
                 speed = 0.0;
         }
 
-        if(m_key_state_fire.pressed && m_fire_time > AppConfig::player_reload_time)
+        if (m_key_state_fire.pressed && m_fire_time > AppConfig::player_reload_time)
         {
             fire();
             m_fire_time = 0;
@@ -80,7 +84,7 @@ void Player::update(Uint32 dt)
 
     m_fire_time += dt;
 
-    if(testFlag(TSF_LIFE))
+    if (testFlag(TSF_ALIVE))
         src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame + 2 * star_count);
     else
         src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame + 2 * star_count);
@@ -91,13 +95,14 @@ void Player::update(Uint32 dt)
 void Player::respawn()
 {
     lives_count--;
-    if(lives_count <= 0)
+    if (lives_count <= 0)
     {
-        if(bullets.size() == 0) to_erase = true;
+        if (bullets.size() == 0)
+            to_erase = true;
         return;
     }
 
-    if(type == ST_PLAYER_1)
+    if (type == ST_PLAYER_1)
     {
         pos_x = AppConfig::player_starting_point.at(0).x;
         pos_y = AppConfig::player_starting_point.at(0).y;
@@ -119,16 +124,19 @@ void Player::respawn()
     m_shield_time = AppConfig::tank_shield_time / 2;
 }
 
-void Player::destroy()
+void Player::hit()
 {
-    if(testFlag(TSF_SHIELD)) return;
-    if(testFlag(TSF_BOAT))
+    if (testFlag(TSF_SHIELD))
+    {
+        return;
+    }
+    if (testFlag(TSF_BOAT))
     {
         clearFlag(TSF_BOAT);
         return;
     }
 
-    if(star_count == 3)
+    if (star_count == 3)
         changeStarCountBy(-1);
     else
     {
@@ -137,13 +145,15 @@ void Player::destroy()
     }
 }
 
-Bullet* Player::fire()
+Bullet *Player::fire()
 {
-    Bullet* b = Tank::fire();
-    if(b != nullptr)
+    Bullet *b = Tank::fire();
+    if (b != nullptr)
     {
-        if(star_count > 0) b->speed = AppConfig::bullet_default_speed * 1.3;
-        if(star_count == 3) b->increased_damage = true;
+        if (star_count > 0)
+            b->speed = AppConfig::bullet_default_speed * 1.3;
+        if (star_count == 3)
+            b->increased_damage = true;
     }
     return b;
 }
@@ -151,16 +161,21 @@ Bullet* Player::fire()
 void Player::changeStarCountBy(int c)
 {
     star_count += c;
-    if(star_count > 3) star_count = 3;
-    else if(star_count < 0) star_count = 0;
+    if (star_count > 3)
+        star_count = 3;
+    else if (star_count < 0)
+        star_count = 0;
 
-    if(star_count >= 2 && c > 0) m_bullet_max_size++;
-    else m_bullet_max_size = 2;
+    if (star_count >= 2 && c > 0)
+        m_bullet_max_size++;
+    else
+        m_bullet_max_size = 2;
 
-    if(star_count > 0) default_speed = AppConfig::tank_default_speed * 1.3;
-    else default_speed = AppConfig::tank_default_speed;
+    if (star_count > 0)
+        default_speed = AppConfig::tank_default_speed * 1.3;
+    else
+        default_speed = AppConfig::tank_default_speed;
 }
-
 
 void Player::resetKeyStates()
 {
