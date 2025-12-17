@@ -5,6 +5,7 @@
 #include "renderer.h"
 #include <functional>
 
+
 enum class ProcessingResult
 {
     STOP,

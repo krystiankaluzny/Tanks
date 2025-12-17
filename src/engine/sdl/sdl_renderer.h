@@ -14,7 +14,7 @@ public:
     void clear() override;
     void flush() override;
     void drawObject(const Rect &texture_src, const Rect &window_dest) override;
-    void drawText(const Point &start, std::string text, Color text_color, int font_size = 1) override;
+    void drawText(const Point &start, std::string text, Color text_color, FontSize font_size) override;
     void drawRect(const Rect &rect, Color rect_color, bool fill = false) override;
 
 
@@ -29,9 +29,9 @@ private:
     SDL_Renderer *m_renderer;
     SDL_Texture *m_texture;
     SDL_Texture *m_text_texture;
-    TTF_Font *m_font1;
-    TTF_Font *m_font2;
-    TTF_Font *m_font3;
+    TTF_Font *m_font_biggest;
+    TTF_Font *m_font_big;
+    TTF_Font *m_font_normal;
     bool m_fullscreen;
 };
 

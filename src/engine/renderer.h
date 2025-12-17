@@ -1,11 +1,9 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include <string>
 #include "data/data.h"
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_pixels.h>
-
+#include "data/font_size.h"
+#include <string>
 
 class Renderer
 {
@@ -27,16 +25,11 @@ public:
      */
     virtual void drawObject(const Rect &texture_src, const Rect &window_dest) = 0;
 
-    //TODO doc
-    //TODO add font size enum
     /**
      * Draw text at the specified position in the screen buffer.
-     * @param start - położenie punktu początkowego rysowanego tekstu; ujemna wartości którejś ze wspołrzędnych skutkuje wyśrodkowaniem napisu w tej osi
-     * @param text - rysowany tekst
-     * @param text_color - kolory rysowanego tekst
-     * @param font_size - numer czcionki za pomocą, której będzi rysoweny tekst; dostępne trzy wartośc: 1, 2, 3
+     * @param start - start location of drawing text. If some coordinate is negative; text will be drawn at the center of axis with negative value
      */
-    virtual void drawText(const Point &start, std::string text, Color text_color, int font_size = 1) = 0;
+    virtual void drawText(const Point &start, std::string text, Color text_color, FontSize font_size) = 0;
 
     /**
      * Draw a rectangle at the specified position in the screen buffer.

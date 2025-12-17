@@ -54,7 +54,7 @@ void Menu::draw(Renderer &renderer)
     {
         text_start = {m_first_menu_item_offset.x, (i + 1) * m_menu_item_height + m_first_menu_item_offset.y};
         i++;
-        renderer.drawText(text_start, text, {255, 255, 255, 255}, 2);
+        renderer.drawText(text_start, text, {255, 255, 255, 255}, FontSize::BIG);
     }
 
     m_tank_menu_pointer->draw(renderer);

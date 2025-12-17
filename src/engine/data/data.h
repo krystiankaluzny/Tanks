@@ -1,5 +1,10 @@
-#ifndef TANKS_DATA_H
-#define TANKS_DATA_H
+#ifndef ENGINE_DATA_H
+#define ENGINE_DATA_H
+
+#include <stdint.h>
+
+typedef uint32_t Uint32;
+typedef int32_t Sint32;
 
 struct Point
 {

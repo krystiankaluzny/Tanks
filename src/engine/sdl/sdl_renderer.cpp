@@ -10,9 +10,9 @@ SDLRenderer::SDLRenderer(Size viewport_base_size)
     m_texture = nullptr;
     m_renderer = nullptr;
     m_text_texture = nullptr;
-    m_font1 = nullptr;
-    m_font2 = nullptr;
-    m_font3 = nullptr;
+    m_font_biggest = nullptr;
+    m_font_big = nullptr;
+    m_font_normal = nullptr;
 }
 
 SDLRenderer::~SDLRenderer()
@@ -23,12 +23,12 @@ SDLRenderer::~SDLRenderer()
         SDL_DestroyTexture(m_texture);
     if (m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
-    if (m_font1 != nullptr)
-        TTF_CloseFont(m_font1);
-    if (m_font2 != nullptr)
-        TTF_CloseFont(m_font2);
-    if (m_font3 != nullptr)
-        TTF_CloseFont(m_font3);
+    if (m_font_biggest != nullptr)
+        TTF_CloseFont(m_font_biggest);
+    if (m_font_big != nullptr)
+        TTF_CloseFont(m_font_big);
+    if (m_font_normal != nullptr)
+        TTF_CloseFont(m_font_normal);
 }
 
 void SDLRenderer::loadTexture(SDL_Window *window)
@@ -42,20 +42,20 @@ void SDLRenderer::loadTexture(SDL_Window *window)
 
 void SDLRenderer::loadFont()
 {
-    m_font1 = TTF_OpenFont(AppConfig::font_path.c_str(), 28);
-    m_font2 = TTF_OpenFont(AppConfig::font_path.c_str(), 14);
-    m_font3 = TTF_OpenFont(AppConfig::font_path.c_str(), 10);
+    m_font_biggest = TTF_OpenFont(AppConfig::font_path.c_str(), 28);
+    m_font_big = TTF_OpenFont(AppConfig::font_path.c_str(), 14);
+    m_font_normal = TTF_OpenFont(AppConfig::font_path.c_str(), 10);
 }
 
 void SDLRenderer::clear()
 {
     SDL_SetRenderDrawColor(m_renderer, 110, 110, 110, 255);
-    SDL_RenderClear(m_renderer); // czyścimy tylny bufor
+    SDL_RenderClear(m_renderer);
 }
 
 void SDLRenderer::flush()
 {
-    SDL_RenderPresent(m_renderer); // zamieniamy bufory
+    SDL_RenderPresent(m_renderer);
 }
 
 void SDLRenderer::drawObject(const Rect &texture_src, const Rect &window_dest)
@@ -92,21 +92,31 @@ void SDLRenderer::setViewportForWindowSize(Size window_size)
     SDL_RenderSetViewport(m_renderer, &viewport);
 }
 
-void SDLRenderer::drawText(const Point &start, std::string text, Color text_color, int font_size)
+void SDLRenderer::drawText(const Point &start, std::string text, Color text_color, FontSize font_size)
 {
-    if (m_font1 == nullptr || m_font2 == nullptr || m_font3 == nullptr)
+    if (m_font_biggest == nullptr || m_font_big == nullptr || m_font_normal == nullptr)
         return;
     if (m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
 
     SDL_Color sdl_text_color = {static_cast<Uint8>(text_color.r), static_cast<Uint8>(text_color.g), static_cast<Uint8>(text_color.b), static_cast<Uint8>(text_color.a)};
     SDL_Surface *text_surface = nullptr;
-    if (font_size == 2)
-        text_surface = TTF_RenderText_Solid(m_font2, text.c_str(), sdl_text_color);
-    else if (font_size == 3)
-        text_surface = TTF_RenderText_Solid(m_font3, text.c_str(), sdl_text_color);
-    else
-        text_surface = TTF_RenderText_Solid(m_font1, text.c_str(), sdl_text_color);
+
+    switch (font_size)
+    {
+    case FontSize::NORMAL:
+        text_surface = TTF_RenderText_Solid(m_font_normal, text.c_str(), sdl_text_color);
+        break;
+    case FontSize::BIG:
+        text_surface = TTF_RenderText_Solid(m_font_big, text.c_str(), sdl_text_color);
+        break;
+    case FontSize::BIGGEST:
+        text_surface = TTF_RenderText_Solid(m_font_biggest, text.c_str(), sdl_text_color);
+        break;
+    default:
+        break;
+    }
+
     if (text_surface == nullptr)
         return;
 

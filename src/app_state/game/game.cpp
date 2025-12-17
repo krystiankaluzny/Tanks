@@ -87,7 +87,7 @@ void Game::draw(Renderer &renderer)
         drawGameStatusPanel(renderer);
 
         if (m_pause)
-            renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, 1);
+            renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, FontSize::BIGGEST);
     }
 
     renderer.flush();
@@ -239,7 +239,7 @@ void Game::drawLevelStartScreen(Renderer &renderer)
 
     Point text_centered_pos = {-1, -1};
     std::string level_name = "STAGE " + std::to_string(m_current_level);
-    renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, 1);
+    renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, FontSize::BIGGEST);
 }
 void Game::drawObjects(Renderer &renderer)
 {
@@ -284,7 +284,7 @@ void Game::drawEnemy(Renderer &renderer, Enemy *enemy)
 void Game::drawGameOver(Renderer &renderer)
 {
     Point pos = {-1, m_game_over_message_position};
-    renderer.drawText(pos, AppConfig::game_over_text, {255, 10, 10, 255});
+    renderer.drawText(pos, AppConfig::game_over_text, {255, 10, 10, 255}, FontSize::BIGGEST);
 }
 
 void Game::drawGameStatusPanel(Renderer &renderer)
@@ -309,7 +309,7 @@ void Game::drawGameStatusPanel(Renderer &renderer)
         Point player_lives_dst = {player_status_dst.x + player_status_dst.w + 2, player_status_dst.y + 3};
         i++;
         renderer.drawObject(player->src_rect, player_status_dst);
-        renderer.drawText(player_lives_dst, std::to_string(player->lives_count), {0, 0, 0, 255}, 3);
+        renderer.drawText(player_lives_dst, std::to_string(player->lives_count), {0, 0, 0, 255}, FontSize::NORMAL);
     }
     // current level
     Rect stage_status_src = SpriteConfig::getInstance().getSpriteData(ST_STAGE_STATUS).rect;
@@ -319,7 +319,7 @@ void Game::drawGameStatusPanel(Renderer &renderer)
     Point stage_number_dst = {stage_status_dst.x + 10, stage_status_dst.y + 26};
 
     renderer.drawObject(stage_status_src, stage_status_dst);
-    renderer.drawText(stage_number_dst, std::to_string(m_current_level), {0, 0, 0, 255}, 2);
+    renderer.drawText(stage_number_dst, std::to_string(m_current_level), {0, 0, 0, 255}, FontSize::NORMAL);
 }
 
 void Game::checkCollisions(Uint32 dt)
