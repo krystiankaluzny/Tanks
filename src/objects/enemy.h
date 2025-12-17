@@ -7,18 +7,15 @@
 class Enemy : public Tank
 {
 public:
-
-
     Enemy(double x, double y, SpriteType type);
-
 
     void draw(Renderer &renderer) override;
     void update(Uint32 dt) override;
 
-    //TODO rename to hit or something
     void hit();
     unsigned scoreForHit();
 
+    
 
     Point target_position;
 

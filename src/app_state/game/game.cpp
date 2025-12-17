@@ -27,6 +27,7 @@ Game::Game(int players_count)
     m_game_over = false;
     m_finished = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
+    m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
 }
@@ -53,6 +54,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_game_over = false;
     m_finished = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
+    m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
 }
@@ -159,7 +161,7 @@ void Game::eventProcess(const Event &event)
         }
         else if (event_key.isPressed(KEY_T))
         {
-            AppConfig::show_enemy_target = !AppConfig::show_enemy_target;
+            m_show_enemies_targets = !m_show_enemies_targets;
         }
         else if (event_key.isPressed(KEY_RETURN))
         {
@@ -246,12 +248,37 @@ void Game::drawObjects(Renderer &renderer)
     for (auto player : m_players)
         player->draw(renderer);
     for (auto enemy : m_enemies)
-        enemy->draw(renderer);
+        drawEnemy(renderer, enemy);
 
     for (auto bonus : m_bonuses)
         bonus->draw(renderer);
 
     m_level_environment->drawSecondLayer(renderer);
+}
+
+void Game::drawEnemy(Renderer &renderer, Enemy *enemy)
+{
+    if (m_show_enemies_targets)
+    {
+        SpriteType type = enemy->type;
+        Rect dest_rect = enemy->dest_rect;
+        Point target_position = enemy->target_position;
+        Color c;
+        if (type == ST_TANK_A)
+            c = {250, 0, 0, 250};
+        if (type == ST_TANK_B)
+            c = {0, 0, 250, 255};
+        if (type == ST_TANK_C)
+            c = {0, 255, 0, 250};
+        if (type == ST_TANK_D)
+            c = {250, 0, 255, 250};
+        Rect r = {min(target_position.x, dest_rect.x + dest_rect.w / 2), dest_rect.y + dest_rect.h / 2, abs(target_position.x - (dest_rect.x + dest_rect.w / 2)), 1};
+        renderer.drawRect(r, c, true);
+        r = {target_position.x, min(target_position.y, dest_rect.y + dest_rect.h / 2), 1, abs(target_position.y - (dest_rect.y + dest_rect.h / 2))};
+        renderer.drawRect(r, c, true);
+    }
+
+    enemy->draw(renderer);
 }
 
 void Game::drawGameOver(Renderer &renderer)

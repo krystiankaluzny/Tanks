@@ -81,4 +81,3 @@ unsigned AppConfig::player_reload_time = 120;
 double AppConfig::game_over_message_speed = 0.13;
 double AppConfig::tank_default_speed = 0.08;
 double AppConfig::bullet_default_speed = 0.23;
-bool AppConfig::show_enemy_target = false;

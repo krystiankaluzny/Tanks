@@ -40,6 +40,7 @@ private:
 
     void drawLevelStartScreen(Renderer &renderer);
     void drawObjects(Renderer &renderer);
+    void drawEnemy(Renderer &renderer, Enemy *enemy);
     void drawGameOver(Renderer &renderer);
     void drawGameStatusPanel(Renderer &renderer);
 
@@ -79,6 +80,8 @@ private:
     bool m_finished;
     bool m_pause;
     unsigned m_enemy_respown_position;
+
+    bool m_show_enemies_targets;
 };
 
 #endif // GAME_H
