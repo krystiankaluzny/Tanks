@@ -56,6 +56,13 @@ void Tank::update(Uint32 dt)
 {
     if (to_erase)
         return;
+
+    if (m_lives_count == 0 && bullets.size() == 0)
+    {
+        to_erase = true;
+        return;
+    }
+
     if (testFlag(TSF_ALIVE))
     {
         if (!m_stop && !testFlag(TSF_FROZEN))
@@ -149,8 +156,6 @@ void Tank::update(Uint32 dt)
                     if (m_lives_count == 1)
                     {
                         m_lives_count = 0;
-                        if (bullets.size() == 0)
-                            to_erase = true;
                     }
                     else if (m_lives_count > 1)
                     {
@@ -385,8 +390,6 @@ void Tank::creatingState()
     dest_rect = Rect{(int)pos_x, (int)pos_y, m_sprite->rect.w, m_sprite->rect.h};
     collision_rect = Rect{0, 0, 0, 0};
 }
-
-
 
 Point Tank::center() const
 {
