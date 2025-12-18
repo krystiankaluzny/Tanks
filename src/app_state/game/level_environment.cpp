@@ -208,8 +208,6 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
             o = m_tile_objects.at(i).at(j);
             if (o == nullptr)
                 continue;
-            if (o->type == ST_BUSH)
-                continue;
             if (o->type == ST_ICE || o->type == ST_WATER)
                 continue;
 
@@ -233,7 +231,12 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
                         m_tile_objects.at(i).at(j) = nullptr;
                     }
                 }
-                bullet->destroy();
+                // Do not stop bullet on bush, it allows to destroy all of bushes on the bullet way,
+                // when damages are increased
+                if (o->type != ST_BUSH)
+                {
+                    bullet->destroy();
+                }
             }
         }
 
