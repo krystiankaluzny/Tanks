@@ -5,7 +5,8 @@
 Tank::Tank(double x, double y, SpriteType type)
     : Object(x, y, type)
 {
-    m_direction = D_UP;
+    m_moving_direction = D_UP;
+    m_tank_direction = D_UP;
     m_slip_time = 0;
     m_default_speed = AppConfig::tank_default_speed;
     m_speed = 0.0;
@@ -67,7 +68,7 @@ void Tank::update(Uint32 dt)
     {
         if (!m_stop && !testFlag(TSF_FROZEN))
         {
-            switch (m_direction)
+            switch (m_moving_direction)
             {
             case D_UP:
                 pos_y -= m_speed * dt;
@@ -100,9 +101,7 @@ void Tank::update(Uint32 dt)
         m_slip_time += dt;
         if (m_slip_time >= AppConfig::slip_time)
         {
-            clearFlag(TSF_ON_ICE);
-            m_slip_time = 0;
-            m_direction = new_direction;
+            m_moving_direction = m_tank_direction;
         }
     }
 
@@ -184,7 +183,7 @@ Bullet *Tank::fire()
         Point tank_center = center();
         Size tank_size = {dest_rect.w, dest_rect.h};
 
-        Direction tmp_d = (testFlag(TSF_ON_ICE) ? new_direction : m_direction);
+        Direction tmp_d = (testFlag(TSF_ON_ICE) ? m_tank_direction : m_moving_direction);
 
         Bullet *bullet = new Bullet(tank_center, tank_size, tmp_d, AppConfig::bullet_default_speed);
         bullets.push_back(bullet);
@@ -202,22 +201,22 @@ Rect Tank::nextCollisionRect(Uint32 dt)
 
     Rect r;
     int a = 1;
-    switch (m_direction)
+    switch (m_moving_direction)
     {
     case D_UP:
         r.x = collision_rect.x;
-        r.y = collision_rect.y - m_default_speed * dt - a;
+        r.y = collision_rect.y - m_speed * dt - a;
         break;
     case D_RIGHT:
-        r.x = collision_rect.x + m_default_speed * dt + a;
+        r.x = collision_rect.x + m_speed * dt + a;
         r.y = collision_rect.y;
         break;
     case D_DOWN:
         r.x = collision_rect.x;
-        r.y = collision_rect.y + m_default_speed * dt + a;
+        r.y = collision_rect.y + m_speed * dt + a;
         break;
     case D_LEFT:
-        r.x = collision_rect.x - m_default_speed * dt - a;
+        r.x = collision_rect.x - m_speed * dt - a;
         r.y = collision_rect.y;
         break;
     }
@@ -233,20 +232,23 @@ void Tank::setDirection(Direction d)
         return;
     if (testFlag(TSF_ON_ICE))
     {
-        new_direction = d;
-        if (m_speed == 0.0 || m_slip_time >= AppConfig::slip_time)
-            m_direction = d;
-        if ((m_slip_time != 0 && m_direction == new_direction) || m_slip_time >= AppConfig::slip_time)
+        m_tank_direction = d;
+        if (m_speed == 0.0 || m_stop || m_slip_time >= AppConfig::slip_time)
+            m_moving_direction = d;
+        if (m_slip_time != 0 && m_moving_direction == m_tank_direction)
             m_slip_time = 0;
     }
     else
-        m_direction = d;
+    {
+        m_tank_direction = d;
+        m_moving_direction = d;
+    }
 
     if (!m_stop)
     {
         double epsilon = 5;
         int pos_x_tile, pos_y_tile;
-        switch (m_direction)
+        switch (m_moving_direction)
         {
         case D_UP:
         case D_DOWN:
@@ -272,8 +274,8 @@ void Tank::collide(Rect &intersect_rect)
 {
     if (intersect_rect.w > intersect_rect.h) // collision on top or bottom
     {
-        if ((m_direction == D_UP && intersect_rect.y <= collision_rect.y) ||
-            (m_direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
+        if ((m_moving_direction == D_UP && intersect_rect.y <= collision_rect.y) ||
+            (m_moving_direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
         {
             m_stop = true;
             m_slip_time = 0;
@@ -281,8 +283,8 @@ void Tank::collide(Rect &intersect_rect)
     }
     else
     {
-        if ((m_direction == D_LEFT && intersect_rect.x <= collision_rect.x) ||
-            (m_direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
+        if ((m_moving_direction == D_LEFT && intersect_rect.x <= collision_rect.x) ||
+            (m_moving_direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
         {
             m_stop = true;
             m_slip_time = 0;
@@ -300,7 +302,7 @@ void Tank::destroy()
 
     m_frame_display_time = 0;
     m_current_frame = 0;
-    m_direction = D_UP;
+    m_moving_direction = D_UP;
     m_speed = 0;
     m_slip_time = 0;
     m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_TANK);
@@ -319,7 +321,7 @@ void Tank::destroy()
 void Tank::setFlag(TankStateFlag flag)
 {
     if (!testFlag(flag) && flag == TSF_ON_ICE)
-        new_direction = m_direction;
+        m_tank_direction = m_moving_direction;
 
     if (flag == TSF_SHIELD)
     {
@@ -353,6 +355,11 @@ void Tank::clearFlag(TankStateFlag flag)
         if (m_boat != nullptr)
             delete m_boat;
         m_boat = nullptr;
+    }
+    if (flag == TSF_ON_ICE)
+    {
+        m_moving_direction = m_tank_direction;
+        m_slip_time = 0;
     }
     if (flag == TSF_FROZEN)
     {
@@ -406,7 +413,7 @@ bool Tank::stoped() const
     return m_stop;
 }
 
-Direction Tank::direction() const
+Direction Tank::movingDirection() const
 {
-    return m_direction;
+    return m_moving_direction;
 }

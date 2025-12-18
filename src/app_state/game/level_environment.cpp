@@ -126,82 +126,11 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     if (tank->to_erase)
         return;
 
-    int row_start, row_end;
-    int column_start, column_end;
+    checkCollisionTankWithEnteringEnv(tank, dt);
+    checkCollisionTankWithLeavingEnv(tank, dt);
 
-    Object *o;
-
-    // we check the range of tiles based on the tank's direction
-    switch (tank->direction())
-    {
-    case D_UP:
-        row_end = tank->collision_rect.y / AppConfig::tile_size.h;
-        row_start = row_end - 1;
-        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
-        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
-        break;
-    case D_RIGHT:
-        column_start = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w;
-        column_end = column_start + 1;
-        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
-        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
-        break;
-    case D_DOWN:
-        row_start = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h;
-        row_end = row_start + 1;
-        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
-        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
-        break;
-    case D_LEFT:
-        column_end = tank->collision_rect.x / AppConfig::tile_size.w;
-        column_start = column_end - 1;
-        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
-        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
-        break;
-    }
-    if (column_start < 0)
-        column_start = 0;
-    if (row_start < 0)
-        row_start = 0;
-    if (column_end >= AppConfig::map_size.w)
-        column_end = AppConfig::map_size.w - 1;
-    if (row_end >= AppConfig::map_size.h)
-        row_end = AppConfig::map_size.h - 1;
-
-    Rect pr = tank->nextCollisionRect(dt);
     Rect intersect_rect;
-    
-    for (int i = row_start; i <= row_end; i++)
-    {
-        for (int j = column_start; j <= column_end; j++)
-        {
-            if (tank->stoped())
-                break;
-            o = m_tile_objects.at(i).at(j);
-            if (o == nullptr)
-                continue;
-            if (o->type == ST_BUSH)
-                continue;
-            if (tank->testFlag(Tank::TSF_BOAT) && o->type == ST_WATER)
-                continue;
-
-            Rect &lr = o->collision_rect;
-
-            intersect_rect = lr.intersection(pr);
-            if (intersect_rect.isNotEmpty())
-            {
-                if (o->type == ST_ICE)
-                {
-                    if (intersect_rect.w > 10 && intersect_rect.h > 10)
-                        tank->setFlag(Tank::TSF_ON_ICE);
-                    continue;
-                }
-                else
-                    tank->collide(intersect_rect);
-                break;
-            }
-        }
-    }
+    Rect pr = tank->nextCollisionRect(dt);
 
     intersect_rect = m_eagle->collision_rect.intersection(pr);
     if (intersect_rect.isNotEmpty())
@@ -283,7 +212,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
             if (o->type == ST_ICE || o->type == ST_WATER)
                 continue;
 
-            Rect& lr = o->collision_rect;
+            Rect &lr = o->collision_rect;
             intersect_rect = lr.intersection(br);
 
             if (intersect_rect.isNotEmpty())
@@ -340,6 +269,171 @@ bool LevelEnvironment::checkCollisionWithEagle(Rect &rect)
 Point LevelEnvironment::getEagleCenter() const
 {
     return {m_eagle->pos_x + (int)(m_eagle->dest_rect.w / 2), m_eagle->pos_y + (int)(m_eagle->dest_rect.h / 2)};
+}
+
+void LevelEnvironment::checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt)
+{
+    int row_start, row_end;
+    int column_start, column_end;
+
+    Object *o;
+
+    // we check the range of tiles in front of the tank based on its direction
+    switch (tank->movingDirection())
+    {
+    case D_UP:
+        row_end = tank->collision_rect.y / AppConfig::tile_size.h;
+        row_start = row_end - 1;
+        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
+        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
+        break;
+    case D_RIGHT:
+        column_start = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w;
+        column_end = column_start + 1;
+        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
+        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
+        break;
+    case D_DOWN:
+        row_start = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h;
+        row_end = row_start + 1;
+        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
+        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
+        break;
+    case D_LEFT:
+        column_end = tank->collision_rect.x / AppConfig::tile_size.w;
+        column_start = column_end - 1;
+        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
+        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
+        break;
+    }
+    if (column_start < 0)
+        column_start = 0;
+    if (row_start < 0)
+        row_start = 0;
+    if (column_end >= AppConfig::map_size.w)
+        column_end = AppConfig::map_size.w - 1;
+    if (row_end >= AppConfig::map_size.h)
+        row_end = AppConfig::map_size.h - 1;
+
+    Rect pr = tank->nextCollisionRect(dt);
+    Rect intersect_rect;
+
+    bool on_ice = false;
+
+    for (int i = row_start; i <= row_end; i++)
+    {
+        for (int j = column_start; j <= column_end; j++)
+        {
+            o = m_tile_objects.at(i).at(j);
+            if (o == nullptr)
+                continue;
+            if (o->type == ST_BUSH)
+                continue;
+            if (tank->testFlag(Tank::TSF_BOAT) && o->type == ST_WATER)
+                continue;
+
+            Rect &lr = o->collision_rect;
+
+            intersect_rect = lr.intersection(pr);
+            if (intersect_rect.isNotEmpty())
+            {
+                if (o->type == ST_ICE)
+                {
+                    if (intersect_rect.w > 10 && intersect_rect.h > 10)
+                        on_ice = true;
+                    continue;
+                }
+                else
+                    tank->collide(intersect_rect);
+                break;
+            }
+        }
+    }
+
+    if (on_ice)
+    {
+        tank->setFlag(Tank::TSF_ON_ICE);
+    }
+}
+
+void LevelEnvironment::checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt)
+{
+    int row_start, row_end;
+    int column_start, column_end;
+
+    Object *o;
+
+    // we check the range of tiles in rear of the tank based on its direction
+    switch (tank->movingDirection())
+    {
+    case D_UP:
+        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h;
+        row_start = row_end - 1;
+        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
+        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
+        break;
+    case D_RIGHT:
+        column_start = (tank->collision_rect.x) / AppConfig::tile_size.w;
+        column_end = column_start + 1;
+        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
+        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
+        break;
+    case D_DOWN:
+        row_start = (tank->collision_rect.y) / AppConfig::tile_size.h;
+        row_end = row_start + 1;
+        column_start = tank->collision_rect.x / AppConfig::tile_size.w - 1;
+        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w + 1;
+        break;
+    case D_LEFT:
+        column_end = (tank->collision_rect.x + tank->collision_rect.w) / AppConfig::tile_size.w;
+        column_start = column_end - 1;
+        row_start = tank->collision_rect.y / AppConfig::tile_size.h - 1;
+        row_end = (tank->collision_rect.y + tank->collision_rect.h) / AppConfig::tile_size.h + 1;
+        break;
+    }
+    if (column_start < 0)
+        column_start = 0;
+    if (row_start < 0)
+        row_start = 0;
+    if (column_end >= AppConfig::map_size.w)
+        column_end = AppConfig::map_size.w - 1;
+    if (row_end >= AppConfig::map_size.h)
+        row_end = AppConfig::map_size.h - 1;
+
+    Rect pr = tank->nextCollisionRect(dt);
+    Rect intersect_rect;
+
+    bool on_ice = false;
+
+    for (int i = row_start; i <= row_end; i++)
+    {
+        for (int j = column_start; j <= column_end; j++)
+        {
+            o = m_tile_objects.at(i).at(j);
+            if (o == nullptr)
+                continue;
+
+            if (o->type == ST_ICE)
+            {
+                Rect &lr = o->collision_rect;
+                intersect_rect = lr.intersection(pr);
+                if (intersect_rect.isNotEmpty())
+                {
+                    if (intersect_rect.w > 10 && intersect_rect.h > 10)
+                        on_ice = true;
+                }
+            }
+        }
+    }
+
+    if (on_ice)
+    {
+        tank->setFlag(Tank::TSF_ON_ICE);
+    }
+    else
+    {
+        tank->clearFlag(Tank::TSF_ON_ICE);
+    }
 }
 
 void LevelEnvironment::loadLevel()

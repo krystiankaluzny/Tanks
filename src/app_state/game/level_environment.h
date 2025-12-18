@@ -29,6 +29,8 @@ public:
 
     Point getEagleCenter() const;
 private:
+    void checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt);
+    void checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt);
     void loadLevel();
     void changeEagleSurroundingsToStoneWalls();
     void changeEagleSurroundingsToBrickWalls();

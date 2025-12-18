@@ -85,7 +85,7 @@ void Player::update(Uint32 dt)
     m_fire_time += dt;
 
     if (testFlag(TSF_ALIVE))
-        src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : m_direction), m_current_frame + 2 * m_armor_count);
+        src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? m_tank_direction : m_moving_direction), m_current_frame + 2 * m_armor_count);
     else
         src_rect = m_sprite->rect.tiledOffset(0, m_current_frame + 2 * m_armor_count);
 
@@ -219,4 +219,5 @@ void Player::moveToCreatingState()
     setDirection(D_UP);
     creatingState();
     setFlag(TSF_SHIELD);
+    resetKeyStates();
 }

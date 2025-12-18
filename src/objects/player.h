@@ -21,7 +21,6 @@ public:
      */
     Bullet *fire() override;
     void changeStarCountBy(int c);
-    void resetKeyStates();
     void addScore(unsigned points);
     unsigned score() const;
 
@@ -29,6 +28,7 @@ public:
     unsigned lives() const;
 
 private:
+    void resetKeyStates();
     void moveToCreatingState();
     unsigned m_score;
     int star_count;

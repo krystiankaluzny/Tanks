@@ -47,7 +47,7 @@ public:
     Point center() const;
     bool alive() const;
     bool stoped() const;
-    Direction direction() const;
+    Direction movingDirection() const;
 
     std::vector<Bullet *> bullets;
 
@@ -55,7 +55,9 @@ protected:
     double m_default_speed;
     double m_speed;
     bool m_stop;
-    Direction m_direction;
+
+    Direction m_tank_direction;
+    Direction m_moving_direction;
 
     TankStateFlags m_flags;
 
@@ -63,7 +65,7 @@ protected:
     unsigned m_armor_count;
 
     Uint32 m_slip_time;
-    Direction new_direction;
+
 
     unsigned m_bullet_max_count;
 

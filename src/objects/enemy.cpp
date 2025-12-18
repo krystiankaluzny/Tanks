@@ -7,7 +7,7 @@
 Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count)
     : Tank(x, y, type)
 {
-    m_direction = D_DOWN;
+    m_moving_direction = D_DOWN;
     m_direction_time = 0;
     m_keep_direction_time = 100;
 
@@ -50,9 +50,9 @@ void Enemy::update(Uint32 dt)
     if (testFlag(TSF_ALIVE))
     {
         if (testFlag(TSF_BONUS))
-            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : m_direction) - 4, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? m_tank_direction : m_moving_direction) - 4, m_current_frame);
         else
-            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : m_direction) + (m_armor_count - 1) * 4, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? m_tank_direction : m_moving_direction) + (m_armor_count - 1) * 4, m_current_frame);
     }
     else
         src_rect = m_sprite->rect.tiledOffset(0, m_current_frame);
@@ -103,7 +103,7 @@ void Enemy::update(Uint32 dt)
             if (m_stop)
                 fire();
             else
-                switch (m_direction)
+                switch (m_moving_direction)
                 {
                 case D_UP:
                     if (dy < 0 && abs(dx) < dest_rect.w)
