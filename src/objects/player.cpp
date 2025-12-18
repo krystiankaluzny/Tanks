@@ -6,7 +6,7 @@ Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control
     : Tank(x, y, type)
 {
     m_speed = 0;
-    m_lives_count = 11;
+    m_lives_count = 10;
     m_bullet_max_count = AppConfig::player_bullet_max_count;
     m_score = 0;
     star_count = 0;
