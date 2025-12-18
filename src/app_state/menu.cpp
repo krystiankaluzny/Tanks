@@ -20,14 +20,14 @@ Menu::Menu()
     m_tank_menu_pointer_offset = {144, 110};
 
     m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1, AppConfig::player_1_keys);
-    m_tank_menu_pointer->direction = D_RIGHT;
+    m_tank_menu_pointer->setDirection(D_RIGHT);
     m_tank_menu_pointer->pos_x = m_tank_menu_pointer_offset.x;
     m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
     m_tank_menu_pointer->setFlag(Tank::TSF_ALIVE);
     m_tank_menu_pointer->update(0);
     m_tank_menu_pointer->clearFlag(Tank::TSF_ALIVE);
     m_tank_menu_pointer->clearFlag(Tank::TSF_SHIELD);
-    m_tank_menu_pointer->setFlag(Tank::TSF_MENU);
+    m_tank_menu_pointer->setFlag(Tank::TSF_FAST_ANIMATION);
     m_finished = false;
 }
 
@@ -64,8 +64,6 @@ void Menu::draw(Renderer &renderer)
 
 void Menu::update(Uint32 dt)
 {
-    m_tank_menu_pointer->speed = m_tank_menu_pointer->default_speed;
-    m_tank_menu_pointer->stop = true;
     m_tank_menu_pointer->update(dt);
 }
 

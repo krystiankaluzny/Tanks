@@ -2,31 +2,34 @@
 #include "../appconfig.h"
 #include <algorithm>
 
-
 Tank::Tank(double x, double y, SpriteType type)
     : Object(x, y, type)
 {
-    direction = D_UP;
+    m_direction = D_UP;
     m_slip_time = 0;
-    default_speed = AppConfig::tank_default_speed;
-    speed = 0.0;
+    m_default_speed = AppConfig::tank_default_speed;
+    m_speed = 0.0;
     m_shield = nullptr;
     m_boat = nullptr;
     m_shield_time = 0;
     m_frozen_time = 0;
+
+    m_lives_count = 1;
+    m_armor_count = 1;
 }
 
 Tank::~Tank()
 {
-    for(auto bullet : bullets) delete bullet;
+    for (auto bullet : bullets)
+        delete bullet;
     bullets.clear();
 
-    if(m_shield != nullptr)
+    if (m_shield != nullptr)
     {
         delete m_shield;
         m_shield = nullptr;
     }
-    if(m_boat != nullptr)
+    if (m_boat != nullptr)
     {
         delete m_boat;
         m_boat = nullptr;
@@ -35,36 +38,41 @@ Tank::~Tank()
 
 void Tank::draw(Renderer &renderer)
 {
-    if(to_erase) return;
+    if (to_erase)
+        return;
     Object::draw(renderer);
 
-    if(testFlag(TSF_SHIELD) && m_shield != nullptr) m_shield->draw(renderer);
-    if(testFlag(TSF_BOAT) && m_boat != nullptr) m_boat->draw(renderer);
+    if (testFlag(TSF_SHIELD) && m_shield != nullptr)
+        m_shield->draw(renderer);
+    if (testFlag(TSF_BOAT) && m_boat != nullptr)
+        m_boat->draw(renderer);
 
-    for(auto bullet : bullets)
-        if(bullet != nullptr) bullet->draw(renderer);
+    for (auto bullet : bullets)
+        if (bullet != nullptr)
+            bullet->draw(renderer);
 }
 
 void Tank::update(Uint32 dt)
 {
-    if(to_erase) return;
-    if(testFlag(TSF_ALIVE))
+    if (to_erase)
+        return;
+    if (testFlag(TSF_ALIVE))
     {
-        if(!stop && !testFlag(TSF_FROZEN))
+        if (!m_stop && !testFlag(TSF_FROZEN))
         {
-            switch (direction)
+            switch (m_direction)
             {
             case D_UP:
-                pos_y -= speed * dt;
+                pos_y -= m_speed * dt;
                 break;
             case D_RIGHT:
-                pos_x += speed * dt;
+                pos_x += m_speed * dt;
                 break;
             case D_DOWN:
-                pos_y += speed * dt;
+                pos_y += m_speed * dt;
                 break;
             case D_LEFT:
-                pos_x -= speed * dt;
+                pos_x -= m_speed * dt;
                 break;
             }
         }
@@ -80,82 +88,103 @@ void Tank::update(Uint32 dt)
         collision_rect.w = dest_rect.w - 4;
     }
 
-    if(testFlag(TSF_ON_ICE) && m_slip_time > 0)
+    if (testFlag(TSF_ON_ICE) && m_slip_time < AppConfig::slip_time)
     {
-        m_slip_time -= dt;
-        if(m_slip_time <= 0)
+        m_slip_time += dt;
+        if (m_slip_time >= AppConfig::slip_time)
         {
             clearFlag(TSF_ON_ICE);
             m_slip_time = 0;
-            direction = new_direction;
+            m_direction = new_direction;
         }
     }
 
-    if(testFlag(TSF_SHIELD) && m_shield != nullptr)
+    if (testFlag(TSF_SHIELD) && m_shield != nullptr)
     {
         m_shield_time += dt;
         m_shield->pos_x = pos_x;
         m_shield->pos_y = pos_y;
         m_shield->update(dt);
-        if(m_shield_time > AppConfig::tank_shield_time) clearFlag(TSF_SHIELD);
+        if (m_shield_time > AppConfig::tank_shield_time)
+            clearFlag(TSF_SHIELD);
     }
-    if(testFlag(TSF_BOAT) && m_boat != nullptr)
+    if (testFlag(TSF_BOAT) && m_boat != nullptr)
     {
         m_boat->pos_x = pos_x;
         m_boat->pos_y = pos_y;
         m_boat->update(dt);
     }
-    if(testFlag(TSF_FROZEN))
+    if (testFlag(TSF_FROZEN))
     {
         m_frozen_time += dt;
-        if(m_frozen_time > AppConfig::tank_frozen_time) clearFlag(TSF_FROZEN);
+        if (m_frozen_time > AppConfig::tank_frozen_time)
+            clearFlag(TSF_FROZEN);
     }
 
-    if(m_sprite->frames_count > 1 && (testFlag(TSF_ALIVE) ? speed > 0 : true))
+    if (m_sprite->frames_count > 1 && (testFlag(TSF_ALIVE) && !testFlag(TSF_FAST_ANIMATION) ? m_speed > 0 : true))
     {
         m_frame_display_time += dt;
-        if(m_frame_display_time > (testFlag(TSF_MENU)  ? m_sprite->frame_duration / 2 : m_sprite->frame_duration))
+        if (m_frame_display_time > (testFlag(TSF_FAST_ANIMATION) ? m_sprite->frame_duration / 2 : m_sprite->frame_duration))
         {
             m_frame_display_time = 0;
             m_current_frame++;
-            if(m_current_frame >= m_sprite->frames_count)
+            if (m_current_frame >= m_sprite->frames_count)
             {
-                if(m_sprite->loop) m_current_frame = 0;
-                else if(testFlag(TSF_CREATING))
+                if (m_sprite->loop)
+                    m_current_frame = 0;
+                else if (testFlag(TSF_CREATING))
                 {
+                    // After CREATING state a tank goes to ALIVE state
                     m_sprite = &SpriteConfig::getInstance().getSpriteData(type);
                     clearFlag(TSF_CREATING);
                     setFlag(TSF_ALIVE);
                     m_current_frame = 0;
                 }
-                else if(testFlag(TSF_DESTROYED))
+                else if (testFlag(TSF_DESTROYED))
                 {
                     m_current_frame = m_sprite->frames_count;
-                    if(lives_count > 0) respawn();
-                    else if(bullets.size() == 0) to_erase = true;
+
+                    // After DESTROYED decreasing lives
+
+                    if (m_lives_count == 1)
+                    {
+                        m_lives_count = 0;
+                        if (bullets.size() == 0)
+                            to_erase = true;
+                    }
+                    else if (m_lives_count > 1)
+                    {
+                        m_lives_count--;
+                        respawn();
+                    }
                 }
             }
         }
     }
 
-    for(auto bullet : bullets) bullet->update(dt);
-    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet*b){if(b->to_erase) {delete b; return true;} return false;}), bullets.end());
+    for (auto bullet : bullets)
+        bullet->update(dt);
+
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet *b)
+                                 {if(b->to_erase) {delete b; return true;} return false; }),
+                  bullets.end());
 }
 
-Bullet* Tank::fire()
+Bullet *Tank::fire()
 {
-    if(!testFlag(TSF_ALIVE)) return nullptr;
-    if(bullets.size() < m_bullet_max_size)
+    if (!testFlag(TSF_ALIVE))
+        return nullptr;
+    if (bullets.size() < m_bullet_max_count)
     {
-        Point tank_center = getCenter();
+        Point tank_center = center();
         Size tank_size = {dest_rect.w, dest_rect.h};
 
-        Direction tmp_d = (testFlag(TSF_ON_ICE) ? new_direction : direction);
+        Direction tmp_d = (testFlag(TSF_ON_ICE) ? new_direction : m_direction);
 
-        Bullet* bullet = new Bullet(tank_center, tank_size, tmp_d, AppConfig::bullet_default_speed);
+        Bullet *bullet = new Bullet(tank_center, tank_size, tmp_d, AppConfig::bullet_default_speed);
         bullets.push_back(bullet);
 
-        bullet->update(0); //recaulculate dest_rect
+        bullet->update(0); // recaulculate dest_rect
         return bullet;
     }
     return nullptr;
@@ -163,26 +192,27 @@ Bullet* Tank::fire()
 
 Rect Tank::nextCollisionRect(Uint32 dt)
 {
-    if(speed == 0) return collision_rect;
+    if (m_speed == 0)
+        return collision_rect;
 
     Rect r;
     int a = 1;
-    switch (direction)
+    switch (m_direction)
     {
     case D_UP:
         r.x = collision_rect.x;
-        r.y = collision_rect.y - default_speed * dt - a;
+        r.y = collision_rect.y - m_default_speed * dt - a;
         break;
     case D_RIGHT:
-        r.x = collision_rect.x + default_speed * dt + a;
+        r.x = collision_rect.x + m_default_speed * dt + a;
         r.y = collision_rect.y;
         break;
     case D_DOWN:
         r.x = collision_rect.x;
-        r.y = collision_rect.y + default_speed * dt + a;
+        r.y = collision_rect.y + m_default_speed * dt + a;
         break;
     case D_LEFT:
-        r.x = collision_rect.x - default_speed * dt - a;
+        r.x = collision_rect.x - m_default_speed * dt - a;
         r.y = collision_rect.y;
         break;
     }
@@ -194,34 +224,40 @@ Rect Tank::nextCollisionRect(Uint32 dt)
 
 void Tank::setDirection(Direction d)
 {
-    if(!(testFlag(TSF_ALIVE) || testFlag(TSF_CREATING))) return;
-    if(testFlag(TSF_ON_ICE))
+    if (!(testFlag(TSF_ALIVE) || testFlag(TSF_CREATING)))
+        return;
+    if (testFlag(TSF_ON_ICE))
     {
         new_direction = d;
-        if(speed == 0.0 || m_slip_time == 0.0) direction = d;
-        if((m_slip_time != 0 && direction == new_direction) || m_slip_time == 0)
-            m_slip_time = AppConfig::slip_time;
+        if (m_speed == 0.0 || m_slip_time >= AppConfig::slip_time)
+            m_direction = d;
+        if ((m_slip_time != 0 && m_direction == new_direction) || m_slip_time >= AppConfig::slip_time)
+            m_slip_time = 0;
     }
     else
-        direction = d;
+        m_direction = d;
 
-    if(!stop)
+    if (!m_stop)
     {
         double epsilon = 5;
         int pos_x_tile, pos_y_tile;
-        switch (direction)
+        switch (m_direction)
         {
         case D_UP:
         case D_DOWN:
             pos_x_tile = ((int)(pos_x / AppConfig::tile_size.w)) * AppConfig::tile_size.w;
-            if(pos_x - pos_x_tile < epsilon) pos_x = pos_x_tile;
-            else if(pos_x_tile + AppConfig::tile_size.w - pos_x < epsilon) pos_x = pos_x_tile + AppConfig::tile_size.w;
+            if (pos_x - pos_x_tile < epsilon)
+                pos_x = pos_x_tile;
+            else if (pos_x_tile + AppConfig::tile_size.w - pos_x < epsilon)
+                pos_x = pos_x_tile + AppConfig::tile_size.w;
             break;
         case D_RIGHT:
         case D_LEFT:
             pos_y_tile = ((int)(pos_y / AppConfig::tile_size.h)) * AppConfig::tile_size.h;
-            if(pos_y - pos_y_tile < epsilon) pos_y = pos_y_tile;
-            else if(pos_y_tile + AppConfig::tile_size.h - pos_y < epsilon) pos_y = pos_y_tile + AppConfig::tile_size.h;
+            if (pos_y - pos_y_tile < epsilon)
+                pos_y = pos_y_tile;
+            else if (pos_y_tile + AppConfig::tile_size.h - pos_y < epsilon)
+                pos_y = pos_y_tile + AppConfig::tile_size.h;
             break;
         }
     }
@@ -229,21 +265,21 @@ void Tank::setDirection(Direction d)
 
 void Tank::collide(Rect &intersect_rect)
 {
-    if(intersect_rect.w > intersect_rect.h) // collision on top or bottom
+    if (intersect_rect.w > intersect_rect.h) // collision on top or bottom
     {
-        if((direction == D_UP && intersect_rect.y <= collision_rect.y) ||
-                (direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
+        if ((m_direction == D_UP && intersect_rect.y <= collision_rect.y) ||
+            (m_direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
         {
-            stop = true;
+            m_stop = true;
             m_slip_time = 0;
         }
     }
     else
     {
-        if((direction == D_LEFT && intersect_rect.x <= collision_rect.x) ||
-                (direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
+        if ((m_direction == D_LEFT && intersect_rect.x <= collision_rect.x) ||
+            (m_direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
         {
-            stop = true;
+            m_stop = true;
             m_slip_time = 0;
         }
     }
@@ -251,15 +287,16 @@ void Tank::collide(Rect &intersect_rect)
 
 void Tank::destroy()
 {
-    if(!testFlag(TSF_ALIVE)) return;
+    if (!testFlag(TSF_ALIVE))
+        return;
 
-    stop = true;
+    m_stop = true;
     m_flags = TSF_DESTROYED;
 
     m_frame_display_time = 0;
     m_current_frame = 0;
-    direction = D_UP;
-    speed = 0;
+    m_direction = D_UP;
+    m_speed = 0;
     m_slip_time = 0;
     m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_TANK);
 
@@ -268,27 +305,29 @@ void Tank::destroy()
     collision_rect.h = 0;
     collision_rect.w = 0;
 
-    dest_rect.x = pos_x + (dest_rect.w - m_sprite->rect.w)/2;
-    dest_rect.y = pos_y + (dest_rect.h - m_sprite->rect.h)/2;
+    dest_rect.x = pos_x + (dest_rect.w - m_sprite->rect.w) / 2;
+    dest_rect.y = pos_y + (dest_rect.h - m_sprite->rect.h) / 2;
     dest_rect.h = m_sprite->rect.h;
     dest_rect.w = m_sprite->rect.w;
 }
 
 void Tank::setFlag(TankStateFlag flag)
 {
-    if(!testFlag(flag) && flag == TSF_ON_ICE)
-        new_direction = direction;
+    if (!testFlag(flag) && flag == TSF_ON_ICE)
+        new_direction = m_direction;
 
-    if(flag == TSF_SHIELD)
+    if (flag == TSF_SHIELD)
     {
-        if(m_shield == nullptr) m_shield = new Object(pos_x, pos_y, ST_SHIELD);
-         m_shield_time = 0;
+        if (m_shield == nullptr)
+            m_shield = new Object(pos_x, pos_y, ST_SHIELD);
+        m_shield_time = 0;
     }
-    if(flag == TSF_BOAT)
+    if (flag == TSF_BOAT)
     {
-         if(m_boat == nullptr) m_boat = new Object(pos_x, pos_y, type == ST_PLAYER_1 ? ST_BOAT_P1 : ST_BOAT_P2);
+        if (m_boat == nullptr)
+            m_boat = new Object(pos_x, pos_y, type == ST_PLAYER_1 ? ST_BOAT_P1 : ST_BOAT_P2);
     }
-    if(flag == TSF_FROZEN)
+    if (flag == TSF_FROZEN)
     {
         m_frozen_time = 0;
     }
@@ -297,18 +336,20 @@ void Tank::setFlag(TankStateFlag flag)
 
 void Tank::clearFlag(TankStateFlag flag)
 {
-    if(flag == TSF_SHIELD)
+    if (flag == TSF_SHIELD)
     {
-         if(m_shield != nullptr) delete m_shield;
-         m_shield = nullptr;
-         m_shield_time = 0;
+        if (m_shield != nullptr)
+            delete m_shield;
+        m_shield = nullptr;
+        m_shield_time = 0;
     }
-    if(flag == TSF_BOAT)
+    if (flag == TSF_BOAT)
     {
-         if(m_boat != nullptr) delete m_boat;
-         m_boat = nullptr;
+        if (m_boat != nullptr)
+            delete m_boat;
+        m_boat = nullptr;
     }
-    if(flag == TSF_FROZEN)
+    if (flag == TSF_FROZEN)
     {
         m_frozen_time = 0;
     }
@@ -320,34 +361,49 @@ bool Tank::testFlag(TankStateFlag flag) const
     return (m_flags & flag) == flag;
 }
 
-
-//TODO call it only if tank really needs respawn, not from menu etc
 void Tank::respawn()
 {
+    if (m_lives_count == 0)
+    {
+        to_erase = true;
+        return;
+    }
+    creatingState();
+}
+
+void Tank::creatingState()
+{
     m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_CREATE);
-    speed = 0.0;
-    stop = false;
+    m_speed = 0.0;
+    m_stop = false;
     m_slip_time = 0;
 
     clearFlag(TSF_SHIELD);
     clearFlag(TSF_BOAT);
-    m_flags = TSF_ALIVE;
-    update(0);
-    m_flags = TSF_CREATING; //clear all other flags
+    m_flags = TSF_CREATING;
 
-    //ustawienie porostokąta kolizji po wywołaniu update
-    collision_rect.x = 0;
-    collision_rect.y = 0;
-    collision_rect.h = 0;
-    collision_rect.w = 0;
+    dest_rect = Rect{(int)pos_x, (int)pos_y, m_sprite->rect.w, m_sprite->rect.h};
+    collision_rect = Rect{0, 0, 0, 0};
 }
 
-Point Tank::getCenter() const
+
+
+Point Tank::center() const
 {
     return {pos_x + dest_rect.w / 2, pos_y + dest_rect.h / 2};
 }
 
-bool Tank::isAlive() const
+bool Tank::alive() const
 {
-    return testFlag(TSF_ALIVE) && lives_count > 0;
+    return testFlag(TSF_ALIVE) && m_lives_count > 0 && m_armor_count > 0;
+}
+
+bool Tank::stoped() const
+{
+    return m_stop;
+}
+
+Direction Tank::direction() const
+{
+    return m_direction;
 }

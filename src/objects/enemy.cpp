@@ -4,10 +4,10 @@
 #include <ctime>
 #include <iostream>
 
-Enemy::Enemy(double x, double y, SpriteType type)
+Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count)
     : Tank(x, y, type)
 {
-    direction = D_DOWN;
+    m_direction = D_DOWN;
     m_direction_time = 0;
     m_keep_direction_time = 100;
 
@@ -16,20 +16,22 @@ Enemy::Enemy(double x, double y, SpriteType type)
 
     m_fire_time = 0;
     m_reload_time = 100;
-    lives_count = 1;
 
-    m_bullet_max_size = 1;
+    m_lives_count = 1;
+    m_armor_count = armor_count;
+
+    m_bullet_max_count = 1;
 
     m_frozen_time = 0;
 
     if (type == ST_TANK_B)
-        default_speed = AppConfig::tank_default_speed * 1.3;
+        m_default_speed = AppConfig::tank_default_speed * 1.3;
     else
-        default_speed = AppConfig::tank_default_speed;
+        m_default_speed = AppConfig::tank_default_speed;
 
     target_position = {-1, -1};
 
-    respawn();
+    creatingState();
 }
 
 void Enemy::draw(Renderer &renderer)
@@ -39,7 +41,6 @@ void Enemy::draw(Renderer &renderer)
     Tank::draw(renderer);
 }
 
-// TODO coment more
 void Enemy::update(Uint32 dt)
 {
     if (to_erase)
@@ -49,9 +50,9 @@ void Enemy::update(Uint32 dt)
     if (testFlag(TSF_ALIVE))
     {
         if (testFlag(TSF_BONUS))
-            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : direction) - 4, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : m_direction) - 4, m_current_frame);
         else
-            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : direction) + (lives_count - 1) * 4, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : m_direction) + (m_armor_count - 1) * 4, m_current_frame);
     }
     else
         src_rect = m_sprite->rect.tiledOffset(0, m_current_frame);
@@ -88,7 +89,7 @@ void Enemy::update(Uint32 dt)
     {
         m_speed_time = 0;
         m_try_to_go_time = rand() % 300;
-        speed = default_speed;
+        m_speed = m_default_speed;
     }
     if (m_fire_time > m_reload_time)
     {
@@ -99,10 +100,10 @@ void Enemy::update(Uint32 dt)
             int dx = target_position.x - (dest_rect.x + dest_rect.w / 2);
             int dy = target_position.y - (dest_rect.y + dest_rect.h / 2);
 
-            if (stop)
+            if (m_stop)
                 fire();
             else
-                switch (direction)
+                switch (m_direction)
                 {
                 case D_UP:
                     if (dy < 0 && abs(dx) < dest_rect.w)
@@ -134,7 +135,7 @@ void Enemy::update(Uint32 dt)
         }
     }
 
-    stop = false;
+    m_stop = false;
 }
 
 Bullet *Enemy::fire()
@@ -150,21 +151,21 @@ Bullet *Enemy::fire()
 }
 void Enemy::hit()
 {
-    if (lives_count == 1)
+    if (m_armor_count == 1)
     {
-        lives_count = 0;
+        m_armor_count = 0;
         Tank::destroy();
     }
-    else if (lives_count > 1)
+    else if (m_armor_count > 1)
     {
         //    clearFlag(TSF_BONUS); //możliwe jednokrotne wypadnięcie bonusu
-        lives_count--;
+        m_armor_count--;
     }
 }
 
 unsigned Enemy::scoreForHit()
 {
-    if (lives_count > 0)
+    if (m_lives_count > 0)
         return 50;
     return 100;
 }

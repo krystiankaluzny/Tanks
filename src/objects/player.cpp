@@ -5,10 +5,10 @@
 Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys)
     : Tank(x, y, type)
 {
-    speed = 0;
-    lives_count = 11;
-    m_bullet_max_size = AppConfig::player_bullet_max_count;
-    score = 0;
+    m_speed = 0;
+    m_lives_count = 11;
+    m_bullet_max_count = AppConfig::player_bullet_max_count;
+    m_score = 0;
     star_count = 0;
     m_shield = new Object(x, y, ST_SHIELD);
     m_shield_time = 0;
@@ -19,7 +19,7 @@ Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control
     m_key_state_right = {control_keys[3], false};
     m_key_state_fire = {control_keys[4], false};
 
-    respawn();
+    moveToCreatingState();
 }
 
 void Player::handleKeyboardEvent(const KeyboardEvent &ev)
@@ -47,32 +47,32 @@ void Player::update(Uint32 dt)
 {
     Tank::update(dt);
 
-    if (!testFlag(TSF_MENU))
+    if (!testFlag(TSF_FAST_ANIMATION))
     {
         if (m_key_state_up.pressed)
         {
             setDirection(D_UP);
-            speed = default_speed;
+            m_speed = m_default_speed;
         }
         else if (m_key_state_down.pressed)
         {
             setDirection(D_DOWN);
-            speed = default_speed;
+            m_speed = m_default_speed;
         }
         else if (m_key_state_left.pressed)
         {
             setDirection(D_LEFT);
-            speed = default_speed;
+            m_speed = m_default_speed;
         }
         else if (m_key_state_right.pressed)
         {
             setDirection(D_RIGHT);
-            speed = default_speed;
+            m_speed = m_default_speed;
         }
         else
         {
-            if (!testFlag(TSF_ON_ICE) || m_slip_time == 0)
-                speed = 0.0;
+            if (!testFlag(TSF_ON_ICE) || m_slip_time >= AppConfig::slip_time)
+                m_speed = 0.0;
         }
 
         if (m_key_state_fire.pressed && m_fire_time > AppConfig::player_reload_time)
@@ -85,42 +85,16 @@ void Player::update(Uint32 dt)
     m_fire_time += dt;
 
     if (testFlag(TSF_ALIVE))
-        src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame + 2 * star_count);
+        src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : m_direction), m_current_frame + 2 * m_armor_count);
     else
-        src_rect = m_sprite->rect.tiledOffset(0, m_current_frame + 2 * star_count);
+        src_rect = m_sprite->rect.tiledOffset(0, m_current_frame + 2 * m_armor_count);
 
-    stop = false;
+    m_stop = false;
 }
 
 void Player::respawn()
 {
-    lives_count--;
-    if (lives_count <= 0)
-    {
-        if (bullets.size() == 0)
-            to_erase = true;
-        return;
-    }
-
-    if (type == ST_PLAYER_1)
-    {
-        pos_x = AppConfig::player_starting_point.at(0).x;
-        pos_y = AppConfig::player_starting_point.at(0).y;
-    }
-    else
-    {
-        pos_x = AppConfig::player_starting_point.at(1).x;
-        pos_y = AppConfig::player_starting_point.at(1).y;
-    }
-
-    dest_rect.x = pos_x;
-    dest_rect.y = pos_y;
-    dest_rect.h = m_sprite->rect.h;
-    dest_rect.w = m_sprite->rect.w;
-
-    setDirection(D_UP);
-    Tank::respawn();
-    setFlag(TSF_SHIELD);
+    moveToCreatingState();
     m_shield_time = AppConfig::tank_shield_time / 2;
 }
 
@@ -137,12 +111,29 @@ void Player::hit()
     }
 
     if (star_count == 3)
+    {
         changeStarCountBy(-1);
+    }
     else
     {
         changeStarCountBy(-3);
         Tank::destroy();
     }
+}
+
+void Player::moveToNextLevel()
+{
+    if (m_lives_count == 0)
+    {
+        m_lives_count = 2;
+        m_armor_count = 1;
+    }
+    else
+    {
+        m_lives_count++;
+    }
+
+    moveToCreatingState();
 }
 
 Bullet *Player::fire()
@@ -166,15 +157,17 @@ void Player::changeStarCountBy(int c)
     else if (star_count < 0)
         star_count = 0;
 
+    m_armor_count = star_count;
+
     if (star_count >= 2 && c > 0)
-        m_bullet_max_size++;
+        m_bullet_max_count++;
     else
-        m_bullet_max_size = 2;
+        m_bullet_max_count = 2;
 
     if (star_count > 0)
-        default_speed = AppConfig::tank_default_speed * 1.3;
+        m_default_speed = AppConfig::tank_default_speed * 1.3;
     else
-        default_speed = AppConfig::tank_default_speed;
+        m_default_speed = AppConfig::tank_default_speed;
 }
 
 void Player::resetKeyStates()
@@ -184,4 +177,46 @@ void Player::resetKeyStates()
     m_key_state_left.pressed = false;
     m_key_state_right.pressed = false;
     m_key_state_fire.pressed = false;
+}
+
+void Player::addScore(unsigned points)
+{
+    m_score += points;
+}
+
+unsigned Player::score() const
+{
+    return m_score;
+}
+
+void Player::addLife()
+{
+    m_lives_count++;
+}
+unsigned Player::lives() const
+{
+    return m_lives_count;
+}
+
+void Player::moveToCreatingState()
+{
+    if (type == ST_PLAYER_1)
+    {
+        pos_x = AppConfig::player_starting_point.at(0).x;
+        pos_y = AppConfig::player_starting_point.at(0).y;
+    }
+    else
+    {
+        pos_x = AppConfig::player_starting_point.at(1).x;
+        pos_y = AppConfig::player_starting_point.at(1).y;
+    }
+
+    dest_rect.x = pos_x;
+    dest_rect.y = pos_y;
+    dest_rect.h = m_sprite->rect.h;
+    dest_rect.w = m_sprite->rect.w;
+
+    setDirection(D_UP);
+    creatingState();
+    setFlag(TSF_SHIELD);
 }

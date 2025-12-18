@@ -39,10 +39,7 @@ Game::Game(std::vector<Player *> players, int previous_level)
     m_players_count = m_players.size();
     for (auto player : m_players)
     {
-        player->resetKeyStates();
-        player->clearFlag(Tank::TSF_MENU);
-        player->lives_count++;
-        player->respawn();
+        player->moveToNextLevel();
     }
     m_pause = false;
     m_level_end_time = 0;
@@ -309,7 +306,7 @@ void Game::drawGameStatusPanel(Renderer &renderer)
         Point player_lives_dst = {player_status_dst.x + player_status_dst.w + 2, player_status_dst.y + 3};
         i++;
         renderer.drawObject(player->src_rect, player_status_dst);
-        renderer.drawText(player_lives_dst, std::to_string(player->lives_count), {0, 0, 0, 255}, FontSize::NORMAL);
+        renderer.drawText(player_lives_dst, std::to_string(player->lives()), {0, 0, 0, 255}, FontSize::NORMAL);
     }
     // current level
     Rect stage_status_src = SpriteConfig::getInstance().getSpriteData(ST_STAGE_STATUS).rect;
@@ -411,9 +408,9 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 
                 bullet->destroy();
                 enemy->hit();
-                player->score += enemy->scoreForHit();
+                player->addScore(enemy->scoreForHit());
 
-                if (!enemy->isAlive())
+                if (!enemy->alive())
                     m_enemies_to_kill_count--;
             }
         }
@@ -466,7 +463,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
     Rect intersect_rect = player->collision_rect.intersection(bonus->collision_rect);
     if (intersect_rect.isNotEmpty())
     {
-        player->score += 300;
+        player->addScore(300);
 
         if (bonus->type == ST_BONUS_GRENADE)
         {
@@ -474,8 +471,8 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
             {
                 if (!enemy->to_erase)
                 {
-                    player->score += 200;
-                    while (enemy->isAlive())
+                    player->addScore(200);
+                    while (enemy->alive())
                     {
                         enemy->hit();
                     }
@@ -499,7 +496,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         }
         else if (bonus->type == ST_BONUS_TANK)
         {
-            player->lives_count++;
+            player->addLife();
         }
         else if (bonus->type == ST_BONUS_STAR)
         {
@@ -552,13 +549,13 @@ void Game::calculateEnemiesTargets()
     Point target;
     for (auto enemy : m_enemies)
     {
-        Point enemy_center = enemy->getCenter();
+        Point enemy_center = enemy->center();
         min_metric = AppConfig::map_rect.w + AppConfig::map_rect.h;
         if (enemy->type == ST_TANK_A || enemy->type == ST_TANK_D)
         {
             for (auto player : m_players)
             {
-                Point player_center = player->getCenter();
+                Point player_center = player->center();
                 int metric = fabs(player_center.x - enemy_center.x) + fabs(player_center.y - enemy_center.y);
                 if (metric < min_metric)
                 {
@@ -592,10 +589,6 @@ void Game::generateEnemyIfPossible(Uint32 dt)
     float p = static_cast<float>(rand()) / RAND_MAX;
     // magic numbers to calculate enemy type probabilities
     SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_level + 0.09265) ? ST_TANK_D : (rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A));
-    Enemy *e = new Enemy(AppConfig::enemy_starting_point.at(m_enemy_respown_position).x, AppConfig::enemy_starting_point.at(m_enemy_respown_position).y, type);
-    m_enemy_respown_position++;
-    if (m_enemy_respown_position >= AppConfig::enemy_starting_point.size())
-        m_enemy_respown_position = 0;
 
     // magic numbers to calculate enemy armor probabilities
     double a, b, c;
@@ -612,15 +605,22 @@ void Game::generateEnemyIfPossible(Uint32 dt)
         c = -0.036111 * m_current_level + 1.363889;
     }
 
+    unsigned armor_count;
+
     p = static_cast<float>(rand()) / RAND_MAX;
     if (p < a)
-        e->lives_count = 1;
+        armor_count = 1;
     else if (p < b)
-        e->lives_count = 2;
+        armor_count = 2;
     else if (p < c)
-        e->lives_count = 3;
+        armor_count = 3;
     else
-        e->lives_count = 4;
+        armor_count = 4;
+
+    Enemy *e = new Enemy(AppConfig::enemy_starting_point.at(m_enemy_respown_position).x, AppConfig::enemy_starting_point.at(m_enemy_respown_position).y, type, armor_count);
+    m_enemy_respown_position++;
+    if (m_enemy_respown_position >= AppConfig::enemy_starting_point.size())
+        m_enemy_respown_position = 0;
 
     p = static_cast<float>(rand()) / RAND_MAX;
     if (p < 0.12)

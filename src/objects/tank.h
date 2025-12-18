@@ -8,7 +8,6 @@
 
 typedef unsigned TankStateFlags;
 
-
 class Tank : public Object
 {
 public:
@@ -24,9 +23,8 @@ public:
         TSF_CREATING = 1 << 7,
         TSF_ALIVE = 1 << 8,
 
-        TSF_MENU = 1 << 9 // TODO rename 
+        TSF_FAST_ANIMATION = 1 << 9
     };
-
 
     Tank(double x, double y, SpriteType type);
     virtual ~Tank();
@@ -39,35 +37,35 @@ public:
     void setDirection(Direction d);
     void collide(Rect &intersect_rect);
     virtual void respawn();
+    void creatingState();
 
     virtual void destroy();
     void setFlag(TankStateFlag flag);
     void clearFlag(TankStateFlag flag);
     bool testFlag(TankStateFlag flag) const;
 
-    Point getCenter() const;
-    bool isAlive() const;
+    Point center() const;
+    bool alive() const;
+    bool stoped() const;
+    Direction direction() const;
 
-    //TODO make it private or protected
-    double default_speed;
-    double speed;
-    bool stop;
-    Direction direction;
     std::vector<Bullet *> bullets;
 
-    //TODO make it uint
-    int lives_count;
-
 protected:
+    double m_default_speed;
+    double m_speed;
+    bool m_stop;
+    Direction m_direction;
+
     TankStateFlags m_flags;
 
-    //TODO change to Uint32
-    Sint32 m_slip_time;
+    unsigned m_lives_count;
+    unsigned m_armor_count;
+
+    Uint32 m_slip_time;
     Direction new_direction;
 
-    //TODO rename to _count
-    unsigned m_bullet_max_size;
-
+    unsigned m_bullet_max_count;
 
     Object *m_shield;
     Object *m_boat;

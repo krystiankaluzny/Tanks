@@ -11,27 +11,26 @@ public:
 
     void handleKeyboardEvent(const KeyboardEvent &ev);
     void update(Uint32 dt) override;
-
     
     void respawn() override;
-
     void hit();
+    void moveToNextLevel();
 
     /**
      * @return pointer to a new bullet, or nullptr if for some reason bullet cannot be created
      */
     Bullet *fire() override;
-
-
     void changeStarCountBy(int c);
-
     void resetKeyStates();
-    
+    void addScore(unsigned points);
+    unsigned score() const;
 
-    //TODO make it private
-    unsigned score;
+    void addLife();
+    unsigned lives() const;
 
 private:
+    void moveToCreatingState();
+    unsigned m_score;
     int star_count;
     Uint32 m_fire_time;
 

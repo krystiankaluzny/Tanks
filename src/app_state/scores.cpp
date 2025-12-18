@@ -17,15 +17,12 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over)
     for (auto player : m_players)
     {
         player->to_erase = false;
-        if (player->lives_count == 0 && !game_over)
-            player->lives_count = 2;
-        else
-            player->lives_count++;
-        player->respawn();
-        player->setFlag(Tank::TSF_MENU);
 
-        if (player->score > m_max_score)
-            m_max_score = player->score;
+        player->creatingState();
+        player->setFlag(Tank::TSF_FAST_ANIMATION);
+
+        if (player->score() > m_max_score)
+            m_max_score = player->score();
     }
 }
 
@@ -53,9 +50,9 @@ void Scores::draw(Renderer &renderer)
         dst = {100, 90 + i * (player->src_rect.h), player->src_rect.w, player->src_rect.h};
         renderer.drawObject(player->src_rect, dst);
         p_dst = {140, 98 + i * (player->src_rect.h)};
-        renderer.drawText(p_dst, std::string("x") + std::to_string(player->lives_count), {255, 255, 255, 255}, FontSize::NORMAL);
+        renderer.drawText(p_dst, std::string("x") + std::to_string(player->lives()), {255, 255, 255, 255}, FontSize::NORMAL);
         p_dst = {270, 98 + i * (player->src_rect.h)};
-        renderer.drawText(p_dst, (m_score_counter < player->score ? std::to_string(m_score_counter) : std::to_string(player->score)), {255, 255, 255, 255}, FontSize::NORMAL);
+        renderer.drawText(p_dst, (m_score_counter < player->score() ? std::to_string(m_score_counter) : std::to_string(player->score())), {255, 255, 255, 255}, FontSize::NORMAL);
         i++;
     }
 
@@ -89,8 +86,6 @@ void Scores::update(Uint32 dt)
     }
     for (auto player : m_players)
     {
-        player->speed = player->default_speed;
-        player->stop = true;
         player->setDirection(D_RIGHT);
         player->update(dt);
     }

@@ -7,7 +7,7 @@
 class Enemy : public Tank
 {
 public:
-    Enemy(double x, double y, SpriteType type);
+    Enemy(double x, double y, SpriteType type, unsigned armor_count);
 
     void draw(Renderer &renderer) override;
     void update(Uint32 dt) override;

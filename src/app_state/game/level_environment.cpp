@@ -132,7 +132,7 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     Object *o;
 
     // we check the range of tiles based on the tank's direction
-    switch (tank->direction)
+    switch (tank->direction())
     {
     case D_UP:
         row_end = tank->collision_rect.y / AppConfig::tile_size.h;
@@ -175,7 +175,7 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
     {
         for (int j = column_start; j <= column_end; j++)
         {
-            if (tank->stop)
+            if (tank->stoped())
                 break;
             o = m_tile_objects.at(i).at(j);
             if (o == nullptr)
