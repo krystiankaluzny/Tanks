@@ -200,6 +200,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     Rect intersect_rect;
     Object *o;
 
+    bool shoudl_destroy_bulet = false;
     Rect &br = bullet->collision_rect;
 
     for (int i = row_start; i <= row_end; i++)
@@ -235,10 +236,15 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
                 // when damages are increased
                 if (o->type != ST_BUSH)
                 {
-                    bullet->destroy();
+                    shoudl_destroy_bulet = true;
                 }
             }
         }
+
+    if (shoudl_destroy_bulet)
+    {
+        bullet->destroy();
+    }
 
     //========================kolizja z granicami mapy========================
     if (br.x < 0 || br.y < 0 || br.x + br.w > AppConfig::map_rect.w || br.y + br.h > AppConfig::map_rect.h)
