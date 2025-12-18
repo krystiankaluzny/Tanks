@@ -13,6 +13,8 @@ SDLRenderer::SDLRenderer(Size viewport_base_size)
     m_font_biggest = nullptr;
     m_font_big = nullptr;
     m_font_normal = nullptr;
+
+    m_fullscreen = false;
 }
 
 SDLRenderer::~SDLRenderer()
