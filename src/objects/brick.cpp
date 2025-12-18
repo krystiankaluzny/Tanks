@@ -100,5 +100,5 @@ void Brick::bulletHit(Direction bullet_direction)
         break;
     }
 
-    src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_state_code);
+    src_rect = m_sprite->rect.tiledOffset(0, m_state_code);
 }

@@ -61,7 +61,7 @@ void Bullet::update(Uint32 dt)
             break;
         }
 
-        src_rect = moveRect(m_sprite->rect, m_direction, 0);
+        src_rect = m_sprite->rect.tiledOffset(m_direction, 0);
         Object::update(dt);
     }
     else
@@ -76,7 +76,7 @@ void Bullet::update(Uint32 dt)
                 if (m_current_frame >= m_sprite->frames_count)
                     to_erase = true;
 
-                src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
+                src_rect = m_sprite->rect.tiledOffset(0, m_current_frame);
             }
         }
     }

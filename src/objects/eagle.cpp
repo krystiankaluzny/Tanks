@@ -23,7 +23,7 @@ void Eagle::update(Uint32 dt)
                 type = ST_FLAG;
                 update(0);
             }
-            src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset(0, m_current_frame);
         }
     }
     else
@@ -36,7 +36,7 @@ void Eagle::destroy()
 
     m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_EAGLE);
     type = ST_DESTROY_EAGLE;
-    src_rect = moveRect(m_sprite->rect, 0, 0);
+    src_rect = m_sprite->rect.tiledOffset(0, 0);
 
     dest_rect.x = pos_x + (dest_rect.w - m_sprite->rect.w)/2;
     dest_rect.y = pos_y + (dest_rect.h - m_sprite->rect.h)/2;

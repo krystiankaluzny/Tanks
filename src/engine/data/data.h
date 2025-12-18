@@ -23,7 +23,7 @@ struct Rect
         return (w > 0 && h > 0);
     }
 
-    Rect intersection(Rect &other)
+    Rect intersection(Rect &other) const
     {
         int intersect_x = std::max(x, other.x);
         int intersect_y = std::max(y, other.y);
@@ -32,8 +32,15 @@ struct Rect
             intersect_x,
             intersect_y,
             std::min(x + w, other.x + other.w) - intersect_x,
-            std::min(y + h, other.y + other.h) - intersect_y
-        };
+            std::min(y + h, other.y + other.h) - intersect_y};
+    }
+
+    Rect tiledOffset(int x_tile_offset, int y_tile_offset) const
+    {
+        return Rect{
+            x + x_tile_offset * w,
+            y + y_tile_offset * h,
+            w, h};
     }
 };
 

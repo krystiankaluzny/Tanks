@@ -27,17 +27,6 @@ public:
     double pos_y;
 
 protected:
-
-//TODO rename method
-    /**
-     * Funkcja zwraca prostokąt przesunięty o wielokrotności rozmiaru prostokąta rect.
-     * @param rect - prostokąt bazowy
-     * @param x - przesunięcie poziome
-     * @param y - przesunięcie pionowe
-     * @return przesunięty prostokąt
-     */
-    Rect moveRect(const Rect &rect, int x, int y);
-
     const SpriteData* m_sprite;
     Uint32 m_frame_display_time;
     int m_current_frame;

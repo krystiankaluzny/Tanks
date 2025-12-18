@@ -85,9 +85,9 @@ void Player::update(Uint32 dt)
     m_fire_time += dt;
 
     if (testFlag(TSF_ALIVE))
-        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, (testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame + 2 * star_count);
+        src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : direction), m_current_frame + 2 * star_count);
     else
-        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame + 2 * star_count);
+        src_rect = m_sprite->rect.tiledOffset(0, m_current_frame + 2 * star_count);
 
     stop = false;
 }

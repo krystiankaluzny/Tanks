@@ -49,12 +49,12 @@ void Enemy::update(Uint32 dt)
     if (testFlag(TSF_ALIVE))
     {
         if (testFlag(TSF_BONUS))
-            src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, (testFlag(TSF_ON_ICE) ? new_direction : direction) - 4, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : direction) - 4, m_current_frame);
         else
-            src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, (testFlag(TSF_ON_ICE) ? new_direction : direction) + (lives_count - 1) * 4, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? new_direction : direction) + (lives_count - 1) * 4, m_current_frame);
     }
     else
-        src_rect = moveRect(Rect{m_sprite->rect.x, m_sprite->rect.y, m_sprite->rect.w, m_sprite->rect.h}, 0, m_current_frame);
+        src_rect = m_sprite->rect.tiledOffset(0, m_current_frame);
 
     if (testFlag(TSF_FROZEN))
         return;

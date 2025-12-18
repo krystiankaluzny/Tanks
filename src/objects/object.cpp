@@ -66,18 +66,7 @@ void Object::update(Uint32 dt)
                 else m_current_frame = m_sprite->frames_count - 1;
             }
 
-            src_rect = moveRect(m_sprite->rect, 0, m_current_frame);
+            src_rect = m_sprite->rect.tiledOffset(0, m_current_frame);
         }
     }
-}
-
-Rect Object::moveRect(const Rect &rect, int x, int y)
-{
-    Rect r;
-    r.x = rect.x + x*rect.w;
-    r.y = rect.y + y*rect.h;
-    r.w = rect.w;
-    r.h = rect.h;
-
-    return r;
 }
