@@ -14,7 +14,6 @@ Bullet::Bullet(double x, double y)
 Bullet::Bullet(Point tank_center, Size tank_size, Direction direction, double speed)
     : Object(tank_center.x, tank_center.y, ST_BULLET)
 {
-
     m_speed = speed;
     m_direction = direction;
     m_increased_damage = false;
@@ -130,6 +129,8 @@ void Bullet::destroy()
     src_rect.y = m_sprite->rect.y;
     src_rect.h = m_sprite->rect.h;
     src_rect.w = m_sprite->rect.w;
+
+    collision_rect = {0, 0, 0, 0};
 }
 
 bool Bullet::isDamageIncreased() const
