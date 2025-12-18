@@ -42,6 +42,7 @@ public:
     static unsigned enemies_to_kill_total_count;
     static unsigned enemies_max_count_on_map;
 
+    static unsigned levels_count;
     static unsigned new_enemy_cooldown;
     static unsigned player_bullet_max_count;
     static unsigned score_show_time;

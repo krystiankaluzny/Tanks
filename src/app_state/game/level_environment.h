@@ -35,7 +35,7 @@ private:
     void changeEagleSurroundingsToStoneWalls();
     void changeEagleSurroundingsToBrickWalls();
 
-    int m_current_level;
+    int m_loaded_level;
 
     std::vector<std::vector<Object *>> m_tile_objects;
 

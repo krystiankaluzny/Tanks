@@ -67,6 +67,7 @@ unsigned AppConfig::slip_time = 380;
 unsigned AppConfig::enemies_to_kill_total_count = 20;
 unsigned AppConfig::enemies_max_count_on_map = 4;
 
+unsigned AppConfig::levels_count = 35;
 unsigned AppConfig::new_enemy_cooldown = 500;
 unsigned AppConfig::player_bullet_max_count = 2;
 unsigned AppConfig::score_show_time = 3000;

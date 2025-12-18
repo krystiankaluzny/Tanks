@@ -5,8 +5,9 @@
 #include <stdexcept>
 
 LevelEnvironment::LevelEnvironment(int current_level)
-    : m_current_level(current_level)
 {
+
+    m_loaded_level = (current_level - 1) % AppConfig::levels_count + 1;
     m_eagle_protected = false;
     m_eagle_protection_time = 0;
     m_eagle_tile_rect = {AppConfig::map_size.w / 2 - 1, AppConfig::map_size.h - 2, 2, 2};
@@ -438,13 +439,8 @@ void LevelEnvironment::checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt)
 
 void LevelEnvironment::loadLevel()
 {
-    if (m_current_level > 35)
-        m_current_level = 1;
-    if (m_current_level < 0)
-        m_current_level = 35;
-
     std::ifstream level_file;
-    std::string level_file_name = AppConfig::levels_path + std::to_string(m_current_level);
+    std::string level_file_name = AppConfig::levels_path + std::to_string(m_loaded_level);
     level_file.open(level_file_name);
     if (!level_file.is_open())
     {
