@@ -15,12 +15,12 @@
 class Game : public AppState
 {
 public:
-    Game(int players_count);
-    Game(std::vector<Player *> players, int previous_level);
+    Game(int players_count, InteractiveComponents interactive_components);
+    Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components);
     ~Game();
 
     void draw(Renderer &renderer) override;
-    void update(Uint32 dt) override;
+    void update(const UpdateState& updateState) override;
 
     /**
      * Key press handling function.

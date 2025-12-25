@@ -5,7 +5,8 @@
 #include "game/game.h"
 #include "menu.h"
 
-Scores::Scores(std::vector<Player *> players, int level, bool game_over)
+Scores::Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components)
+    : AppState(interactive_components)
 {
     m_players = players;
     m_level = level;
@@ -59,8 +60,9 @@ void Scores::draw(Renderer &renderer)
     renderer.flush();
 }
 
-void Scores::update(Uint32 dt)
+void Scores::update(const UpdateState &updateState)
 {
+    Uint32 dt = updateState.delta_time;
     if (m_score_counter > (1 << 30) || m_score_counter > m_max_score)
     {
         m_show_time += dt;
@@ -114,9 +116,9 @@ AppState *Scores::nextState()
 
     if (m_game_over)
     {
-        Menu *m = new Menu;
+        Menu *m = new Menu(m_interactive_components);
         return m;
     }
-    Game *g = new Game(m_players, m_level);
+    Game *g = new Game(m_players, m_level, m_interactive_components);
     return g;
 }

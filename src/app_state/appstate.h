@@ -3,6 +3,8 @@
 
 #include "../engine/data/event.h"
 #include "../engine/renderer.h"
+#include "../engine/engine.h"
+
 
 class AppState
 {
@@ -10,8 +12,12 @@ public:
     virtual ~AppState() {}
 
     virtual void draw(Renderer &renderer) = 0;
-    virtual void update(Uint32 dt) = 0;
+    virtual void update(const UpdateState& updateState) = 0;
     virtual void eventProcess(const Event &event) = 0;
     virtual AppState* nextState() = 0;
+
+protected:
+    AppState(InteractiveComponents m_interactive_components) : m_interactive_components(m_interactive_components) {}
+    InteractiveComponents m_interactive_components;
 };
 #endif // APPSTATE_H

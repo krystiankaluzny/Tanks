@@ -15,8 +15,9 @@ public:
 private:
     AppState *m_app_state;
 
+    ProcessingResult onEngineInit(const Engine& engine);
     ProcessingResult handleEvent(const Event &event);
-    ProcessingResult updateState(Uint32 delta_time);
+    ProcessingResult updateState(const UpdateState& updateState);
     ProcessingResult draw(Renderer &renderer);
 };
 

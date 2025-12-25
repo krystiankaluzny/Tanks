@@ -32,15 +32,24 @@ void App::run()
 
     Engine &engine = sdl_engine;
 
-    m_app_state = new Menu();
-
     engine.startMainLoop(
+        [&](const Engine &engine)
+        { return onEngineInit(engine); },
         [&](const Event &event)
         { return handleEvent(event); },
-        [&](Uint32 dt)
-        { return updateState(dt); },
+        [&](const UpdateState& us)
+        { return updateState(us); },
         [&](Renderer &renderer)
         { return draw(renderer); });
+}
+
+ProcessingResult App::onEngineInit(const Engine& engine)
+{
+    InteractiveComponents components = engine.getInteractiveComponents();
+
+    m_app_state = new Menu(components);
+
+    return ProcessingResult::CONTINUE;
 }
 
 ProcessingResult App::handleEvent(const Event &event)
@@ -49,7 +58,7 @@ ProcessingResult App::handleEvent(const Event &event)
     return ProcessingResult::CONTINUE;
 }
 
-ProcessingResult App::updateState(Uint32 delta_time)
+ProcessingResult App::updateState(const UpdateState& updateState)
 {
     AppState *next_state = m_app_state->nextState();
     if (m_app_state != next_state)
@@ -61,7 +70,7 @@ ProcessingResult App::updateState(Uint32 delta_time)
             return ProcessingResult::STOP;
         }
     }
-    m_app_state->update(delta_time);
+    m_app_state->update(updateState);
     return ProcessingResult::CONTINUE;
 }
 

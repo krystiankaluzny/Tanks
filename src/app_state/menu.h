@@ -15,7 +15,7 @@
 class Menu : public AppState
 {
 public:
-    Menu();
+    Menu(InteractiveComponents interactive_components);
     ~Menu();
 
     /**
@@ -27,7 +27,7 @@ public:
      * Function updates the tank pointer animation.
      * @param dt - time since the last function call, used for animation update
      */
-    void update(Uint32 dt);
+    void update(const UpdateState& updateState);
 
     /**
      * Function responds to key presses:

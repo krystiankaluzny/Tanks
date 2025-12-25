@@ -9,11 +9,11 @@
 class Scores : public AppState
 {
 public:
-    Scores(std::vector<Player*> players, int level, bool game_over);
+    Scores(std::vector<Player*> players, int level, bool game_over, InteractiveComponents interactive_components);
     ~Scores() override = default;
 
     void draw(Renderer &renderer) override;
-    void update(Uint32 dt) override;
+    void update(const UpdateState& updateState) override;
     void eventProcess(const Event &event) override;
 
     AppState* nextState() override;

@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-Menu::Menu()
+Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_components)
 {
     m_menu_items.push_back("1 Player");
     m_menu_items.push_back("2 Players");
@@ -62,9 +62,9 @@ void Menu::draw(Renderer &renderer)
     renderer.flush();
 }
 
-void Menu::update(Uint32 dt)
+void Menu::update(const UpdateState& updateState)
 {
-    m_tank_menu_pointer->update(dt);
+    m_tank_menu_pointer->update(updateState.delta_time);
 }
 
 void Menu::eventProcess(const Event &event)
@@ -121,12 +121,12 @@ AppState *Menu::nextState()
         return nullptr;
     else if (m_current_menu_index == 0)
     {
-        Game *g = new Game(1);
+        Game *g = new Game(1, m_interactive_components);
         return g;
     }
     else if (m_current_menu_index == 1)
     {
-        Game *g = new Game(2);
+        Game *g = new Game(2, m_interactive_components);
         return g;
     }
     return nullptr;

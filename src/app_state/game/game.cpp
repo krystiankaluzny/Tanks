@@ -13,7 +13,7 @@
 #include <iostream>
 #include <cmath>
 
-Game::Game(int players_count)
+Game::Game(int players_count, InteractiveComponents interactive_components) : AppState(interactive_components)
 {
     m_current_level = 1;
     m_players_count = players_count;
@@ -32,7 +32,7 @@ Game::Game(int players_count)
     createPlayersIfNeeded();
 }
 
-Game::Game(std::vector<Player *> players, int previous_level)
+Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components) : AppState(interactive_components)
 {
     m_current_level = previous_level + 1;
     m_players = players;
@@ -90,8 +90,10 @@ void Game::draw(Renderer &renderer)
     renderer.flush();
 }
 
-void Game::update(Uint32 dt)
+void Game::update(const UpdateState& updateState)
 {
+    Uint32 dt = updateState.delta_time;
+
     if (dt > 40)
         return;
 
@@ -187,10 +189,10 @@ AppState *Game::nextState()
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player *p)
                                        {m_killed_players.push_back(p); return true; }),
                         m_players.end());
-        Scores *scores = new Scores(m_killed_players, m_current_level, m_game_over);
+        Scores *scores = new Scores(m_killed_players, m_current_level, m_game_over, m_interactive_components);
         return scores;
     }
-    Menu *m = new Menu;
+    Menu *m = new Menu(m_interactive_components);
     return m;
 }
 

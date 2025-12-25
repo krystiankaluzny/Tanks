@@ -30,7 +30,12 @@ void SDLEngine::destroyComponents()
     m_sound_manager = nullptr;
 }
 
-void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw)
+InteractiveComponents SDLEngine::getInteractiveComponents() const
+{
+    return {m_sound_manager};
+}
+
+void SDLEngine::startMainLoop(OnEngineInitFunc onEngineInit, HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw)
 {
     is_main_loop_running = true;
 
@@ -50,6 +55,12 @@ void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updat
 
         initComponents();
 
+        if (onEngineInit(*this) == ProcessingResult::STOP)
+        {
+            is_main_loop_running = false;
+            return;
+        }
+
         Uint32 probe_time = 0, frames_count = 0, delay = 15;
         Uint32 current_time = SDL_GetTicks();
         Uint32 previous_time = current_time;
@@ -65,7 +76,9 @@ void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updat
                 break;
             }
 
-            if (updateState(delta_time) == ProcessingResult::STOP)
+            UpdateState us{delta_time};
+
+            if (updateState(us) == ProcessingResult::STOP)
             {
                 is_main_loop_running = false;
                 break;
