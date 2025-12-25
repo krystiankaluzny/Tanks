@@ -5,6 +5,7 @@
 #include "../../engine/data/data.h"
 #include "../../appconfig.h"
 #include "../../spriteconfig.h"
+#include "../../soundconfig.h"
 
 #include <stdlib.h>
 #include <ctime>
@@ -30,6 +31,7 @@ Game::Game(int players_count, InteractiveComponents interactive_components) : Ap
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
+    m_interactive_components.sound_manager->play(SoundConfig::STAGE_START_UP);
 }
 
 Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components) : AppState(interactive_components)
@@ -54,6 +56,7 @@ Game::Game(std::vector<Player *> players, int previous_level, InteractiveCompone
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
+    m_interactive_components.sound_manager->play(SoundConfig::STAGE_START_UP);
 }
 
 Game::~Game()

@@ -8,7 +8,7 @@
 
 struct InteractiveComponents
 {
-    const SoundManager *sound_manager;
+    SoundManager *sound_manager;
 };
 
 struct UpdateState
