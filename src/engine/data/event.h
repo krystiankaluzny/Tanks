@@ -1,5 +1,5 @@
-#ifndef TANKS_EVENT_H
-#define TANKS_EVENT_H
+#ifndef ENGINE_DATA_EVENT_H
+#define ENGINE_DATA_EVENT_H
 
 #include "keycode.h"
 #include "data.h"

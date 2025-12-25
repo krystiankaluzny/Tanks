@@ -157,8 +157,3 @@ void SDLEngine::setConfig(SDLEngineConfig config)
 {
     m_config = config;
 }
-
-Renderer *SDLEngine::getRenderer() const
-{
-    return m_renderer;
-}

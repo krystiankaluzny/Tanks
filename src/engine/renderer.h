@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef ENGINE_RENDERER_H
+#define ENGINE_RENDERER_H
 
 #include "data/data.h"
 #include "data/font_size.h"
@@ -37,4 +37,4 @@ public:
     virtual void drawRect(const Rect &rect, Color rect_color, bool fill = false) = 0;
 };
 
-#endif // RENDERER_H
+#endif // ENGINE_RENDERER_H

@@ -12,6 +12,12 @@ struct SDLEngineConfig
 
 class SDLEngine : public Engine
 {
+public:
+    ~SDLEngine();
+    void startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw) override;
+
+    void setConfig(SDLEngineConfig config);
+
 private:
     bool is_main_loop_running = false;
 
@@ -23,15 +29,7 @@ private:
     void destroyModules();
 
     ProcessingResult handleEvents(HandleEventFunc handleEvent);
-    ProcessingResult handleInternalEvents(const Event& event);
-
-public:
-    ~SDLEngine();
-    void startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw) override;
-
-    void setConfig(SDLEngineConfig config);
-
-    Renderer *getRenderer() const override;
+    ProcessingResult handleInternalEvents(const Event &event);
 };
 
 #endif // SDL_ENGINE_H

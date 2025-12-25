@@ -22,8 +22,6 @@ public:
     Engine() {};
 
     virtual void startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw) = 0;
-
-    virtual Renderer* getRenderer() const = 0;
 };
 
 #endif // ENGINE_H
