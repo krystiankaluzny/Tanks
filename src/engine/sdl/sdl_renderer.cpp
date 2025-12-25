@@ -1,4 +1,5 @@
 #include "sdl_renderer.h"
+#include "../data/error.h"
 #include "../../appconfig.h"
 #include <SDL2/SDL_image.h>
 #include <iostream>
@@ -7,6 +8,16 @@
 SDLRenderer::SDLRenderer(Size viewport_base_size)
     : m_viewport_base_size(viewport_base_size)
 {
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+    {
+        throw Error("SDL IMG could not initialize!", SDL_GetError());
+    }
+
+    if (TTF_Init() == -1)
+    {
+        throw Error("SDL TTF could not initialize!", SDL_GetError());
+    }
+
     m_texture = nullptr;
     m_renderer = nullptr;
     m_text_texture = nullptr;
@@ -31,6 +42,9 @@ SDLRenderer::~SDLRenderer()
         TTF_CloseFont(m_font_big);
     if (m_font_normal != nullptr)
         TTF_CloseFont(m_font_normal);
+
+    TTF_Quit();
+    IMG_Quit();
 }
 
 void SDLRenderer::loadTexture(SDL_Window *window)
@@ -38,8 +52,11 @@ void SDLRenderer::loadTexture(SDL_Window *window)
     m_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     // load surface
-    if (m_renderer != nullptr)
-        m_texture = IMG_LoadTexture(m_renderer, AppConfig::texture_path.c_str());
+    if (m_renderer == nullptr)
+    {
+        throw Error("SDL Renderer could not be created!", SDL_GetError());
+    }
+    m_texture = IMG_LoadTexture(m_renderer, AppConfig::texture_path.c_str());
 }
 
 void SDLRenderer::loadFont()

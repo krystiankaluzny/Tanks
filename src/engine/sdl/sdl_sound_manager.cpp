@@ -1,11 +1,12 @@
 #include "sdl_sound_manager.h"
+#include "../data/error.h"
 #include <iostream>
 
 SDLSoundManager::SDLSoundManager()
 {
     if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0)
     {
-        std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        throw Error("SDL_mixer could not initialize!", Mix_GetError());
     }
 }
 
@@ -30,8 +31,7 @@ Mix_Chunk *SDLSoundManager::loadSound(const std::string &file_path)
     Mix_Chunk *chunk = Mix_LoadWAV(file_path.c_str());
     if (chunk == nullptr)
     {
-        std::cerr << "Failed to load sound: " << file_path << " SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return nullptr;
+        throw Error("Failed to load sound: " + file_path, Mix_GetError());
     }
 
     m_sound_cache[file_path] = chunk;
@@ -48,8 +48,7 @@ void SDLSoundManager::play(const Sound &sound)
     int channel = Mix_PlayChannel(-1, chunk, loops);
     if (channel == -1)
     {
-        std::cerr << "Failed to play sound: " << sound.file_path << " SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return;
+        throw Error("Failed to play sound: " + sound.file_path, Mix_GetError());
     }
 
     int volume = static_cast<int>(MIX_MAX_VOLUME * (sound.volume / 100.0));

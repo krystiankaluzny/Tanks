@@ -1,8 +1,10 @@
 #ifndef SDL_ENGINE_H
 #define SDL_ENGINE_H
 
+#include "../data/error.h"
 #include "../engine.h"
 #include "sdl_renderer.h"
+#include "sdl_sound_manager.h"
 
 struct SDLEngineConfig
 {
@@ -23,10 +25,12 @@ private:
 
     SDL_Window *m_window;
     SDLRenderer *m_renderer;
+    SDLSoundManager *m_sound_manager;
+    
     SDLEngineConfig m_config;
 
-    void initModules();
-    void destroyModules();
+    void initComponents();
+    void destroyComponents();
 
     ProcessingResult handleEvents(HandleEventFunc handleEvent);
     ProcessingResult handleInternalEvents(const Event &event);

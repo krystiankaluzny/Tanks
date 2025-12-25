@@ -12,40 +12,43 @@ SDLEngine::~SDLEngine()
 {
 }
 
-void SDLEngine::initModules()
+void SDLEngine::initComponents()
 {
     m_renderer = new SDLRenderer(m_config.initial_window_size);
+    m_renderer->loadTexture(m_window);
+    m_renderer->loadFont();
+
+    m_sound_manager = new SDLSoundManager();
 }
 
-void SDLEngine::destroyModules()
+void SDLEngine::destroyComponents()
 {
     delete m_renderer;
     m_renderer = nullptr;
+
+    delete m_sound_manager;
+    m_sound_manager = nullptr;
 }
 
 void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updateState, DrawFunc draw)
 {
     is_main_loop_running = true;
 
-    if (SDL_Init(SDL_INIT_VIDEO) == 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0)
     {
-        m_window = SDL_CreateWindow(m_config.window_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                    m_config.initial_window_size.w, m_config.initial_window_size.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-
-        if (m_window == nullptr)
-            return;
-
-        if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
-            return;
-        if (TTF_Init() == -1)
-            return;
 
         std::random_device dev;
         srand(dev());
 
-        initModules();
-        m_renderer->loadTexture(m_window);
-        m_renderer->loadFont();
+        m_window = SDL_CreateWindow(m_config.window_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                    m_config.initial_window_size.w, m_config.initial_window_size.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
+        if (m_window == nullptr)
+        {
+            throw Error("SDL Window could not be created!", SDL_GetError());
+        }
+
+        initComponents();
 
         Uint32 probe_time = 0, frames_count = 0, delay = 15;
         Uint32 current_time = SDL_GetTicks();
@@ -91,12 +94,10 @@ void SDLEngine::startMainLoop(HandleEventFunc handleEvent, UpdateStateFunc updat
             }
         }
 
-        destroyModules();
+        destroyComponents();
 
         SDL_DestroyWindow(m_window);
         m_window = nullptr;
-        TTF_Quit();
-        IMG_Quit();
         SDL_Quit();
     }
 }
@@ -106,7 +107,7 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        Event* e = mapSDLEventToEngineEvent(event);
+        Event *e = mapSDLEventToEngineEvent(event);
         if (event.type == SDL_QUIT)
         {
             return ProcessingResult::STOP;
@@ -128,11 +129,11 @@ ProcessingResult SDLEngine::handleEvents(HandleEventFunc handleEvent)
     return ProcessingResult::CONTINUE;
 }
 
-ProcessingResult SDLEngine::handleInternalEvents(const Event& event)
+ProcessingResult SDLEngine::handleInternalEvents(const Event &event)
 {
     if (event.type() == Event::WINDOW)
     {
-        const WindowEvent& we = static_cast<const WindowEvent &>(event);
+        const WindowEvent &we = static_cast<const WindowEvent &>(event);
         if (we.windowEventType() == WindowEvent::RESIZED ||
             we.windowEventType() == WindowEvent::MAXIMIZED ||
             we.windowEventType() == WindowEvent::RESTORED ||
@@ -143,7 +144,7 @@ ProcessingResult SDLEngine::handleInternalEvents(const Event& event)
     }
     else if (event.type() == Event::KEYBOARD)
     {
-        const KeyboardEvent& ke = static_cast<const KeyboardEvent &>(event);
+        const KeyboardEvent &ke = static_cast<const KeyboardEvent &>(event);
         if (ke.isPressed(KeyCode::KEY_F11))
         {
             m_renderer->toggleFullscreen(m_window);

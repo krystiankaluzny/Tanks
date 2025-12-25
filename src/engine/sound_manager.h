@@ -6,7 +6,7 @@
 struct Sound
 {
     std::string file_path;
-    int volume; // 0 - 100
+    double volume; // 0 - 100
     bool loop;
 };
 
