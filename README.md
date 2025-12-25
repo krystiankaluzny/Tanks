@@ -83,10 +83,11 @@ Each field in the array should be one of following elements:
  - libsdl2-dev
  - libsdl2-ttf-dev
  - libsdl2-image-dev
+ - libsdl2-mixer-dev
 
 On Debian based systems you can run (**apt** can by replaced with **apt-get** or **aptitude**):
 
-`sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev` 
+`sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev` 
 
 ### Mac
 
@@ -96,6 +97,7 @@ On Debian based systems you can run (**apt** can by replaced with **apt-get** or
  - sdl2
  - sdl2_ttf
  - sdl2_image
+ - sdl2_mixer
 
 `brew install sdl2 sdl2_ttf sdl2_image`
 
