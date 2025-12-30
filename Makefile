@@ -30,7 +30,7 @@ else
 			LIBSPATH = -L/usr/local/lib
 		endif
 		LFLAGS = -O
-		CFLAGS = -c -Wall -Wno-narrowing -std=c++11
+		CFLAGS = -c -Wall -Wno-narrowing -std=c++17
 		LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 		APP_RESOURCES = font/prstartk.ttf textures/texture.png levels sounds
 		RESOURCES = $(APP_RESOURCES)
@@ -38,7 +38,7 @@ else
 		CC = g++
 		INCLUDEPATH =
 		LFLAGS = -O
-		CFLAGS = -c -Wall -Wno-narrowing -std=c++11
+		CFLAGS = -c -Wall -Wno-narrowing -std=c++17
 		LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 		APP_RESOURCES = font/prstartk.ttf textures/texture.png levels sounds
 		RESOURCES = $(APP_RESOURCES)
