@@ -25,6 +25,8 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
         if (player->score() > m_max_score)
             m_max_score = player->score();
     }
+
+    stopAllSounds();
 }
 
 void Scores::draw(Renderer &renderer)

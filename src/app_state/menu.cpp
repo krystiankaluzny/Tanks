@@ -2,6 +2,7 @@
 #include "../engine/engine.h"
 #include "../engine/renderer.h"
 #include "../appconfig.h"
+#include "../soundconfig.h"
 #include "../spriteconfig.h"
 #include "game/game.h"
 
@@ -17,7 +18,7 @@ Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_
 
     m_menu_item_height = AppConfig::tile_size.h * 2;
     m_first_menu_item_offset = {180, 120};
-    m_tank_menu_pointer_offset = {144, 110};
+    m_tank_menu_pointer_offset = {140, 110};
 
     m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1, AppConfig::player_1_keys);
     m_tank_menu_pointer->setDirection(D_RIGHT);
@@ -29,6 +30,8 @@ Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_
     m_tank_menu_pointer->clearFlag(Tank::TSF_SHIELD);
     m_tank_menu_pointer->setFlag(Tank::TSF_FAST_ANIMATION);
     m_finished = false;
+
+    stopAllSounds();
 }
 
 Menu::~Menu()
@@ -85,6 +88,7 @@ void Menu::eventProcess(const Event &event)
             }
 
             m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
+            playSound(SoundConfig::MENU_CHANGE_POS);
         }
         else if (ev.isPressed(KeyCode::KEY_DOWN))
         {
@@ -99,6 +103,7 @@ void Menu::eventProcess(const Event &event)
             }
 
             m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
+            playSound(SoundConfig::MENU_CHANGE_POS);
         }
         else if (ev.isPressed(KeyCode::KEY_SPACE) || ev.isPressed(KeyCode::KEY_RETURN))
         {

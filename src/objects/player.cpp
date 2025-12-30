@@ -1,5 +1,6 @@
 #include "player.h"
 #include "../appconfig.h"
+#include "../soundconfig.h"
 #include <iostream>
 
 Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys)
@@ -45,9 +46,14 @@ void Player::handleKeyboardEvent(const KeyboardEvent &ev)
 
 void Player::update(Uint32 dt)
 {
+    Player::update(dt, nullptr);
+}
+
+void Player::update(Uint32 dt, SoundManager *sound_manager)
+{
     Tank::update(dt);
 
-    if (!testFlag(TSF_FAST_ANIMATION))
+    if (testFlag(TSF_ALIVE) && !testFlag(TSF_FAST_ANIMATION))
     {
         if (m_key_state_up.pressed)
         {
@@ -80,6 +86,15 @@ void Player::update(Uint32 dt)
             fire();
             m_fire_time = 0;
         }
+    }
+
+    if (m_speed > 0.0)
+    {
+        soundMoving(sound_manager);
+    }
+    else
+    {
+        soundIdle(sound_manager);
     }
 
     m_fire_time += dt;
@@ -220,4 +235,20 @@ void Player::moveToCreatingState()
     creatingState();
     setFlag(TSF_SHIELD);
     resetKeyStates();
+}
+
+void Player::soundIdle(SoundManager *sound_manager)
+{
+    if (sound_manager == nullptr)
+        return;
+    sound_manager->stop(SoundConfig::PLAYER_MOVING);
+    sound_manager->play(SoundConfig::PLAYER_IDLE);
+}
+
+void Player::soundMoving(SoundManager *sound_manager)
+{
+    if (sound_manager == nullptr)
+        return;
+    sound_manager->stop(SoundConfig::PLAYER_IDLE);
+    sound_manager->play(SoundConfig::PLAYER_MOVING);
 }

@@ -6,8 +6,17 @@
 struct Sound
 {
     std::string file_path;
-    double volume; // 0 - 100
-    bool loop;
+    double volume;                 // 0 - 100
+    bool multi_instance;           // if true - it is allowed to play multiple instances of the sound simultaneously
+    bool highest_priority = false; // if true - this sound has highest priority when played (stops other sounds if needed)
+
+    inline bool operator==(const Sound &rhs) const
+    {
+        return file_path == rhs.file_path &&
+               volume == rhs.volume &&
+               multi_instance == rhs.multi_instance &&
+               highest_priority == rhs.highest_priority;
+    }
 };
 
 class SoundManager
@@ -20,6 +29,7 @@ public:
 
     virtual void play(const Sound &sound) = 0;
     virtual void stop(const Sound &sound) = 0;
+    virtual void stopAll() = 0;
 };
 
 #endif // ENGINE_SOUND_MANAGER_H

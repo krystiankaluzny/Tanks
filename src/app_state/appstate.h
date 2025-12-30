@@ -17,7 +17,10 @@ public:
     virtual AppState* nextState() = 0;
 
 protected:
-    AppState(InteractiveComponents m_interactive_components) : m_interactive_components(m_interactive_components) {}
+    AppState(InteractiveComponents m_interactive_components);
+    void playSound(const Sound &sound);
+    void stopAllSounds();
+
     InteractiveComponents m_interactive_components;
 };
 #endif // APPSTATE_H

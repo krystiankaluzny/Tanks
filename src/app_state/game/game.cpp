@@ -31,7 +31,7 @@ Game::Game(int players_count, InteractiveComponents interactive_components) : Ap
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
-    m_interactive_components.sound_manager->play(SoundConfig::STAGE_START_UP);
+    playSound(SoundConfig::STAGE_START_UP);
 }
 
 Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components) : AppState(interactive_components)
@@ -56,7 +56,7 @@ Game::Game(std::vector<Player *> players, int previous_level, InteractiveCompone
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
-    m_interactive_components.sound_manager->play(SoundConfig::STAGE_START_UP);
+    playSound(SoundConfig::STAGE_START_UP);
 }
 
 Game::~Game()
@@ -93,7 +93,7 @@ void Game::draw(Renderer &renderer)
     renderer.flush();
 }
 
-void Game::update(const UpdateState& updateState)
+void Game::update(const UpdateState &updateState)
 {
     Uint32 dt = updateState.delta_time;
 
@@ -103,7 +103,9 @@ void Game::update(const UpdateState& updateState)
     if (m_level_start_screen)
     {
         if (m_level_start_time > AppConfig::level_start_time)
+        {
             m_level_start_screen = false;
+        }
 
         m_level_start_time += dt;
     }
@@ -168,6 +170,11 @@ void Game::eventProcess(const Event &event)
         else if (event_key.isPressed(KEY_RETURN))
         {
             m_pause = !m_pause;
+            if (m_pause)
+            {
+                stopAllSounds();
+                playSound(SoundConfig::PAUSE);
+            }
         }
         else if (event_key.isPressed(KEY_ESCAPE))
         {
@@ -524,7 +531,7 @@ void Game::updateObjects(Uint32 dt)
     for (auto enemy : m_enemies)
         enemy->update(dt);
     for (auto player : m_players)
-        player->update(dt);
+        player->update(dt, m_interactive_components.sound_manager);
     for (auto bonus : m_bonuses)
         bonus->update(dt);
 
@@ -546,6 +553,7 @@ void Game::gameOver()
     m_level_environment->destroyEagle();
     m_game_over_message_position = AppConfig::map_rect.h;
     m_game_over = true;
+    playSound(SoundConfig::GAME_OVER);
 }
 
 void Game::calculateEnemiesTargets()

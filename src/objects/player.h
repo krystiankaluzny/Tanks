@@ -11,6 +11,7 @@ public:
 
     void handleKeyboardEvent(const KeyboardEvent &ev);
     void update(Uint32 dt) override;
+    void update(Uint32 dt, SoundManager* sound_manager);
     
     void respawn() override;
     void hit();
@@ -30,6 +31,9 @@ public:
 private:
     void resetKeyStates();
     void moveToCreatingState();
+    void soundIdle(SoundManager* sound_manager);
+    void soundMoving(SoundManager* sound_manager);
+
     unsigned m_score;
     int star_count;
     Uint32 m_fire_time;

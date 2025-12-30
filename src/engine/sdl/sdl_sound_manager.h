@@ -13,9 +13,12 @@ public:
     ~SDLSoundManager() override;
     void play(const Sound &sound) override;
     void stop(const Sound &sound) override;
+    void stopAll() override;
 
 private:
     Mix_Chunk *loadSound(const std::string &file_path);
+    bool canPlay(const Sound &sound);
+
     std::unordered_map<std::string, Mix_Chunk *> m_sound_cache;
 };
 
