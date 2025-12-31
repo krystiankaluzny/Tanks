@@ -7,7 +7,7 @@
 class Enemy : public Tank
 {
 public:
-    Enemy(double x, double y, SpriteType type, unsigned armor_count);
+    Enemy(double x, double y, SpriteType type, unsigned armor_count, InteractiveComponents interactive_components);
 
     void draw(Renderer &renderer) override;
     void update(Uint32 dt) override;
@@ -16,8 +16,6 @@ public:
 
     void hit();
     unsigned scoreForHit();
-
-    
 
     Point target_position;
 

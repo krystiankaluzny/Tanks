@@ -3,8 +3,8 @@
 #include "../soundconfig.h"
 #include <iostream>
 
-Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys)
-    : Tank(x, y, type)
+Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys, InteractiveComponents interactive_components)
+    : Tank(x, y, type, interactive_components)
 {
     m_speed = 0;
     m_lives_count = 10;
@@ -46,34 +46,29 @@ void Player::handleKeyboardEvent(const KeyboardEvent &ev)
 
 void Player::update(Uint32 dt)
 {
-    Player::update(dt, nullptr);
-}
-
-void Player::update(Uint32 dt, SoundManager *sound_manager)
-{
     Tank::update(dt);
 
-    if (testFlag(TSF_ALIVE) && !testFlag(TSF_FAST_ANIMATION))
+    if (testFlag(TSF_ALIVE) && !testFlag(TSF_PREVIEW))
     {
         if (m_key_state_up.pressed)
         {
             setDirection(D_UP);
-            m_speed = m_default_speed;
+            m_speed = m_max_speed;
         }
         else if (m_key_state_down.pressed)
         {
             setDirection(D_DOWN);
-            m_speed = m_default_speed;
+            m_speed = m_max_speed;
         }
         else if (m_key_state_left.pressed)
         {
             setDirection(D_LEFT);
-            m_speed = m_default_speed;
+            m_speed = m_max_speed;
         }
         else if (m_key_state_right.pressed)
         {
             setDirection(D_RIGHT);
-            m_speed = m_default_speed;
+            m_speed = m_max_speed;
         }
         else
         {
@@ -88,15 +83,6 @@ void Player::update(Uint32 dt, SoundManager *sound_manager)
         }
     }
 
-    if (m_speed > 0.0)
-    {
-        soundMoving(sound_manager);
-    }
-    else
-    {
-        soundIdle(sound_manager);
-    }
-
     m_fire_time += dt;
 
     if (testFlag(TSF_ALIVE))
@@ -104,7 +90,7 @@ void Player::update(Uint32 dt, SoundManager *sound_manager)
     else
         src_rect = m_sprite->rect.tiledOffset(0, m_current_frame + 2 * m_armor_count);
 
-    m_stop = false;
+    m_blocked = false;
 }
 
 void Player::respawn()
@@ -128,11 +114,13 @@ void Player::hit()
     if (star_count == 3)
     {
         changeStarCountBy(-1);
+        playSound(SoundConfig::PLAYER_HIT);
     }
     else
     {
         changeStarCountBy(-3);
         Tank::destroy();
+        playSound(SoundConfig::PLAYER_DESTROYED);
     }
 }
 
@@ -160,6 +148,8 @@ Bullet *Player::fire()
             b->increaseSpeed(1.3);
         if (star_count == 3)
             b->increaseDamage();
+
+        playSound(SoundConfig::PLAYER_FIRE);
     }
     return b;
 }
@@ -180,9 +170,9 @@ void Player::changeStarCountBy(int c)
         m_bullet_max_count = 2;
 
     if (star_count > 0)
-        m_default_speed = AppConfig::tank_default_speed * 1.3;
+        m_max_speed = AppConfig::tank_default_speed * 1.3;
     else
-        m_default_speed = AppConfig::tank_default_speed;
+        m_max_speed = AppConfig::tank_default_speed;
 }
 
 void Player::resetKeyStates()
@@ -207,10 +197,17 @@ unsigned Player::score() const
 void Player::addLife()
 {
     m_lives_count++;
+    playSound(SoundConfig::PLAYER_LEVEL_UP);
 }
+
 unsigned Player::lives() const
 {
     return m_lives_count;
+}
+
+double Player::speed() const
+{
+    return m_speed;
 }
 
 void Player::moveToCreatingState()
@@ -235,20 +232,4 @@ void Player::moveToCreatingState()
     creatingState();
     setFlag(TSF_SHIELD);
     resetKeyStates();
-}
-
-void Player::soundIdle(SoundManager *sound_manager)
-{
-    if (sound_manager == nullptr)
-        return;
-    sound_manager->stop(SoundConfig::PLAYER_MOVING);
-    sound_manager->play(SoundConfig::PLAYER_IDLE);
-}
-
-void Player::soundMoving(SoundManager *sound_manager)
-{
-    if (sound_manager == nullptr)
-        return;
-    sound_manager->stop(SoundConfig::PLAYER_IDLE);
-    sound_manager->play(SoundConfig::PLAYER_MOVING);
 }

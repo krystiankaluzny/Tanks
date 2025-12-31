@@ -4,12 +4,10 @@
 #include "data/event.h"
 #include "renderer.h"
 #include "sound_manager.h"
+#include "interactive_component.h"
 #include <functional>
 
-struct InteractiveComponents
-{
-    SoundManager *sound_manager;
-};
+
 
 struct UpdateState
 {

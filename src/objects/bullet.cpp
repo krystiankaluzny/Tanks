@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include "tank.h"
 #include "../appconfig.h"
 #include "../engine/data/data.h"
 
@@ -11,9 +12,13 @@ Bullet::Bullet(double x, double y)
     m_collide = false;
 }
 
-Bullet::Bullet(Point tank_center, Size tank_size, Direction direction, double speed)
-    : Object(tank_center.x, tank_center.y, ST_BULLET)
+Bullet::Bullet(Tank *owner, Direction direction, double speed)
+    : Object(0, 0, ST_BULLET)
 {
+    m_owner = owner;
+    Point tank_center = m_owner->center();
+    Size tank_size = {m_owner->dest_rect.w, m_owner->dest_rect.h};
+
     m_speed = speed;
     m_direction = direction;
     m_increased_damage = false;
@@ -146,4 +151,9 @@ bool Bullet::isColide() const
 Direction Bullet::direction() const
 {
     return m_direction;
+}
+
+Tank *Bullet::owner() const
+{
+    return m_owner;
 }

@@ -1,10 +1,14 @@
 #include "level_environment.h"
 #include "../../appconfig.h"
+#include "../../soundconfig.h"
 #include "../../objects/brick.h"
+#include "../../objects/player.h"
+
 #include <fstream>
 #include <stdexcept>
 
-LevelEnvironment::LevelEnvironment(int current_level)
+LevelEnvironment::LevelEnvironment(int current_level, InteractiveComponents interactive_components)
+    : InteractiveComponentsHolder(interactive_components)
 {
 
     m_loaded_level = (current_level - 1) % AppConfig::levels_count + 1;
@@ -161,6 +165,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     if (bullet->isColide())
         return;
 
+    bool is_player_bullet = (dynamic_cast<Player *>(bullet->owner()) != nullptr);
     int row_start, row_end;
     int column_start, column_end;
 
@@ -226,11 +231,19 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
                 {
                     Brick *brick = dynamic_cast<Brick *>(o);
                     brick->bulletHit(bullet->direction());
+                    if (is_player_bullet)
+                            playSound(SoundConfig::BULLET_HIT_BRICK);
                     if (brick->to_erase)
                     {
                         delete brick;
                         m_tile_objects.at(i).at(j) = nullptr;
                     }
+                }
+                else if (o->type == ST_STONE_WALL)
+                {
+                    // stone wall - do nothing, just play sound
+                    if (is_player_bullet)
+                        playSound(SoundConfig::BULLET_HIT_WALL);
                 }
                 // Do not stop bullet on bush, it allows to destroy all of bushes on the bullet way,
                 // when damages are increased
@@ -250,6 +263,8 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     if (br.x < 0 || br.y < 0 || br.x + br.w > AppConfig::map_rect.w || br.y + br.h > AppConfig::map_rect.h)
     {
         bullet->destroy();
+        if (is_player_bullet)
+            playSound(SoundConfig::BULLET_HIT_WALL);
     }
 }
 
@@ -265,6 +280,7 @@ bool LevelEnvironment::checkCollisionBulletWithEagle(Bullet *bullet)
     {
         bullet->destroy();
         m_eagle->destroy();
+        playSound(SoundConfig::EAGLE_DESTROYED);
         return true;
     }
     return false;

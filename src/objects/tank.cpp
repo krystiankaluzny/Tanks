@@ -1,14 +1,16 @@
 #include "tank.h"
 #include "../appconfig.h"
+#include "../soundconfig.h"
 #include <algorithm>
 
-Tank::Tank(double x, double y, SpriteType type)
-    : Object(x, y, type)
+Tank::Tank(double x, double y, SpriteType type, InteractiveComponents interactive_components)
+    : Object(x, y, type),
+      InteractiveComponentsHolder(interactive_components)
 {
     m_moving_direction = D_UP;
     m_tank_direction = D_UP;
     m_slip_time = 0;
-    m_default_speed = AppConfig::tank_default_speed;
+    m_max_speed = AppConfig::tank_default_speed;
     m_speed = 0.0;
     m_shield = nullptr;
     m_boat = nullptr;
@@ -66,7 +68,7 @@ void Tank::update(Uint32 dt)
 
     if (testFlag(TSF_ALIVE))
     {
-        if (!m_stop && !testFlag(TSF_FROZEN))
+        if (!m_blocked && !testFlag(TSF_FROZEN))
         {
             switch (m_moving_direction)
             {
@@ -127,10 +129,10 @@ void Tank::update(Uint32 dt)
             clearFlag(TSF_FROZEN);
     }
 
-    if (m_sprite->frames_count > 1 && (testFlag(TSF_ALIVE) && !testFlag(TSF_FAST_ANIMATION) ? m_speed > 0 : true))
+    if (m_sprite->frames_count > 1 && (testFlag(TSF_ALIVE) && !testFlag(TSF_PREVIEW) ? m_speed > 0 : true))
     {
         m_frame_display_time += dt;
-        if (m_frame_display_time > (testFlag(TSF_FAST_ANIMATION) ? m_sprite->frame_duration / 2 : m_sprite->frame_duration))
+        if (m_frame_display_time > (testFlag(TSF_PREVIEW) ? m_sprite->frame_duration / 2 : m_sprite->frame_duration))
         {
             m_frame_display_time = 0;
             m_current_frame++;
@@ -180,12 +182,9 @@ Bullet *Tank::fire()
         return nullptr;
     if (bullets.size() < m_bullet_max_count)
     {
-        Point tank_center = center();
-        Size tank_size = {dest_rect.w, dest_rect.h};
-
         Direction tmp_d = (testFlag(TSF_ON_ICE) ? m_tank_direction : m_moving_direction);
 
-        Bullet *bullet = new Bullet(tank_center, tank_size, tmp_d, AppConfig::bullet_default_speed);
+        Bullet *bullet = new Bullet(this, tmp_d, AppConfig::bullet_default_speed);
         bullets.push_back(bullet);
 
         bullet->update(0); // recaulculate dest_rect
@@ -233,7 +232,7 @@ void Tank::setDirection(Direction d)
     if (testFlag(TSF_ON_ICE))
     {
         m_tank_direction = d;
-        if (m_speed == 0.0 || m_stop || m_slip_time >= AppConfig::slip_time)
+        if (m_speed == 0.0 || m_blocked || m_slip_time >= AppConfig::slip_time)
             m_moving_direction = d;
         if (m_slip_time != 0 && m_moving_direction == m_tank_direction)
             m_slip_time = 0;
@@ -244,7 +243,7 @@ void Tank::setDirection(Direction d)
         m_moving_direction = d;
     }
 
-    if (!m_stop)
+    if (!m_blocked)
     {
         double epsilon = 5;
         int pos_x_tile, pos_y_tile;
@@ -277,7 +276,7 @@ void Tank::collide(Rect &intersect_rect)
         if ((m_moving_direction == D_UP && intersect_rect.y <= collision_rect.y) ||
             (m_moving_direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
         {
-            m_stop = true;
+            m_blocked = true;
             m_slip_time = 0;
         }
     }
@@ -286,7 +285,7 @@ void Tank::collide(Rect &intersect_rect)
         if ((m_moving_direction == D_LEFT && intersect_rect.x <= collision_rect.x) ||
             (m_moving_direction == D_RIGHT && (intersect_rect.x + intersect_rect.w) >= (collision_rect.x + collision_rect.w)))
         {
-            m_stop = true;
+            m_blocked = true;
             m_slip_time = 0;
         }
     }
@@ -297,7 +296,7 @@ void Tank::destroy()
     if (!testFlag(TSF_ALIVE))
         return;
 
-    m_stop = true;
+    m_blocked = true;
     m_flags = TSF_DESTROYED;
 
     m_frame_display_time = 0;
@@ -387,7 +386,7 @@ void Tank::creatingState()
 {
     m_sprite = &SpriteConfig::getInstance().getSpriteData(ST_CREATE);
     m_speed = 0.0;
-    m_stop = false;
+    m_blocked = false;
     m_slip_time = 0;
 
     clearFlag(TSF_SHIELD);
@@ -408,9 +407,9 @@ bool Tank::alive() const
     return testFlag(TSF_ALIVE) && m_lives_count > 0 && m_armor_count > 0;
 }
 
-bool Tank::stoped() const
+bool Tank::blocked() const
 {
-    return m_stop;
+    return m_blocked;
 }
 
 Direction Tank::movingDirection() const

@@ -6,9 +6,10 @@
 struct Sound
 {
     std::string file_path;
-    double volume;                 // 0 - 100
-    bool multi_instance;           // if true - it is allowed to play multiple instances of the sound simultaneously
-    bool highest_priority = false; // if true - this sound has highest priority when played (stops other sounds if needed)
+    double volume;                  // 0 - 100
+    double overlaping_factor = 1.0; // factor to reduce volume if multiple instances are played simultaneously
+    bool multi_instance;            // if true - it is allowed to play multiple instances of the sound simultaneously
+    bool highest_priority = false;  // if true - this sound has highest priority when played (stops other sounds if needed)
 
     inline bool operator==(const Sound &rhs) const
     {

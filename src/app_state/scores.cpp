@@ -20,7 +20,7 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
         player->to_erase = false;
 
         player->creatingState();
-        player->setFlag(Tank::TSF_FAST_ANIMATION);
+        player->setFlag(Tank::TSF_PREVIEW);
 
         if (player->score() > m_max_score)
             m_max_score = player->score();

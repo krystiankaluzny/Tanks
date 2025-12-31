@@ -21,7 +21,7 @@ Game::Game(int players_count, InteractiveComponents interactive_components) : Ap
     m_pause = false;
     m_level_end_time = 0;
     m_enemy_respown_position = 0;
-    m_level_environment = new LevelEnvironment(m_current_level);
+    m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
 
     m_level_start_screen = true;
     m_level_start_time = 0;
@@ -46,7 +46,7 @@ Game::Game(std::vector<Player *> players, int previous_level, InteractiveCompone
     m_pause = false;
     m_level_end_time = 0;
     m_enemy_respown_position = 0;
-    m_level_environment = new LevelEnvironment(m_current_level);
+    m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
 
     m_level_start_screen = true;
     m_level_start_time = 0;
@@ -228,16 +228,18 @@ void Game::createPlayersIfNeeded()
 {
     if (m_players.empty())
     {
+        auto p1_starting_point = AppConfig::player_starting_point.at(0);
+        auto p2_starting_point = AppConfig::player_starting_point.at(1);
         if (m_players_count == 2)
         {
-            Player *p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1, AppConfig::player_1_keys);
-            Player *p2 = new Player(AppConfig::player_starting_point.at(1).x, AppConfig::player_starting_point.at(1).y, ST_PLAYER_2, AppConfig::player_2_keys);
+            Player *p1 = new Player(p1_starting_point.x, p1_starting_point.y, ST_PLAYER_1, AppConfig::player_1_keys, m_interactive_components);
+            Player *p2 = new Player(p2_starting_point.x, p2_starting_point.y, ST_PLAYER_2, AppConfig::player_2_keys, m_interactive_components);
             m_players.push_back(p1);
             m_players.push_back(p2);
         }
         else
         {
-            Player *p1 = new Player(AppConfig::player_starting_point.at(0).x, AppConfig::player_starting_point.at(0).y, ST_PLAYER_1, AppConfig::player_1_keys);
+            Player *p1 = new Player(p1_starting_point.x, p1_starting_point.y, ST_PLAYER_1, AppConfig::player_1_keys, m_interactive_components);
             m_players.push_back(p1);
         }
     }
@@ -523,6 +525,15 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
             player->setFlag(Tank::TSF_BOAT);
         }
         bonus->to_erase = true;
+
+        if (bonus->type == ST_BONUS_TANK)
+        {
+            playSound(SoundConfig::PLAYER_LEVEL_UP);
+        }
+        else
+        {
+            playSound(SoundConfig::BONUS_OBTAIN);
+        }
     }
 }
 
@@ -531,9 +542,25 @@ void Game::updateObjects(Uint32 dt)
     for (auto enemy : m_enemies)
         enemy->update(dt);
     for (auto player : m_players)
-        player->update(dt, m_interactive_components.sound_manager);
+        player->update(dt);
     for (auto bonus : m_bonuses)
         bonus->update(dt);
+
+    bool player_tried_to_move = false;
+    for (auto player : m_players)
+        if(player->speed() > 0.0)
+            player_tried_to_move = true;
+
+    if(player_tried_to_move)
+    {
+        stopSound(SoundConfig::PLAYER_IDLE);
+        playSound(SoundConfig::PLAYER_MOVING);
+    }
+    else
+    {
+        stopSound(SoundConfig::PLAYER_MOVING);
+        playSound(SoundConfig::PLAYER_IDLE);
+    }
 
     m_level_environment->update(dt);
 
@@ -630,9 +657,11 @@ void Game::generateEnemyIfPossible(Uint32 dt)
     else
         armor_count = 4;
 
-    Enemy *e = new Enemy(AppConfig::enemy_starting_point.at(m_enemy_respown_position).x, AppConfig::enemy_starting_point.at(m_enemy_respown_position).y, type, armor_count);
+    auto starting_points = AppConfig::enemy_starting_point;
+    auto starting_point = starting_points.at(m_enemy_respown_position);
+    Enemy *e = new Enemy(starting_point.x, starting_point.y, type, armor_count, m_interactive_components);
     m_enemy_respown_position++;
-    if (m_enemy_respown_position >= AppConfig::enemy_starting_point.size())
+    if (m_enemy_respown_position >= starting_points.size())
         m_enemy_respown_position = 0;
 
     p = static_cast<float>(rand()) / RAND_MAX;
@@ -651,6 +680,8 @@ void Game::generateBonus()
         b->pos_y = rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 1 * AppConfig::tile_size.h);
         b->update(0);
     } while (m_level_environment->checkCollisionWithEagle(b->collision_rect));
+
+    playSound(SoundConfig::BONUS_APPEAR);
 
     m_bonuses.push_back(b);
 }

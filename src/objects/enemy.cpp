@@ -1,11 +1,12 @@
 #include "enemy.h"
 #include "../appconfig.h"
+#include "../soundconfig.h"
 #include <stdlib.h>
 #include <ctime>
 #include <iostream>
 
-Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count)
-    : Tank(x, y, type)
+Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count, InteractiveComponents interactive_components)
+    : Tank(x, y, type, interactive_components)
 {
     m_moving_direction = D_DOWN;
     m_direction_time = 0;
@@ -25,9 +26,9 @@ Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count)
     m_frozen_time = 0;
 
     if (type == ST_TANK_B)
-        m_default_speed = AppConfig::tank_default_speed * 1.3;
+        m_max_speed = AppConfig::tank_default_speed * 1.3;
     else
-        m_default_speed = AppConfig::tank_default_speed;
+        m_max_speed = AppConfig::tank_default_speed;
 
     target_position = {-1, -1};
 
@@ -89,7 +90,7 @@ void Enemy::update(Uint32 dt)
     {
         m_speed_time = 0;
         m_try_to_go_time = rand() % 300;
-        m_speed = m_default_speed;
+        m_speed = m_max_speed;
     }
     if (m_fire_time > m_reload_time)
     {
@@ -100,7 +101,7 @@ void Enemy::update(Uint32 dt)
             int dx = target_position.x - (dest_rect.x + dest_rect.w / 2);
             int dy = target_position.y - (dest_rect.y + dest_rect.h / 2);
 
-            if (m_stop)
+            if (m_blocked)
                 fire();
             else
                 switch (m_moving_direction)
@@ -135,7 +136,7 @@ void Enemy::update(Uint32 dt)
         }
     }
 
-    m_stop = false;
+    m_blocked = false;
 }
 
 Bullet *Enemy::fire()
@@ -155,11 +156,12 @@ void Enemy::hit()
     {
         m_armor_count = 0;
         Tank::destroy();
+        playSound(SoundConfig::ENEMY_DESTROYED);
     }
     else if (m_armor_count > 1)
     {
-        //    clearFlag(TSF_BONUS); //możliwe jednokrotne wypadnięcie bonusu
         m_armor_count--;
+        playSound(SoundConfig::ENEMY_HIT);
     }
 }
 

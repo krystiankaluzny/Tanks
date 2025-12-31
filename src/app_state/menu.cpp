@@ -20,7 +20,7 @@ Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_
     m_first_menu_item_offset = {180, 120};
     m_tank_menu_pointer_offset = {140, 110};
 
-    m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1, AppConfig::player_1_keys);
+    m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1, AppConfig::player_1_keys, m_interactive_components);
     m_tank_menu_pointer->setDirection(D_RIGHT);
     m_tank_menu_pointer->pos_x = m_tank_menu_pointer_offset.x;
     m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
@@ -28,7 +28,7 @@ Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_
     m_tank_menu_pointer->update(0);
     m_tank_menu_pointer->clearFlag(Tank::TSF_ALIVE);
     m_tank_menu_pointer->clearFlag(Tank::TSF_SHIELD);
-    m_tank_menu_pointer->setFlag(Tank::TSF_FAST_ANIMATION);
+    m_tank_menu_pointer->setFlag(Tank::TSF_PREVIEW);
     m_finished = false;
 
     stopAllSounds();

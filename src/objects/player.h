@@ -7,11 +7,10 @@
 class Player : public Tank
 {
 public:
-    Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys);
+    Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys, InteractiveComponents interactive_components);
 
     void handleKeyboardEvent(const KeyboardEvent &ev);
     void update(Uint32 dt) override;
-    void update(Uint32 dt, SoundManager* sound_manager);
     
     void respawn() override;
     void hit();
@@ -28,11 +27,11 @@ public:
     void addLife();
     unsigned lives() const;
 
+    double speed() const;
+
 private:
     void resetKeyStates();
     void moveToCreatingState();
-    void soundIdle(SoundManager* sound_manager);
-    void soundMoving(SoundManager* sound_manager);
 
     unsigned m_score;
     int star_count;

@@ -8,10 +8,10 @@
 #include <vector>
 
 
-class LevelEnvironment
+class LevelEnvironment : public InteractiveComponentsHolder
 {
 public:
-    LevelEnvironment(int current_level);
+    LevelEnvironment(int current_level, InteractiveComponents interactive_components);
     ~LevelEnvironment();
 
     void drawFirstLayer(Renderer &renderer);

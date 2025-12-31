@@ -8,7 +8,7 @@
 
 typedef unsigned TankStateFlags;
 
-class Tank : public Object
+class Tank : public Object,  protected InteractiveComponentsHolder
 {
 public:
     enum TankStateFlag
@@ -23,10 +23,10 @@ public:
         TSF_CREATING = 1 << 7,
         TSF_ALIVE = 1 << 8,
 
-        TSF_FAST_ANIMATION = 1 << 9
+        TSF_PREVIEW = 1 << 9
     };
 
-    Tank(double x, double y, SpriteType type);
+    Tank(double x, double y, SpriteType type, InteractiveComponents interactive_components);
     virtual ~Tank();
 
     void draw(Renderer &renderer) override;
@@ -46,15 +46,15 @@ public:
 
     Point center() const;
     bool alive() const;
-    bool stoped() const;
+    bool blocked() const;
     Direction movingDirection() const;
 
     std::vector<Bullet *> bullets;
 
 protected:
-    double m_default_speed;
+    double m_max_speed;
     double m_speed;
-    bool m_stop;
+    bool m_blocked;
 
     Direction m_tank_direction;
     Direction m_moving_direction;
