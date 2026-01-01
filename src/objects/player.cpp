@@ -231,4 +231,7 @@ void Player::moveToCreatingState()
     creatingState();
     setFlag(TSF_SHIELD);
     resetKeyStates();
+
+    for(auto b : bullets)
+        b->to_erase = true;
 }
