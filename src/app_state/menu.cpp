@@ -88,7 +88,7 @@ void Menu::eventProcess(const Event &event)
             }
 
             m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
-            playSound(SoundConfig::MENU_CHANGE_POS);
+            playSound(SoundConfig::MENU_ITEM_SELECTED);
         }
         else if (ev.isPressed(KeyCode::KEY_DOWN))
         {
@@ -103,7 +103,7 @@ void Menu::eventProcess(const Event &event)
             }
 
             m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
-            playSound(SoundConfig::MENU_CHANGE_POS);
+            playSound(SoundConfig::MENU_ITEM_SELECTED);
         }
         else if (ev.isPressed(KeyCode::KEY_SPACE) || ev.isPressed(KeyCode::KEY_RETURN))
         {

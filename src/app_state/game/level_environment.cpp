@@ -243,7 +243,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
                 {
                     // stone wall - do nothing, just play sound
                     if (is_player_bullet)
-                        playSound(SoundConfig::BULLET_HIT_WALL);
+                        playSound(SoundConfig::BULLET_HIT_STONE);
                 }
                 // Do not stop bullet on bush, it allows to destroy all of bushes on the bullet way,
                 // when damages are increased
@@ -264,7 +264,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     {
         bullet->destroy();
         if (is_player_bullet)
-            playSound(SoundConfig::BULLET_HIT_WALL);
+            playSound(SoundConfig::BULLET_HIT_MAP_BOUNDRIES);
     }
 }
 

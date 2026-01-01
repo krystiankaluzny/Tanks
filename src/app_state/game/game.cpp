@@ -528,11 +528,11 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
 
         if (bonus->type == ST_BONUS_TANK)
         {
-            playSound(SoundConfig::PLAYER_LEVEL_UP);
+            playSound(SoundConfig::PLAYER_LIFE_UP);
         }
         else
         {
-            playSound(SoundConfig::BONUS_OBTAIN);
+            playSound(SoundConfig::BONUS_OBTAINED);
         }
     }
 }
@@ -681,7 +681,7 @@ void Game::generateBonus()
         b->update(0);
     } while (m_level_environment->checkCollisionWithEagle(b->collision_rect));
 
-    playSound(SoundConfig::BONUS_APPEAR);
+    playSound(SoundConfig::BONUS_APPEARED);
 
     m_bonuses.push_back(b);
 }

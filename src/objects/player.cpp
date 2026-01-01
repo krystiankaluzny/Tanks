@@ -149,7 +149,7 @@ Bullet *Player::fire()
         if (star_count == 3)
             b->increaseDamage();
 
-        playSound(SoundConfig::PLAYER_FIRE);
+        playSound(SoundConfig::PLAYER_FIRED);
     }
     return b;
 }
@@ -197,7 +197,6 @@ unsigned Player::score() const
 void Player::addLife()
 {
     m_lives_count++;
-    playSound(SoundConfig::PLAYER_LEVEL_UP);
 }
 
 unsigned Player::lives() const
