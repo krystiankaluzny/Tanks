@@ -39,6 +39,7 @@ class SDLSoundManager : public SoundManager
 public:
     SDLSoundManager();
     ~SDLSoundManager() override;
+    void preload(const Sound &sound) override;
     void play(const Sound &sound) override;
     void stop(const Sound &sound) override;
     void stopAll() override;

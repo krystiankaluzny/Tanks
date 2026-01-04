@@ -17,6 +17,10 @@ public:
     virtual ~InteractiveComponentsHolder() = default;
 
 protected:
+    void preloadSound(const Sound &sound)
+    {
+        m_interactive_components.sound_manager->preload(sound);
+    }
     void playSound(const Sound &sound)
     {
         m_interactive_components.sound_manager->play(sound);

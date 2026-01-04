@@ -4,7 +4,8 @@
 
 #define MIX_CHANNEL_MONO 1
 #define MIX_CHANNEL_STEREO 2
-#define MIX_CHUNK_SIZE 2048
+#define MIX_CHUNK_SIZE_2K 2048
+#define MIX_CHUNK_SIZE_1K 1024
 
 std::unordered_map<int, std::pair<Sound, Mix_Chunk *>> m_current_channel_chunk_cache;
 
@@ -15,7 +16,7 @@ void onChannelFinished(int channel)
 
 SDLSoundManager::SDLSoundManager()
 {
-    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_CHANNEL_STEREO, MIX_CHUNK_SIZE) < 0)
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_CHANNEL_MONO, MIX_CHUNK_SIZE_1K) < 0)
     {
         throw Error("SDL_mixer could not initialize!", Mix_GetError());
     }
@@ -33,6 +34,11 @@ SDLSoundManager::~SDLSoundManager()
     }
     m_sound_cache.clear();
     Mix_CloseAudio();
+}
+
+void SDLSoundManager::preload(const Sound &sound)
+{
+    loadSound(sound);
 }
 
 void SDLSoundManager::play(const Sound &sound)
@@ -73,9 +79,6 @@ void SDLSoundManager::play(const Sound &sound)
     }
 
     Mix_Chunk *chunk = loadSound(sound_to_load);
-
-    if (chunk == nullptr)
-        return;
 
     int loops = 0;
     int channel = Mix_PlayChannel(-1, chunk, loops);

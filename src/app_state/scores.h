@@ -26,6 +26,7 @@ private:
     bool m_score_counter_run;
     unsigned m_max_score;
     Uint32 m_show_time;
+    Uint32 m_score_count_time;
     bool m_finished;
 };
 

@@ -26,7 +26,7 @@ namespace SoundConfig
     const Sound MENU_ITEM_SELECTED{"sounds/menu_item_selected.wav", 100.0, 1.0, true};
 
     const Sound PLAYER_DESTROYED{"sounds/player_destroyed.wav", 100.0, 1.0, true};
-    const Sound PLAYER_FIRED{"sounds/player_fired.wav", 100.0, 1.0, true};
+    const Sound PLAYER_FIRED{"sounds/player_fired.wav", 80.0, 1.0, true};
     const Sound PLAYER_HIT{"sounds/player_hit.wav", 100.0, 1.0, true};
     const Sound PLAYER_IDLE{"sounds/player_idle.wav", 50.0, 1.0, false};
     const Sound PLAYER_LIFE_UP{"sounds/player_life_up.wav", 100.0, 1.0, true};
@@ -34,8 +34,8 @@ namespace SoundConfig
     // const Sound PLAYER_SLIDING{"sounds/player_sliding.wav", 100.0, true};
 
 
-    // const Sound SCORE_BONUS_POINTS_RECEIVED {"sounds/score_bonus_points_received.wav", 100.0, true};
-    // const Sound SCORE_POINT_COUNTED {"sounds/score_point_counted.wav", 100.0, true};
+    // const Sound SCORE_BONUS_POINTS_RECEIVED {"sounds/score_bonus_points_received.wav", 100.0, 1.0, true};
+    const Sound SCORE_POINT_COUNTED {"sounds/score_point_counted.wav", 100.0, 1.0, true};
 }
 
 #endif

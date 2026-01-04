@@ -2,6 +2,7 @@
 #include "../engine/engine.h"
 #include "../engine/data/data.h"
 #include "../appconfig.h"
+#include "../soundconfig.h"
 #include "game/game.h"
 #include "menu.h"
 
@@ -12,6 +13,7 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
     m_level = level;
     m_game_over = game_over;
     m_show_time = 0;
+    m_score_count_time = 0;
     m_score_counter_run = true;
     m_score_counter = 0;
     m_max_score = 0;
@@ -65,29 +67,40 @@ void Scores::draw(Renderer &renderer)
 void Scores::update(const UpdateState &updateState)
 {
     Uint32 dt = updateState.delta_time;
-    if (m_score_counter > (1 << 30) || m_score_counter > m_max_score)
+    m_show_time += dt;
+    m_score_count_time += dt;
+
+    if (m_score_counter > (1 << 30) || m_score_counter >= m_max_score)
     {
-        m_show_time += dt;
         m_score_counter_run = false;
     }
+
     if (m_show_time > AppConfig::score_show_time)
         m_finished = true;
 
     if (m_score_counter_run)
     {
-        if (m_score_counter < 20)
-            m_score_counter++;
-        else if (m_score_counter < 200)
-            m_score_counter += 10;
-        else if (m_score_counter < 2000)
-            m_score_counter += 100;
-        else if (m_score_counter < 20000)
-            m_score_counter += 1000;
-        else if (m_score_counter < 200000)
-            m_score_counter += 10000;
-        else
-            m_score_counter += 100000;
+        if (m_score_count_time > AppConfig::score_count_time)
+        {
+            if (m_score_counter < 10)
+                m_score_counter++;
+            else if (m_score_counter < 100)
+                m_score_counter += 10;
+            else if (m_score_counter < 1000)
+                m_score_counter += 100;
+            else if (m_score_counter < 10000)
+                m_score_counter += 1000;
+            else if (m_score_counter < 100000)
+                m_score_counter += 10000;
+            else
+                m_score_counter += 100000;
+
+            playSound(SoundConfig::SCORE_POINT_COUNTED);
+
+            m_score_count_time = 0;
+        }
     }
+
     for (auto player : m_players)
     {
         player->setDirection(D_RIGHT);
@@ -103,7 +116,7 @@ void Scores::eventProcess(const Event &event)
 
         if (ev.isPressed(KeyCode::KEY_RETURN))
         {
-            if (m_score_counter > (1 << 30))
+            if (m_score_counter > (1 << 30) || m_score_counter_run == false)
                 m_finished = true;
             else
                 m_score_counter = (1 << 30) + 1;

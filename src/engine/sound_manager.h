@@ -28,6 +28,7 @@ public:
     SoundManager() = default;
     virtual ~SoundManager() = default;
 
+    virtual void preload(const Sound &sound) = 0;
     virtual void play(const Sound &sound) = 0;
     virtual void stop(const Sound &sound) = 0;
     virtual void stopAll() = 0;

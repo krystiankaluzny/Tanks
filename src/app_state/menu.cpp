@@ -32,6 +32,8 @@ Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_
     m_finished = false;
 
     stopAllSounds();
+    //Hack to fill sound device buffer and avoid sound delay on first play
+    playSound(SoundConfig::MENU_ITEM_SELECTED);
 }
 
 Menu::~Menu()

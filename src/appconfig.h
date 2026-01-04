@@ -46,6 +46,7 @@ public:
     static unsigned new_enemy_cooldown;
     static unsigned player_bullet_max_count;
     static unsigned score_show_time;
+    static unsigned score_count_time;
     static unsigned bonus_show_time;
     static unsigned tank_shield_time;
     static unsigned tank_frozen_time;
