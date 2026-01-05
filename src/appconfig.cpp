@@ -70,8 +70,6 @@ unsigned AppConfig::enemies_max_count_on_map = 4;
 unsigned AppConfig::levels_count = 35;
 unsigned AppConfig::new_enemy_cooldown = 500;
 unsigned AppConfig::player_bullet_max_count = 2;
-unsigned AppConfig::score_show_time = 10000;
-unsigned AppConfig::score_count_time = 100;
 unsigned AppConfig::bonus_show_time = 10000;
 unsigned AppConfig::tank_shield_time = 10000;
 unsigned AppConfig::tank_frozen_time = 8000;
@@ -83,3 +81,7 @@ unsigned AppConfig::player_reload_time = 120;
 double AppConfig::game_over_message_speed = 0.13;
 double AppConfig::tank_default_speed = 0.08;
 double AppConfig::bullet_default_speed = 0.23;
+
+
+unsigned AppConfig::Score::single_count_time = 100;
+unsigned AppConfig::Score::idle_time = 5000;

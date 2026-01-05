@@ -2,32 +2,51 @@
 #define SCORES_H
 #include "appstate.h"
 #include "../objects/player.h"
-
+#include "../engine/state_machine/sub_state.h"
 #include <vector>
 #include <string>
 
 class Scores : public AppState
 {
 public:
-    Scores(std::vector<Player*> players, int level, bool game_over, InteractiveComponents interactive_components);
+    Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components, StateMachine *parent_state_machine);
     ~Scores() override = default;
 
     void draw(Renderer &renderer) override;
-    void update(const UpdateState& updateState) override;
+    void update(const UpdateState &updateState) override;
     void eventProcess(const Event &event) override;
 
-    AppState* nextState() override;
-
 private:
-    std::vector<Player*> m_players;
+    void transiteToNextState();
+
+    std::vector<Player *> m_players;
     int m_level;
     bool m_game_over;
     unsigned m_score_counter;
-    bool m_score_counter_run;
     unsigned m_max_score;
-    Uint32 m_show_time;
-    Uint32 m_score_count_time;
-    bool m_finished;
+
+    // Sub-states for score counting and idle state after counting
+    class CountingState : public SubState<Scores>
+    {
+    public:
+        CountingState(Scores *ps);
+        void update(const UpdateState &updateState) override;
+        void eventProcess(const Event &event) override;
+
+    private:
+        Uint32 m_single_score_count_time;
+    };
+
+    class IdleState : public SubState<Scores>
+    {
+    public:
+        IdleState(Scores *ps);
+        void update(const UpdateState &updateState) override;
+        void eventProcess(const Event &event) override;
+
+    private:
+        Uint32 m_idle_time;
+    };
 };
 
 #endif // SCORES_H

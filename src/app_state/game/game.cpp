@@ -14,7 +14,8 @@
 #include <iostream>
 #include <cmath>
 
-Game::Game(int players_count, InteractiveComponents interactive_components) : AppState(interactive_components)
+Game::Game(int players_count, InteractiveComponents interactive_components, StateMachine *parent_state_machine)
+    : AppState(interactive_components, parent_state_machine)
 {
     m_current_level = 1;
     m_players_count = players_count;
@@ -26,7 +27,6 @@ Game::Game(int players_count, InteractiveComponents interactive_components) : Ap
     m_level_start_screen = true;
     m_level_start_time = 0;
     m_game_over = false;
-    m_finished = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 
@@ -34,7 +34,8 @@ Game::Game(int players_count, InteractiveComponents interactive_components) : Ap
     playSound(SoundConfig::STAGE_START_UP);
 }
 
-Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components) : AppState(interactive_components)
+Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *parent_state_machine)
+    : AppState(interactive_components, parent_state_machine)
 {
     m_current_level = previous_level + 1;
     m_players = players;
@@ -51,7 +52,6 @@ Game::Game(std::vector<Player *> players, int previous_level, InteractiveCompone
     m_level_start_screen = true;
     m_level_start_time = 0;
     m_game_over = false;
-    m_finished = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 
@@ -123,7 +123,10 @@ void Game::update(const UpdateState &updateState)
         {
             m_level_end_time += dt;
             if (m_level_end_time > AppConfig::level_end_time)
-                m_finished = true;
+            {
+                transiteToNextState();
+                return;
+            }
         }
 
         if (m_players.empty() && !m_game_over)
@@ -134,9 +137,14 @@ void Game::update(const UpdateState &updateState)
         if (m_game_over)
         {
             if (m_game_over_message_position < 10)
-                m_finished = true;
+            {
+                transiteToNextState();
+                return;
+            }
             else
+            {
                 m_game_over_message_position -= AppConfig::game_over_message_speed * dt;
+            }
         }
     }
 }
@@ -149,25 +157,25 @@ void Game::eventProcess(const Event &event)
         if (event_key.isPressed(KEY_N))
         {
             m_enemies_to_kill_count = 0;
-            m_finished = true;
+            transiteToNextState();
         }
         else if (event_key.isPressed(KEY_B))
         {
             m_enemies_to_kill_count = 0;
             m_current_level -= 2;
-            m_finished = true;
+            transiteToNextState();
         }
         else if (event_key.isPressed(KEY_B))
         {
             m_enemies_to_kill_count = 0;
             m_current_level -= 2;
-            m_finished = true;
+            transiteToNextState();
         }
         else if (event_key.isPressed(KEY_T))
         {
             m_show_enemies_targets = !m_show_enemies_targets;
         }
-        else if (event_key.isPressed(KEY_RETURN))
+        else if (event_key.isPressed(KEY_RETURN) && !m_game_over)
         {
             m_pause = !m_pause;
             if (m_pause)
@@ -178,10 +186,10 @@ void Game::eventProcess(const Event &event)
         }
         else if (event_key.isPressed(KEY_ESCAPE))
         {
-            m_finished = true;
+            transiteToNextState();
         }
 
-        if (!m_pause)
+        if (!m_pause && !m_game_over)
         {
             for (auto player : m_players)
                 player->handleKeyboardEvent(event_key);
@@ -189,21 +197,19 @@ void Game::eventProcess(const Event &event)
     }
 }
 
-AppState *Game::nextState()
+void Game::transiteToNextState()
 {
-    if (!m_finished)
-        return this;
-
     if (m_game_over || m_enemies_to_kill_count <= 0)
     {
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player *p)
                                        {m_killed_players.push_back(p); return true; }),
                         m_players.end());
-        Scores *scores = new Scores(m_killed_players, m_current_level, m_game_over, m_interactive_components);
-        return scores;
+        transiteTo(new Scores(m_killed_players, m_current_level, m_game_over, m_interactive_components, m_state_machine));
     }
-    Menu *m = new Menu(m_interactive_components);
-    return m;
+    else
+    {
+        transiteTo(new Menu(m_interactive_components, m_state_machine));
+    }
 }
 
 void Game::clearAll()
@@ -548,10 +554,10 @@ void Game::updateObjects(Uint32 dt)
 
     bool player_tried_to_move = false;
     for (auto player : m_players)
-        if(player->speed() > 0.0)
+        if (player->speed() > 0.0)
             player_tried_to_move = true;
 
-    if(player_tried_to_move)
+    if (player_tried_to_move)
     {
         stopSound(SoundConfig::PLAYER_IDLE);
         playSound(SoundConfig::PLAYER_MOVING);

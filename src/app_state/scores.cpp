@@ -6,15 +6,13 @@
 #include "game/game.h"
 #include "menu.h"
 
-Scores::Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components)
-    : AppState(interactive_components)
+Scores::Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components, StateMachine *parent_state_machine)
+    : AppState(interactive_components, parent_state_machine)
 {
     m_players = players;
     m_level = level;
     m_game_over = game_over;
-    m_show_time = 0;
-    m_score_count_time = 0;
-    m_score_counter_run = true;
+
     m_score_counter = 0;
     m_max_score = 0;
     for (auto player : m_players)
@@ -29,6 +27,8 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
     }
 
     stopAllSounds();
+
+    setSubState(new CountingState(this));
 }
 
 void Scores::draw(Renderer &renderer)
@@ -67,39 +67,6 @@ void Scores::draw(Renderer &renderer)
 void Scores::update(const UpdateState &updateState)
 {
     Uint32 dt = updateState.delta_time;
-    m_show_time += dt;
-    m_score_count_time += dt;
-
-    if (m_score_counter > (1 << 30) || m_score_counter >= m_max_score)
-    {
-        m_score_counter_run = false;
-    }
-
-    if (m_show_time > AppConfig::score_show_time)
-        m_finished = true;
-
-    if (m_score_counter_run)
-    {
-        if (m_score_count_time > AppConfig::score_count_time)
-        {
-            if (m_score_counter < 10)
-                m_score_counter++;
-            else if (m_score_counter < 100)
-                m_score_counter += 10;
-            else if (m_score_counter < 1000)
-                m_score_counter += 100;
-            else if (m_score_counter < 10000)
-                m_score_counter += 1000;
-            else if (m_score_counter < 100000)
-                m_score_counter += 10000;
-            else
-                m_score_counter += 100000;
-
-            playSound(SoundConfig::SCORE_POINT_COUNTED);
-
-            m_score_count_time = 0;
-        }
-    }
 
     for (auto player : m_players)
     {
@@ -110,30 +77,93 @@ void Scores::update(const UpdateState &updateState)
 
 void Scores::eventProcess(const Event &event)
 {
+}
+
+void Scores::transiteToNextState()
+{
+    if (m_game_over)
+    {
+        Menu *m = new Menu(m_interactive_components, m_state_machine);
+        transiteTo(m);
+    }
+    else
+    {
+        Game *g = new Game(m_players, m_level, m_interactive_components, m_state_machine);
+        transiteTo(g);
+    }
+}
+
+Scores::CountingState::CountingState(Scores *ps) : SubState<Scores>(ps), m_single_score_count_time(0) {}
+
+void Scores::CountingState::update(const UpdateState &updateState)
+{
+    Uint32 dt = updateState.delta_time;
+
+    m_single_score_count_time += dt;
+
+    if (m_single_score_count_time > AppConfig::Score::single_count_time)
+    {
+        if (m_parent_state->m_score_counter < 10)
+            m_parent_state->m_score_counter++;
+        else if (m_parent_state->m_score_counter < 100)
+            m_parent_state->m_score_counter += 10;
+        else if (m_parent_state->m_score_counter < 1000)
+            m_parent_state->m_score_counter += 100;
+        else if (m_parent_state->m_score_counter < 10000)
+            m_parent_state->m_score_counter += 1000;
+        else if (m_parent_state->m_score_counter < 100000)
+            m_parent_state->m_score_counter += 10000;
+        else
+            m_parent_state->m_score_counter += 100000;
+
+        m_parent_state->playSound(SoundConfig::SCORE_POINT_COUNTED);
+
+        m_single_score_count_time = 0;
+    }
+
+    if (m_parent_state->m_score_counter >= m_parent_state->m_max_score)
+    {
+        transiteTo(new Scores::IdleState(m_parent_state));
+    }
+}
+
+void Scores::CountingState::eventProcess(const Event &event)
+{
     if (event.type() == Event::KEYBOARD)
     {
         const KeyboardEvent &ev = static_cast<const KeyboardEvent &>(event);
 
         if (ev.isPressed(KeyCode::KEY_RETURN))
         {
-            if (m_score_counter > (1 << 30) || m_score_counter_run == false)
-                m_finished = true;
-            else
-                m_score_counter = (1 << 30) + 1;
+            m_parent_state->m_score_counter = m_parent_state->m_max_score;
+            transiteTo(new Scores::IdleState(m_parent_state));
         }
     }
 }
 
-AppState *Scores::nextState()
-{
-    if (!m_finished)
-        return this;
+Scores::IdleState::IdleState(Scores *ps) : SubState<Scores>(ps), m_idle_time(0) {}
 
-    if (m_game_over)
+void Scores::IdleState::update(const UpdateState &updateState)
+{
+    Uint32 dt = updateState.delta_time;
+
+    m_idle_time += dt;
+
+    if (m_idle_time > AppConfig::Score::idle_time)
     {
-        Menu *m = new Menu(m_interactive_components);
-        return m;
+        m_parent_state->transiteToNextState();
     }
-    Game *g = new Game(m_players, m_level, m_interactive_components);
-    return g;
+}
+
+void Scores::IdleState::eventProcess(const Event &event)
+{
+    if (event.type() == Event::KEYBOARD)
+    {
+        const KeyboardEvent &ev = static_cast<const KeyboardEvent &>(event);
+
+        if (ev.isPressed(KeyCode::KEY_RETURN))
+        {
+            m_parent_state->transiteToNextState();
+        }
+    }
 }

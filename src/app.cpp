@@ -14,13 +14,13 @@
 
 App::App()
 {
-    m_app_state = nullptr;
+    m_app_state_machine = new StateMachine;
 }
 
 App::~App()
 {
-    if (m_app_state != nullptr)
-        delete m_app_state;
+    if (m_app_state_machine != nullptr)
+        delete m_app_state_machine;
 }
 
 void App::run()
@@ -37,45 +37,39 @@ void App::run()
         { return onEngineInit(engine); },
         [&](const Event &event)
         { return handleEvent(event); },
-        [&](const UpdateState& us)
+        [&](const UpdateState &us)
         { return updateState(us); },
         [&](Renderer &renderer)
         { return draw(renderer); });
 }
 
-ProcessingResult App::onEngineInit(const Engine& engine)
+ProcessingResult App::onEngineInit(const Engine &engine)
 {
     InteractiveComponents components = engine.getInteractiveComponents();
 
-    m_app_state = new Menu(components);
+    m_app_state_machine->setState(new Menu(components, m_app_state_machine));
 
     return ProcessingResult::CONTINUE;
 }
 
 ProcessingResult App::handleEvent(const Event &event)
 {
-    m_app_state->eventProcess(event);
+    m_app_state_machine->eventProcess(event);
     return ProcessingResult::CONTINUE;
 }
 
-ProcessingResult App::updateState(const UpdateState& updateState)
+ProcessingResult App::updateState(const UpdateState &updateState)
 {
-    AppState *next_state = m_app_state->nextState();
-    if (m_app_state != next_state)
+    if (m_app_state_machine->stopped())
     {
-        delete m_app_state;
-        m_app_state = next_state;
-        if (m_app_state == nullptr)
-        {
-            return ProcessingResult::STOP;
-        }
+        return ProcessingResult::STOP;
     }
-    m_app_state->update(updateState);
+    m_app_state_machine->update(updateState);
     return ProcessingResult::CONTINUE;
 }
 
 ProcessingResult App::draw(Renderer &renderer)
 {
-    m_app_state->draw(renderer);
+    m_app_state_machine->draw(renderer);
     return ProcessingResult::CONTINUE;
 }

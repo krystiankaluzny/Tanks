@@ -15,19 +15,18 @@
 class Menu : public AppState
 {
 public:
-    Menu(InteractiveComponents interactive_components);
+    Menu(InteractiveComponents interactive_components, StateMachine* parent_state_machine);
     ~Menu();
-
     /**
      * Function draws the game logo, menu texts, and the selected menu item indicator in the shape of a tank.
      */
-    void draw(Renderer &renderer);
+    void draw(Renderer &renderer) override;
 
     /**
      * Function updates the tank pointer animation.
      * @param dt - time since the last function call, used for animation update
      */
-    void update(const UpdateState& updateState);
+    void update(const UpdateState& updateState) override;
 
     /**
      * Function responds to key presses:
@@ -36,19 +35,12 @@ public:
      * @li Esc - exit the application
      * @param event - reference to an Event object containing the type and parameters of various events
      */
-    void eventProcess(const Event &event);
-
-    /**
-     * Transition to the game in the selected mode or exit the application.
-     * @return nullptr if "Exit" was selected or Esc was pressed, a Game in the selected mode, oterhwise, the function should return this Menu instance.
-     */
-    AppState *nextState();
+    void eventProcess(const Event &event) override;
 
 private:
     std::vector<std::string> m_menu_items;
     int m_current_menu_index;
     Player *m_tank_menu_pointer;
-    bool m_finished;
 
     int m_menu_item_height;
     Point m_first_menu_item_offset;

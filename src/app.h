@@ -13,7 +13,7 @@ public:
     void run();
 
 private:
-    AppState *m_app_state;
+    StateMachine *m_app_state_machine;
 
     ProcessingResult onEngineInit(const Engine& engine);
     ProcessingResult handleEvent(const Event &event);

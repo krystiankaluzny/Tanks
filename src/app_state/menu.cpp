@@ -8,7 +8,8 @@
 
 #include <iostream>
 
-Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_components)
+Menu::Menu(InteractiveComponents interactive_components, StateMachine *parent_state_machine)
+    : AppState(interactive_components, parent_state_machine)
 {
     m_menu_items.push_back("1 Player");
     m_menu_items.push_back("2 Players");
@@ -29,10 +30,9 @@ Menu::Menu(InteractiveComponents interactive_components) : AppState(interactive_
     m_tank_menu_pointer->clearFlag(Tank::TSF_ALIVE);
     m_tank_menu_pointer->clearFlag(Tank::TSF_SHIELD);
     m_tank_menu_pointer->setFlag(Tank::TSF_PREVIEW);
-    m_finished = false;
 
     stopAllSounds();
-    //Hack to fill sound device buffer and avoid sound delay on first play
+    // Hack to fill sound device buffer and avoid sound delay on first play
     playSound(SoundConfig::MENU_ITEM_SELECTED);
 }
 
@@ -67,7 +67,7 @@ void Menu::draw(Renderer &renderer)
     renderer.flush();
 }
 
-void Menu::update(const UpdateState& updateState)
+void Menu::update(const UpdateState &updateState)
 {
     m_tank_menu_pointer->update(updateState.delta_time);
 }
@@ -109,32 +109,19 @@ void Menu::eventProcess(const Event &event)
         }
         else if (ev.isPressed(KeyCode::KEY_SPACE) || ev.isPressed(KeyCode::KEY_RETURN))
         {
-            m_finished = true;
+            if (m_current_menu_index == 0 || m_current_menu_index == 1)
+            {
+                int players_count = m_current_menu_index == 0 ? 1 : 2;
+                transiteTo(new Game(players_count, m_interactive_components, m_state_machine));
+            }
+            else
+            {
+                transiteToStop();
+            }
         }
         else if (ev.isPressed(KeyCode::KEY_ESCAPE))
         {
-            m_current_menu_index = -1;
-            m_finished = true;
+            transiteToStop();
         }
     }
-}
-
-AppState *Menu::nextState()
-{
-    if (!m_finished)
-        return this;
-
-    if (m_current_menu_index == (int)m_menu_items.size() - 1)
-        return nullptr;
-    else if (m_current_menu_index == 0)
-    {
-        Game *g = new Game(1, m_interactive_components);
-        return g;
-    }
-    else if (m_current_menu_index == 1)
-    {
-        Game *g = new Game(2, m_interactive_components);
-        return g;
-    }
-    return nullptr;
 }

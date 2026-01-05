@@ -15,12 +15,12 @@
 class Game : public AppState
 {
 public:
-    Game(int players_count, InteractiveComponents interactive_components);
-    Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components);
+    Game(int players_count, InteractiveComponents interactive_components, StateMachine *parent_state_machine);
+    Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *parent_state_machine);
     ~Game();
 
     void draw(Renderer &renderer) override;
-    void update(const UpdateState& updateState) override;
+    void update(const UpdateState &updateState) override;
 
     /**
      * Key press handling function.
@@ -32,9 +32,9 @@ public:
      */
     void eventProcess(const Event &event) override;
 
-    AppState *nextState() override;
-
 private:
+    void transiteToNextState();
+
     void clearAll();
     void createPlayersIfNeeded();
 
@@ -77,7 +77,6 @@ private:
 
     bool m_game_over;
     double m_game_over_message_position;
-    bool m_finished;
     bool m_pause;
     unsigned m_enemy_respown_position;
 
