@@ -10,7 +10,7 @@ class Scores : public AppState
 {
 public:
     Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components, StateMachine *parent_state_machine);
-    ~Scores() override = default;
+    ~Scores() override;
 
     void draw(Renderer &renderer) override;
     void update(const UpdateState &updateState) override;
@@ -18,6 +18,8 @@ public:
 
 private:
     void transiteToNextState();
+
+    StateMachine* m_scores_state_machine;
 
     std::vector<Player *> m_players;
     int m_level;

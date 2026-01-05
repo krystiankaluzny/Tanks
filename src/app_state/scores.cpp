@@ -6,8 +6,9 @@
 #include "game/game.h"
 #include "menu.h"
 
-Scores::Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components, StateMachine *parent_state_machine)
-    : AppState(interactive_components, parent_state_machine)
+Scores::Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components, StateMachine *state_machine)
+    : AppState(interactive_components, state_machine),
+      m_scores_state_machine(new StateMachine())
 {
     m_players = players;
     m_level = level;
@@ -28,7 +29,12 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
 
     stopAllSounds();
 
-    setSubState(new CountingState(this));
+    m_scores_state_machine->setState(new CountingState(this));
+}
+
+Scores::~Scores()
+{
+    delete m_scores_state_machine;
 }
 
 void Scores::draw(Renderer &renderer)
@@ -61,6 +67,8 @@ void Scores::draw(Renderer &renderer)
         i++;
     }
 
+    m_scores_state_machine->draw(renderer);
+
     renderer.flush();
 }
 
@@ -73,10 +81,13 @@ void Scores::update(const UpdateState &updateState)
         player->setDirection(D_RIGHT);
         player->update(dt);
     }
+
+    m_scores_state_machine->update(updateState);
 }
 
 void Scores::eventProcess(const Event &event)
 {
+    m_scores_state_machine->eventProcess(event);
 }
 
 void Scores::transiteToNextState()
@@ -93,7 +104,7 @@ void Scores::transiteToNextState()
     }
 }
 
-Scores::CountingState::CountingState(Scores *ps) : SubState<Scores>(ps), m_single_score_count_time(0) {}
+Scores::CountingState::CountingState(Scores *ps) : SubState<Scores>(ps, ps->m_scores_state_machine), m_single_score_count_time(0) {}
 
 void Scores::CountingState::update(const UpdateState &updateState)
 {
@@ -141,7 +152,7 @@ void Scores::CountingState::eventProcess(const Event &event)
     }
 }
 
-Scores::IdleState::IdleState(Scores *ps) : SubState<Scores>(ps), m_idle_time(0) {}
+Scores::IdleState::IdleState(Scores *ps) : SubState<Scores>(ps, ps->m_scores_state_machine), m_idle_time(0) {}
 
 void Scores::IdleState::update(const UpdateState &updateState)
 {

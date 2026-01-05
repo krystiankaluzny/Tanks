@@ -8,8 +8,8 @@
 
 #include <iostream>
 
-Menu::Menu(InteractiveComponents interactive_components, StateMachine *parent_state_machine)
-    : AppState(interactive_components, parent_state_machine)
+Menu::Menu(InteractiveComponents interactive_components, StateMachine *state_machine)
+    : AppState(interactive_components, state_machine)
 {
     m_menu_items.push_back("1 Player");
     m_menu_items.push_back("2 Players");
@@ -116,12 +116,12 @@ void Menu::eventProcess(const Event &event)
             }
             else
             {
-                transiteToStop();
+                transiteToNullAndStop();
             }
         }
         else if (ev.isPressed(KeyCode::KEY_ESCAPE))
         {
-            transiteToStop();
+            transiteToNullAndStop();
         }
     }
 }

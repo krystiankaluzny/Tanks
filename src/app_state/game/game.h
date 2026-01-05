@@ -8,6 +8,7 @@
 #include "../../objects/brick.h"
 #include "../../objects/eagle.h"
 #include "../../objects/bonus.h"
+#include "../../engine/state_machine/sub_state.h"
 #include "level_environment.h"
 #include <vector>
 #include <string>
@@ -15,8 +16,8 @@
 class Game : public AppState
 {
 public:
-    Game(int players_count, InteractiveComponents interactive_components, StateMachine *parent_state_machine);
-    Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *parent_state_machine);
+    Game(int players_count, InteractiveComponents interactive_components, StateMachine *state_machine);
+    Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *state_machine);
     ~Game();
 
     void draw(Renderer &renderer) override;
@@ -59,6 +60,7 @@ private:
     void generateEnemyIfPossible(Uint32 dt);
     void generateBonus();
 
+    StateMachine* m_game_state_machine;
     LevelEnvironment *m_level_environment;
 
     std::vector<Enemy *> m_enemies;
@@ -70,8 +72,6 @@ private:
     int m_players_count;
     int m_enemies_to_kill_count;
 
-    bool m_level_start_screen;
-    Uint32 m_level_start_time;
     Uint32 m_new_enemy_cooldown;
     Uint32 m_level_end_time;
 
@@ -81,6 +81,54 @@ private:
     unsigned m_enemy_respown_position;
 
     bool m_show_enemies_targets;
+
+    // Sub-states
+    class StartScreenState : public SubState<Game>
+    {
+    public:
+        StartScreenState(Game *ps);
+        void draw(Renderer &renderer) override;
+        void update(const UpdateState &updateState) override;
+
+    private:
+        Uint32 m_level_start_time;
+    };
+
+    // class PlayingState : public SubState<Game>
+    // {
+    // public:
+    //     PlayingState(Game *ps);
+    //     void draw(Renderer &renderer) override;
+    //     void update(const UpdateState &updateState) override;
+    //     void eventProcess(const Event &event) override;
+
+    // private:
+    //     Uint32 m_single_score_count_time;
+    // };
+
+    // class PauseState : public SubState<Game>
+    // {
+    // public:
+    //     PauseState(Game *ps);
+    //     void draw(Renderer &renderer) override;
+    //     void update(const UpdateState &updateState) override;
+    //     void eventProcess(const Event &event) override;
+
+    // private:
+    //     Uint32 m_idle_time;
+    // };
+
+    // class GameOverState : public SubState<Game>
+    // {
+    // public:
+    //     GameOverState(Game *ps);
+    //     void draw(Renderer &renderer) override;
+    //     void update(const UpdateState &updateState) override;
+    //     void eventProcess(const Event &event) override;
+
+    // private:
+    //     Uint32 m_idle_time;
+    // };
 };
 
 #endif // GAME_H

@@ -7,8 +7,8 @@ template <typename T>
 class SubState : public State
 {
 public:
-    SubState(T *parent)
-        : State(parent->stateMachine()->subStateMachine(parent)), m_parent_state(parent)
+    SubState(T *parent, StateMachine* stateMachine)
+        : State(stateMachine), m_parent_state(parent)
     {
     }
     ~SubState() override = default;

@@ -15,7 +15,7 @@
 class Menu : public AppState
 {
 public:
-    Menu(InteractiveComponents interactive_components, StateMachine* parent_state_machine);
+    Menu(InteractiveComponents interactive_components, StateMachine* state_machine);
     ~Menu();
     /**
      * Function draws the game logo, menu texts, and the selected menu item indicator in the shape of a tank.

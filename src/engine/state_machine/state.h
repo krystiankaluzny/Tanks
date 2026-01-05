@@ -20,12 +20,11 @@ public:
     StateMachine* stateMachine() const;
 
 protected:
-    State(StateMachine* parent_state_machine);
+    State(StateMachine* state_machine);
 
     void transiteTo(State* new_state, bool force = false);
-    void transiteToStop();
-
-    void setSubState(State* new_state, bool force = false);
+    void transiteToNull();
+    void transiteToNullAndStop();
 
     StateMachine* m_state_machine;
 };

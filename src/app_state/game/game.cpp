@@ -14,8 +14,9 @@
 #include <iostream>
 #include <cmath>
 
-Game::Game(int players_count, InteractiveComponents interactive_components, StateMachine *parent_state_machine)
-    : AppState(interactive_components, parent_state_machine)
+Game::Game(int players_count, InteractiveComponents interactive_components, StateMachine *state_machine)
+    : AppState(interactive_components, state_machine),
+      m_game_state_machine(new StateMachine())
 {
     m_current_level = 1;
     m_players_count = players_count;
@@ -24,18 +25,19 @@ Game::Game(int players_count, InteractiveComponents interactive_components, Stat
     m_enemy_respown_position = 0;
     m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
 
-    m_level_start_screen = true;
-    m_level_start_time = 0;
     m_game_over = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
     playSound(SoundConfig::STAGE_START_UP);
+
+    m_game_state_machine->setState(new StartScreenState(this));
 }
 
-Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *parent_state_machine)
-    : AppState(interactive_components, parent_state_machine)
+Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *state_machine)
+    : AppState(interactive_components, state_machine),
+      m_game_state_machine(new StateMachine())
 {
     m_current_level = previous_level + 1;
     m_players = players;
@@ -49,14 +51,14 @@ Game::Game(std::vector<Player *> players, int previous_level, InteractiveCompone
     m_enemy_respown_position = 0;
     m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
 
-    m_level_start_screen = true;
-    m_level_start_time = 0;
     m_game_over = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
     playSound(SoundConfig::STAGE_START_UP);
+
+    m_game_state_machine->setState(new StartScreenState(this));
 }
 
 Game::~Game()
@@ -69,26 +71,22 @@ void Game::draw(Renderer &renderer)
     renderer.clear();
 
     Point text_centered_pos = {-1, -1};
-    if (m_level_start_screen)
+
+    renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 0}, true);
+
+    drawObjects(renderer);
+
+    if (m_game_over)
     {
-        drawLevelStartScreen(renderer);
+        drawGameOver(renderer);
     }
-    else
-    {
-        renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 0}, true);
 
-        drawObjects(renderer);
+    drawGameStatusPanel(renderer);
 
-        if (m_game_over)
-        {
-            drawGameOver(renderer);
-        }
+    if (m_pause)
+        renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, FontSize::BIGGEST);
 
-        drawGameStatusPanel(renderer);
-
-        if (m_pause)
-            renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, FontSize::BIGGEST);
-    }
+    m_game_state_machine->draw(renderer);
 
     renderer.flush();
 }
@@ -100,58 +98,50 @@ void Game::update(const UpdateState &updateState)
     if (dt > 40)
         return;
 
-    if (m_level_start_screen)
-    {
-        if (m_level_start_time > AppConfig::level_start_time)
-        {
-            m_level_start_screen = false;
-        }
+    m_game_state_machine->update(updateState);
 
-        m_level_start_time += dt;
-    }
-    else
+    if (m_pause)
+        return;
+
+    checkCollisions(dt);
+    updateObjects(dt);
+    calculateEnemiesTargets();
+    generateEnemyIfPossible(dt);
+
+    if (m_enemies.empty() && m_enemies_to_kill_count <= 0)
     {
-        if (m_pause)
+        m_level_end_time += dt;
+        if (m_level_end_time > AppConfig::level_end_time)
+        {
+            transiteToNextState();
             return;
-
-        checkCollisions(dt);
-        updateObjects(dt);
-        calculateEnemiesTargets();
-        generateEnemyIfPossible(dt);
-
-        if (m_enemies.empty() && m_enemies_to_kill_count <= 0)
-        {
-            m_level_end_time += dt;
-            if (m_level_end_time > AppConfig::level_end_time)
-            {
-                transiteToNextState();
-                return;
-            }
         }
+    }
 
-        if (m_players.empty() && !m_game_over)
+    if (m_players.empty() && !m_game_over)
+    {
+        gameOver();
+    }
+
+    if (m_game_over)
+    {
+        if (m_game_over_message_position < 10)
         {
-            gameOver();
+            transiteToNextState();
+            return;
         }
-
-        if (m_game_over)
+        else
         {
-            if (m_game_over_message_position < 10)
-            {
-                transiteToNextState();
-                return;
-            }
-            else
-            {
-                m_game_over_message_position -= AppConfig::game_over_message_speed * dt;
-            }
+            m_game_over_message_position -= AppConfig::game_over_message_speed * dt;
         }
     }
 }
 
 void Game::eventProcess(const Event &event)
 {
-    if (!m_level_start_screen && event.type() == Event::KEYBOARD)
+    m_game_state_machine->eventProcess(event);
+
+    if (event.type() == Event::KEYBOARD)
     {
         const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
         if (event_key.isPressed(KEY_N))
@@ -214,6 +204,8 @@ void Game::transiteToNextState()
 
 void Game::clearAll()
 {
+    delete m_game_state_machine;
+
     for (auto enemy : m_enemies)
         delete enemy;
     m_enemies.clear();
@@ -253,11 +245,8 @@ void Game::createPlayersIfNeeded()
 
 void Game::drawLevelStartScreen(Renderer &renderer)
 {
-
-    Point text_centered_pos = {-1, -1};
-    std::string level_name = "STAGE " + std::to_string(m_current_level);
-    renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, FontSize::BIGGEST);
 }
+
 void Game::drawObjects(Renderer &renderer)
 {
     m_level_environment->drawFirstLayer(renderer);
@@ -690,4 +679,23 @@ void Game::generateBonus()
     playSound(SoundConfig::BONUS_APPEARED);
 
     m_bonuses.push_back(b);
+}
+
+Game::StartScreenState::StartScreenState(Game *ps) : SubState(ps, ps->m_game_state_machine), m_level_start_time(0) {}
+
+void Game::StartScreenState::draw(Renderer &renderer)
+{
+    Point text_centered_pos = {-1, -1};
+    std::string level_name = "STAGE " + std::to_string(m_parent_state->m_current_level);
+    renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, FontSize::BIGGEST);
+}
+
+void Game::StartScreenState::update(const UpdateState &updateState)
+{
+    m_level_start_time += updateState.delta_time;
+
+    if (m_level_start_time > AppConfig::level_start_time)
+    {
+        transiteToNull();
+    }
 }
