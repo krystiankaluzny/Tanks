@@ -61,7 +61,7 @@ vector<KeyCode> AppConfig::player_2_keys =
     return v;
 }();
 
-unsigned AppConfig::level_start_time = 2000;
+
 unsigned AppConfig::slip_time = 380;
 
 unsigned AppConfig::enemies_to_kill_total_count = 20;
@@ -85,3 +85,5 @@ double AppConfig::bullet_default_speed = 0.23;
 
 unsigned AppConfig::Score::single_count_time = 100;
 unsigned AppConfig::Score::idle_time = 5000;
+
+unsigned AppConfig::Game::level_start_time = 2000;

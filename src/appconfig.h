@@ -8,9 +8,8 @@
 
 using namespace std;
 
-class AppConfig
+struct AppConfig
 {
-public:
     static string texture_path;
     static string levels_path;
     static string font_path;
@@ -30,7 +29,6 @@ public:
     static vector<KeyCode> player_1_keys;
     static vector<KeyCode> player_2_keys;
 
-    static unsigned level_start_time;
     static unsigned slip_time;
 
     static unsigned enemies_to_kill_total_count;
@@ -51,11 +49,15 @@ public:
     static double tank_default_speed;
     static double bullet_default_speed;
 
-    class Score
+    struct Score
     {
-    public:
         static unsigned single_count_time;
         static unsigned idle_time;
+    };
+
+    struct Game
+    {
+        static unsigned level_start_time;
     };
 };
 

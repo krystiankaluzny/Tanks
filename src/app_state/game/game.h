@@ -39,7 +39,7 @@ private:
     void clearAll();
     void createPlayersIfNeeded();
 
-    void drawLevelStartScreen(Renderer &renderer);
+    void drawScene(Renderer &renderer);
     void drawObjects(Renderer &renderer);
     void drawEnemy(Renderer &renderer, Enemy *enemy);
     void drawGameOver(Renderer &renderer);
@@ -60,7 +60,7 @@ private:
     void generateEnemyIfPossible(Uint32 dt);
     void generateBonus();
 
-    StateMachine* m_game_state_machine;
+    StateMachine *m_game_state_machine;
     LevelEnvironment *m_level_environment;
 
     std::vector<Enemy *> m_enemies;

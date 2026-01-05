@@ -70,24 +70,30 @@ void Game::draw(Renderer &renderer)
 {
     renderer.clear();
 
-    Point text_centered_pos = {-1, -1};
-
-    renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 0}, true);
-
-    drawObjects(renderer);
-
-    if (m_game_over)
+    // TODO remove if
+    if (m_game_state_machine->current_state != nullptr)
     {
-        drawGameOver(renderer);
+        m_game_state_machine->draw(renderer);
     }
+    else
+    {
 
-    drawGameStatusPanel(renderer);
+        Point text_centered_pos = {-1, -1};
 
-    if (m_pause)
-        renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, FontSize::BIGGEST);
+        renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 0}, true);
 
-    m_game_state_machine->draw(renderer);
+        drawObjects(renderer);
 
+        if (m_game_over)
+        {
+            drawGameOver(renderer);
+        }
+
+        drawGameStatusPanel(renderer);
+
+        if (m_pause)
+            renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, FontSize::BIGGEST);
+    }
     renderer.flush();
 }
 
@@ -243,8 +249,11 @@ void Game::createPlayersIfNeeded()
     }
 }
 
-void Game::drawLevelStartScreen(Renderer &renderer)
+void Game::drawScene(Renderer &renderer)
 {
+    renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 0}, true);
+    drawObjects(renderer);
+    drawGameStatusPanel(renderer);
 }
 
 void Game::drawObjects(Renderer &renderer)
@@ -679,23 +688,4 @@ void Game::generateBonus()
     playSound(SoundConfig::BONUS_APPEARED);
 
     m_bonuses.push_back(b);
-}
-
-Game::StartScreenState::StartScreenState(Game *ps) : SubState(ps, ps->m_game_state_machine), m_level_start_time(0) {}
-
-void Game::StartScreenState::draw(Renderer &renderer)
-{
-    Point text_centered_pos = {-1, -1};
-    std::string level_name = "STAGE " + std::to_string(m_parent_state->m_current_level);
-    renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, FontSize::BIGGEST);
-}
-
-void Game::StartScreenState::update(const UpdateState &updateState)
-{
-    m_level_start_time += updateState.delta_time;
-
-    if (m_level_start_time > AppConfig::level_start_time)
-    {
-        transiteToNull();
-    }
 }
