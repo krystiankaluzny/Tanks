@@ -1,9 +1,9 @@
 #include "game.h"
 #include "../../appconfig.h"
 
-Game::StartScreenState::StartScreenState(Game *ps) : SubState(ps, ps->m_game_state_machine), m_level_start_time(0) {}
+Game::StartingState::StartingState(Game *ps) : SubState(ps, ps->m_game_state_machine), m_level_start_time(0) {}
 
-void Game::StartScreenState::draw(Renderer &renderer)
+void Game::StartingState::draw(Renderer &renderer)
 {
     m_parent_state->drawScene(renderer);
 
@@ -23,12 +23,12 @@ void Game::StartScreenState::draw(Renderer &renderer)
     renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, FontSize::BIGGEST);
 }
 
-void Game::StartScreenState::update(const UpdateState &updateState)
+void Game::StartingState::update(const UpdateState &updateState)
 {
     m_level_start_time += updateState.delta_time;
 
     if (m_level_start_time > AppConfig::Game::level_start_time)
     {
-        transiteToNull();
+        transiteTo(new Game::PlayingState(m_parent_state));
     }
 }

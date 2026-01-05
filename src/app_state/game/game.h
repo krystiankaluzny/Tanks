@@ -34,8 +34,6 @@ public:
     void eventProcess(const Event &event) override;
 
 private:
-    void transiteToNextState();
-
     void clearAll();
     void createPlayersIfNeeded();
 
@@ -45,6 +43,7 @@ private:
     void drawGameOver(Renderer &renderer);
     void drawGameStatusPanel(Renderer &renderer);
 
+    void updateScene(Uint32 dt);
     void checkCollisions(Uint32 dt);
     void checkCollisionTwoTanks(Tank *tank1, Tank *tank2, Uint32 dt);
     void checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy);
@@ -54,11 +53,12 @@ private:
 
     void updateObjects(Uint32 dt);
 
-    void gameOver();
     void calculateEnemiesTargets();
-
     void generateEnemyIfPossible(Uint32 dt);
+
     void generateBonus();
+
+    void transiteToGameOver();
 
     StateMachine *m_game_state_machine;
     LevelEnvironment *m_level_environment;
@@ -73,20 +73,15 @@ private:
     int m_enemies_to_kill_count;
 
     Uint32 m_new_enemy_cooldown;
-    Uint32 m_level_end_time;
-
-    bool m_game_over;
-    double m_game_over_message_position;
-    bool m_pause;
     unsigned m_enemy_respown_position;
 
     bool m_show_enemies_targets;
 
     // Sub-states
-    class StartScreenState : public SubState<Game>
+    class StartingState : public SubState<Game>
     {
     public:
-        StartScreenState(Game *ps);
+        StartingState(Game *ps);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
 
@@ -94,41 +89,48 @@ private:
         Uint32 m_level_start_time;
     };
 
-    // class PlayingState : public SubState<Game>
-    // {
-    // public:
-    //     PlayingState(Game *ps);
-    //     void draw(Renderer &renderer) override;
-    //     void update(const UpdateState &updateState) override;
-    //     void eventProcess(const Event &event) override;
+    class PlayingState : public SubState<Game>
+    {
+    public:
+        PlayingState(Game *ps);
+        void draw(Renderer &renderer) override;
+        void update(const UpdateState &updateState) override;
+        void eventProcess(const Event &event) override;
+    };
 
-    // private:
-    //     Uint32 m_single_score_count_time;
-    // };
+    class LevelEndingState : public SubState<Game>
+    {
+    public:
+        LevelEndingState(Game *ps, bool no_waiting, bool game_over);
+        void draw(Renderer &renderer) override;
+        void update(const UpdateState &updateState) override;
 
-    // class PauseState : public SubState<Game>
-    // {
-    // public:
-    //     PauseState(Game *ps);
-    //     void draw(Renderer &renderer) override;
-    //     void update(const UpdateState &updateState) override;
-    //     void eventProcess(const Event &event) override;
+    private:
+        Uint32 m_level_end_time;
+        bool m_no_waiting;
+        bool m_game_over;
+    };
 
-    // private:
-    //     Uint32 m_idle_time;
-    // };
+    class PauseState : public SubState<Game>
+    {
+    public:
+        PauseState(Game *ps);
+        void draw(Renderer &renderer) override;
+        void update(const UpdateState &updateState) override;
+        void eventProcess(const Event &event) override;
+    };
 
-    // class GameOverState : public SubState<Game>
-    // {
-    // public:
-    //     GameOverState(Game *ps);
-    //     void draw(Renderer &renderer) override;
-    //     void update(const UpdateState &updateState) override;
-    //     void eventProcess(const Event &event) override;
+    class GameOverState : public SubState<Game>
+    {
+    public:
+        GameOverState(Game *ps);
+        void draw(Renderer &renderer) override;
+        void update(const UpdateState &updateState) override;
+        void eventProcess(const Event &event) override;
 
-    // private:
-    //     Uint32 m_idle_time;
-    // };
+    private:
+        double m_game_over_message_position;
+    };
 };
 
 #endif // GAME_H

@@ -40,12 +40,9 @@ struct AppConfig
     static unsigned bonus_show_time;
     static unsigned tank_shield_time;
     static unsigned tank_frozen_time;
-    static unsigned level_end_time;
     static unsigned protect_eagle_time;
     static unsigned bonus_blink_time;
     static unsigned player_reload_time;
-
-    static double game_over_message_speed;
     static double tank_default_speed;
     static double bullet_default_speed;
 
@@ -58,6 +55,8 @@ struct AppConfig
     struct Game
     {
         static unsigned level_start_time;
+        static unsigned level_end_time;
+        static double game_over_message_speed;
     };
 };
 

@@ -20,19 +20,16 @@ Game::Game(int players_count, InteractiveComponents interactive_components, Stat
 {
     m_current_level = 1;
     m_players_count = players_count;
-    m_pause = false;
-    m_level_end_time = 0;
     m_enemy_respown_position = 0;
     m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
 
-    m_game_over = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
     playSound(SoundConfig::STAGE_START_UP);
 
-    m_game_state_machine->setState(new StartScreenState(this));
+    m_game_state_machine->setState(new StartingState(this));
 }
 
 Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *state_machine)
@@ -46,19 +43,16 @@ Game::Game(std::vector<Player *> players, int previous_level, InteractiveCompone
     {
         player->moveToNextLevel();
     }
-    m_pause = false;
-    m_level_end_time = 0;
+
     m_enemy_respown_position = 0;
     m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
-
-    m_game_over = false;
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 
     createPlayersIfNeeded();
     playSound(SoundConfig::STAGE_START_UP);
 
-    m_game_state_machine->setState(new StartScreenState(this));
+    m_game_state_machine->setState(new StartingState(this));
 }
 
 Game::~Game()
@@ -70,30 +64,8 @@ void Game::draw(Renderer &renderer)
 {
     renderer.clear();
 
-    // TODO remove if
-    if (m_game_state_machine->current_state != nullptr)
-    {
-        m_game_state_machine->draw(renderer);
-    }
-    else
-    {
+    m_game_state_machine->draw(renderer);
 
-        Point text_centered_pos = {-1, -1};
-
-        renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 0}, true);
-
-        drawObjects(renderer);
-
-        if (m_game_over)
-        {
-            drawGameOver(renderer);
-        }
-
-        drawGameStatusPanel(renderer);
-
-        if (m_pause)
-            renderer.drawText(text_centered_pos, std::string("PAUSE"), {200, 0, 0, 255}, FontSize::BIGGEST);
-    }
     renderer.flush();
 }
 
@@ -105,107 +77,11 @@ void Game::update(const UpdateState &updateState)
         return;
 
     m_game_state_machine->update(updateState);
-
-    if (m_pause)
-        return;
-
-    checkCollisions(dt);
-    updateObjects(dt);
-    calculateEnemiesTargets();
-    generateEnemyIfPossible(dt);
-
-    if (m_enemies.empty() && m_enemies_to_kill_count <= 0)
-    {
-        m_level_end_time += dt;
-        if (m_level_end_time > AppConfig::level_end_time)
-        {
-            transiteToNextState();
-            return;
-        }
-    }
-
-    if (m_players.empty() && !m_game_over)
-    {
-        gameOver();
-    }
-
-    if (m_game_over)
-    {
-        if (m_game_over_message_position < 10)
-        {
-            transiteToNextState();
-            return;
-        }
-        else
-        {
-            m_game_over_message_position -= AppConfig::game_over_message_speed * dt;
-        }
-    }
 }
 
 void Game::eventProcess(const Event &event)
 {
     m_game_state_machine->eventProcess(event);
-
-    if (event.type() == Event::KEYBOARD)
-    {
-        const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
-        if (event_key.isPressed(KEY_N))
-        {
-            m_enemies_to_kill_count = 0;
-            transiteToNextState();
-        }
-        else if (event_key.isPressed(KEY_B))
-        {
-            m_enemies_to_kill_count = 0;
-            m_current_level -= 2;
-            transiteToNextState();
-        }
-        else if (event_key.isPressed(KEY_B))
-        {
-            m_enemies_to_kill_count = 0;
-            m_current_level -= 2;
-            transiteToNextState();
-        }
-        else if (event_key.isPressed(KEY_T))
-        {
-            m_show_enemies_targets = !m_show_enemies_targets;
-        }
-        else if (event_key.isPressed(KEY_RETURN) && !m_game_over)
-        {
-            m_pause = !m_pause;
-            if (m_pause)
-            {
-                stopAllSounds();
-                playSound(SoundConfig::PAUSE);
-            }
-        }
-        else if (event_key.isPressed(KEY_ESCAPE))
-        {
-            transiteToNextState();
-        }
-
-        if (!m_pause && !m_game_over)
-        {
-            for (auto player : m_players)
-                player->handleKeyboardEvent(event_key);
-        }
-    }
-}
-
-void Game::transiteToNextState()
-{
-    if (m_game_over || m_enemies_to_kill_count <= 0)
-    {
-        m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player *p)
-                                       {m_killed_players.push_back(p); return true; }),
-                        m_players.end());
-        transiteTo(new Scores(m_killed_players, m_current_level, m_game_over, m_interactive_components, m_state_machine));
-    }
-    else
-    {
-        transiteTo(new Menu(m_interactive_components, m_state_machine));
-    }
 }
 
 void Game::clearAll()
@@ -296,12 +172,6 @@ void Game::drawEnemy(Renderer &renderer, Enemy *enemy)
     enemy->draw(renderer);
 }
 
-void Game::drawGameOver(Renderer &renderer)
-{
-    Point pos = {-1, m_game_over_message_position};
-    renderer.drawText(pos, AppConfig::game_over_text, {255, 10, 10, 255}, FontSize::BIGGEST);
-}
-
 void Game::drawGameStatusPanel(Renderer &renderer)
 {
     // enemies left to kill
@@ -337,6 +207,14 @@ void Game::drawGameStatusPanel(Renderer &renderer)
     renderer.drawText(stage_number_dst, std::to_string(m_current_level), {0, 0, 0, 255}, FontSize::NORMAL);
 }
 
+void Game::updateScene(Uint32 dt)
+{
+    checkCollisions(dt);
+    updateObjects(dt);
+    calculateEnemiesTargets();
+    generateEnemyIfPossible(dt);
+}
+
 void Game::checkCollisions(Uint32 dt)
 {
     std::vector<Player *>::iterator pl1, pl2;
@@ -356,9 +234,9 @@ void Game::checkCollisions(Uint32 dt)
         for (auto bullet : enemy->bullets)
         {
             m_level_environment->checkCollisionBulletWithLevel(bullet);
-            if (!m_game_over && m_level_environment->checkCollisionBulletWithEagle(bullet))
+            if (m_level_environment->checkCollisionBulletWithEagle(bullet))
             {
-                gameOver();
+                transiteToGameOver();
             }
         }
     }
@@ -368,9 +246,9 @@ void Game::checkCollisions(Uint32 dt)
         for (auto bullet : player->bullets)
         {
             m_level_environment->checkCollisionBulletWithLevel(bullet);
-            if (!m_game_over && m_level_environment->checkCollisionBulletWithEagle(bullet))
+            if (m_level_environment->checkCollisionBulletWithEagle(bullet))
             {
-                gameOver();
+                transiteToGameOver();
             }
         }
     }
@@ -579,14 +457,6 @@ void Game::updateObjects(Uint32 dt)
                     m_bonuses.end());
 }
 
-void Game::gameOver()
-{
-    m_level_environment->destroyEagle();
-    m_game_over_message_position = AppConfig::map_rect.h;
-    m_game_over = true;
-    playSound(SoundConfig::GAME_OVER);
-}
-
 void Game::calculateEnemiesTargets()
 {
     int min_metric;
@@ -680,12 +550,17 @@ void Game::generateBonus()
     Bonus *b = new Bonus(0, 0, static_cast<SpriteType>(rand() % (ST_BONUS_BOAT - ST_BONUS_GRENADE + 1) + ST_BONUS_GRENADE));
     do
     {
-        b->pos_x = rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 1 * AppConfig::tile_size.w);
-        b->pos_y = rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 1 * AppConfig::tile_size.h);
+        b->pos_x = rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 2 * AppConfig::tile_size.w);
+        b->pos_y = rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 2 * AppConfig::tile_size.h);
         b->update(0);
     } while (m_level_environment->checkCollisionWithEagle(b->collision_rect));
 
     playSound(SoundConfig::BONUS_APPEARED);
 
     m_bonuses.push_back(b);
+}
+
+void Game::transiteToGameOver()
+{
+    m_game_state_machine->setState(new Game::GameOverState(this));
 }

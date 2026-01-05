@@ -73,12 +73,9 @@ unsigned AppConfig::player_bullet_max_count = 2;
 unsigned AppConfig::bonus_show_time = 10000;
 unsigned AppConfig::tank_shield_time = 10000;
 unsigned AppConfig::tank_frozen_time = 8000;
-unsigned AppConfig::level_end_time = 5000;
 unsigned AppConfig::protect_eagle_time = 15000;
 unsigned AppConfig::bonus_blink_time = 350;
 unsigned AppConfig::player_reload_time = 120;
-
-double AppConfig::game_over_message_speed = 0.13;
 double AppConfig::tank_default_speed = 0.08;
 double AppConfig::bullet_default_speed = 0.23;
 
@@ -87,3 +84,5 @@ unsigned AppConfig::Score::single_count_time = 100;
 unsigned AppConfig::Score::idle_time = 5000;
 
 unsigned AppConfig::Game::level_start_time = 2000;
+unsigned AppConfig::Game::level_end_time = 5000;
+double AppConfig::Game::game_over_message_speed = 0.13;
