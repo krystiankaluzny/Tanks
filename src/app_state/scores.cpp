@@ -104,7 +104,7 @@ void Scores::transiteToNextState()
     }
 }
 
-Scores::CountingState::CountingState(Scores *ps) : SubState<Scores>(ps, ps->m_scores_state_machine), m_single_score_count_time(0) {}
+Scores::CountingState::CountingState(Scores *ps) : ContextState<Scores>(ps, ps->m_scores_state_machine), m_single_score_count_time(0) {}
 
 void Scores::CountingState::update(const UpdateState &updateState)
 {
@@ -114,27 +114,27 @@ void Scores::CountingState::update(const UpdateState &updateState)
 
     if (m_single_score_count_time > AppConfig::Score::single_count_time)
     {
-        if (m_parent_state->m_score_counter < 10)
-            m_parent_state->m_score_counter++;
-        else if (m_parent_state->m_score_counter < 100)
-            m_parent_state->m_score_counter += 10;
-        else if (m_parent_state->m_score_counter < 1000)
-            m_parent_state->m_score_counter += 100;
-        else if (m_parent_state->m_score_counter < 10000)
-            m_parent_state->m_score_counter += 1000;
-        else if (m_parent_state->m_score_counter < 100000)
-            m_parent_state->m_score_counter += 10000;
+        if (m_context->m_score_counter < 10)
+            m_context->m_score_counter++;
+        else if (m_context->m_score_counter < 100)
+            m_context->m_score_counter += 10;
+        else if (m_context->m_score_counter < 1000)
+            m_context->m_score_counter += 100;
+        else if (m_context->m_score_counter < 10000)
+            m_context->m_score_counter += 1000;
+        else if (m_context->m_score_counter < 100000)
+            m_context->m_score_counter += 10000;
         else
-            m_parent_state->m_score_counter += 100000;
+            m_context->m_score_counter += 100000;
 
-        m_parent_state->playSound(SoundConfig::SCORE_POINT_COUNTED);
+        m_context->playSound(SoundConfig::SCORE_POINT_COUNTED);
 
         m_single_score_count_time = 0;
     }
 
-    if (m_parent_state->m_score_counter >= m_parent_state->m_max_score)
+    if (m_context->m_score_counter >= m_context->m_max_score)
     {
-        transiteTo(new Scores::IdleState(m_parent_state));
+        transiteTo(new Scores::IdleState(m_context));
     }
 }
 
@@ -146,13 +146,13 @@ void Scores::CountingState::eventProcess(const Event &event)
 
         if (ev.isPressed(KeyCode::KEY_RETURN))
         {
-            m_parent_state->m_score_counter = m_parent_state->m_max_score;
-            transiteTo(new Scores::IdleState(m_parent_state));
+            m_context->m_score_counter = m_context->m_max_score;
+            transiteTo(new Scores::IdleState(m_context));
         }
     }
 }
 
-Scores::IdleState::IdleState(Scores *ps) : SubState<Scores>(ps, ps->m_scores_state_machine), m_idle_time(0) {}
+Scores::IdleState::IdleState(Scores *ps) : ContextState<Scores>(ps, ps->m_scores_state_machine), m_idle_time(0) {}
 
 void Scores::IdleState::update(const UpdateState &updateState)
 {
@@ -162,7 +162,7 @@ void Scores::IdleState::update(const UpdateState &updateState)
 
     if (m_idle_time > AppConfig::Score::idle_time)
     {
-        m_parent_state->transiteToNextState();
+        m_context->transiteToNextState();
     }
 }
 
@@ -174,7 +174,7 @@ void Scores::IdleState::eventProcess(const Event &event)
 
         if (ev.isPressed(KeyCode::KEY_RETURN))
         {
-            m_parent_state->transiteToNextState();
+            m_context->transiteToNextState();
         }
     }
 }

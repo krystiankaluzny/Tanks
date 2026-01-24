@@ -2,7 +2,7 @@
 #define SCORES_H
 #include "appstate.h"
 #include "../objects/player.h"
-#include "../engine/state_machine/sub_state.h"
+#include "../engine/state_machine/context_state.h"
 #include <vector>
 #include <string>
 
@@ -28,7 +28,7 @@ private:
     unsigned m_max_score;
 
     // Sub-states for score counting and idle state after counting
-    class CountingState : public SubState<Scores>
+    class CountingState : public ContextState<Scores>
     {
     public:
         CountingState(Scores *ps);
@@ -39,7 +39,7 @@ private:
         Uint32 m_single_score_count_time;
     };
 
-    class IdleState : public SubState<Scores>
+    class IdleState : public ContextState<Scores>
     {
     public:
         IdleState(Scores *ps);

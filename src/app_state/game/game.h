@@ -8,7 +8,7 @@
 #include "../../objects/brick.h"
 #include "../../objects/eagle.h"
 #include "../../objects/bonus.h"
-#include "../../engine/state_machine/sub_state.h"
+#include "../../engine/state_machine/context_state.h"
 #include "level_environment.h"
 #include <vector>
 #include <string>
@@ -78,7 +78,7 @@ private:
     bool m_show_enemies_targets;
 
     // Sub-states
-    class StartingState : public SubState<Game>
+    class StartingState : public ContextState<Game>
     {
     public:
         StartingState(Game *ps);
@@ -89,7 +89,7 @@ private:
         Uint32 m_level_start_time;
     };
 
-    class PlayingState : public SubState<Game>
+    class PlayingState : public ContextState<Game>
     {
     public:
         PlayingState(Game *ps);
@@ -98,7 +98,7 @@ private:
         void eventProcess(const Event &event) override;
     };
 
-    class LevelEndingState : public SubState<Game>
+    class LevelEndingState : public ContextState<Game>
     {
     public:
         LevelEndingState(Game *ps, bool no_waiting, bool game_over);
@@ -111,7 +111,7 @@ private:
         bool m_game_over;
     };
 
-    class PauseState : public SubState<Game>
+    class PauseState : public ContextState<Game>
     {
     public:
         PauseState(Game *ps);
@@ -120,7 +120,7 @@ private:
         void eventProcess(const Event &event) override;
     };
 
-    class GameOverState : public SubState<Game>
+    class GameOverState : public ContextState<Game>
     {
     public:
         GameOverState(Game *ps);

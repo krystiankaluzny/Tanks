@@ -1,11 +1,11 @@
 #include "game.h"
 #include "../../appconfig.h"
 
-Game::StartingState::StartingState(Game *ps) : SubState(ps, ps->m_game_state_machine), m_level_start_time(0) {}
+Game::StartingState::StartingState(Game *ps) : ContextState(ps, ps->m_game_state_machine), m_level_start_time(0) {}
 
 void Game::StartingState::draw(Renderer &renderer)
 {
-    m_parent_state->drawScene(renderer);
+    m_context->drawScene(renderer);
 
     Color color = {128, 128, 128, 0};
 
@@ -19,7 +19,7 @@ void Game::StartingState::draw(Renderer &renderer)
     renderer.drawRect(bottom_rect, color, true);
 
     Point text_centered_pos = {-1, -1};
-    std::string level_name = "STAGE " + std::to_string(m_parent_state->m_current_level);
+    std::string level_name = "STAGE " + std::to_string(m_context->m_current_level);
     renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, FontSize::BIGGEST);
 }
 
@@ -29,6 +29,6 @@ void Game::StartingState::update(const UpdateState &updateState)
 
     if (m_level_start_time > AppConfig::Game::level_start_time)
     {
-        transiteTo(new Game::PlayingState(m_parent_state));
+        transiteTo(new Game::PlayingState(m_context));
     }
 }
