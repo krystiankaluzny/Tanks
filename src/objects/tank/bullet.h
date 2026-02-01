@@ -1,7 +1,7 @@
-#ifndef BULLET_H
-#define BULLET_H
+#ifndef TANK_BULLET_H
+#define TANK_BULLET_H
 
-#include "object.h"
+#include "../object.h"
 #include "direction.h"
 
 class Tank;
@@ -31,4 +31,4 @@ private:
     Direction m_direction;
 };
 
-#endif // BULLET_H
+#endif // TANK_BULLET_H

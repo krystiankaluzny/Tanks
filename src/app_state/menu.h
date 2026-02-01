@@ -2,7 +2,7 @@
 #define MENU_H
 
 #include "appstate.h"
-#include "../objects/player.h"
+#include "../objects/tank/player.h"
 
 #include <vector>
 #include <string>

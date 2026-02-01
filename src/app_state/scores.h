@@ -1,7 +1,7 @@
 #ifndef SCORES_H
 #define SCORES_H
 #include "appstate.h"
-#include "../objects/player.h"
+#include "../objects/tank/player.h"
 #include "../engine/state_machine/context_state.h"
 #include <vector>
 #include <string>

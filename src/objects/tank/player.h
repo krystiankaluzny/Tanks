@@ -1,5 +1,5 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef TANK_PLAYER_H
+#define TANK_PLAYER_H
 
 #include "tank.h"
 #include <vector>
@@ -50,4 +50,4 @@ private:
     KeyState m_key_state_fire;
 };
 
-#endif // PLAYER_H
+#endif // TANK_PLAYER_H

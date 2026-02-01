@@ -3,8 +3,8 @@
 
 #include "../../objects/object.h"
 #include "../../objects/eagle.h"
-#include "../../objects/tank.h"
-#include "../../objects/bullet.h"
+#include "../../objects/tank/tank.h"
+#include "../../objects/tank/bullet.h"
 #include <vector>
 
 

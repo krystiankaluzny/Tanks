@@ -1,6 +1,6 @@
 #include "enemy.h"
-#include "../appconfig.h"
-#include "../soundconfig.h"
+#include "../../appconfig.h"
+#include "../../soundconfig.h"
 #include <stdlib.h>
 #include <ctime>
 #include <iostream>

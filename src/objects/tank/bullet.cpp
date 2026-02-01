@@ -1,7 +1,7 @@
 #include "bullet.h"
 #include "tank.h"
-#include "../appconfig.h"
-#include "../engine/data/data.h"
+#include "../../appconfig.h"
+#include "../../engine/data/data.h"
 
 Bullet::Bullet(double x, double y)
     : Object(x, y, ST_BULLET)

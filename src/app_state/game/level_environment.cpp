@@ -2,7 +2,7 @@
 #include "../../appconfig.h"
 #include "../../soundconfig.h"
 #include "../../objects/brick.h"
-#include "../../objects/player.h"
+#include "../../objects/tank/player.h"
 
 #include <fstream>
 #include <stdexcept>

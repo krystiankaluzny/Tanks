@@ -1,6 +1,6 @@
 #include "tank.h"
-#include "../appconfig.h"
-#include "../soundconfig.h"
+#include "../../appconfig.h"
+#include "../../soundconfig.h"
 #include <algorithm>
 
 Tank::Tank(double x, double y, SpriteType type, InteractiveComponents interactive_components)

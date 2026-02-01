@@ -1,5 +1,5 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef TANK_ENEMY_H
+#define TANK_ENEMY_H
 
 #include "tank.h"
 
@@ -29,4 +29,4 @@ private:
     Uint32 m_reload_time;
 };
 
-#endif // ENEMY_H
+#endif // TANK_ENEMY_H

@@ -1,6 +1,6 @@
 #include "player.h"
-#include "../appconfig.h"
-#include "../soundconfig.h"
+#include "../../appconfig.h"
+#include "../../soundconfig.h"
 #include <iostream>
 
 Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys, InteractiveComponents interactive_components)

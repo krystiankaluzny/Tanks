@@ -1,5 +1,5 @@
-#ifndef DIRECTION_H
-#define DIRECTION_H
+#ifndef TANK_DIRECTION_H
+#define TANK_DIRECTION_H
 
 enum Direction
 {
@@ -9,4 +9,4 @@ enum Direction
     D_LEFT = 3
 };
 
-#endif // DIRECTION_H
+#endif // TANK_DIRECTION_H

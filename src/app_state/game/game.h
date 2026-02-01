@@ -2,9 +2,9 @@
 #define GAME_H
 #include "../appstate.h"
 #include "../../objects/object.h"
-#include "../../objects/player.h"
-#include "../../objects/enemy.h"
-#include "../../objects/bullet.h"
+#include "../../objects/tank/player.h"
+#include "../../objects/tank/enemy.h"
+#include "../../objects/tank/bullet.h"
 #include "../../objects/brick.h"
 #include "../../objects/eagle.h"
 #include "../../objects/bonus.h"
