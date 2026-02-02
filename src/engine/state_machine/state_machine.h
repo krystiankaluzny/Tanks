@@ -12,6 +12,7 @@ public:
     ~StateMachine();
 
     void setState(State *new_state, bool force = false);
+    void resetState(State *new_state);
     void stop();
     bool stopped() const;
 

@@ -378,7 +378,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         }
         else if (bonus->type == ST_BONUS_HELMET)
         {
-            player->setFlag(Tank::TSF_SHIELD);
+            player->activateShieldEffect();
         }
         else if (bonus->type == ST_BONUS_CLOCK)
         {
@@ -404,7 +404,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         }
         else if (bonus->type == ST_BONUS_BOAT)
         {
-            player->setFlag(Tank::TSF_BOAT);
+            player->activateBoatEffect();
         }
         bonus->to_erase = true;
 

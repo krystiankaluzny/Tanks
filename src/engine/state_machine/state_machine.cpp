@@ -21,6 +21,15 @@ void StateMachine::setState(State *new_state, bool force)
     }
 }
 
+void StateMachine::resetState(State *new_state)
+{
+    if (current_state != nullptr)
+    {
+        delete current_state;
+    }
+    current_state = new_state;
+}
+
 void StateMachine::stop()
 {
     m_running = false;

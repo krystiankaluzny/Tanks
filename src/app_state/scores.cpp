@@ -19,9 +19,7 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
     for (auto player : m_players)
     {
         player->to_erase = false;
-
-        player->creatingState();
-        player->setFlag(Tank::TSF_PREVIEW);
+        player->startPreview();
 
         if (player->score() > m_max_score)
             m_max_score = player->score();
