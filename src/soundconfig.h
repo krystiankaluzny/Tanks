@@ -34,6 +34,7 @@ namespace SoundConfig
     // const Sound PLAYER_SLIDING{"sounds/player_sliding.wav", 100.0, true};
 
     // const Sound SCORE_BONUS_POINTS_RECEIVED {"sounds/holoflash_score_bonus_points_received.wav", 100.0, 1.0, true};
+
     const Sound SCORE_POINT_COUNTED{"sounds/score_point_counted.wav", 100.0, 1.0, true};
 }
 
