@@ -264,7 +264,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     {
         bullet->destroy();
         if (is_player_bullet)
-            playSound(SoundConfig::BULLET_HIT_MAP_BOUNDRIES);
+            playSound(SoundConfig::BULLET_HIT_MAP_BOUNDARIES);
     }
 }
 

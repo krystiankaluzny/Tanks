@@ -45,9 +45,9 @@ public:
     void stopAll() override;
 
 private:
-    Mix_Chunk *loadSound(const Sound& sound);
+    Mix_Chunk *loadSound(const Sound &sound);
     std::vector<Sound> findAllMatchingSounds(const Sound &sound);
- 
+
     bool canPlay(const Sound &sound);
 
     std::unordered_map<Sound, Mix_Chunk *> m_sound_cache;
