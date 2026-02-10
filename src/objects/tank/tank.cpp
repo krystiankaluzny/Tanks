@@ -233,8 +233,6 @@ Rect Tank::nextCollisionRect(Uint32 dt)
 
 void Tank::setDirection(Direction d)
 {
-    std::cout << "set direction: " << d << std::endl;
-    
     OnIceEffect *onIceEffect = dynamic_cast<OnIceEffect *>(findEffectByType(TankEffectType::ON_ICE));
     if (onIceEffect != nullptr)
     {
@@ -510,7 +508,7 @@ TankEffect *Tank::findEffectByType(TankEffectType type)
 
 void Tank::updatePosition(Uint32 dt)
 {
-    if (!m_blocked && !testFlag(TSF_FROZEN))
+    if (!m_blocked && !m_frozen)
     {
         switch (m_moving_direction)
         {

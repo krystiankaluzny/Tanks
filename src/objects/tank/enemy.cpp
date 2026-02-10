@@ -6,7 +6,8 @@
 #include <iostream>
 
 Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count, InteractiveComponents interactive_components)
-    : Tank(x, y, type, interactive_components)
+    : Tank(x, y, type, interactive_components),
+      m_enemy_state_machine(new StateMachine())
 {
     m_moving_direction = D_DOWN;
     m_direction_time = 0;
@@ -23,8 +24,6 @@ Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count, Interact
 
     m_bullet_max_count = 1;
 
-    m_frozen_time = 0;
-
     if (type == ST_TANK_B)
         m_max_speed = AppConfig::tank_default_speed * 1.3;
     else
@@ -32,33 +31,65 @@ Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count, Interact
 
     target_position = {-1, -1};
 
-    creatingState();
+    m_enemy_state_machine->setState(new CreatingState(this));
+}
+
+Enemy::~Enemy()
+{
+    delete m_enemy_state_machine;
 }
 
 void Enemy::draw(Renderer &renderer)
 {
-    if (to_erase)
-        return;
+    m_enemy_state_machine->draw(renderer);
+}
+
+void Enemy::drawEnemy(Renderer &renderer)
+{
     Tank::draw(renderer);
 }
 
 void Enemy::update(Uint32 dt)
 {
-    if (to_erase)
-        return;
-    Tank::update(dt);
+    m_enemy_state_machine->update({dt});
+}
 
-    if (testFlag(TSF_ALIVE))
+Bullet *Enemy::fire()
+{
+    Bullet *b = Tank::fire();
+
+    if (b != nullptr && type == ST_TANK_C)
     {
-        if (testFlag(TSF_BONUS))
-            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? m_tank_direction : m_moving_direction) - 4, m_current_frame);
-        else
-            src_rect = m_sprite->rect.tiledOffset((testFlag(TSF_ON_ICE) ? m_tank_direction : m_moving_direction) + (m_armor_count - 1) * 4, m_current_frame);
+        b->increaseSpeed(1.3);
     }
-    else
-        src_rect = m_sprite->rect.tiledOffset(0, m_current_frame);
 
-    if (testFlag(TSF_FROZEN))
+    return b;
+}
+void Enemy::hit()
+{
+    if (m_armor_count == 1)
+    {
+        m_armor_count = 0;
+        m_enemy_state_machine->setState(new DestroyedState(this));
+        playSound(SoundConfig::ENEMY_DESTROYED);
+    }
+    else if (m_armor_count > 1)
+    {
+        m_armor_count--;
+        playSound(SoundConfig::ENEMY_HIT);
+    }
+}
+
+unsigned Enemy::scoreForHit()
+{
+    if (m_lives_count > 0)
+        return 50;
+    return 100;
+}
+
+void Enemy::updateBehavior(Uint32 dt)
+{
+    if (m_frozen)
         return;
 
     m_direction_time += dt;
@@ -135,39 +166,4 @@ void Enemy::update(Uint32 dt)
             fire();
         }
     }
-
-    m_blocked = false;
-}
-
-Bullet *Enemy::fire()
-{
-    Bullet *b = Tank::fire();
-
-    if (b != nullptr && type == ST_TANK_C)
-    {
-        b->increaseSpeed(1.3);
-    }
-
-    return b;
-}
-void Enemy::hit()
-{
-    if (m_armor_count == 1)
-    {
-        m_armor_count = 0;
-        Tank::destroy();
-        playSound(SoundConfig::ENEMY_DESTROYED);
-    }
-    else if (m_armor_count > 1)
-    {
-        m_armor_count--;
-        playSound(SoundConfig::ENEMY_HIT);
-    }
-}
-
-unsigned Enemy::scoreForHit()
-{
-    if (m_lives_count > 0)
-        return 50;
-    return 100;
 }
