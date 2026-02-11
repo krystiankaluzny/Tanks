@@ -28,18 +28,18 @@ Bullet::Bullet(Tank *owner, Direction direction, double speed)
     {
     case D_UP:
         pos_x = tank_center.x - dest_rect.w / 2;
-        pos_y = tank_center.y - tank_size.h / 2 + 4;
+        pos_y = tank_center.y - tank_size.h / 2 + dest_rect.h;
         break;
     case D_RIGHT:
-        pos_x = tank_center.x + tank_size.w / 2 - 4;
+        pos_x = tank_center.x + tank_size.w / 2 - dest_rect.w;
         pos_y = tank_center.y - dest_rect.h / 2;
         break;
     case D_DOWN:
         pos_x = tank_center.x - dest_rect.w / 2;
-        pos_y = tank_center.y + tank_size.h / 2 - 4;
+        pos_y = tank_center.y + tank_size.h / 2 - dest_rect.h;
         break;
     case D_LEFT:
-        pos_x = tank_center.x - tank_size.w / 2 + 4;
+        pos_x = tank_center.x - tank_size.w / 2 + dest_rect.w;
         pos_y = tank_center.y - dest_rect.h / 2;
         break;
     }
