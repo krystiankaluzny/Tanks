@@ -104,6 +104,7 @@ private:
         LevelEndingState(Game *ps, bool no_waiting, bool game_over);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+        void eventProcess(const Event &event) override;
 
     private:
         Uint32 m_level_end_time;

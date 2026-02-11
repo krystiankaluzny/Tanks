@@ -51,7 +51,7 @@ void Game::PlayingState::eventProcess(const Event &event)
             m_context->transiteTo(new Menu(m_context->m_interactive_components, m_context->m_state_machine));
         }
 
-         for (auto player : m_context->m_players)
-                player->handleKeyboardEvent(event_key);
+        for (auto player : m_context->m_players)
+            player->handleKeyboardEvent(event_key);
     }
 }

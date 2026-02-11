@@ -17,9 +17,11 @@ void Game::LevelEndingState::draw(Renderer &renderer)
 
 void Game::LevelEndingState::update(const UpdateState &updateState)
 {
+    m_context->updateScene(updateState.delta_time);
+
     m_level_end_time += updateState.delta_time;
 
-    if (m_no_waiting || m_level_end_time > AppConfig::Game::level_start_time)
+    if (m_no_waiting || m_level_end_time > AppConfig::Game::level_end_time)
     {
         transiteToNull();
 
@@ -32,9 +34,19 @@ void Game::LevelEndingState::update(const UpdateState &updateState)
         m_context->m_killed_players.clear();
 
         m_context->transiteTo(new Scores(players,
-                                              m_context->m_current_level,
-                                              m_game_over,
-                                              m_context->m_interactive_components,
-                                              m_context->m_state_machine));
+                                         m_context->m_current_level,
+                                         m_game_over,
+                                         m_context->m_interactive_components,
+                                         m_context->m_state_machine));
+    }
+}
+
+void Game::LevelEndingState::eventProcess(const Event &event)
+{
+    if (event.type() == Event::KEYBOARD)
+    {
+        const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
+        for (auto player : m_context->m_players)
+            player->handleKeyboardEvent(event_key);
     }
 }
