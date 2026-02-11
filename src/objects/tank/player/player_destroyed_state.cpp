@@ -10,6 +10,7 @@ Player::DestroyedState::DestroyedState(Player *player) : ContextState<Player>(pl
     player->m_current_frame = 0;
     player->m_frame_display_time = 0;
 
+    player->src_rect = sprite->rect.tiledOffset(0, player->m_current_frame);
     player->dest_rect.x = player->pos_x + (player->dest_rect.w - sprite->rect.w) / 2;
     player->dest_rect.y = player->pos_y + (player->dest_rect.h - sprite->rect.h) / 2;
     player->dest_rect.h = sprite->rect.h;

@@ -10,6 +10,7 @@ Enemy::CreatingState::CreatingState(Enemy *enemy) : ContextState<Enemy>(enemy, e
     enemy->m_current_frame = 0;
     enemy->m_frame_display_time = 0;
 
+    enemy->src_rect = sprite->rect.tiledOffset(0, enemy->m_current_frame);
     enemy->dest_rect = Rect{(int)enemy->pos_x, (int)enemy->pos_y, sprite->rect.w, sprite->rect.h};
     enemy->collision_rect = Rect{0, 0, 0, 0};
 

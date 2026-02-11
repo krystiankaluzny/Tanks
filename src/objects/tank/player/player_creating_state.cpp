@@ -22,6 +22,7 @@ Player::CreatingState::CreatingState(Player *player) : ContextState<Player>(play
     player->m_current_frame = 0;
     player->m_frame_display_time = 0;
 
+    player->src_rect = sprite->rect.tiledOffset(0, player->m_current_frame);
     player->dest_rect = Rect{(int)player->pos_x, (int)player->pos_y, sprite->rect.w, sprite->rect.h};
     player->collision_rect = Rect{0, 0, 0, 0};
 

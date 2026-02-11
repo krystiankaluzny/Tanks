@@ -535,7 +535,7 @@ void Game::generateEnemyIfPossible(Uint32 dt)
         m_enemy_respown_position = 0;
 
     p = static_cast<float>(rand()) / RAND_MAX;
-    if (p > 0.12)
+    if (p < 0.12)
         e->makeWithBonus();
 
     m_enemies.push_back(e);
