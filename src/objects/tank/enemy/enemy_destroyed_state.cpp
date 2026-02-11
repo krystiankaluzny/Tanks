@@ -1,5 +1,4 @@
 #include "enemy.h"
-#include "../../appconfig.h"
 
 Enemy::DestroyedState::DestroyedState(Enemy *enemy) : ContextState<Enemy>(enemy, enemy->m_enemy_state_machine)
 {

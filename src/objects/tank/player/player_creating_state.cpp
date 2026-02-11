@@ -1,5 +1,5 @@
 #include "player.h"
-#include "../../appconfig.h"
+#include "../../../appconfig.h"
 
 Player::CreatingState::CreatingState(Player *player) : ContextState<Player>(player, player->m_player_state_machine)
 {
@@ -19,7 +19,6 @@ Player::CreatingState::CreatingState(Player *player) : ContextState<Player>(play
 
     player->m_speed = 0.0;
     player->m_blocked = false;
-    player->m_slip_time = 0;
     player->m_current_frame = 0;
     player->m_frame_display_time = 0;
 

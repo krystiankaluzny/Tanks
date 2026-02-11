@@ -1,5 +1,4 @@
 #include "player.h"
-#include "../../appconfig.h"
 
 Player::PreviewState::PreviewState(Player *player) : ContextState<Player>(player, player->m_player_state_machine)
 {

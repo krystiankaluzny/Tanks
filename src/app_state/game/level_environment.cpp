@@ -2,7 +2,7 @@
 #include "../../appconfig.h"
 #include "../../soundconfig.h"
 #include "../../objects/brick.h"
-#include "../../objects/tank/player.h"
+#include "../../objects/tank/player/player.h"
 
 #include <fstream>
 #include <stdexcept>
@@ -355,7 +355,7 @@ void LevelEnvironment::checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt)
                 continue;
             if (o->type == ST_BUSH)
                 continue;
-            if (tank->testFlag(Tank::TSF_BOAT) && o->type == ST_WATER)
+            if (tank->hasBoatEffect() && o->type == ST_WATER)
                 continue;
 
             Rect &lr = o->collision_rect;
@@ -378,7 +378,7 @@ void LevelEnvironment::checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt)
 
     if (on_ice)
     {
-        tank->setFlag(Tank::TSF_ON_ICE);
+        tank->activateOnIceEffect();
     }
 }
 
@@ -454,11 +454,11 @@ void LevelEnvironment::checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt)
 
     if (on_ice)
     {
-        tank->setFlag(Tank::TSF_ON_ICE);
+        tank->activateOnIceEffect();
     }
     else
     {
-        tank->clearFlag(Tank::TSF_ON_ICE);
+        tank->deactivateOnIceEffect();
     }
 }
 

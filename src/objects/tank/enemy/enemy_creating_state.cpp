@@ -1,5 +1,4 @@
 #include "enemy.h"
-#include "../../appconfig.h"
 
 Enemy::CreatingState::CreatingState(Enemy *enemy) : ContextState<Enemy>(enemy, enemy->m_enemy_state_machine)
 {
@@ -8,7 +7,6 @@ Enemy::CreatingState::CreatingState(Enemy *enemy) : ContextState<Enemy>(enemy, e
 
     enemy->m_speed = 0.0;
     enemy->m_blocked = false;
-    enemy->m_slip_time = 0;
     enemy->m_current_frame = 0;
     enemy->m_frame_display_time = 0;
 

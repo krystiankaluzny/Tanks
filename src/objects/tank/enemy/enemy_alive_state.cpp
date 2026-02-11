@@ -1,5 +1,4 @@
 #include "enemy.h"
-#include "../../appconfig.h"
 
 Enemy::AliveState::AliveState(Enemy *enemy) : ContextState<Enemy>(enemy, enemy->m_enemy_state_machine)
 {
@@ -7,7 +6,6 @@ Enemy::AliveState::AliveState(Enemy *enemy) : ContextState<Enemy>(enemy, enemy->
     enemy->m_sprite = sprite;
 
     enemy->m_blocked = false;
-    enemy->m_slip_time = 0;
     enemy->m_current_frame = 0;
     enemy->m_frame_display_time = 0;
 
@@ -44,7 +42,7 @@ void Enemy::AliveState::update(const UpdateState &updateState)
         }
     }
 
-    if (enemy->testFlag(TSF_BONUS))
+    if (enemy->m_bonus)
         enemy->src_rect = sprite->rect.tiledOffset(enemy->m_tank_direction - 4, enemy->m_current_frame);
     else
         enemy->src_rect = sprite->rect.tiledOffset(enemy->m_tank_direction + (enemy->m_armor_count - 1) * 4, enemy->m_current_frame);

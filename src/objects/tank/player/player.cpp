@@ -1,6 +1,6 @@
 #include "player.h"
-#include "../../appconfig.h"
-#include "../../soundconfig.h"
+#include "../../../appconfig.h"
+#include "../../../soundconfig.h"
 #include <iostream>
 
 Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control_keys, InteractiveComponents interactive_components)
@@ -12,8 +12,6 @@ Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control
     m_bullet_max_count = AppConfig::player_bullet_max_count;
     m_score = 0;
     star_count = 0;
-    m_shield = new Object(x, y, ST_SHIELD);
-    m_shield_time = 0;
 
     m_key_state_up = {control_keys[0], false};
     m_key_state_down = {control_keys[1], false};
@@ -73,13 +71,14 @@ void Player::respawn()
 
 void Player::hit()
 {
-    if (testFlag(TSF_SHIELD))
+    if (hasEffectByType(Tank::TankEffectType::SHIELD))
     {
         return;
     }
-    if (testFlag(TSF_BOAT))
+
+    if (hasEffectByType(Tank::TankEffectType::BOAT))
     {
-        clearFlag(TSF_BOAT);
+        deleteEffectByType(Tank::TankEffectType::BOAT);
         return;
     }
 

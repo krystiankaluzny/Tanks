@@ -288,8 +288,6 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 {
     if (player->to_erase || enemy->to_erase)
         return;
-    if (enemy->testFlag(Tank::TSF_DESTROYED))
-        return;
     Rect intersect_rect;
 
     for (auto bullet : player->bullets)
@@ -299,7 +297,7 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
             intersect_rect = bullet->collision_rect.intersection(enemy->collision_rect);
             if (intersect_rect.isNotEmpty())
             {
-                if (enemy->testFlag(Tank::TSF_BONUS))
+                if (enemy->bonus())
                     generateBonus();
 
                 bullet->destroy();
@@ -316,8 +314,6 @@ void Game::checkCollisionPlayerBulletsWithEnemy(Player *player, Enemy *enemy)
 void Game::checkCollisionEnemyBulletsWithPlayer(Enemy *enemy, Player *player)
 {
     if (enemy->to_erase || player->to_erase)
-        return;
-    if (player->testFlag(Tank::TSF_DESTROYED))
         return;
     Rect intersect_rect;
 
@@ -384,7 +380,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         {
             for (auto enemy : m_enemies)
                 if (!enemy->to_erase)
-                    enemy->setFlag(Tank::TSF_FROZEN);
+                    enemy->activateFrozenEffect();
         }
         else if (bonus->type == ST_BONUS_SHOVEL)
         {
@@ -539,8 +535,8 @@ void Game::generateEnemyIfPossible(Uint32 dt)
         m_enemy_respown_position = 0;
 
     p = static_cast<float>(rand()) / RAND_MAX;
-    if (p < 0.12)
-        e->setFlag(Tank::TSF_BONUS);
+    if (p > 0.12)
+        e->makeWithBonus();
 
     m_enemies.push_back(e);
 }

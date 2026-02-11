@@ -1,7 +1,7 @@
 #ifndef TANK_PLAYER_H
 #define TANK_PLAYER_H
 
-#include "tank.h"
+#include "../tank.h"
 #include <vector>
 
 class Player : public Tank
@@ -14,7 +14,6 @@ public:
     void handleKeyboardEvent(const KeyboardEvent &ev);
     void update(Uint32 dt) override;
 
-    void respawn() override;
     void hit();
     void moveToNextLevel();
     void startPreview();
@@ -33,6 +32,7 @@ public:
 
 private:
     void drawPlayer(Renderer &renderer);
+    void respawn();
     void resetKeyStates();
 
     StateMachine *m_player_state_machine;

@@ -1,7 +1,7 @@
 #ifndef TANK_ENEMY_H
 #define TANK_ENEMY_H
 
-#include "tank.h"
+#include "../tank.h"
 
 class Enemy : public Tank
 {
@@ -17,6 +17,9 @@ public:
     void hit();
     unsigned scoreForHit();
 
+    void makeWithBonus();
+    bool bonus() const;
+
     Point target_position;
 
 private:
@@ -24,6 +27,8 @@ private:
     void updateBehavior(Uint32 dt);
 
     StateMachine *m_enemy_state_machine;
+
+    bool m_bonus;
 
     Uint32 m_direction_time;
     Uint32 m_keep_direction_time;

@@ -1,5 +1,4 @@
 #include "player.h"
-#include "../../appconfig.h"
 
 Player::DestroyedState::DestroyedState(Player *player) : ContextState<Player>(player, player->m_player_state_machine)
 {

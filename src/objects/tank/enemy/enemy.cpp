@@ -1,6 +1,6 @@
 #include "enemy.h"
-#include "../../appconfig.h"
-#include "../../soundconfig.h"
+#include "../../../appconfig.h"
+#include "../../../soundconfig.h"
 #include <stdlib.h>
 #include <ctime>
 #include <iostream>
@@ -10,9 +10,11 @@ Enemy::Enemy(double x, double y, SpriteType type, unsigned armor_count, Interact
       m_enemy_state_machine(new StateMachine())
 {
     m_moving_direction = D_DOWN;
+    m_tank_direction = D_DOWN;
     m_direction_time = 0;
     m_keep_direction_time = 100;
 
+    m_bonus = false;
     m_speed_time = 0;
     m_try_to_go_time = 100;
 
@@ -65,6 +67,7 @@ Bullet *Enemy::fire()
 
     return b;
 }
+
 void Enemy::hit()
 {
     if (m_armor_count == 1)
@@ -85,6 +88,16 @@ unsigned Enemy::scoreForHit()
     if (m_lives_count > 0)
         return 50;
     return 100;
+}
+
+void Enemy::makeWithBonus()
+{
+    m_bonus = true;
+}
+
+bool Enemy::bonus() const
+{
+    return m_bonus;
 }
 
 void Enemy::updateBehavior(Uint32 dt)
