@@ -53,6 +53,8 @@ private:
     KeyState m_key_state_right;
     KeyState m_key_state_fire;
 
+    Direction m_last_pressed_direction;
+
     // Sub-states
     class CreatingState : public ContextState<Player>
     {
