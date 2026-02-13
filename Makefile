@@ -97,3 +97,6 @@ endif
 clean:
 	rm -rf $(BUILD)
 	rm -rf doc
+
+run: all
+	cd build/bin && ./Tanks
