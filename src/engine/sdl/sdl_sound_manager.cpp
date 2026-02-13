@@ -75,7 +75,7 @@ void SDLSoundManager::play(const Sound &sound)
             }
         }
 
-        sound_to_load = Sound{sound.file_path, min_volume * sound.overlaping_factor, sound.overlaping_factor, sound.multi_instance, sound.highest_priority};
+        sound_to_load = Sound{sound.file_path, min_volume * sound.overlapping_factor, sound.overlapping_factor, sound.multi_instance, sound.highest_priority};
     }
 
     Mix_Chunk *chunk = loadSound(sound_to_load);
@@ -97,7 +97,7 @@ void SDLSoundManager::stop(const Sound &sound)
         auto current_sound = channel_to_sound.second.first;
         if (current_sound.file_path == sound.file_path)
         {
-            //BE AWARE: Mix_ChannelFinished callback will be called after this and can modify m_current_channel_chunk_cache
+            // BE AWARE: Mix_ChannelFinished callback will be called after this and can modify m_current_channel_chunk_cache
             Mix_HaltChannel(channel_to_sound.first);
         }
     }
