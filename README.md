@@ -115,6 +115,10 @@ Have fun.
 
 `cd build/bin && ./Tanks`
 
+Or build and run immediately:
+
+`make clean run`
+
 
 ### Windows
 
