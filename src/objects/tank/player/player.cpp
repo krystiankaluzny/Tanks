@@ -39,23 +39,38 @@ void Player::drawPlayer(Renderer &renderer)
 
 void Player::handleKeyboardEvent(const KeyboardEvent &ev)
 {
-    KeyboardEvent::KeyState key_state = ev.keyState();
-    if (key_state == KeyboardEvent::PRESSED || key_state == KeyboardEvent::RELEASED)
-    {
-        KeyCode key_code = ev.keyCode();
-        bool pressed = (key_state == KeyboardEvent::PRESSED);
+    if (ev.keyState() != KeyboardEvent::PRESSED && ev.keyState() != KeyboardEvent::RELEASED)
+        return;
 
-        if (key_code == m_key_state_up.key)
-            m_key_state_up.pressed = pressed;
-        else if (key_code == m_key_state_down.key)
-            m_key_state_down.pressed = pressed;
-        else if (key_code == m_key_state_left.key)
-            m_key_state_left.pressed = pressed;
-        else if (key_code == m_key_state_right.key)
-            m_key_state_right.pressed = pressed;
-        else if (key_code == m_key_state_fire.key)
-            m_key_state_fire.pressed = pressed;
+    KeyCode key_code = ev.keyCode();
+    bool pressed = (ev.keyState() == KeyboardEvent::PRESSED);
+
+    if (key_code == m_key_state_fire.key)
+    {
+        m_key_state_fire.pressed = pressed;
+        return;
     }
+
+    auto updateDir = [&](auto &state, Direction dir) -> bool
+    {
+        if (key_code == state.key)
+        {
+            state.pressed = pressed;
+            if (pressed)
+                m_last_pressed_direction = dir;
+            return true;
+        }
+        return false;
+    };
+
+    if (updateDir(m_key_state_up, D_UP))
+        return;
+    if (updateDir(m_key_state_down, D_DOWN))
+        return;
+    if (updateDir(m_key_state_left, D_LEFT))
+        return;
+    if (updateDir(m_key_state_right, D_RIGHT))
+        return;
 }
 
 void Player::update(Uint32 dt)

@@ -52,7 +52,29 @@ void Player::AliveState::checkKeyStates(const UpdateState &updateState)
 {
     Player *player = m_context;
 
-    if (player->m_key_state_up.pressed)
+    auto isPressed = [&](Direction d)
+    {
+        switch (d)
+        {
+        case D_UP:
+            return player->m_key_state_up.pressed;
+        case D_DOWN:
+            return player->m_key_state_down.pressed;
+        case D_LEFT:
+            return player->m_key_state_left.pressed;
+        case D_RIGHT:
+            return player->m_key_state_right.pressed;
+        default:
+            return false;
+        }
+    };
+
+    if (isPressed(player->m_last_pressed_direction))
+    {
+        player->setDirection(player->m_last_pressed_direction);
+        player->m_speed = player->m_max_speed;
+    }
+    else if (player->m_key_state_up.pressed)
     {
         player->setDirection(D_UP);
         player->m_speed = player->m_max_speed;
