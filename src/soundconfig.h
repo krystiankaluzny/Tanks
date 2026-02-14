@@ -25,10 +25,10 @@ namespace SoundConfig
 
     const Sound MENU_ITEM_SELECTED{"sounds/holoflash_menu_item_selected.wav", 70.0, 1.0, true};
 
-    const Sound PLAYER_DESTROYED{"sounds/holoflash_player_destroyed.wav", 100.0, 1.0, true};
+    const Sound PLAYER_DESTROYED{"sounds/holoflash_player_destroyed.wav", 60.0, 1.0, true};
     const Sound PLAYER_FIRED{"sounds/holoflash_player_fired.wav", 60.0, 1.0, true};
     const Sound PLAYER_HIT{"sounds/holoflash_player_hit.wav", 100.0, 1.0, true};
-    const Sound PLAYER_IDLE{"sounds/holoflash_player_idle.wav", 30.0, 1.0, false};
+    const Sound PLAYER_IDLE{"sounds/holoflash_player_idle.wav", 40.0, 1.0, false};
     const Sound PLAYER_LIFE_UP{"sounds/holoflash_player_life_up.wav", 100.0, 1.0, true};
     const Sound PLAYER_MOVING{"sounds/holoflash_player_moving.wav", 40.0, 1.0, false};
     // const Sound PLAYER_SLIDING{"sounds/holoflash_player_sliding.wav", 100.0, true};
