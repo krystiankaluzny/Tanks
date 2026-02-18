@@ -53,6 +53,8 @@ private:
     KeyState m_key_state_right;
     KeyState m_key_state_fire;
 
+    Direction m_last_pressed_direction;
+
     // Sub-states
     class CreatingState : public ContextState<Player>
     {
@@ -60,6 +62,9 @@ private:
         CreatingState(Player *player);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+
+    protected:
+        void onInitialize() override;
     };
 
     class AliveState : public ContextState<Player>
@@ -68,6 +73,9 @@ private:
         AliveState(Player *player);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+
+    protected:
+        void onInitialize() override;
 
     private:
         void checkKeyStates(const UpdateState &updateState);
@@ -79,6 +87,9 @@ private:
         DestroyedState(Player *player);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+
+    protected:
+        void onInitialize() override;
     };
 
     class PreviewState : public ContextState<Player>
@@ -87,6 +98,9 @@ private:
         PreviewState(Player *player);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+
+    protected:
+        void onInitialize() override;
     };
 };
 

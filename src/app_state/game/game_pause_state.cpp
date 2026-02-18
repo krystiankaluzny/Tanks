@@ -5,6 +5,10 @@
 
 Game::PauseState::PauseState(Game *ps) : ContextState(ps, ps->m_game_state_machine)
 {
+}
+
+void Game::PauseState::onInitialize()
+{
     m_context->stopAllSounds();
     m_context->playSound(SoundConfig::PAUSE);
 }

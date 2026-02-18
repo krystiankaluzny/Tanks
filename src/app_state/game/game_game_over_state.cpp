@@ -5,8 +5,14 @@
 
 Game::GameOverState::GameOverState(Game *ps) : ContextState(ps, ps->m_game_state_machine)
 {
-    m_context->m_level_environment->destroyEagle();
     m_game_over_message_position = AppConfig::map_rect.h;
+}
+
+void Game::GameOverState::onInitialize()
+{
+    m_context->m_level_environment->destroyEagle();
+    m_context->stopSound(SoundConfig::PLAYER_IDLE);
+    m_context->stopSound(SoundConfig::PLAYER_MOVING);
     m_context->playSound(SoundConfig::GAME_OVER);
 }
 
@@ -34,11 +40,7 @@ void Game::GameOverState::eventProcess(const Event &event)
     {
         const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
 
-        if (event_key.isPressed(KEY_RETURN))
-        {
-            transiteTo(new Game::PlayingState(m_context));
-        }
-        else if (event_key.isPressed(KEY_ESCAPE))
+        if (event_key.isPressed(KEY_ESCAPE))
         {
             m_context->transiteTo(new Menu(m_context->m_interactive_components, m_context->m_state_machine));
         }

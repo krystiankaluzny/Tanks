@@ -46,6 +46,7 @@ void StateMachine::draw(Renderer &renderer)
         return;
 
     State *state = current_state;
+    initializeStateIfNeeded(state);
 
     if (state != nullptr)
     {
@@ -64,6 +65,7 @@ void StateMachine::update(const UpdateState &updateState)
         return;
 
     State *state = current_state;
+    initializeStateIfNeeded(state);
 
     if (state != nullptr)
     {
@@ -82,6 +84,7 @@ void StateMachine::eventProcess(const Event &event)
         return;
 
     State *state = current_state;
+    initializeStateIfNeeded(state);
 
     if (state != nullptr)
     {
@@ -91,5 +94,21 @@ void StateMachine::eventProcess(const Event &event)
         {
             delete state;
         }
+    }
+}
+
+void StateMachine::initializeStateIfNeeded(State *state)
+{
+    if (state != nullptr)
+    {
+        /*
+            NOTE: State can transit to another state during processing,
+            so initialization of game objects should not be done in a constructor of the new state,
+            but rather in a separate method, which will be called before processing the state for the first time.
+
+            state->initialize() should handle multiple calls, so it is safe to call it every time when state is processed.
+        */
+
+        state->initialize();
     }
 }

@@ -2,6 +2,12 @@
 
 Enemy::AliveState::AliveState(Enemy *enemy) : ContextState<Enemy>(enemy, enemy->m_enemy_state_machine)
 {
+}
+
+void Enemy::AliveState::onInitialize()
+{
+    Enemy *enemy = m_context;
+
     const SpriteData *sprite = &SpriteConfig::getInstance().getSpriteData(enemy->type);
     enemy->m_sprite = sprite;
 

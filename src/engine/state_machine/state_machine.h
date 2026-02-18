@@ -23,6 +23,7 @@ public:
     State *current_state;
 
 private:
+    void initializeStateIfNeeded(State *state);
     bool m_running;
 };
 
