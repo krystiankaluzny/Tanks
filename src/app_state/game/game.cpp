@@ -25,11 +25,6 @@ Game::Game(int players_count, InteractiveComponents interactive_components, Stat
 
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
-
-    createPlayersIfNeeded();
-    playSound(SoundConfig::STAGE_START_UP);
-
-    m_game_state_machine->setState(new StartingState(this));
 }
 
 Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *state_machine)
@@ -48,16 +43,19 @@ Game::Game(std::vector<Player *> players, int previous_level, InteractiveCompone
     m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
-
-    createPlayersIfNeeded();
-    playSound(SoundConfig::STAGE_START_UP);
-
-    m_game_state_machine->setState(new StartingState(this));
 }
 
 Game::~Game()
 {
     clearAll();
+}
+
+void Game::onInitialize()
+{
+    createPlayersIfNeeded();
+    playSound(SoundConfig::STAGE_START_UP);
+
+    m_game_state_machine->setState(new StartingState(this));
 }
 
 void Game::draw(Renderer &renderer)

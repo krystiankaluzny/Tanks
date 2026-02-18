@@ -16,6 +16,15 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
 
     m_score_counter = 0;
     m_max_score = 0;
+}
+
+Scores::~Scores()
+{
+    delete m_scores_state_machine;
+}
+
+void Scores::onInitialize()
+{
     for (auto player : m_players)
     {
         player->to_erase = false;
@@ -28,11 +37,6 @@ Scores::Scores(std::vector<Player *> players, int level, bool game_over, Interac
     stopAllSounds();
 
     m_scores_state_machine->setState(new CountingState(this));
-}
-
-Scores::~Scores()
-{
-    delete m_scores_state_machine;
 }
 
 void Scores::draw(Renderer &renderer)

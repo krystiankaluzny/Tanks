@@ -33,6 +33,9 @@ public:
      */
     void eventProcess(const Event &event) override;
 
+protected:
+    void onInitialize() override;
+
 private:
     void clearAll();
     void createPlayersIfNeeded();
