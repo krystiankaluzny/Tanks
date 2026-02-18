@@ -340,6 +340,7 @@ void Game::checkCollisionTwoBullets(Bullet *bullet1, Bullet *bullet2)
 
     if (intersect_rect.isNotEmpty())
     {
+        playSound(SoundConfig::BULLET_HIT_BULLET);
         bullet1->destroy();
         bullet2->destroy();
     }

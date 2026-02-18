@@ -15,6 +15,7 @@ namespace SoundConfig
     const Sound BULLET_HIT_BRICK{"sounds/bullet_hit_brick.wav", 40.0, 0.7, true};
     const Sound BULLET_HIT_MAP_BOUNDARIES{"sounds/bullet_hit_map_boundaries.wav", 40.0, 1.0, true};
     const Sound BULLET_HIT_STONE{"sounds/bullet_hit_stone.wav", 40.0, 1.0, true};
+    const Sound BULLET_HIT_BULLET{"sounds/bullet_hit_bullet.wav", 40.0, 1.0, true};
 
     const Sound EAGLE_DESTROYED{"sounds/eagle_destroyed.wav", 70.0, 1.0, true};
 
