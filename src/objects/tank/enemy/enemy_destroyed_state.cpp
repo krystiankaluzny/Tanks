@@ -2,6 +2,12 @@
 
 Enemy::DestroyedState::DestroyedState(Enemy *enemy) : ContextState<Enemy>(enemy, enemy->m_enemy_state_machine)
 {
+}
+
+void Enemy::DestroyedState::onInitialize()
+{
+    Enemy *enemy = m_context;
+
     const SpriteData *sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_TANK);
     enemy->m_sprite = sprite;
 
@@ -11,7 +17,7 @@ Enemy::DestroyedState::DestroyedState(Enemy *enemy) : ContextState<Enemy>(enemy,
     enemy->m_frame_display_time = 0;
 
     enemy->src_rect = sprite->rect.tiledOffset(0, enemy->m_current_frame);
-    
+
     enemy->dest_rect.x = enemy->pos_x + (enemy->dest_rect.w - sprite->rect.w) / 2;
     enemy->dest_rect.y = enemy->pos_y + (enemy->dest_rect.h - sprite->rect.h) / 2;
     enemy->dest_rect.h = sprite->rect.h;
