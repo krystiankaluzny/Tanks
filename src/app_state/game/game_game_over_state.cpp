@@ -11,6 +11,8 @@ Game::GameOverState::GameOverState(Game *ps) : ContextState(ps, ps->m_game_state
 void Game::GameOverState::onInitialize()
 {
     m_context->m_level_environment->destroyEagle();
+    m_context->stopSound(SoundConfig::PLAYER_IDLE);
+    m_context->stopSound(SoundConfig::PLAYER_MOVING);
     m_context->playSound(SoundConfig::GAME_OVER);
 }
 
