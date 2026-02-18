@@ -33,6 +33,9 @@ public:
      */
     void eventProcess(const Event &event) override;
 
+protected:
+    void onInitialize() override;
+
 private:
     void clearAll();
     void createPlayersIfNeeded();
@@ -119,6 +122,9 @@ private:
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
         void eventProcess(const Event &event) override;
+
+    protected:
+        void onInitialize() override;
     };
 
     class GameOverState : public ContextState<Game>
@@ -128,6 +134,9 @@ private:
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
         void eventProcess(const Event &event) override;
+
+    protected:
+        void onInitialize() override;
 
     private:
         double m_game_over_message_position;

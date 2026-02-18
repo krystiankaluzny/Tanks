@@ -3,6 +3,12 @@
 
 Player::AliveState::AliveState(Player *player) : ContextState<Player>(player, player->m_player_state_machine)
 {
+}
+
+void Player::AliveState::onInitialize()
+{
+    Player *player = m_context;
+
     const SpriteData *sprite = &SpriteConfig::getInstance().getSpriteData(player->type);
     player->m_sprite = sprite;
 

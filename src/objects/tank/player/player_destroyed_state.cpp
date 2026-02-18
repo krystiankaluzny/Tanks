@@ -2,6 +2,12 @@
 
 Player::DestroyedState::DestroyedState(Player *player) : ContextState<Player>(player, player->m_player_state_machine)
 {
+}
+
+void Player::DestroyedState::onInitialize()
+{
+    Player *player = m_context;
+
     const SpriteData *sprite = &SpriteConfig::getInstance().getSpriteData(ST_DESTROY_TANK);
     player->m_sprite = sprite;
 

@@ -3,6 +3,12 @@
 
 Player::CreatingState::CreatingState(Player *player) : ContextState<Player>(player, player->m_player_state_machine)
 {
+}
+
+void Player::CreatingState::onInitialize()
+{
+    Player *player = m_context;
+
     if (player->type == ST_PLAYER_1)
     {
         player->pos_x = AppConfig::player_starting_point.at(0).x;

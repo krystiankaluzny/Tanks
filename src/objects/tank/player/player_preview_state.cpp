@@ -2,6 +2,12 @@
 
 Player::PreviewState::PreviewState(Player *player) : ContextState<Player>(player, player->m_player_state_machine)
 {
+}
+
+void Player::PreviewState::onInitialize()
+{
+    Player *player = m_context;
+
     const SpriteData *sprite = &SpriteConfig::getInstance().getSpriteData(player->type);
     player->m_sprite = sprite;
 
@@ -37,7 +43,7 @@ void Player::PreviewState::update(const UpdateState &updateState)
 
     player->m_frame_display_time += updateState.delta_time;
 
-    //double animation speed
+    // double animation speed
     if (player->m_frame_display_time >= sprite->frame_duration / 2)
     {
         player->m_frame_display_time = 0;

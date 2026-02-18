@@ -45,6 +45,9 @@ private:
         CreatingState(Enemy *enemy);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+
+    protected:
+        void onInitialize() override;
     };
 
     class AliveState : public ContextState<Enemy>
@@ -53,6 +56,9 @@ private:
         AliveState(Enemy *enemy);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+
+    protected:
+        void onInitialize() override;
 
     private:
         void checkKeyStates(const UpdateState &updateState);
@@ -64,6 +70,9 @@ private:
         DestroyedState(Enemy *enemy);
         void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
+
+    protected:
+        void onInitialize() override;
     };
 };
 

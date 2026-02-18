@@ -16,6 +16,9 @@ public:
     void update(const UpdateState &updateState) override;
     void eventProcess(const Event &event) override;
 
+protected:
+    void onInitialize() override;
+
 private:
     void transiteToNextState();
 

@@ -22,6 +22,15 @@ Menu::Menu(InteractiveComponents interactive_components, StateMachine *state_mac
     m_tank_menu_pointer_offset = {140, 110};
 
     m_tank_menu_pointer = new Player(0, 0, ST_PLAYER_1, AppConfig::player_1_keys, m_interactive_components);
+}
+
+Menu::~Menu()
+{
+    delete m_tank_menu_pointer;
+}
+
+void Menu::onInitialize()
+{
     m_tank_menu_pointer->pos_x = m_tank_menu_pointer_offset.x;
     m_tank_menu_pointer->pos_y = (m_current_menu_index + 1) * m_menu_item_height + m_tank_menu_pointer_offset.y;
     m_tank_menu_pointer->startPreview();
@@ -29,11 +38,6 @@ Menu::Menu(InteractiveComponents interactive_components, StateMachine *state_mac
     stopAllSounds();
     // Hack to fill sound device buffer and avoid sound delay on first play
     playSound(SoundConfig::MENU_ITEM_SELECTED);
-}
-
-Menu::~Menu()
-{
-    delete m_tank_menu_pointer;
 }
 
 void Menu::draw(Renderer &renderer)

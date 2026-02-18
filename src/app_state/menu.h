@@ -15,7 +15,7 @@
 class Menu : public AppState
 {
 public:
-    Menu(InteractiveComponents interactive_components, StateMachine* state_machine);
+    Menu(InteractiveComponents interactive_components, StateMachine *state_machine);
     ~Menu();
     /**
      * Function draws the game logo, menu texts, and the selected menu item indicator in the shape of a tank.
@@ -26,7 +26,7 @@ public:
      * Function updates the tank pointer animation.
      * @param dt - time since the last function call, used for animation update
      */
-    void update(const UpdateState& updateState) override;
+    void update(const UpdateState &updateState) override;
 
     /**
      * Function responds to key presses:
@@ -36,6 +36,9 @@ public:
      * @param event - reference to an Event object containing the type and parameters of various events
      */
     void eventProcess(const Event &event) override;
+
+protected:
+    void onInitialize() override;
 
 private:
     std::vector<std::string> m_menu_items;

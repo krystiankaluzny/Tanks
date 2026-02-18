@@ -2,13 +2,28 @@
 #include "state_machine.h"
 
 State::State(StateMachine *state_machine)
-    : m_state_machine(state_machine)
+    : m_state_machine(state_machine),
+      m_initialized(false)
 {
 }
 
 State::~State()
 {
     m_state_machine = nullptr;
+}
+
+void State::initialize()
+{
+    if (!m_initialized)
+    {
+        onInitialize();
+        m_initialized = true;
+    }
+}
+
+void State::onInitialize()
+{
+    // Default implementation does nothing
 }
 
 StateMachine *State::stateMachine() const

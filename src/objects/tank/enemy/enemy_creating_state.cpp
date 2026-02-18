@@ -2,6 +2,12 @@
 
 Enemy::CreatingState::CreatingState(Enemy *enemy) : ContextState<Enemy>(enemy, enemy->m_enemy_state_machine)
 {
+}
+
+void Enemy::CreatingState::onInitialize()
+{
+    Enemy *enemy = m_context;
+
     const SpriteData *sprite = &SpriteConfig::getInstance().getSpriteData(ST_CREATE);
     enemy->m_sprite = sprite;
 
