@@ -5,8 +5,12 @@
 
 Game::GameOverState::GameOverState(Game *ps) : ContextState(ps, ps->m_game_state_machine)
 {
-    m_context->m_level_environment->destroyEagle();
     m_game_over_message_position = AppConfig::map_rect.h;
+}
+
+void Game::GameOverState::onInitialize()
+{
+    m_context->m_level_environment->destroyEagle();
     m_context->playSound(SoundConfig::GAME_OVER);
 }
 

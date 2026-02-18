@@ -10,6 +10,7 @@ Game::LevelEndingState::LevelEndingState(Game *ps, bool no_wating, bool game_ove
 {
 }
 
+
 void Game::LevelEndingState::draw(Renderer &renderer)
 {
     m_context->drawScene(renderer);
