@@ -54,12 +54,15 @@ BUILD_DIRS = $(BUILD) $(BIN) $(addprefix $(BUILD)/,$(SRC_SUBDIRS))
 SOURCES = $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.cpp))
 OBJS = $(patsubst $(SRC)/%.cpp,$(BUILD)/%.o,$(SOURCES))
 
+VERSION := $(shell git describe --tags --abbrev=0 | sed -Ee 's/^v|-.*//')
+
 vpath %.cpp $(SRC_DIRS)
 
 all: print $(BUILD_DIRS) $(RESOURCES) compile
 
 print:
 	@echo
+	@echo VERSION: $(VERSION)
 	@echo OS: $(OS)
 	@echo SRC: $(SRC)
 	@echo SRC_SUBDIRS: $(SRC_SUBDIRS)
@@ -100,3 +103,12 @@ clean:
 
 run: all
 	cd build/bin && ./Tanks
+
+
+bump-minor:
+	git tag -a $(shell echo $(VERSION) | awk -F. -v OFS=. '{$$2++;print}') -m "Bump minor version to $(shell echo $(VERSION) | awk -F. -v OFS=. '{$$2++;print}')"
+	git push --tags
+
+bump-patch:
+	git tag -a $(shell echo $(VERSION) | awk -F. -v OFS=. '{$$3++;print}') -m "Bump patch version to $(shell echo $(VERSION) | awk -F. -v OFS=. '{$$3++;print}')"
+	git push --tags
