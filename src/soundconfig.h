@@ -32,7 +32,7 @@ namespace SoundConfig
     const Sound PLAYER_IDLE{"sounds/player_idle.wav", 50.0, 1.0, false};
     const Sound PLAYER_LIFE_UP{"sounds/player_life_up.wav", 100.0, 1.0, true};
     const Sound PLAYER_MOVING{"sounds/player_moving.wav", 50.0, 1.0, false};
-    const Sound PLAYER_RESPAWN{"sounds/player_respawn.wav", 100.0, 1.0, true};
+    const Sound PLAYER_RESPAWN{"sounds/player_respawn.wav", 100.0, 1.0, false, true};
     // const Sound PLAYER_SLIDING{"sounds/player_sliding.wav", 100.0, true};
 
     // const Sound SCORE_BONUS_POINTS_RECEIVED {"sounds/score_bonus_points_received.wav", 100.0, 1.0, true};
