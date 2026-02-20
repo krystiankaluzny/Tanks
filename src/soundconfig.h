@@ -9,8 +9,8 @@ namespace SoundConfig
     const Sound PAUSE{"sounds/pause.wav", 100.0, 1.0, false};
     const Sound GAME_OVER{"sounds/game_over.wav", 100.0, 1.0, false};
 
-    const Sound BONUS_APPEARED{"sounds/bonus_appeared.wav", 100.0, 0.9, true};
-    const Sound BONUS_OBTAINED{"sounds/bonus_obtained.wav", 100.0, 0.9, true};
+    const Sound BONUS_APPEARED{"sounds/bonus_appeared.wav", 90.0, 0.9, true};
+    const Sound BONUS_OBTAINED{"sounds/bonus_obtained.wav", 90.0, 0.9, true};
 
     const Sound BULLET_HIT_BRICK{"sounds/bullet_hit_brick.wav", 40.0, 0.7, true};
     const Sound BULLET_HIT_MAP_BOUNDARIES{"sounds/bullet_hit_map_boundaries.wav", 40.0, 1.0, true};
