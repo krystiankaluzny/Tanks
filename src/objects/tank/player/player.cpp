@@ -80,6 +80,7 @@ void Player::update(Uint32 dt)
 
 void Player::respawn()
 {
+    playSound(SoundConfig::PLAYER_RESPAWN);
     m_player_state_machine->setState(new CreatingState(this));
     activateShortShieldEffect();
 }
