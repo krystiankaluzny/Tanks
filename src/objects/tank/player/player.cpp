@@ -200,3 +200,19 @@ double Player::speed() const
 {
     return m_speed;
 }
+
+MovingState Player::movingState()
+{
+
+    if (dynamic_cast<CreatingState *>(m_player_state_machine->current_state) != nullptr)
+    {
+        return MovingState::CREATING;
+    }
+
+    if (speed() > 0)
+    {
+        return MovingState::TRYING_TO_MOVE;
+    }
+
+    return MovingState::IDLE;
+}

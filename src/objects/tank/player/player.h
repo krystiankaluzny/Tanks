@@ -2,6 +2,7 @@
 #define TANK_PLAYER_H
 
 #include "../tank.h"
+#include "../moving_state.h"
 #include <vector>
 
 class Player : public Tank
@@ -29,6 +30,8 @@ public:
     unsigned lives() const;
 
     double speed() const;
+
+    MovingState movingState();
 
 private:
     void drawPlayer(Renderer &renderer);

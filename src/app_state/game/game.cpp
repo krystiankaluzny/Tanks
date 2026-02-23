@@ -423,20 +423,38 @@ void Game::updateObjects(Uint32 dt)
     for (auto bonus : m_bonuses)
         bonus->update(dt);
 
+    bool player_muted = false;
     bool player_tried_to_move = false;
     for (auto player : m_players)
-        if (player->speed() > 0.0)
+    {
+        MovingState ms = player->movingState();
+        if (ms == MovingState::CREATING)
+        {
+            player_muted = true;
+        }
+        if (ms == MovingState::TRYING_TO_MOVE)
+        {
             player_tried_to_move = true;
+        }
+    }
 
-    if (player_tried_to_move)
+    if (player_muted)
     {
         stopSound(SoundConfig::PLAYER_IDLE);
-        playSound(SoundConfig::PLAYER_MOVING);
+        stopSound(SoundConfig::PLAYER_MOVING);
     }
     else
     {
-        stopSound(SoundConfig::PLAYER_MOVING);
-        playSound(SoundConfig::PLAYER_IDLE);
+        if (player_tried_to_move)
+        {
+            stopSound(SoundConfig::PLAYER_IDLE);
+            playSound(SoundConfig::PLAYER_MOVING);
+        }
+        else
+        {
+            stopSound(SoundConfig::PLAYER_MOVING);
+            playSound(SoundConfig::PLAYER_IDLE);
+        }
     }
 
     m_level_environment->update(dt);
