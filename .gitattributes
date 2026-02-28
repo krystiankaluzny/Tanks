@@ -1,0 +1,2 @@
+.gitattributes  export-ignore
+resources/SDL   export-ignore
