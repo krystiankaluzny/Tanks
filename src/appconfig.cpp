@@ -2,7 +2,7 @@
 
 string AppConfig::texture_path = "texture.png";
 string AppConfig::levels_path = "levels/";
-string AppConfig::font_path = "prstartk.ttf";
+string AppConfig::font_path = "kongtext.ttf";
 string AppConfig::game_over_text = "GAME OVER";
 
 Size AppConfig::map_size = {26, 26};
