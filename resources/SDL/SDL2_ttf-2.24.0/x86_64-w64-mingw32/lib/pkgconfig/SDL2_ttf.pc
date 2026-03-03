@@ -1,0 +1,13 @@
+prefix=/tmp/tardir/SDL2_ttf-2.24.0/build-mingw/install-x86_64-w64-mingw32
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: SDL2_ttf
+Description: ttf library for Simple DirectMedia Layer with FreeType 2 support
+Version: 2.24.0
+Requires: sdl2 >= 2.0.10
+Libs: -L${libdir} -lSDL2_ttf
+Cflags: -I${includedir}/SDL2
+Requires.private: 
+Libs.private:  -lusp10 -lgdi32 -lrpcrt4

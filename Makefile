@@ -6,13 +6,34 @@ BIN = $(BUILD)/bin
 RESOURCES_DIR = resources
 
 ifeq ($(OS),Windows_NT)
-	CC = $(MINGW_HOME)/bin/mingw32-g++.exe
-	INCLUDEPATH = -I$(RESOURCES_DIR)/SDL/i686-w64-mingw32/include
-	LFLAGS = -mwindows -O
-	CFLAGS = -c -Wall
-	LIBS = -L$(RESOURCES_DIR)/SDL/i686-w64-mingw32/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-	APP_RESOURCES = SDL/i686-w64-mingw32/bin/*.dll dll/*.dll font/kongtext.ttf textures/texture.png levels sounds
-	RESOURCES = $(APP_RESOURCES) mingw_resources
+	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		SDL_ARCH=x86_64-w64-mingw32
+	else
+		SDL_ARCH=i686-w64-mingw32
+	endif
+
+	SDL_MAIN=SDL/SDL2-2.32.4/$(SDL_ARCH)
+	SDL_IMAGE=SDL/SDL2_image-2.8.8/$(SDL_ARCH)
+	SDL_TTF=SDL/SDL2_ttf-2.24.0/$(SDL_ARCH)
+	SDL_MIXER=SDL/SDL2_mixer-2.8.1/$(SDL_ARCH)
+
+	ifneq ($(strip $(MSYSTEM_PREFIX)),)
+		CC = $(MSYSTEM_PREFIX)/bin/g++.exe
+		INCLUDEPATH = -I$(RESOURCES_DIR)/$(SDL_MAIN)/include -I$(RESOURCES_DIR)/$(SDL_IMAGE)/include -I$(RESOURCES_DIR)/$(SDL_TTF)/include -I$(RESOURCES_DIR)/$(SDL_MIXER)/include
+		LFLAGS = -mwindows -O
+		CFLAGS = -c -Wall
+		LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll dll/*.dll font/kongtext.ttf textures/texture.png levels sounds
+		RESOURCES = $(APP_RESOURCES)
+	else
+		CC = $(MINGW_HOME)/bin/mingw32-g++.exe
+		INCLUDEPATH = -I$(RESOURCES_DIR)/$(SDL_MAIN)/include -I$(RESOURCES_DIR)/$(SDL_IMAGE)/include -I$(RESOURCES_DIR)/$(SDL_TTF)/include -I$(RESOURCES_DIR)/$(SDL_MIXER)/include
+		LFLAGS = -mwindows -O
+		CFLAGS = -c -Wall
+		LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll dll/*.dll font/kongtext.ttf textures/texture.png levels sounds
+		RESOURCES = $(APP_RESOURCES) mingw_resources
+	endif
 else
 	UNAME_S := $(shell uname -s)
 	UNAME_M := $(shell uname -m)
