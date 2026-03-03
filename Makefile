@@ -23,7 +23,7 @@ ifeq ($(OS),Windows_NT)
 		LFLAGS = -mwindows -O
 		CFLAGS = -c -Wall
 		LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll dll/*.dll font/kongtext.ttf textures/texture.png levels sounds
+		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll font/kongtext.ttf textures/texture.png levels sounds
 		RESOURCES = $(APP_RESOURCES)
 	else
 		CC = $(MINGW_HOME)/bin/mingw32-g++.exe
@@ -31,7 +31,7 @@ ifeq ($(OS),Windows_NT)
 		LFLAGS = -mwindows -O
 		CFLAGS = -c -Wall
 		LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll dll/*.dll font/kongtext.ttf textures/texture.png levels sounds
+		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll font/kongtext.ttf textures/texture.png levels sounds
 		RESOURCES = $(APP_RESOURCES) mingw_resources
 	endif
 else
@@ -109,14 +109,6 @@ build/%.o: $(SRC)/%.cpp
 
 $(APP_RESOURCES):
 	cp -R $(RESOURCES_DIR)/$@ $(BIN)
-
-ifeq ($(OS),Windows_NT)
-
-mingw_resources:
-	cp $(MINGW_HOME)/bin/libstdc++-6.dll $(BIN)
-	cp $(MINGW_HOME)/bin/libgcc_s_dw2-1.dll $(BIN)
-
-endif
 
 clean:
 	rm -rf $(BUILD)
