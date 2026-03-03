@@ -29,9 +29,9 @@
 #ifndef SDL_IMAGE_H_
 #define SDL_IMAGE_H_
 
-#include "SDL.h"
-#include "SDL_version.h"
-#include "begin_code.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_version.h"
+#include "SDL2/begin_code.h"
 
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -2190,6 +2190,6 @@ extern DECLSPEC IMG_Animation * SDLCALL IMG_LoadWEBPAnimation_RW(SDL_RWops *src)
 #ifdef __cplusplus
 }
 #endif
-#include "close_code.h"
+#include "SDL2/close_code.h"
 
 #endif /* SDL_IMAGE_H_ */
