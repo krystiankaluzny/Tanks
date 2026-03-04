@@ -142,3 +142,7 @@ In **build/bin** there will be **Tanks.exe** binary file with all necessary reso
 Have fun.
 
 `cd build/bin && ./Tanks.exe`
+
+Or build and run immediately:
+
+`mingw32-make.exe clean run`
