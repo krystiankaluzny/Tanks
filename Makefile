@@ -12,28 +12,27 @@ ifeq ($(OS),Windows_NT)
 		SDL_ARCH=i686-w64-mingw32
 	endif
 
+	ifneq ($(wildcard $(MSYSTEM_PREFIX)/bin/g++.exe),)
+		CC = $(MSYSTEM_PREFIX)/bin/g++.exe
+	else ifneq ($(wildcard $(MSYSTEM_PREFIX)/bin/mingw32-g++.exe),)
+		CC = $(MSYSTEM_PREFIX)/bin/mingw32-g++.exe
+	else ifneq ($(wildcard $(MINGW_HOME)/bin/g++.exe),)
+		CC = $(MINGW_HOME)/bin/g++.exe
+	else ifneq ($(wildcard $(MINGW_HOME)/bin/mingw32-g++.exe),)
+		CC = $(MINGW_HOME)/bin/mingw32-g++.exe
+	endif
+
 	SDL_MAIN=SDL/SDL2-2.32.4/$(SDL_ARCH)
 	SDL_IMAGE=SDL/SDL2_image-2.8.8/$(SDL_ARCH)
 	SDL_TTF=SDL/SDL2_ttf-2.24.0/$(SDL_ARCH)
 	SDL_MIXER=SDL/SDL2_mixer-2.8.1/$(SDL_ARCH)
 
-	ifneq ($(strip $(MSYSTEM_PREFIX)),)
-		CC = $(MSYSTEM_PREFIX)/bin/g++.exe
-		INCLUDEPATH = -I$(RESOURCES_DIR)/$(SDL_MAIN)/include -I$(RESOURCES_DIR)/$(SDL_IMAGE)/include -I$(RESOURCES_DIR)/$(SDL_TTF)/include -I$(RESOURCES_DIR)/$(SDL_MIXER)/include
-		LFLAGS = -mwindows -O
-		CFLAGS = -c -Wall
-		LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll font/kongtext.ttf textures/texture.png levels sounds
-		RESOURCES = $(APP_RESOURCES)
-	else
-		CC = $(MINGW_HOME)/bin/mingw32-g++.exe
-		INCLUDEPATH = -I$(RESOURCES_DIR)/$(SDL_MAIN)/include -I$(RESOURCES_DIR)/$(SDL_IMAGE)/include -I$(RESOURCES_DIR)/$(SDL_TTF)/include -I$(RESOURCES_DIR)/$(SDL_MIXER)/include
-		LFLAGS = -mwindows -O
-		CFLAGS = -c -Wall
-		LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-		APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll font/kongtext.ttf textures/texture.png levels sounds
-		RESOURCES = $(APP_RESOURCES) mingw_resources
-	endif
+	INCLUDEPATH = -I$(RESOURCES_DIR)/$(SDL_MAIN)/include -I$(RESOURCES_DIR)/$(SDL_IMAGE)/include -I$(RESOURCES_DIR)/$(SDL_TTF)/include -I$(RESOURCES_DIR)/$(SDL_MIXER)/include
+	LFLAGS = -mwindows -O
+	CFLAGS = -c -Wall
+	LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+	APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll font/kongtext.ttf textures/texture.png levels sounds
+	RESOURCES = $(APP_RESOURCES)
 else
 	UNAME_S := $(shell uname -s)
 	UNAME_M := $(shell uname -m)
@@ -85,6 +84,9 @@ print:
 	@echo
 	@echo VERSION: $(VERSION)
 	@echo OS: $(OS)
+	@echo PROCESSOR_ARCHITECTURE: $(PROCESSOR_ARCHITECTURE)
+	@echo SDL_ARCH: $(SDL_ARCH)
+	@echo CC: $(CC)
 	@echo SRC: $(SRC)
 	@echo SRC_SUBDIRS: $(SRC_SUBDIRS)
 	@echo SRC_DIRS: $(SRC_DIRS)
@@ -102,7 +104,7 @@ $(BUILD_DIRS):
 	mkdir -p $@
 
 compile: $(OBJS)
-	$(CC) $(OBJS) $(INCLUDEPATH) $(LIBSPATH) $(LIBS) $(LFLAGS) -o $(BIN)/$(PROJECT_NAME)
+	$(CC) $(OBJS) $(INCLUDEPATH) $(LIBSPATH) $(LIBS) $(l) -o $(BIN)/$(PROJECT_NAME)
 
 build/%.o: $(SRC)/%.cpp
 	$(CC) $(CFLAGS) $(INCLUDEPATH) $< -o $@
