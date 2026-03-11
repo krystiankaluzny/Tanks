@@ -83,6 +83,6 @@ double AppConfig::bullet_default_speed = 0.23;
 unsigned AppConfig::Score::single_count_time = 100;
 unsigned AppConfig::Score::idle_time = 5000;
 
-unsigned AppConfig::Game::level_start_time = 2000;
+unsigned AppConfig::Game::level_start_time = 3200;
 unsigned AppConfig::Game::level_end_time = 5000;
 double AppConfig::Game::game_over_message_speed = 0.13;
