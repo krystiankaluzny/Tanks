@@ -16,7 +16,7 @@
 class Game : public AppState
 {
 public:
-    Game(int players_count, InteractiveComponents interactive_components, StateMachine *state_machine);
+    Game(int players_count, int starting_level, InteractiveComponents interactive_components, StateMachine *state_machine);
     Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *state_machine);
     ~Game();
 
