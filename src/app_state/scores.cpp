@@ -6,12 +6,12 @@
 #include "game/game.h"
 #include "menu.h"
 
-Scores::Scores(std::vector<Player *> players, int level, bool game_over, InteractiveComponents interactive_components, StateMachine *state_machine)
+Scores::Scores(std::vector<Player *> players, int stage, bool game_over, InteractiveComponents interactive_components, StateMachine *state_machine)
     : AppState(interactive_components, state_machine),
       m_scores_state_machine(new StateMachine())
 {
     m_players = players;
-    m_level = level;
+    m_stage = stage;
     m_game_over = game_over;
 
     m_score_counter = 0;
@@ -50,7 +50,7 @@ void Scores::draw(Renderer &renderer)
     Rect dst;
 
     p_dst = {-1, 10};
-    renderer.drawText(p_dst, std::string("STAGE ") + std::to_string(m_level), {255, 255, 220, 255}, FontSize::BIGGEST);
+    renderer.drawText(p_dst, std::string("STAGE ") + std::to_string(m_stage), {255, 255, 220, 255}, FontSize::BIGGEST);
     p_dst = {100, 50};
     renderer.drawText(p_dst, std::string("PLAYER"), {255, 255, 255, 255}, FontSize::NORMAL);
     p_dst = {270, 50};
@@ -101,7 +101,7 @@ void Scores::transiteToNextState()
     }
     else
     {
-        Game *g = new Game(m_players, m_level, m_interactive_components, m_state_machine);
+        Game *g = new Game(m_players, m_stage, m_interactive_components, m_state_machine);
         transiteTo(g);
     }
 }

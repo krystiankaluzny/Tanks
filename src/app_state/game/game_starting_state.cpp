@@ -1,7 +1,7 @@
 #include "game.h"
 #include "../../appconfig.h"
 
-Game::StartingState::StartingState(Game *ps) : ContextState(ps, ps->m_game_state_machine), m_level_start_time(0) {}
+Game::StartingState::StartingState(Game *ps) : ContextState(ps, ps->m_game_state_machine), m_stage_start_time(0) {}
 
 void Game::StartingState::draw(Renderer &renderer)
 {
@@ -9,7 +9,7 @@ void Game::StartingState::draw(Renderer &renderer)
 
     Color color = {128, 128, 128, 0};
 
-    double progress = (double)m_level_start_time / AppConfig::Game::level_start_time;
+    double progress = (double)m_stage_start_time / AppConfig::Game::stage_start_time;
     int rect_height = AppConfig::map_rect.h / 2 * (1.0 - progress);
 
     Rect top_rect = {0, 0, AppConfig::map_rect.w, rect_height};
@@ -19,15 +19,15 @@ void Game::StartingState::draw(Renderer &renderer)
     renderer.drawRect(bottom_rect, color, true);
 
     Point text_centered_pos = {-1, -1};
-    std::string level_name = "STAGE " + std::to_string(m_context->m_current_level);
-    renderer.drawText(text_centered_pos, level_name, {255, 255, 255, 255}, FontSize::BIGGEST);
+    std::string stage_name = "STAGE " + std::to_string(m_context->m_current_stage);
+    renderer.drawText(text_centered_pos, stage_name, {255, 255, 255, 255}, FontSize::BIGGEST);
 }
 
 void Game::StartingState::update(const UpdateState &updateState)
 {
-    m_level_start_time += updateState.delta_time;
+    m_stage_start_time += updateState.delta_time;
 
-    if (m_level_start_time > AppConfig::Game::level_start_time)
+    if (m_stage_start_time > AppConfig::Game::stage_start_time)
     {
         transiteTo(new Game::PlayingState(m_context));
     }

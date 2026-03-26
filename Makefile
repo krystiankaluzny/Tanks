@@ -31,7 +31,7 @@ ifeq ($(OS),Windows_NT)
 	LFLAGS = -mwindows -O
 	CFLAGS = -c -Wall
 	LIBS = -L$(RESOURCES_DIR)/$(SDL_MAIN)/lib -L$(RESOURCES_DIR)/$(SDL_IMAGE)/lib -L$(RESOURCES_DIR)/$(SDL_TTF)/lib -L$(RESOURCES_DIR)/$(SDL_MIXER)/lib -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-	APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll font/kongtext.ttf textures/texture.png levels sounds
+	APP_RESOURCES = $(SDL_MAIN)/bin/*.dll $(SDL_IMAGE)/bin/*.dll $(SDL_TTF)/bin/*.dll $(SDL_MIXER)/bin/*.dll font/kongtext.ttf textures/texture.png stages sounds
 	RESOURCES = $(APP_RESOURCES)
 else
 	UNAME_S := $(shell uname -s)
@@ -52,7 +52,7 @@ else
 		LFLAGS = -O
 		CFLAGS = -c -Wall -Wno-narrowing -std=c++17
 		LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-		APP_RESOURCES = font/kongtext.ttf textures/texture.png levels sounds
+		APP_RESOURCES = font/kongtext.ttf textures/texture.png stages sounds
 		RESOURCES = $(APP_RESOURCES)
 	else
 		CC = g++
@@ -60,7 +60,7 @@ else
 		LFLAGS = -O
 		CFLAGS = -c -Wall -Wno-narrowing -std=c++17
 		LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-		APP_RESOURCES = font/kongtext.ttf textures/texture.png levels sounds
+		APP_RESOURCES = font/kongtext.ttf textures/texture.png stages sounds
 		RESOURCES = $(APP_RESOURCES)
 	endif
 endif

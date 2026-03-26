@@ -15,7 +15,7 @@ void Game::PlayingState::update(const UpdateState &updateState)
 
     if (m_context->m_enemies.empty() && m_context->m_enemies_to_kill_count <= 0)
     {
-        transiteTo(new Game::LevelEndingState(m_context, false, false));
+        transiteTo(new Game::StageEndingState(m_context, false, false));
     }
 
     if (m_context->m_players.empty())
@@ -31,12 +31,12 @@ void Game::PlayingState::eventProcess(const Event &event)
         const KeyboardEvent &event_key = static_cast<const KeyboardEvent &>(event);
         if (event_key.isPressed(KEY_N))
         {
-            transiteTo(new Game::LevelEndingState(m_context, true, false));
+            transiteTo(new Game::StageEndingState(m_context, true, false));
         }
         else if (event_key.isPressed(KEY_B))
         {
-            m_context->m_current_level -= 2;
-            transiteTo(new Game::LevelEndingState(m_context, true, false));
+            m_context->m_current_stage -= 2;
+            transiteTo(new Game::StageEndingState(m_context, true, false));
         }
         else if (event_key.isPressed(KEY_T))
         {

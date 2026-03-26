@@ -14,33 +14,33 @@
 #include <iostream>
 #include <cmath>
 
-Game::Game(int players_count, int starting_level, InteractiveComponents interactive_components, StateMachine *state_machine)
+Game::Game(int players_count, int starting_stage, InteractiveComponents interactive_components, StateMachine *state_machine)
     : AppState(interactive_components, state_machine),
       m_game_state_machine(new StateMachine())
 {
-    m_current_level = starting_level;
+    m_current_stage = starting_stage;
     m_players_count = players_count;
     m_enemy_respown_position = 0;
-    m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
+    m_stage_environment = new StageEnvironment(m_current_stage, interactive_components);
 
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 }
 
-Game::Game(std::vector<Player *> players, int previous_level, InteractiveComponents interactive_components, StateMachine *state_machine)
+Game::Game(std::vector<Player *> players, int previous_stage, InteractiveComponents interactive_components, StateMachine *state_machine)
     : AppState(interactive_components, state_machine),
       m_game_state_machine(new StateMachine())
 {
-    m_current_level = previous_level + 1;
+    m_current_stage = previous_stage + 1;
     m_players = players;
     m_players_count = m_players.size();
     for (auto player : m_players)
     {
-        player->moveToNextLevel();
+        player->moveToNextStage();
     }
 
     m_enemy_respown_position = 0;
-    m_level_environment = new LevelEnvironment(m_current_level, interactive_components);
+    m_stage_environment = new StageEnvironment(m_current_stage, interactive_components);
     m_enemies_to_kill_count = AppConfig::enemies_to_kill_total_count;
     m_show_enemies_targets = false;
 }
@@ -98,8 +98,8 @@ void Game::clearAll()
         delete bonus;
     m_bonuses.clear();
 
-    delete m_level_environment;
-    m_level_environment = nullptr;
+    delete m_stage_environment;
+    m_stage_environment = nullptr;
 }
 
 void Game::createPlayersIfNeeded()
@@ -132,7 +132,7 @@ void Game::drawScene(Renderer &renderer)
 
 void Game::drawObjects(Renderer &renderer)
 {
-    m_level_environment->drawFirstLayer(renderer);
+    m_stage_environment->drawFirstLayer(renderer);
 
     for (auto player : m_players)
         player->draw(renderer);
@@ -142,7 +142,7 @@ void Game::drawObjects(Renderer &renderer)
     for (auto bonus : m_bonuses)
         bonus->draw(renderer);
 
-    m_level_environment->drawSecondLayer(renderer);
+    m_stage_environment->drawSecondLayer(renderer);
 }
 
 void Game::drawEnemy(Renderer &renderer, Enemy *enemy)
@@ -194,7 +194,7 @@ void Game::drawGameStatusPanel(Renderer &renderer)
         renderer.drawObject(player->src_rect, player_status_dst);
         renderer.drawText(player_lives_dst, std::to_string(player->lives()), {0, 0, 0, 255}, FontSize::NORMAL);
     }
-    // current level
+    // current stage
     Rect stage_status_src = SpriteConfig::getInstance().getSpriteData(ST_STAGE_STATUS).rect;
 
     int stage_status_y_offset = player_y_offset + i * ((m_players.size() + m_killed_players.size()) * (AppConfig::tile_size.h + 2) + 10);
@@ -202,7 +202,7 @@ void Game::drawGameStatusPanel(Renderer &renderer)
     Point stage_number_dst = {stage_status_dst.x + 10, stage_status_dst.y + 26};
 
     renderer.drawObject(stage_status_src, stage_status_dst);
-    renderer.drawText(stage_number_dst, std::to_string(m_current_level), {0, 0, 0, 255}, FontSize::NORMAL);
+    renderer.drawText(stage_number_dst, std::to_string(m_current_stage), {0, 0, 0, 255}, FontSize::NORMAL);
 }
 
 void Game::updateScene(Uint32 dt)
@@ -228,11 +228,11 @@ void Game::checkCollisions(Uint32 dt)
 
     for (auto enemy : m_enemies)
     {
-        m_level_environment->checkCollisionTankWithLevel(enemy, dt);
+        m_stage_environment->checkCollisionTankWithStage(enemy, dt);
         for (auto bullet : enemy->bullets)
         {
-            m_level_environment->checkCollisionBulletWithLevel(bullet);
-            if (m_level_environment->checkCollisionBulletWithEagle(bullet))
+            m_stage_environment->checkCollisionBulletWithStage(bullet);
+            if (m_stage_environment->checkCollisionBulletWithEagle(bullet))
             {
                 transiteToGameOver();
             }
@@ -240,11 +240,11 @@ void Game::checkCollisions(Uint32 dt)
     }
     for (auto player : m_players)
     {
-        m_level_environment->checkCollisionTankWithLevel(player, dt);
+        m_stage_environment->checkCollisionTankWithStage(player, dt);
         for (auto bullet : player->bullets)
         {
-            m_level_environment->checkCollisionBulletWithLevel(bullet);
-            if (m_level_environment->checkCollisionBulletWithEagle(bullet))
+            m_stage_environment->checkCollisionBulletWithStage(bullet);
+            if (m_stage_environment->checkCollisionBulletWithEagle(bullet))
             {
                 transiteToGameOver();
             }
@@ -383,7 +383,7 @@ void Game::checkCollisionPlayerWithBonus(Player *player, Bonus *bonus)
         }
         else if (bonus->type == ST_BONUS_SHOVEL)
         {
-            m_level_environment->startEagleProtection();
+            m_stage_environment->startEagleProtection();
         }
         else if (bonus->type == ST_BONUS_TANK)
         {
@@ -457,7 +457,7 @@ void Game::updateObjects(Uint32 dt)
         }
     }
 
-    m_level_environment->update(dt);
+    m_stage_environment->update(dt);
 
     m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy *e)
                                    {if(e->to_erase) {delete e; return true;} return false; }),
@@ -492,7 +492,7 @@ void Game::calculateEnemiesTargets()
             }
         }
 
-        Point eagle_center = m_level_environment->getEagleCenter();
+        Point eagle_center = m_stage_environment->getEagleCenter();
         int metric = fabs(eagle_center.x - enemy_center.x) + fabs(eagle_center.y - enemy_center.y);
         if (metric < min_metric)
         {
@@ -515,21 +515,21 @@ void Game::generateEnemyIfPossible(Uint32 dt)
 
     float p = static_cast<float>(rand()) / RAND_MAX;
     // magic numbers to calculate enemy type probabilities
-    SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_level + 0.09265) ? ST_TANK_D : (rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A));
+    SpriteType type = static_cast<SpriteType>(p < (0.00735 * m_current_stage + 0.09265) ? ST_TANK_D : (rand() % (ST_TANK_C - ST_TANK_A + 1) + ST_TANK_A));
 
     // magic numbers to calculate enemy armor probabilities
     double a, b, c;
-    if (m_current_level <= 17)
+    if (m_current_stage <= 17)
     {
-        a = -0.040625 * m_current_level + 0.940625;
-        b = -0.028125 * m_current_level + 0.978125;
-        c = -0.014375 * m_current_level + 0.994375;
+        a = -0.040625 * m_current_stage + 0.940625;
+        b = -0.028125 * m_current_stage + 0.978125;
+        c = -0.014375 * m_current_stage + 0.994375;
     }
     else
     {
-        a = -0.012778 * m_current_level + 0.467222;
-        b = -0.025000 * m_current_level + 0.925000;
-        c = -0.036111 * m_current_level + 1.363889;
+        a = -0.012778 * m_current_stage + 0.467222;
+        b = -0.025000 * m_current_stage + 0.925000;
+        c = -0.036111 * m_current_stage + 1.363889;
     }
 
     unsigned armor_count;
@@ -566,7 +566,7 @@ void Game::generateBonus()
         b->pos_x = rand() % (AppConfig::map_rect.x + AppConfig::map_rect.w - 2 * AppConfig::tile_size.w);
         b->pos_y = rand() % (AppConfig::map_rect.y + AppConfig::map_rect.h - 2 * AppConfig::tile_size.h);
         b->update(0);
-    } while (m_level_environment->checkCollisionWithEagle(b->collision_rect));
+    } while (m_stage_environment->checkCollisionWithEagle(b->collision_rect));
 
     playSound(SoundConfig::BONUS_APPEARED);
 

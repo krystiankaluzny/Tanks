@@ -1,4 +1,4 @@
-#include "level_environment.h"
+#include "stage_environment.h"
 #include "../../appconfig.h"
 #include "../../soundconfig.h"
 #include "../../objects/brick.h"
@@ -7,11 +7,11 @@
 #include <fstream>
 #include <stdexcept>
 
-LevelEnvironment::LevelEnvironment(int current_level, InteractiveComponents interactive_components)
+StageEnvironment::StageEnvironment(int current_stage, InteractiveComponents interactive_components)
     : InteractiveComponentsHolder(interactive_components)
 {
 
-    m_loaded_level = (current_level - 1) % AppConfig::levels_count + 1;
+    m_loaded_stage = (current_stage - 1) % AppConfig::stages_count + 1;
     m_eagle_protected = false;
     m_eagle_protection_time = 0;
     m_eagle_tile_rect = {AppConfig::map_size.w / 2 - 1, AppConfig::map_size.h - 2, 2, 2};
@@ -21,10 +21,10 @@ LevelEnvironment::LevelEnvironment(int current_level, InteractiveComponents inte
     m_map_outside_colision_top_rect = {-AppConfig::tile_size.w, -AppConfig::tile_size.h, AppConfig::map_rect.w + 2 * AppConfig::tile_size.w, AppConfig::tile_size.h};
     m_map_outside_colision_bottom_rect = {-AppConfig::tile_size.w, AppConfig::map_rect.h, AppConfig::map_rect.w + 2 * AppConfig::tile_size.w, AppConfig::tile_size.h};
 
-    loadLevel();
+    loadStage();
 }
 
-LevelEnvironment::~LevelEnvironment()
+StageEnvironment::~StageEnvironment()
 {
     for (auto &row : m_tile_objects)
     {
@@ -42,7 +42,7 @@ LevelEnvironment::~LevelEnvironment()
     m_eagle = nullptr;
 }
 
-void LevelEnvironment::drawFirstLayer(Renderer &renderer)
+void StageEnvironment::drawFirstLayer(Renderer &renderer)
 {
     for (const auto &row : m_tile_objects)
     {
@@ -54,7 +54,7 @@ void LevelEnvironment::drawFirstLayer(Renderer &renderer)
     }
 }
 
-void LevelEnvironment::drawSecondLayer(Renderer &renderer)
+void StageEnvironment::drawSecondLayer(Renderer &renderer)
 {
     for (const auto &row : m_tile_objects)
     {
@@ -69,7 +69,7 @@ void LevelEnvironment::drawSecondLayer(Renderer &renderer)
         m_eagle->draw(renderer);
 }
 
-void LevelEnvironment::update(Uint32 dt)
+void StageEnvironment::update(Uint32 dt)
 {
     for (auto &row : m_tile_objects)
     {
@@ -112,13 +112,13 @@ void LevelEnvironment::update(Uint32 dt)
     }
 }
 
-void LevelEnvironment::destroyEagle()
+void StageEnvironment::destroyEagle()
 {
     if (m_eagle != nullptr)
         m_eagle->destroy();
 }
 
-void LevelEnvironment::startEagleProtection()
+void StageEnvironment::startEagleProtection()
 {
     m_eagle_protected = true;
     m_eagle_protection_time = 0;
@@ -126,7 +126,7 @@ void LevelEnvironment::startEagleProtection()
     changeEagleSurroundingsToStoneWalls();
 }
 
-void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
+void StageEnvironment::checkCollisionTankWithStage(Tank *tank, Uint32 dt)
 {
     if (tank->to_erase)
         return;
@@ -158,7 +158,7 @@ void LevelEnvironment::checkCollisionTankWithLevel(Tank *tank, Uint32 dt)
         tank->collide(intersect_rect);
 }
 
-void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
+void StageEnvironment::checkCollisionBulletWithStage(Bullet *bullet)
 {
     if (bullet == nullptr)
         return;
@@ -268,7 +268,7 @@ void LevelEnvironment::checkCollisionBulletWithLevel(Bullet *bullet)
     }
 }
 
-bool LevelEnvironment::checkCollisionBulletWithEagle(Bullet *bullet)
+bool StageEnvironment::checkCollisionBulletWithEagle(Bullet *bullet)
 {
     if (bullet == nullptr)
         return false;
@@ -286,18 +286,18 @@ bool LevelEnvironment::checkCollisionBulletWithEagle(Bullet *bullet)
     return false;
 }
 
-bool LevelEnvironment::checkCollisionWithEagle(Rect &rect)
+bool StageEnvironment::checkCollisionWithEagle(Rect &rect)
 {
     Rect intersect_rect = m_eagle->collision_rect.intersection(rect);
     return intersect_rect.isNotEmpty();
 }
 
-Point LevelEnvironment::getEagleCenter() const
+Point StageEnvironment::getEagleCenter() const
 {
     return {m_eagle->pos_x + (int)(m_eagle->dest_rect.w / 2), m_eagle->pos_y + (int)(m_eagle->dest_rect.h / 2)};
 }
 
-void LevelEnvironment::checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt)
+void StageEnvironment::checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt)
 {
     int row_start, row_end;
     int column_start, column_end;
@@ -382,7 +382,7 @@ void LevelEnvironment::checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt)
     }
 }
 
-void LevelEnvironment::checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt)
+void StageEnvironment::checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt)
 {
     int row_start, row_end;
     int column_start, column_end;
@@ -462,14 +462,14 @@ void LevelEnvironment::checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt)
     }
 }
 
-void LevelEnvironment::loadLevel()
+void StageEnvironment::loadStage()
 {
-    std::ifstream level_file;
-    std::string level_file_name = AppConfig::levels_path + std::to_string(m_loaded_level);
-    level_file.open(level_file_name);
-    if (!level_file.is_open())
+    std::ifstream stage_file;
+    std::string stage_file_name = AppConfig::stages_path + std::to_string(m_loaded_stage);
+    stage_file.open(stage_file_name);
+    if (!stage_file.is_open())
     {
-        throw std::runtime_error("Cannot open level file: " + level_file_name);
+        throw std::runtime_error("Cannot open stage file: " + stage_file_name);
     }
 
     m_tile_objects.clear();
@@ -477,9 +477,9 @@ void LevelEnvironment::loadLevel()
     std::string line;
     size_t row_index = 0;
 
-    while (!level_file.eof())
+    while (!stage_file.eof())
     {
-        std::getline(level_file, line);
+        std::getline(stage_file, line);
         std::vector<Object *> row;
         for (size_t col_index = 0; col_index < line.length() && col_index < (size_t)AppConfig::map_size.w; col_index++)
         {
@@ -521,12 +521,12 @@ void LevelEnvironment::loadLevel()
             break;
     }
 
-    level_file.close();
+    stage_file.close();
 
     m_eagle = new Eagle(m_eagle_tile_rect.x * AppConfig::tile_size.w, m_eagle_tile_rect.y * AppConfig::tile_size.h);
 }
 
-void LevelEnvironment::changeEagleSurroundingsToStoneWalls()
+void StageEnvironment::changeEagleSurroundingsToStoneWalls()
 {
     for (int i = 0; i < m_eagle_tile_rect.h + 1; i++)
     {
@@ -548,7 +548,7 @@ void LevelEnvironment::changeEagleSurroundingsToStoneWalls()
     }
 }
 
-void LevelEnvironment::changeEagleSurroundingsToBrickWalls()
+void StageEnvironment::changeEagleSurroundingsToBrickWalls()
 {
     for (int i = 0; i < m_eagle_tile_rect.h + 1; i++)
     {

@@ -60,10 +60,10 @@ If enemy blinks, each hit create new bonus item on a map.
  - ![Bonus gun](resources/img/bonus_gun.png) Gun: same as three starts
  - ![Bonus boat](resources/img/bonus_boat.png) Boat: allows to move on the water
 
-## Levels
+## Stages
 
-Levels are plain text files located in **levels** directory.
-Each level is a two-dimensional array with 26 rows and 26 columns.
+Stages are plain text files located in **stages** directory.
+Each stage is a two-dimensional array with 26 rows and 26 columns.
 Each field in the array should be one of following elements:
 
  - **.** Empty field

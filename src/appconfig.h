@@ -11,7 +11,7 @@ using namespace std;
 struct AppConfig
 {
     static string texture_path;
-    static string levels_path;
+    static string stages_path;
     static string font_path;
 
     static string game_over_text;
@@ -34,7 +34,7 @@ struct AppConfig
     static unsigned enemies_to_kill_total_count;
     static unsigned enemies_max_count_on_map;
 
-    static unsigned levels_count;
+    static unsigned stages_count;
     static unsigned new_enemy_cooldown;
     static unsigned player_bullet_max_count;
     static unsigned bonus_show_time;
@@ -54,8 +54,8 @@ struct AppConfig
 
     struct Game
     {
-        static unsigned level_start_time;
-        static unsigned level_end_time;
+        static unsigned stage_start_time;
+        static unsigned stage_end_time;
         static double game_over_message_speed;
     };
 };

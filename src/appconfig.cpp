@@ -1,7 +1,7 @@
 #include "appconfig.h"
 
 string AppConfig::texture_path = "texture.png";
-string AppConfig::levels_path = "levels/";
+string AppConfig::stages_path = "stages/";
 string AppConfig::font_path = "kongtext.ttf";
 string AppConfig::game_over_text = "GAME OVER";
 
@@ -67,7 +67,7 @@ unsigned AppConfig::slip_time = 380;
 unsigned AppConfig::enemies_to_kill_total_count = 20;
 unsigned AppConfig::enemies_max_count_on_map = 4;
 
-unsigned AppConfig::levels_count = 35;
+unsigned AppConfig::stages_count = 35;
 unsigned AppConfig::new_enemy_cooldown = 500;
 unsigned AppConfig::player_bullet_max_count = 2;
 unsigned AppConfig::bonus_show_time = 10000;
@@ -83,6 +83,6 @@ double AppConfig::bullet_default_speed = 0.23;
 unsigned AppConfig::Score::single_count_time = 100;
 unsigned AppConfig::Score::idle_time = 5000;
 
-unsigned AppConfig::Game::level_start_time = 3200;
-unsigned AppConfig::Game::level_end_time = 5000;
+unsigned AppConfig::Game::stage_start_time = 3200;
+unsigned AppConfig::Game::stage_end_time = 5000;
 double AppConfig::Game::game_over_message_speed = 0.13;

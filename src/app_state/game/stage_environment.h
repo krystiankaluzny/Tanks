@@ -1,5 +1,5 @@
-#ifndef LEVEL_ENVIRONMENT_H
-#define LEVEL_ENVIRONMENT_H
+#ifndef STAGE_ENVIRONMENT_H
+#define STAGE_ENVIRONMENT_H
 
 #include "../../objects/object.h"
 #include "../../objects/eagle.h"
@@ -8,11 +8,11 @@
 #include <vector>
 
 
-class LevelEnvironment : public InteractiveComponentsHolder
+class StageEnvironment : public InteractiveComponentsHolder
 {
 public:
-    LevelEnvironment(int current_level, InteractiveComponents interactive_components);
-    ~LevelEnvironment();
+    StageEnvironment(int current_stage, InteractiveComponents interactive_components);
+    ~StageEnvironment();
 
     void drawFirstLayer(Renderer &renderer);
     void drawSecondLayer(Renderer &renderer);
@@ -22,8 +22,8 @@ public:
     void destroyEagle();
     void startEagleProtection();
 
-    void checkCollisionTankWithLevel(Tank *tank, Uint32 dt);
-    void checkCollisionBulletWithLevel(Bullet *bullet);
+    void checkCollisionTankWithStage(Tank *tank, Uint32 dt);
+    void checkCollisionBulletWithStage(Bullet *bullet);
     bool checkCollisionBulletWithEagle(Bullet *bullet);
     bool checkCollisionWithEagle(Rect &rect);
 
@@ -31,11 +31,11 @@ public:
 private:
     void checkCollisionTankWithEnteringEnv(Tank *tank, Uint32 dt);
     void checkCollisionTankWithLeavingEnv(Tank *tank, Uint32 dt);
-    void loadLevel();
+    void loadStage();
     void changeEagleSurroundingsToStoneWalls();
     void changeEagleSurroundingsToBrickWalls();
 
-    int m_loaded_level;
+    int m_loaded_stage;
 
     std::vector<std::vector<Object *>> m_tile_objects;
 

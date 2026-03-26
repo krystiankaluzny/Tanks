@@ -4,7 +4,7 @@
 #include "../appconfig.h"
 #include "../soundconfig.h"
 #include "../spriteconfig.h"
-#include "level_select.h"
+#include "stage_select.h"
 
 #include <iostream>
 
@@ -111,7 +111,7 @@ void Menu::eventProcess(const Event &event)
             if (m_current_menu_index == 0 || m_current_menu_index == 1)
             {
                 int players_count = m_current_menu_index == 0 ? 1 : 2;
-                transiteTo(new LevelSelect(players_count, m_interactive_components, m_state_machine));
+                transiteTo(new StageSelect(players_count, m_interactive_components, m_state_machine));
             }
             else
             {

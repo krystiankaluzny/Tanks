@@ -1,12 +1,12 @@
-#ifndef LEVEL_SELECT_H
-#define LEVEL_SELECT_H
+#ifndef STAGE_SELECT_H
+#define STAGE_SELECT_H
 
 #include "appstate.h"
 
-class LevelSelect : public AppState
+class StageSelect : public AppState
 {
 public:
-    LevelSelect(int players_count, InteractiveComponents interactive_components, StateMachine *state_machine);
+    StageSelect(int players_count, InteractiveComponents interactive_components, StateMachine *state_machine);
 
     void draw(Renderer &renderer) override;
     void update(const UpdateState &updateState) override;
@@ -17,7 +17,7 @@ protected:
 
 private:
     int m_players_count;
-    int m_selected_level;
+    int m_selected_stage;
 };
 
-#endif // LEVEL_SELECT_H
+#endif // STAGE_SELECT_H

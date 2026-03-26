@@ -111,7 +111,7 @@ void Player::hit()
     }
 }
 
-void Player::moveToNextLevel()
+void Player::moveToNextStage()
 {
     if (m_lives_count == 0)
     {

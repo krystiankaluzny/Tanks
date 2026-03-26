@@ -2,27 +2,27 @@
 #include "../../appconfig.h"
 #include "../scores.h"
 
-Game::LevelEndingState::LevelEndingState(Game *ps, bool no_wating, bool game_over)
+Game::StageEndingState::StageEndingState(Game *ps, bool no_wating, bool game_over)
     : ContextState(ps, ps->m_game_state_machine),
-      m_level_end_time(0),
+      m_stage_end_time(0),
       m_no_waiting(no_wating),
       m_game_over(game_over)
 {
 }
 
 
-void Game::LevelEndingState::draw(Renderer &renderer)
+void Game::StageEndingState::draw(Renderer &renderer)
 {
     m_context->drawScene(renderer);
 }
 
-void Game::LevelEndingState::update(const UpdateState &updateState)
+void Game::StageEndingState::update(const UpdateState &updateState)
 {
     m_context->updateScene(updateState.delta_time);
 
-    m_level_end_time += updateState.delta_time;
+    m_stage_end_time += updateState.delta_time;
 
-    if (m_no_waiting || m_level_end_time > AppConfig::Game::level_end_time)
+    if (m_no_waiting || m_stage_end_time > AppConfig::Game::stage_end_time)
     {
         transiteToNull();
 
@@ -35,14 +35,14 @@ void Game::LevelEndingState::update(const UpdateState &updateState)
         m_context->m_killed_players.clear();
 
         m_context->transiteTo(new Scores(players,
-                                         m_context->m_current_level,
+                                         m_context->m_current_stage,
                                          m_game_over,
                                          m_context->m_interactive_components,
                                          m_context->m_state_machine));
     }
 }
 
-void Game::LevelEndingState::eventProcess(const Event &event)
+void Game::StageEndingState::eventProcess(const Event &event)
 {
     if (event.type() == Event::KEYBOARD)
     {

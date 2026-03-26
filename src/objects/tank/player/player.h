@@ -16,7 +16,7 @@ public:
     void update(Uint32 dt) override;
 
     void hit();
-    void moveToNextLevel();
+    void moveToNextStage();
     void startPreview();
     /**
      * @return pointer to a new bullet, or nullptr if for some reason bullet cannot be created
