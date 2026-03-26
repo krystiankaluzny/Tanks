@@ -21,9 +21,6 @@ SDLRenderer::SDLRenderer(Size viewport_base_size)
     m_texture = nullptr;
     m_renderer = nullptr;
     m_text_texture = nullptr;
-    m_font_biggest = nullptr;
-    m_font_big = nullptr;
-    m_font_normal = nullptr;
 
     m_fullscreen = false;
 }
@@ -36,12 +33,9 @@ SDLRenderer::~SDLRenderer()
         SDL_DestroyTexture(m_texture);
     if (m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
-    if (m_font_biggest != nullptr)
-        TTF_CloseFont(m_font_biggest);
-    if (m_font_big != nullptr)
-        TTF_CloseFont(m_font_big);
-    if (m_font_normal != nullptr)
-        TTF_CloseFont(m_font_normal);
+    for (auto &[key, font] : m_fonts)
+        if (font != nullptr)
+            TTF_CloseFont(font);
 
     TTF_Quit();
     IMG_Quit();
@@ -57,13 +51,6 @@ void SDLRenderer::loadTexture(SDL_Window *window)
         throw Error("SDL Renderer could not be created!", SDL_GetError());
     }
     m_texture = IMG_LoadTexture(m_renderer, AppConfig::texture_path.c_str());
-}
-
-void SDLRenderer::loadFont()
-{
-    m_font_biggest = TTF_OpenFont(AppConfig::font_path.c_str(), 28);
-    m_font_big = TTF_OpenFont(AppConfig::font_path.c_str(), 14);
-    m_font_normal = TTF_OpenFont(AppConfig::font_path.c_str(), 10);
 }
 
 void SDLRenderer::clear()
@@ -113,28 +100,18 @@ void SDLRenderer::setViewportForWindowSize(Size window_size)
 
 void SDLRenderer::drawText(const Point &start, std::string text, Color text_color, FontSize font_size)
 {
-    if (m_font_biggest == nullptr || m_font_big == nullptr || m_font_normal == nullptr)
+    if (m_fonts.find(font_size) == m_fonts.end())
+        m_fonts[font_size] = TTF_OpenFont(AppConfig::font_path.c_str(), static_cast<int>(font_size));
+
+    TTF_Font *font = m_fonts[font_size];
+    if (font == nullptr)
         return;
+        
     if (m_text_texture != nullptr)
         SDL_DestroyTexture(m_text_texture);
 
     SDL_Color sdl_text_color = {static_cast<Uint8>(text_color.r), static_cast<Uint8>(text_color.g), static_cast<Uint8>(text_color.b), static_cast<Uint8>(text_color.a)};
-    SDL_Surface *text_surface = nullptr;
-
-    switch (font_size)
-    {
-    case FontSize::NORMAL:
-        text_surface = TTF_RenderText_Solid(m_font_normal, text.c_str(), sdl_text_color);
-        break;
-    case FontSize::BIG:
-        text_surface = TTF_RenderText_Solid(m_font_big, text.c_str(), sdl_text_color);
-        break;
-    case FontSize::BIGGEST:
-        text_surface = TTF_RenderText_Solid(m_font_biggest, text.c_str(), sdl_text_color);
-        break;
-    default:
-        break;
-    }
+    SDL_Surface *text_surface = TTF_RenderText_Solid(font, text.c_str(), sdl_text_color);
 
     if (text_surface == nullptr)
         return;

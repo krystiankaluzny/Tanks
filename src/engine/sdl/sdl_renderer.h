@@ -2,8 +2,10 @@
 #define SDL_RENDERER_H
 
 #include "../renderer.h"
+#include "../data/font_size.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <unordered_map>
 
 class SDLRenderer : public Renderer
 {
@@ -19,7 +21,6 @@ public:
 
 
     void loadTexture(SDL_Window *window);
-    void loadFont();
     void toggleFullscreen(SDL_Window *window);
     void setViewportForWindowSize(Size window_size);
 
@@ -29,9 +30,7 @@ private:
     SDL_Renderer *m_renderer;
     SDL_Texture *m_texture;
     SDL_Texture *m_text_texture;
-    TTF_Font *m_font_biggest;
-    TTF_Font *m_font_big;
-    TTF_Font *m_font_normal;
+    std::unordered_map<FontSize, TTF_Font *> m_fonts;
     bool m_fullscreen;
 };
 
