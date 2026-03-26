@@ -16,7 +16,6 @@ void SDLEngine::initComponents()
 {
     m_renderer = new SDLRenderer(m_config.initial_window_size);
     m_renderer->loadTexture(m_window);
-    m_renderer->loadFont();
 
     m_sound_manager = new SDLSoundManager();
 }

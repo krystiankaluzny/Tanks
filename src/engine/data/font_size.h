@@ -3,9 +3,9 @@
 
 enum class FontSize
 {
-    NORMAL,
-    BIG,
-    BIGGEST
+    NORMAL  = 10,
+    BIG     = 14,
+    BIGGEST = 28
 };
 
 #endif
