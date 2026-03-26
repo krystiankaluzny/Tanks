@@ -14,11 +14,11 @@
 #include <iostream>
 #include <cmath>
 
-Game::Game(int players_count, InteractiveComponents interactive_components, StateMachine *state_machine)
+Game::Game(int players_count, int starting_level, InteractiveComponents interactive_components, StateMachine *state_machine)
     : AppState(interactive_components, state_machine),
       m_game_state_machine(new StateMachine())
 {
-    m_current_level = 1;
+    m_current_level = starting_level;
     m_players_count = players_count;
     m_enemy_respown_position = 0;
     m_level_environment = new LevelEnvironment(m_current_level, interactive_components);

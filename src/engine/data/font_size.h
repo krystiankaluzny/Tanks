@@ -5,6 +5,7 @@ enum class FontSize
 {
     NORMAL  = 10,
     BIG     = 14,
+    BIGGER  = 18,
     BIGGEST = 28
 };
 
