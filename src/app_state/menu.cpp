@@ -4,6 +4,7 @@
 #include "../appconfig.h"
 #include "../soundconfig.h"
 #include "../spriteconfig.h"
+#include "../high_score.h"
 #include "stage_select.h"
 
 #include <iostream>
@@ -46,6 +47,10 @@ void Menu::draw(Renderer &renderer)
 
     renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 255}, true);
     renderer.drawRect(AppConfig::status_rect, {0, 0, 0, 255}, true);
+
+    Point p_dst = {-1, 15};
+    Color text_color = {255, 255, 255, 255};
+    renderer.drawText(p_dst, "HI- " + std::to_string(HighScore::score), text_color, FontSize::NORMAL);
 
     // LOGO
     const SpriteData &logo = SpriteConfig::getInstance().getSpriteData(ST_TANKS_LOGO);
