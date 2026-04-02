@@ -22,7 +22,7 @@ namespace SoundConfig
     const Sound ENEMY_DESTROYED{"sounds/enemy_destroyed.ogg", 100.0, 0.7, true};
     const Sound ENEMY_HIT{"sounds/enemy_hit.ogg", 70.0, 1.0, true};
 
-    // const Sound HIGHSCORE_BEATEN {"sounds/highscore_beaten.ogg", 100.0, true};
+    const Sound HIGHSCORE_BEATEN{"sounds/highscore_beaten.ogg", 100.0, 1.0, false, true};
 
     const Sound MENU_ITEM_SELECTED{"sounds/menu_item_selected.ogg", 70.0, 1.0, true};
 
