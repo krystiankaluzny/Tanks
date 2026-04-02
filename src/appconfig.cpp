@@ -82,6 +82,7 @@ double AppConfig::bullet_default_speed = 0.23;
 
 unsigned AppConfig::Score::single_count_time = 100;
 unsigned AppConfig::Score::idle_time = 5000;
+unsigned AppConfig::Score::high_score_time = 5200;
 
 unsigned AppConfig::Game::stage_start_time = 3200;
 unsigned AppConfig::Game::stage_end_time = 5000;

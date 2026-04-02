@@ -3,6 +3,7 @@
 #include "../engine/data/data.h"
 #include "../appconfig.h"
 #include "../soundconfig.h"
+#include "../high_score.h"
 #include "game/game.h"
 #include "menu.h"
 
@@ -43,6 +44,13 @@ void Scores::draw(Renderer &renderer)
 {
     renderer.clear();
 
+    m_scores_state_machine->draw(renderer);
+
+    renderer.flush();
+}
+
+void Scores::drawScore(Renderer &renderer)
+{
     renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 255}, true);
     renderer.drawRect(AppConfig::status_rect, {0, 0, 0, 255}, true);
 
@@ -68,10 +76,6 @@ void Scores::draw(Renderer &renderer)
         renderer.drawText(p_dst, (m_score_counter < player->score() ? std::to_string(m_score_counter) : std::to_string(player->score())), {255, 255, 255, 255}, FontSize::NORMAL);
         i++;
     }
-
-    m_scores_state_machine->draw(renderer);
-
-    renderer.flush();
 }
 
 void Scores::update(const UpdateState &updateState)
@@ -107,6 +111,11 @@ void Scores::transiteToNextState()
 }
 
 Scores::CountingState::CountingState(Scores *ps) : ContextState<Scores>(ps, ps->m_scores_state_machine), m_single_score_count_time(0) {}
+
+void Scores::CountingState::draw(Renderer &renderer)
+{
+    m_context->drawScore(renderer);
+}
 
 void Scores::CountingState::update(const UpdateState &updateState)
 {
@@ -156,6 +165,11 @@ void Scores::CountingState::eventProcess(const Event &event)
 
 Scores::IdleState::IdleState(Scores *ps) : ContextState<Scores>(ps, ps->m_scores_state_machine), m_idle_time(0) {}
 
+void Scores::IdleState::draw(Renderer &renderer)
+{
+    m_context->drawScore(renderer);
+}
+
 void Scores::IdleState::update(const UpdateState &updateState)
 {
     Uint32 dt = updateState.delta_time;
@@ -164,11 +178,85 @@ void Scores::IdleState::update(const UpdateState &updateState)
 
     if (m_idle_time > AppConfig::Score::idle_time)
     {
-        m_context->transiteToNextState();
+        checkHighScoreAndTransite();
     }
 }
 
 void Scores::IdleState::eventProcess(const Event &event)
+{
+    if (event.type() == Event::KEYBOARD)
+    {
+        const KeyboardEvent &ev = static_cast<const KeyboardEvent &>(event);
+
+        if (ev.isPressed(KeyCode::KEY_RETURN))
+        {
+            checkHighScoreAndTransite();
+        }
+    }
+}
+
+void Scores::IdleState::checkHighScoreAndTransite()
+{
+    if (m_context->m_game_over)
+    {
+        unsigned max_score = 0;
+        for (auto player : m_context->m_players)
+        {
+            if (player->score() > max_score)
+                max_score = player->score();
+        }
+
+        if (HighScore::checkAndUpdate(max_score))
+        {
+            transiteTo(new Scores::HighScoreState(m_context));
+            return;
+        }
+    }
+
+    m_context->transiteToNextState();
+}
+
+Scores::HighScoreState::HighScoreState(Scores *ps) : ContextState<Scores>(ps, ps->m_scores_state_machine), m_display_time(0) {}
+
+void Scores::HighScoreState::onInitialize()
+{
+    m_context->stopAllSounds();
+    m_context->playSound(SoundConfig::HIGHSCORE_BEATEN);
+}
+
+void Scores::HighScoreState::draw(Renderer &renderer)
+{
+    renderer.drawRect(AppConfig::map_rect, {0, 0, 0, 255}, true);
+    renderer.drawRect(AppConfig::status_rect, {0, 0, 0, 255}, true);
+
+    const Color flash_colors[] = {
+        {255, 220,   0, 255},
+        {255,  80,  80, 255},
+        {255, 255, 255, 255},
+        { 80, 255,  80, 255},
+        { 80, 180, 255, 255},
+    };
+    Color text_color = flash_colors[(m_display_time / 20) % 5];
+
+    Point p_dst;
+    p_dst = {-1, 80};
+    renderer.drawText(p_dst, "HISCORE", text_color, FontSize::FS_60);
+
+    p_dst = {-1, 180};
+    renderer.drawText(p_dst, std::to_string(HighScore::score), text_color, FontSize::FS_48);
+}
+
+void Scores::HighScoreState::update(const UpdateState &updateState)
+{
+    m_display_time += updateState.delta_time;
+
+    if (m_display_time > AppConfig::Score::high_score_time)
+    {
+        m_context->transiteToNextState();
+    }
+}
+
+void Scores::HighScoreState::eventProcess(const Event &event)
 {
     if (event.type() == Event::KEYBOARD)
     {

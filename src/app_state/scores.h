@@ -21,6 +21,7 @@ protected:
 
 private:
     void transiteToNextState();
+    void drawScore(Renderer &renderer);
 
     StateMachine* m_scores_state_machine;
 
@@ -35,6 +36,7 @@ private:
     {
     public:
         CountingState(Scores *ps);
+        void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
         void eventProcess(const Event &event) override;
 
@@ -46,11 +48,28 @@ private:
     {
     public:
         IdleState(Scores *ps);
+        void draw(Renderer &renderer) override;
         void update(const UpdateState &updateState) override;
         void eventProcess(const Event &event) override;
 
     private:
+        void checkHighScoreAndTransite();
         Uint32 m_idle_time;
+    };
+
+    class HighScoreState : public ContextState<Scores>
+    {
+    public:
+        HighScoreState(Scores *ps);
+        void draw(Renderer &renderer) override;
+        void update(const UpdateState &updateState) override;
+        void eventProcess(const Event &event) override;
+
+    protected:
+        void onInitialize() override;
+
+    private:
+        Uint32 m_display_time;
     };
 };
 

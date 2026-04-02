@@ -50,6 +50,7 @@ struct AppConfig
     {
         static unsigned single_count_time;
         static unsigned idle_time;
+        static unsigned high_score_time;
     };
 
     struct Game
