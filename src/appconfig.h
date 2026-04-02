@@ -90,9 +90,10 @@ namespace AppConfig
 
     namespace Score
     {
-        inline unsigned single_count_time = 100;
-        inline unsigned idle_time         = 5000;
-        inline unsigned high_score_time   = 5200;
+        inline unsigned single_count_time  = 100;
+        inline unsigned idle_time          = 5000;
+        inline unsigned high_score_time    = 5200;
+        inline unsigned minimal_high_score = 2000;
     }
 
     namespace Game
