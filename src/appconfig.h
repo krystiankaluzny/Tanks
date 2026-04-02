@@ -76,17 +76,17 @@ namespace AppConfig
     inline unsigned enemies_to_kill_total_count = 20;
     inline unsigned enemies_max_count_on_map    = 4;
 
-    inline unsigned stages_count            = 35;
-    inline unsigned new_enemy_cooldown      = 500;
-    inline unsigned player_bullet_max_count = 2;
-    inline unsigned bonus_show_time         = 10000;
-    inline unsigned tank_shield_time        = 10000;
-    inline unsigned tank_frozen_time        = 8000;
-    inline unsigned protect_eagle_time      = 15000;
-    inline unsigned bonus_blink_time        = 350;
-    inline unsigned player_reload_time      = 120;
-    inline double   tank_default_speed      = 0.08;
-    inline double   bullet_default_speed    = 0.23;
+    inline unsigned stages_count             = 35;
+    inline unsigned new_enemy_cooldown       = 500;
+    inline unsigned player_bullet_base_count = 2;
+    inline unsigned bonus_show_time          = 10000;
+    inline unsigned tank_shield_time         = 10000;
+    inline unsigned tank_frozen_time         = 8000;
+    inline unsigned protect_eagle_time       = 15000;
+    inline unsigned bonus_blink_time         = 350;
+    inline unsigned player_reload_time       = 120;
+    inline double   tank_default_speed       = 0.08;
+    inline double   bullet_default_speed     = 0.23;
 
     namespace Score
     {
