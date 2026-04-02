@@ -57,22 +57,26 @@ void Scores::drawScore(Renderer &renderer)
     Point p_dst;
     Rect dst;
 
-    p_dst = {-1, 10};
+    p_dst = {-1, 15};
+    Color text_color = {255, 255, 255, 255};
+    renderer.drawText(p_dst, "HI- " + std::to_string(HighScore::score), text_color, FontSize::NORMAL);
+
+    p_dst = {-1, 40};
     renderer.drawText(p_dst, std::string("STAGE ") + std::to_string(m_stage), {255, 255, 220, 255}, FontSize::BIGGEST);
-    p_dst = {100, 50};
+    p_dst = {100, 80};
     renderer.drawText(p_dst, std::string("PLAYER"), {255, 255, 255, 255}, FontSize::NORMAL);
-    p_dst = {270, 50};
+    p_dst = {270, 80};
     renderer.drawText(p_dst, std::string("SCORE"), {255, 255, 255, 255}, FontSize::NORMAL);
-    dst = {75, 75, 300, 2};
+    dst = {75, 105, 300, 2};
     renderer.drawRect(dst, {250, 250, 200, 255}, true);
     int i = 0;
     for (auto player : m_players)
     {
-        dst = {100, 90 + i * (player->src_rect.h), player->src_rect.w, player->src_rect.h};
+        dst = {100, 120 + i * (player->src_rect.h), player->src_rect.w, player->src_rect.h};
         renderer.drawObject(player->src_rect, dst);
-        p_dst = {140, 98 + i * (player->src_rect.h)};
+        p_dst = {140, 128 + i * (player->src_rect.h)};
         renderer.drawText(p_dst, std::string("x") + std::to_string(player->lives()), {255, 255, 255, 255}, FontSize::NORMAL);
-        p_dst = {270, 98 + i * (player->src_rect.h)};
+        p_dst = {270, 128 + i * (player->src_rect.h)};
         renderer.drawText(p_dst, (m_score_counter < player->score() ? std::to_string(m_score_counter) : std::to_string(player->score())), {255, 255, 255, 255}, FontSize::NORMAL);
         i++;
     }
