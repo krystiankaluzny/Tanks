@@ -1,8 +1,10 @@
 #ifndef HIGH_SCORE_H
 #define HIGH_SCORE_H
 
+#include "appconfig.h"
+
 namespace HighScore {
-    inline unsigned score = 0;
+    inline unsigned score = AppConfig::Score::minimal_high_score;
 
     inline bool checkAndUpdate(unsigned new_score) {
         if (new_score > 0 && new_score > score) {
