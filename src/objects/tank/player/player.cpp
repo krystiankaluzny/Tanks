@@ -9,7 +9,7 @@ Player::Player(double x, double y, SpriteType type, std::vector<KeyCode> control
 {
     m_speed = 0;
     m_lives_count = 10;
-    m_bullet_max_count = AppConfig::player_bullet_max_count;
+    m_bullet_max_count = AppConfig::player_bullet_base_count;
     m_score = 0;
     star_count = 0;
 
@@ -159,7 +159,7 @@ void Player::changeStarCountBy(int c)
     if (star_count >= 2 && c > 0)
         m_bullet_max_count++;
     else
-        m_bullet_max_count = 2;
+        m_bullet_max_count = AppConfig::player_bullet_base_count;
 
     if (star_count > 0)
         m_max_speed = AppConfig::tank_default_speed * 1.3;
